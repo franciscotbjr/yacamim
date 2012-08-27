@@ -1,0 +1,159 @@
+/**
+ * UtilAndroid.java
+ *
+ * Copyright 2011 yacamim.org.br
+ */
+package br.org.yacamim.util;
+
+import java.io.File;
+import java.util.List;
+
+import android.bluetooth.BluetoothAdapter;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.net.wifi.WifiManager;
+import android.provider.MediaStore;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import br.org.yacamim.BaseActivity;
+import br.org.yacamim.YacamimState;
+
+/**
+ * Class UtilAndroid TODO
+ * 
+ * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
+ * @version 1.0
+ * @since 1.0
+ */
+public final class UtilAndroid {
+
+	/**
+	 * 
+	 */
+	private UtilAndroid() {
+		super();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getImei() {
+		String imei = "";
+		try {
+			imei = ((TelephonyManager)YacamimState.getInstance().getCurrentActivity().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+			if(imei == null) {
+				imei = "";
+			}
+		} catch (Exception _e) {
+			Log.e("UtilAndroid.getImei", _e.getMessage());
+		}
+		return imei;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getMacAddress() {
+		String macAddress = "";
+		try {
+			macAddress = ((WifiManager)YacamimState.getInstance().getCurrentActivity().getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getMacAddress();
+			if(macAddress == null) {
+				macAddress = "";
+			}
+		} catch (Exception _e) {
+			Log.e("UtilAndroid.getMacAddress", _e.getMessage());
+		}
+		return macAddress;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getBluetoothMacAddress() {
+		String bluetoothMac = "";
+		try {
+	    	bluetoothMac =  BluetoothAdapter.getDefaultAdapter().getAddress();
+	    	if(bluetoothMac == null) {
+	    		bluetoothMac = "";
+			}
+		} catch (Exception _e) {
+			Log.e("UtilAndroid.getBluetoothMacAddress", _e.getMessage());
+		}
+		return bluetoothMac;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getAndroidID() {
+		String androidID = "";
+		try {
+			androidID = Secure.getString(YacamimState.getInstance().getCurrentActivity().getContentResolver(), Secure.ANDROID_ID);
+	    	if(androidID == null) {
+	    		androidID = "";
+			}
+		} catch (Exception _e) {
+			Log.e("UtilAndroid.getAndroidID", _e.getMessage());
+		}
+		return androidID;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getInstalationID() {
+		String idCombinadoTemporal = new String();
+		try {
+			final String idsConcatenadosTemporal = getImei() + getMacAddress() + getBluetoothMacAddress() + getAndroidID() +System.currentTimeMillis();
+			idCombinadoTemporal = UtilCryptographic.md5(idsConcatenadosTemporal);
+		} catch (Exception _e) {
+			Log.e("UtilAndroid.getIdCombinadoTemporal", _e.getMessage());
+		}
+		return idCombinadoTemporal;
+	}
+	
+
+	/**
+	 * 
+	 * @param _fileName
+	 * @param _keyPathImagens
+	 * @param _baseActivity
+	 * @param _refs
+	 * @return
+	 */
+	public static Intent montaIntentParaCamera(final String _fileName, final String _keyPathImagens, final BaseActivity _baseActivity,  final List<File> _refs) {
+		final ContentValues values = new ContentValues();
+		values.put(MediaStore.Images.Media.TITLE, _fileName);
+		values.put(MediaStore.Images.Media.DESCRIPTION, _fileName);
+		
+		checkFilePath(_keyPathImagens);
+		
+		final File fileImagem = new File(YacamimState.getInstance().getParams().get(_keyPathImagens) + "/" + _fileName);
+		final Uri imageUri = Uri.fromFile(fileImagem);
+		_refs.add(fileImagem);
+		
+		final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
+		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		cameraIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+		return cameraIntent;
+	}
+
+	/**
+	 * @param _keyPathImagens
+	 */
+	protected static void checkFilePath(final String _keyPathImagens) {
+		final File fileCheckPath = new File(YacamimState.getInstance().getParams().get(_keyPathImagens));
+		if(!fileCheckPath.exists()) {
+			fileCheckPath.mkdirs();
+		}
+	}
+
+}

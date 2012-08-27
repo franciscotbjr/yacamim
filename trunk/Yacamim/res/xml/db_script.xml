@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<db-script>
+	<db version="0">
+		<tables>
+			<create-table id="1000">
+				CREATE TABLE sessao (
+					id_sessao integer primary key autoincrement not null,
+					ds_sessionid text NOT NULL
+				);
+			</create-table>
+			<create-table id="1001">
+				CREATE TABLE usuario ( 
+					id_usuario integer primary key autoincrement not null,
+					ds_login text(150) UNIQUE NOT NULL
+				);
+			</create-table>
+			<!-- </create-table> <create-table id=""> </create-table> <create-table 
+				id=""> </create-table> <alter-table id=""></alter-table> <alter-table id=""></alter-table> 
+				<alter-table id=""></alter-table> <alter-table id=""></alter-table> -->
+		</tables>
+
+		<charge>
+			
+			<insert id="1092">
+			    INSERT INTO arquivo_informacao (id_arquivo_informacao, id_informacao_recurso_material, ds_documento, ds_titulo)
+			    values (2, 2, 'Documento 2', 'Documento 1');
+			</insert>
+			
+		</charge>
+	</db>
+</db-script>
