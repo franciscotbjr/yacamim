@@ -1,7 +1,7 @@
 /**
  * TextGridSimpleAdapter.java
  *
- * Copyright 2011 yacamim.org.br
+ * Copyright 2012 yacamim.org.br
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,38 +51,22 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 	/**
 	 * 
 	 */
-	private String[] attributeNames;
-	
-	/**
-	 * 
-	 */
-	private int[] uiFieldResourceIds;
-	
-	/**
-	 * 
-	 */
-	private int[] formattingTypes;
-	
-	/**
-	 * 
-	 */
-	private int resource;
+	private AdapterConfig adapterConfig;
 
 	/**
+	 * 
+	 * @param _activity
 	 * @param _context
 	 * @param _data
-	 * @param _resource
-	 * @param _from
-	 * @param _to
+	 * @param _adapterConfig
 	 */
-	public TextGridSimpleAdapter(final Activity _activity, final int[] _tipoFormatacoes, 
-			final Context _context, final List<? extends Map<String, Object>> _data, final int _resource, final String[] _from, final int[] _to) {
-		super(_context, _data, _resource, _from, _to);
+	public TextGridSimpleAdapter(final Activity _activity, 
+			final Context _context, 
+			final List<? extends Map<String, Object>> _data, 
+			final AdapterConfig _adapterConfig) {
+		super(_context, _data, 0, null, null);
 		this.activity = _activity;
-		this.attributeNames = _from;
-		this.uiFieldResourceIds = _to;
-		this.formattingTypes = _tipoFormatacoes;
-		this.resource = _resource;
+		this.adapterConfig = _adapterConfig;
 	}
 
 	/**
@@ -94,17 +78,18 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 	public View getView(int _position, View convertView, ViewGroup _parent) {
 		super.getView(_position, convertView, _parent);
 		try {
+			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
+			final Object object = (Object) data.get(Constants.OBJECT);
+			
+			final RowConfig rowConfig = this.selectRowConfig(_position, object);
+			
 			if (convertView == null) {
-				convertView = this.activity.getLayoutInflater().inflate(this.resource, null);
+				convertView = this.activity.getLayoutInflater().inflate(rowConfig.getResource(), null);
 			}
 			 
-			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
-			 
-			final Object object = (Object) data.get(Constants.OBJECT);
-			 
-			if(object != null && this.attributeNames != null && this.uiFieldResourceIds != null) {
-				for(int i = 0; i < this.uiFieldResourceIds.length; i++) {
-					this.preencheCampo(convertView, object, i);
+			if(object != null && rowConfig.getRowConfigItems() != null) {
+				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
+					this.fillField(convertView, object, rowConfigItem);
 				}
 			}
 		} catch (Exception _e) {
@@ -114,28 +99,37 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
     }
 
 	/**
+	 * @param _position
+	 * @param _object
+	 * @return
+	 */
+	protected RowConfig selectRowConfig(int _position, final Object _object) {
+		return this.adapterConfig.getRowCondition().selectRowConfig(_object, _position, this.adapterConfig.getRowConfigs());
+	}
+
+	/**
 	 * @param _convertView
 	 * @param _object
-	 * @param _count
+	 * @param _rowConfigItem
 	 */
-	private void preencheCampo(View _convertView, final Object _object, int _count) {
+	private void fillField(View _convertView, final Object _object, RowConfigItem _rowConfigItem) {
 		try {
-			final TextView textView = (TextView) _convertView.findViewById(this.uiFieldResourceIds[_count]);
-			Object value = UtilReflection.getPropertyValue(this.attributeNames[_count], _object);
-			String formmatedValue = format(_count, value);
+			final TextView textView = (TextView) _convertView.findViewById(_rowConfigItem.getResourceIdTo());
+			Object value = UtilReflection.getPropertyValue(_rowConfigItem.getGraphFrom(), _object);
+			String formmatedValue = format(_rowConfigItem, value);
 			textView.setText("- " + formmatedValue);
 			textView.setPadding(0, 0, 0, 0);
 		} catch (Exception _e) {
-			Log.e("TextGridSimpleAdapter.preencheCampo", _e.getMessage());
+			Log.e("TextGridSimpleAdapter.fillField", _e.getMessage());
 		}
 	}
 
 	/**
-	 * @param _count
+	 * @param _rowConfigItem
 	 * @param _value
 	 * @return
 	 */
-	private String format(final int _count, final Object _value) {
+	private String format(final RowConfigItem _rowConfigItem, final Object _value) {
 		String value = "";
 		try {
 			if(_value.getClass().equals(int.class)
@@ -150,22 +144,22 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 				value = _value.toString();
 			}
 			if(_value instanceof String) {
-				if(!UtilString.isEmptyString(value) && formattingTypes != null) {
-					if (formattingTypes[_count] == TextWatcherFormatter.TIPO_FORMATACAO_CPF) {
+				if(!UtilString.isEmptyString(value) && _rowConfigItem.getFormatingType() > 0) {
+					if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_CPF) {
 						value = UtilFormatting.formatCpf(
 								UtilString.keepOnlyNumbers(
 										value));
-					} else if (formattingTypes[_count] == TextWatcherFormatter.TIPO_FORMATACAO_TELEFONE) {
+					} else if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_TELEFONE) {
 						value = UtilFormatting.formatTelefone(
 								UtilString.keepOnlyNumbers(
 										value));
-					} else if (formattingTypes[_count] == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
+					} else if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
 						value = UtilFormatting.formatData(value);
 					}
 				}
 			} else 
 			if(_value instanceof java.util.Date) {
-				if (formattingTypes[_count] == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
+				if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
 					value = UtilFormatting.formatData((java.util.Date)_value);
 				}
 			}
@@ -183,37 +177,10 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 	}
 
 	/**
-	 * @return the attributeNames
+	 * @return the adapterConfig
 	 */
-	protected String[] getAttributeNames() {
-		return attributeNames;
-	}
-
-	/**
-	 * @return the uiFieldResourceIds
-	 */
-	protected int[] getUiFieldResourceIds() {
-		return uiFieldResourceIds;
-	}
-
-	/**
-	 * @return the formattingTypes
-	 */
-	protected int[] getFormattingTypes() {
-		return formattingTypes;
+	public AdapterConfig getAdapterConfig() {
+		return this.adapterConfig;
 	}
 	
-	/**
-	 * @param _tipoFormatacoes the formattingTypes to set
-	 */
-	protected void setTipoFormatacoes(int[] _tipoFormatacoes) {
-		this.formattingTypes = _tipoFormatacoes;
-	}
-
-	/**
-	 * @return the resource
-	 */
-	protected int getResource() {
-		return resource;
-	}
 }

@@ -1,7 +1,7 @@
 /**
  * RowConfigItem.java
- *
- * Copyright 2011 yacamim.org.br
+ * 
+ * Copyright 2012 yacamim.org.br
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,31 +74,12 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * 
 	 * 
-	 * 
-	 * @param graphFrom
-	 * @param resourceIdTo
-	 * @param resourceIDForInteraction
-	 * @param resourceTypeForInteraction
-	 */
-	public RowConfigItem(String graphFrom, int resourceIdTo,
-			int resourceIDForInteraction, Class<?> resourceTypeForInteraction) {
-		super();
-		this.graphFrom = graphFrom;
-		this.resourceIdTo = resourceIdTo;
-		this.resourceIDForInteraction = resourceIDForInteraction;
-		this.resourceTypeForInteraction = resourceTypeForInteraction;
-	}
-
-	/**
-	 * 
-	 * 
-	 * 
-	 * @param formatingType
-	 * @param graphFrom
-	 * @param resourceIdTo
-	 * @param resourceIDForInteraction
-	 * @param resourceTypeForInteraction
-	 * @param condition
+	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
+	 * @param graphFrom A graph that will be scanned for the value to be displayed.
+	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
+	 * @param resourceIDForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its identifier must be provided.
+	 * @param resourceTypeForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its type must be provided.
+	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
 	 */
 	public RowConfigItem(int formatingType, String graphFrom, int resourceIdTo,
 			int resourceIDForInteraction, Class<?> resourceTypeForInteraction,
