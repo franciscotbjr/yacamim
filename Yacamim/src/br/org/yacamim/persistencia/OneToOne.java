@@ -1,7 +1,7 @@
 /**
  * OneToOne.java
  *
- * Copyright 2011 yacamim.org.br
+ * Copyright 2012 yacamim.org.br
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
