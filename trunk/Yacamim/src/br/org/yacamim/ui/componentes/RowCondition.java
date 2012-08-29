@@ -1,5 +1,5 @@
 /**
- * Condition.java
+ * RowCondition.java
  *
  * Copyright 2012 yacamim.org.br
  * 
@@ -18,30 +18,23 @@
  */
 package br.org.yacamim.ui.componentes;
 
-import android.view.View;
 
 /**
- * Class Condition TODO
+ * Class RowCondition TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public interface Condition {
+public interface RowCondition {
 	
 	/**
 	 * 
 	 * @param _data
+	 * @param _position
+	 * @param _rowConfigs
 	 * @return
 	 */
-	public boolean checkToVisibility(final Object _data);
+	public RowConfig selectRowConfig(final Object _data, final int _position, final RowConfig[] _rowConfigs);
 	
-	/**
-	 * 
-	 * @param _data
-	 * @param _view
-	 * @return
-	 */
-	public void handle(final Object _data, final View _view);
-
 }

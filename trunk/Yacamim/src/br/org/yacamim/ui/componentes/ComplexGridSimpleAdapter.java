@@ -1,7 +1,7 @@
 /**
  * ComplexGridSimpleAdapter.java
  *
- * Copyright 2011 yacamim.org.br
+ * Copyright 2012 yacamim.org.br
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,177 +56,42 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	/**
 	 * 
 	 */
-	private int[] resourcesToTags;
-	
-	/**
-	 * 
-	 */
-	private Class<?>[] resourcesType;
-	
-	/**
-	 * 
-	 */
-	private Condition[] resourcesConditions;
-	
-	/**
-	 * 
-	 */
-	private List<Object> listModelSelection;
-	
-	/**
-	 * 
-	 */
-	private boolean noListModelSelection;
+	private boolean noListModelSelection = false;
 
 	/**
-	 * 
-	 */
-	private int[] resourcesHint;
-
-	/**
-	 *  
 	 * <br/>
-	 * The <tt>_listModelSelection</tt> parameter is meant to be used when each row of a <tt>ListView</tt> has a <tt>CheckBox</tt>. 
-	 * So each <tt>CheckBox</tt> selection action will result in a new item inside the <tt>_listModelSelection</tt>. For each deselection 
+	 * The <tt>_listModelSelection</tt> parameter is meant to be used when each row of a <tt>ListView</tt> has a <tt>CheckBox</tt>. <br/>
+	 * So each <tt>CheckBox</tt> selection action will result in a new item inside the <tt>_listModelSelection</tt>. For each deselection <br/>
 	 * action, an item will be removed from <tt>_listModelSelection</tt>.<br/><br/>
 	 * <br/>
 	 * 
 	 * 
-	 * 
 	 * @param _baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
-	 * @param _formatingTypes A list containing formating type identifiers supposed to format each information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
 	 * @param _context An instance of <tt>android.content.Context</tt>. 
 	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
-	 * @param _listViewLayoutResource The identifier of a XML file layout that defines the appearance of its rows. 
-	 * @param _graphFrom The list of graphs that will be scanned for the values to be displayed
-	 * @param _resourcesIdTo The list of resource identifiers to which will be displayed the values obtained throw the scanned graphs
-	 * @param _resourcesIDsForInteraction If there are any of CheckBox, Button or ImageView inside the rows and interaction is required, then there identifiers must be provided.
-	 * @param _resourcesTypesForInteraction If there are any of CheckBox, Button or ImageView inside the rows and interaction is required, then there types must be provided.
-	 * @param _listModelSelection A simple list that stores the data of each selected row. Should be <tt>null</tt> if there is no <tt>CheckBox</tt>.
+	 * @param _adapterConfig
 	 */
 	public ComplexGridSimpleAdapter(final BaseListActivity _baseListActivity, 
-			int[] _formatingTypes,
 			Context _context, 
 			List<? extends Map<String, Object>> _data,
-			int _listViewLayoutResource, 
-			String[] _graphFrom, 
-			int[] _resourcesIdTo,
-			int[] _resourcesIDsForInteraction, 
-			Class<?>[] _resourcesTypesForInteraction,
-			List<Object> _listModelSelection) {
-		super(_baseListActivity, _formatingTypes, _context, _data, _listViewLayoutResource, _graphFrom, _resourcesIdTo);
+			AdapterConfig _adapterConfig) {
+		super(_baseListActivity, _context, _data, _adapterConfig);
 		this.baseListActivity = _baseListActivity;
-		this.resourcesToTags = _resourcesIDsForInteraction;
-		this.resourcesType = _resourcesTypesForInteraction;
-		this.listModelSelection = _listModelSelection;
-		this.resourcesConditions = null;
-		setTipoFormatacoes(_formatingTypes);
+		this.configNoListModelSelection();
 	}
+
 
 	/**
 	 * 
-	 * @param _baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
-	 * @param _formatingTypes
-	 * @param _context
-	 * @param _data
-	 * @param _listViewLayoutResource
-	 * @param _graphFrom
-	 * @param _resourcesIdTo
-	 * @param _resourcesIDsForInteraction
-	 * @param _resourcesTypesForInteraction
-	 * @param _listModelSelection
-	 * @param _resourcesHint An array of resource identifiers that are going to be used to compose a hint to be displayed on row click.
 	 */
-	public ComplexGridSimpleAdapter(final BaseListActivity _baseListActivity, 
-			int[] _formatingTypes,
-			Context _context, 
-			List<? extends Map<String, Object>> _data,
-			int _listViewLayoutResource, 
-			String[] _graphFrom, 
-			int[] _resourcesIdTo,
-			int[] _resourcesIDsForInteraction, 
-			Class<?>[] _resourcesTypesForInteraction,
-			List<Object> _listModelSelection,
-			int[] _resourcesHint) {
-		super(_baseListActivity, _formatingTypes, _context, _data, _listViewLayoutResource, _graphFrom,
-				_resourcesIdTo);
-		this.baseListActivity = _baseListActivity;
-		this.resourcesToTags = _resourcesIDsForInteraction;
-		this.resourcesType = _resourcesTypesForInteraction;
-		this.listModelSelection = _listModelSelection;
-		this.resourcesConditions = null;
-		this.resourcesHint = _resourcesHint;
-		setTipoFormatacoes(_formatingTypes);
-	}
-
-	/**
-	 * 
-	 * @param _baseListActivity
-	 * @param _formatingTypes
-	 * @param _context
-	 * @param _data
-	 * @param _listViewLayoutResource
-	 * @param _graphFrom
-	 * @param _resourcesIdTo
-	 * @param _resourcesIDsForInteraction
-	 * @param _resourcesTypesForInteraction
-	 * @param _resourcesConditions
-	 * @param _listModelSelection
-	 */
-	public ComplexGridSimpleAdapter(final BaseListActivity _baseListActivity, 
-			int[] _formatingTypes,
-			Context _context, 
-			List<? extends Map<String, Object>> _data,
-			int _listViewLayoutResource, 
-			String[] _graphFrom, 
-			int[] _resourcesIdTo,
-			int[] _resourcesIDsForInteraction, 
-			Class<?>[] _resourcesTypesForInteraction,
-			Condition[] _resourcesConditions,
-			List<Object> _listModelSelection) {
-		super(_baseListActivity, _formatingTypes, _context, _data, _listViewLayoutResource, _graphFrom,
-				_resourcesIdTo);
-		this.baseListActivity = _baseListActivity;
-		this.resourcesToTags = _resourcesIDsForInteraction;
-		this.resourcesType = _resourcesTypesForInteraction;
-		this.listModelSelection = _listModelSelection;
-		this.resourcesConditions = _resourcesConditions;
+	protected void configNoListModelSelection() {
+		try {
+			this.noListModelSelection = super.getAdapterConfig().getListModelSelection() == null;
+		} catch (Exception _e) {
+			Log.e("ComplexGridSimpleAdapter.configNoListModelSelection", _e.getMessage());
+		}
 	}
 	
-	/**
-	 * 
-	 * @param _baseListActivity
-	 * @param _formatingTypes
-	 * @param _context
-	 * @param _data
-	 * @param _listViewLayoutResource
-	 * @param _graphFrom
-	 * @param _resourcesIdTo
-	 * @param _resourcesIDsForInteraction
-	 * @param _resourcesConditions
-	 * @param _resourcesTypesForInteraction
-	 * @param _resourcesHint
-	 */
-	public ComplexGridSimpleAdapter(final BaseListActivity _baseListActivity, 
-			int[] _formatingTypes,
-			Context _context, 
-			List<? extends Map<String, Object>> _data,
-			int _listViewLayoutResource, 
-			String[] _graphFrom, 
-			int[] _resourcesIdTo,
-			int[] _resourcesIDsForInteraction, 
-			Condition[] _resourcesConditions, 
-			Class<?>[] _resourcesTypesForInteraction,
-			int[] _resourcesHint) {
-		super(_baseListActivity, _formatingTypes, _context, _data, _listViewLayoutResource, _graphFrom,
-				_resourcesIdTo);
-		this.baseListActivity = _baseListActivity;
-		this.resourcesToTags = _resourcesIDsForInteraction;
-		this.resourcesType = _resourcesTypesForInteraction;
-		this.noListModelSelection = true;
-		this.resourcesConditions = _resourcesConditions;
-		this.resourcesHint = _resourcesHint;
-	}
 	
 	/**
 	 *
@@ -236,34 +101,35 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	@Override
 	public View getView(final int _position, View _convertView, final ViewGroup _parent) {
 		try {
-			/* chama o getView da superclasse TextGridSimpleAdapter */
+			/* calls getView from superclasse TextGridSimpleAdapter */
 			_convertView = super.getView(_position, _convertView, _parent);
+			
+			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
+			final Object object = (Object) data.get(Constants.OBJECT);
+			final RowConfig rowConfig = super.selectRowConfig(_position, object);
+			
 			if(_convertView != null) {
 				_convertView.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(final View _view) {
-						if(ComplexGridSimpleAdapter.this.resourcesHint != null) {
+						if(ComplexGridSimpleAdapter.this.getAdapterConfig().getResourceHints() != null) {
 							Toast.makeText(ComplexGridSimpleAdapter.this.baseListActivity, ComplexGridSimpleAdapter.this.getTextHint(), Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
 			}
 			
-			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
 			 
-			final Object object = (Object) data.get(Constants.OBJECT);
-			 
-			if(object != null && resourcesToTags != null && this.resourcesType != null) {
-				for(int i = 0; i < resourcesToTags.length; i++) {
-					final Condition condition = getCondition(i);
-					if(this.resourcesType[i].equals(CheckBox.class) && !this.noListModelSelection) {
+			if(object != null && rowConfig.getRowConfigItems() != null) {
+				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
+					if(rowConfigItem.getResourceTypeForInteraction().equals(CheckBox.class) && !this.noListModelSelection) {
 						/* A variável listModelSelection não pode ser NULL no caso de CheckBox, pois os
 						 * elementos selecionados são atribuídos à lista. */
-						this.trataCheckBox(_convertView, object, i, condition);
-					} else if (this.resourcesType[i].equals(Button.class)) {
-						this.trataButton(_convertView, object, i, condition);
-					} else if(this.resourcesType[i].equals(ImageView.class)) {
-						this.trataImageView(_convertView, object, i, condition);
+						this.treatCheckBox(_convertView, object, rowConfigItem);
+					} else if (rowConfigItem.getResourceTypeForInteraction().equals(Button.class)) {
+						this.treatButton(_convertView, object, rowConfigItem);
+					} else if(rowConfigItem.getResourceTypeForInteraction().equals(ImageView.class)) {
+						this.treatImageView(_convertView, object, rowConfigItem);
 					}
 				}
 			}
@@ -279,10 +145,10 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	 */
 	protected String getTextHint() {
 		final StringBuffer buffer = new StringBuffer();
-		if(this.resourcesHint != null) {
-			for(int i = 0; i < this.resourcesHint.length; i++) {
-				buffer.append("- " + this.baseListActivity.getText(this.resourcesHint[i]));
-				if((i + 1) < this.resourcesHint.length) {
+		if(this.getAdapterConfig().getResourceHints() != null) {
+			for(int i = 0; i < this.getAdapterConfig().getResourceHints().length; i++) {
+				buffer.append("- " + this.baseListActivity.getText(this.getAdapterConfig().getResourceHints()[i]));
+				if((i + 1) < this.getAdapterConfig().getResourceHints().length) {
 					buffer.append("\n");
 				}
 			}
@@ -291,27 +157,26 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	}
 
 	/**
+	 * 
 	 * @param _convertView
 	 * @param _object
-	 * @param _count
-	 * @param _condition
+	 * @param _rowConfigItem
 	 */
-	protected void trataButton(final View _convertView, final Object _object, final int _count, final Condition _condition) {
+	protected void treatButton(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
 		try {
-			/* No caso de Button, a variável listModelSelection não é necessário */
-			final Button button = (Button)_convertView.findViewById(resourcesToTags[_count]);
-			if(_condition != null) {
-				if(_condition.checkToVisibility(_object)) {
+			final Button button = (Button)_convertView.findViewById(_rowConfigItem.getResourceIDForInteraction());
+			if(_rowConfigItem.getCondition() != null) {
+				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
 					this.trataBotaoVisible(_object, button);
 				} else {
 					button.setVisibility(View.GONE);
 				}
-				_condition.handle(_object, button);
+				_rowConfigItem.getCondition().handle(_object, button);
 			} else {
 				this.trataBotaoVisible(_object, button);
 			}
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.trataButton", _e.getMessage());
+			Log.e("ComplexGridSimpleAdapter.treatButton", _e.getMessage());
 		}
 	}
 
@@ -319,48 +184,47 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	 * 
 	 * @param _convertView
 	 * @param _object
-	 * @param _count
-	 * @param _condition
+	 * @param _rowConfigItem
 	 */
-	protected void trataCheckBox(final View _convertView, final Object _object, final int _count, final Condition _condition) {
+	protected void treatCheckBox(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
 		try {
-			final CheckBox checkBox = (CheckBox)_convertView.findViewById(resourcesToTags[_count]);
-			if(_condition != null) {
-				if(_condition.checkToVisibility(_object)) {
+			final CheckBox checkBox = (CheckBox)_convertView.findViewById(_rowConfigItem.getResourceIDForInteraction());
+			if(_rowConfigItem.getCondition() != null) {
+				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
 					this.trataCheckBoxVisible(_object, checkBox);
 				} else {
 					checkBox.setVisibility(View.GONE);
 				}
-				_condition.handle(_object, checkBox);
+				_rowConfigItem.getCondition().handle(_object, checkBox);
 			} else {
 				this.trataCheckBoxVisible(_object, checkBox);
 			}
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.trataCheckBox", _e.getMessage());
+			Log.e("ComplexGridSimpleAdapter.treatCheckBox", _e.getMessage());
 		}
 	}
 
 	/**
+	 * 
 	 * @param _convertView
 	 * @param _object
-	 * @param _count
-	 * @param _condition
+	 * @param _rowConfigItem
 	 */
-	protected void trataImageView(final View _convertView, final Object _object, final int _count, final Condition _condition) {
+	protected void treatImageView(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
 		try {
-			final ImageView imageView = (ImageView)_convertView.findViewById(resourcesToTags[_count]);
-			if(_condition != null) {
-				if(_condition.checkToVisibility(_object)) {
+			final ImageView imageView = (ImageView)_convertView.findViewById(_rowConfigItem.getResourceIDForInteraction());
+			if(_rowConfigItem.getCondition() != null) {
+				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
 					imageView.setVisibility(View.VISIBLE);
 				} else {
 					imageView.setVisibility(View.GONE);
 				}
-				_condition.handle(_object, imageView);
+				_rowConfigItem.getCondition().handle(_object, imageView);
 			} else {
 				imageView.setVisibility(View.VISIBLE);
 			}
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.trataImageView", _e.getMessage());
+			Log.e("ComplexGridSimpleAdapter.treatImageView", _e.getMessage());
 		}
 	}
 
@@ -373,15 +237,15 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 		try {
 			_checkBox.setVisibility(View.VISIBLE);
 			_checkBox.setTag(_object);
-			_checkBox.setChecked(ComplexGridSimpleAdapter.this.listModelSelection.contains(_object));
+			_checkBox.setChecked(ComplexGridSimpleAdapter.this.getAdapterConfig().getListModelSelection().contains(_object));
 			_checkBox.requestLayout();
 			_checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 					if(isChecked) {
-						ComplexGridSimpleAdapter.this.listModelSelection.add(buttonView.getTag());
+						ComplexGridSimpleAdapter.this.getAdapterConfig().getListModelSelection().add(buttonView.getTag());
 					} else {
-						ComplexGridSimpleAdapter.this.listModelSelection.remove(buttonView.getTag());
+						ComplexGridSimpleAdapter.this.getAdapterConfig().getListModelSelection().remove(buttonView.getTag());
 					}
 				}
 			});
@@ -408,16 +272,4 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 			Log.e("ComplexGridSimpleAdapter.trataBotaoVisible", _e.getMessage());
 		}
 	}
-
-	/**
-	 * @param _index
-	 */
-	protected Condition getCondition(int _index) {
-		Condition condition = null;
-		if(this.resourcesConditions != null && this.resourcesConditions.length >= _index) {
-			condition = this.resourcesConditions[_index];
-		}
-		return condition;
-	}
-
 }

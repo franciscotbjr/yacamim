@@ -1,7 +1,7 @@
 /**
  * RowConfig.java
  *
- * Copyright 2011 yacamim.org.br
+ * Copyright 2012 yacamim.org.br
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,11 @@ public class RowConfig {
 	 * 
 	 */
 	private RowConfigItem[] rowConfigItems;
+	
+	/**
+	 * 
+	 */
+	private int resource;
 
 	/**
 	 * 
@@ -44,16 +49,21 @@ public class RowConfig {
 		super();
 	}
 	
+
 	/**
 	 * 
 	 * @param resourcesHint
 	 * @param rowConfigItems
+	 * @param resource The identifier of a XML file layout that defines the appearance of its rows. 
 	 */
-	public RowConfig(int[] resourcesHint, RowConfigItem[] rowConfigItems) {
+	public RowConfig(int[] resourcesHint, RowConfigItem[] rowConfigItems,
+			int resource) {
 		super();
 		this.resourcesHint = resourcesHint;
 		this.rowConfigItems = rowConfigItems;
+		this.resource = resource;
 	}
+
 
 
 	/**
@@ -82,6 +92,20 @@ public class RowConfig {
 	 */
 	public void setRowConfigItems(RowConfigItem[] rowConfigItems) {
 		this.rowConfigItems = rowConfigItems;
+	}
+
+	/**
+	 * @return the resource
+	 */
+	public int getResource() {
+		return resource;
+	}
+
+	/**
+	 * @param resource the resource to set
+	 */
+	public void setResource(int resource) {
+		this.resource = resource;
 	}
 
 }
