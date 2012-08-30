@@ -1,5 +1,5 @@
 /**
- * ComplexGridSimpleAdapter.java
+ * ComplexListSimpleAdapter.java
  *
  * Copyright 2012 yacamim.org.br
  * 
@@ -35,13 +35,13 @@ import br.org.yacamim.BaseListActivity;
 import br.org.yacamim.util.Constants;
 
 /**
- * Class ComplexGridSimpleAdapter TODO
+ * Class ComplexListSimpleAdapter TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
+public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	
 	/**
 	 * 
@@ -57,6 +57,26 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	 * 
 	 */
 	private boolean noListModelSelection = false;
+	
+	/**
+	 * <br/>
+	 * The <tt>_listModelSelection</tt> parameter is meant to be used when each row of a <tt>ListView</tt> has a <tt>CheckBox</tt>. <br/>
+	 * So each <tt>CheckBox</tt> selection action will result in a new item inside the <tt>_listModelSelection</tt>. For each deselection <br/>
+	 * action, an item will be removed from <tt>_listModelSelection</tt>.<br/><br/>
+	 * <br/>
+	 * 
+	 * 
+	 * @param _baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
+	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
+	 * @param _adapterConfig
+	 */
+	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity, 
+			List<? extends Map<String, Object>> _data,
+			AdapterConfig _adapterConfig) {
+		super(_baseListActivity, _baseListActivity.getApplicationContext(), _data, _adapterConfig);
+		this.baseListActivity = _baseListActivity;
+		this.configNoListModelSelection();
+	}
 
 	/**
 	 * <br/>
@@ -71,7 +91,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
 	 * @param _adapterConfig
 	 */
-	public ComplexGridSimpleAdapter(final BaseListActivity _baseListActivity, 
+	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity, 
 			Context _context, 
 			List<? extends Map<String, Object>> _data,
 			AdapterConfig _adapterConfig) {
@@ -88,7 +108,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 		try {
 			this.noListModelSelection = super.getAdapterConfig().getListModelSelection() == null;
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.configNoListModelSelection", _e.getMessage());
+			Log.e("ComplexListSimpleAdapter.configNoListModelSelection", _e.getMessage());
 		}
 	}
 	
@@ -101,19 +121,19 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	@Override
 	public View getView(final int _position, View _convertView, final ViewGroup _parent) {
 		try {
-			/* calls getView from superclasse TextGridSimpleAdapter */
+			/* calls getView from superclasse TextListSimpleAdapter */
 			_convertView = super.getView(_position, _convertView, _parent);
 			
 			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
 			final Object object = (Object) data.get(Constants.OBJECT);
 			final RowConfig rowConfig = super.selectRowConfig(_position, object);
 			
-			if(_convertView != null) {
+			if(_convertView != null && rowConfig != null) {
 				_convertView.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(final View _view) {
-						if(ComplexGridSimpleAdapter.this.getAdapterConfig().getResourceHints() != null) {
-							Toast.makeText(ComplexGridSimpleAdapter.this.baseListActivity, ComplexGridSimpleAdapter.this.getTextHint(), Toast.LENGTH_SHORT).show();
+						if(rowConfig.getResourcesHint() != null && rowConfig.getResourcesHint().length > 0) {
+							Toast.makeText(ComplexListSimpleAdapter.this.baseListActivity, ComplexListSimpleAdapter.this.getTextHint(rowConfig.getResourcesHint()), Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
@@ -122,33 +142,34 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 			 
 			if(object != null && rowConfig.getRowConfigItems() != null) {
 				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
-					if(rowConfigItem.getResourceTypeForInteraction().equals(CheckBox.class) && !this.noListModelSelection) {
-						/* A variável listModelSelection não pode ser NULL no caso de CheckBox, pois os
-						 * elementos selecionados são atribuídos à lista. */
-						this.treatCheckBox(_convertView, object, rowConfigItem);
-					} else if (rowConfigItem.getResourceTypeForInteraction().equals(Button.class)) {
-						this.treatButton(_convertView, object, rowConfigItem);
-					} else if(rowConfigItem.getResourceTypeForInteraction().equals(ImageView.class)) {
-						this.treatImageView(_convertView, object, rowConfigItem);
+					if(rowConfigItem.getInteractionConfig() != null && rowConfigItem.getInteractionConfig().getResourceTypeForInteraction() != null) {
+						if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(CheckBox.class) && !this.noListModelSelection) {
+							this.treatCheckBox(_convertView, object, rowConfigItem);
+						} else if (rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(Button.class)) {
+							this.treatButton(_convertView, object, rowConfigItem);
+						} else if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(ImageView.class)) {
+							this.treatImageView(_convertView, object, rowConfigItem);
+						}
 					}
 				}
 			}
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.getView", _e.getMessage());
+			Log.e("ComplexListSimpleAdapter.getView", _e.getMessage());
 		}
 		return _convertView;
 	}
 	
 	/**
 	 * 
+	 * @param resourcesHint
 	 * @return
 	 */
-	protected String getTextHint() {
+	protected String getTextHint(int[] resourcesHint) {
 		final StringBuffer buffer = new StringBuffer();
-		if(this.getAdapterConfig().getResourceHints() != null) {
-			for(int i = 0; i < this.getAdapterConfig().getResourceHints().length; i++) {
-				buffer.append("- " + this.baseListActivity.getText(this.getAdapterConfig().getResourceHints()[i]));
-				if((i + 1) < this.getAdapterConfig().getResourceHints().length) {
+		if(resourcesHint != null) {
+			for(int i = 0; i < resourcesHint.length; i++) {
+				buffer.append("- " + this.baseListActivity.getText(resourcesHint[i]));
+				if((i + 1) < resourcesHint.length) {
 					buffer.append("\n");
 				}
 			}
@@ -164,7 +185,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	 */
 	protected void treatButton(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
 		try {
-			final Button button = (Button)_convertView.findViewById(_rowConfigItem.getResourceIDForInteraction());
+			final Button button = (Button)_convertView.findViewById(_rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
 			if(_rowConfigItem.getCondition() != null) {
 				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
 					this.trataBotaoVisible(_object, button);
@@ -176,7 +197,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 				this.trataBotaoVisible(_object, button);
 			}
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.treatButton", _e.getMessage());
+			Log.e("ComplexListSimpleAdapter.treatButton", _e.getMessage());
 		}
 	}
 
@@ -188,7 +209,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	 */
 	protected void treatCheckBox(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
 		try {
-			final CheckBox checkBox = (CheckBox)_convertView.findViewById(_rowConfigItem.getResourceIDForInteraction());
+			final CheckBox checkBox = (CheckBox)_convertView.findViewById(_rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
 			if(_rowConfigItem.getCondition() != null) {
 				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
 					this.trataCheckBoxVisible(_object, checkBox);
@@ -200,7 +221,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 				this.trataCheckBoxVisible(_object, checkBox);
 			}
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.treatCheckBox", _e.getMessage());
+			Log.e("ComplexListSimpleAdapter.treatCheckBox", _e.getMessage());
 		}
 	}
 
@@ -212,7 +233,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 	 */
 	protected void treatImageView(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
 		try {
-			final ImageView imageView = (ImageView)_convertView.findViewById(_rowConfigItem.getResourceIDForInteraction());
+			final ImageView imageView = (ImageView)_convertView.findViewById(_rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
 			if(_rowConfigItem.getCondition() != null) {
 				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
 					imageView.setVisibility(View.VISIBLE);
@@ -224,7 +245,7 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 				imageView.setVisibility(View.VISIBLE);
 			}
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.treatImageView", _e.getMessage());
+			Log.e("ComplexListSimpleAdapter.treatImageView", _e.getMessage());
 		}
 	}
 
@@ -237,20 +258,20 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 		try {
 			_checkBox.setVisibility(View.VISIBLE);
 			_checkBox.setTag(_object);
-			_checkBox.setChecked(ComplexGridSimpleAdapter.this.getAdapterConfig().getListModelSelection().contains(_object));
+			_checkBox.setChecked(ComplexListSimpleAdapter.this.getAdapterConfig().getListModelSelection().contains(_object));
 			_checkBox.requestLayout();
 			_checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 					if(isChecked) {
-						ComplexGridSimpleAdapter.this.getAdapterConfig().getListModelSelection().add(buttonView.getTag());
+						ComplexListSimpleAdapter.this.getAdapterConfig().getListModelSelection().add(buttonView.getTag());
 					} else {
-						ComplexGridSimpleAdapter.this.getAdapterConfig().getListModelSelection().remove(buttonView.getTag());
+						ComplexListSimpleAdapter.this.getAdapterConfig().getListModelSelection().remove(buttonView.getTag());
 					}
 				}
 			});
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.trataCheckBoxVisible", _e.getMessage());
+			Log.e("ComplexListSimpleAdapter.trataCheckBoxVisible", _e.getMessage());
 		}
 	}
 
@@ -265,11 +286,11 @@ public class ComplexGridSimpleAdapter extends TextGridSimpleAdapter {
 			_button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View _view) {
-					ComplexGridSimpleAdapter.this.baseListActivity.onListViewClick(_view, _view.getTag());
+					ComplexListSimpleAdapter.this.baseListActivity.onListViewClick(_view, _view.getTag());
 				}
 			});
 		} catch (Exception _e) {
-			Log.e("ComplexGridSimpleAdapter.trataBotaoVisible", _e.getMessage());
+			Log.e("ComplexListSimpleAdapter.trataBotaoVisible", _e.getMessage());
 		}
 	}
 }

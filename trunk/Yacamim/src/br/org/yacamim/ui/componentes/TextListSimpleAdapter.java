@@ -1,5 +1,5 @@
 /**
- * TextGridSimpleAdapter.java
+ * TextListSimpleAdapter.java
  *
  * Copyright 2012 yacamim.org.br
  * 
@@ -35,13 +35,13 @@ import br.org.yacamim.util.UtilReflection;
 import br.org.yacamim.util.UtilString;
 
 /**
- * Class TextGridSimpleAdapter TODO
+ * Class TextListSimpleAdapter TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class TextGridSimpleAdapter extends SimpleAdapter {
+public class TextListSimpleAdapter extends SimpleAdapter {
 	
 	/**
 	 * 
@@ -60,7 +60,7 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 	 * @param _data
 	 * @param _adapterConfig
 	 */
-	public TextGridSimpleAdapter(final Activity _activity, 
+	public TextListSimpleAdapter(final Activity _activity, 
 			final Context _context, 
 			final List<? extends Map<String, Object>> _data, 
 			final AdapterConfig _adapterConfig) {
@@ -76,16 +76,13 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 	@SuppressWarnings("unchecked")
 	@Override
 	public View getView(int _position, View convertView, ViewGroup _parent) {
-		super.getView(_position, convertView, _parent);
 		try {
 			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
 			final Object object = (Object) data.get(Constants.OBJECT);
 			
 			final RowConfig rowConfig = this.selectRowConfig(_position, object);
 			
-			if (convertView == null) {
-				convertView = this.activity.getLayoutInflater().inflate(rowConfig.getResource(), null);
-			}
+			convertView = this.activity.getLayoutInflater().inflate(rowConfig.getResource(), null);
 			 
 			if(object != null && rowConfig.getRowConfigItems() != null) {
 				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
@@ -93,7 +90,7 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 				}
 			}
 		} catch (Exception _e) {
-			Log.e("TextGridSimpleAdapter.getView", _e.getMessage());
+			Log.e("TextListSimpleAdapter.getView", _e.getMessage());
 		}
 		return convertView;
     }
@@ -114,13 +111,15 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 	 */
 	private void fillField(View _convertView, final Object _object, RowConfigItem _rowConfigItem) {
 		try {
-			final TextView textView = (TextView) _convertView.findViewById(_rowConfigItem.getResourceIdTo());
-			Object value = UtilReflection.getPropertyValue(_rowConfigItem.getGraphFrom(), _object);
-			String formmatedValue = format(_rowConfigItem, value);
-			textView.setText("- " + formmatedValue);
-			textView.setPadding(0, 0, 0, 0);
+			if(_rowConfigItem.getResourceIdTo() != -1 && _rowConfigItem.getGraphFrom() != null) {
+				final TextView textView = (TextView) _convertView.findViewById(_rowConfigItem.getResourceIdTo());
+				Object value = UtilReflection.getPropertyValue(_rowConfigItem.getGraphFrom(), _object);
+				String formmatedValue = format(_rowConfigItem, value);
+				textView.setText(formmatedValue);
+				textView.setPadding(0, 0, 0, 0);
+			}
 		} catch (Exception _e) {
-			Log.e("TextGridSimpleAdapter.fillField", _e.getMessage());
+			Log.e("TextListSimpleAdapter.fillField", _e.getMessage());
 		}
 	}
 
@@ -164,7 +163,7 @@ public class TextGridSimpleAdapter extends SimpleAdapter {
 				}
 			}
 		} catch (Exception _e) {
-			Log.e("TextGridSimpleAdapter.format", _e.getMessage());
+			Log.e("TextListSimpleAdapter.format", _e.getMessage());
 		}
 		return value.trim();
 	}

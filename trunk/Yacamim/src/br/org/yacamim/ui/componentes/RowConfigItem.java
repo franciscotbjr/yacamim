@@ -42,27 +42,22 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * 
 	 */
-	private String graphFrom;
+	private String graphFrom = null;
 	
 	/**
 	 * 
 	 */
-	private int resourceIdTo;
-	
-	/**
-	 * 
-	 */
-	private int resourceIDForInteraction;
-	
-	/**
-	 * 
-	 */
-	private Class<?> resourceTypeForInteraction;
+	private int resourceIdTo = -1;
 	
 	/**
 	 * 
 	 */
 	private Condition condition = null;
+	
+	/**
+	 * 
+	 */
+	private InteractionConfig interactionConfig = null;
 
 	/**
 	 * 
@@ -74,23 +69,97 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * 
 	 * 
-	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
 	 * @param graphFrom A graph that will be scanned for the value to be displayed.
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
-	 * @param resourceIDForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its identifier must be provided.
-	 * @param resourceTypeForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its type must be provided.
-	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
 	 */
-	public RowConfigItem(int formatingType, String graphFrom, int resourceIdTo,
-			int resourceIDForInteraction, Class<?> resourceTypeForInteraction,
-			Condition condition) {
+	public RowConfigItem(String graphFrom, int resourceIdTo) {
 		super();
-		this.formatingType = formatingType;
 		this.graphFrom = graphFrom;
 		this.resourceIdTo = resourceIdTo;
-		this.resourceIDForInteraction = resourceIDForInteraction;
-		this.resourceTypeForInteraction = resourceTypeForInteraction;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param graphFrom A graph that will be scanned for the value to be displayed.
+	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
+	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
+	 */
+	public RowConfigItem(String graphFrom, int resourceIdTo, int formatingType) {
+		super();
+		this.graphFrom = graphFrom;
+		this.resourceIdTo = resourceIdTo;
+		this.formatingType = formatingType;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param graphFrom A graph that will be scanned for the value to be displayed.
+	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
+	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
+	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
+	 */
+	public RowConfigItem(String graphFrom, int resourceIdTo,
+			int formatingType,
+			Condition condition) {
+		super();
+		this.graphFrom = graphFrom;
+		this.resourceIdTo = resourceIdTo;
+		this.formatingType = formatingType;
 		this.condition = condition;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param graphFrom A graph that will be scanned for the value to be displayed.
+	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
+	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
+	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
+	 * @param interactionConfig 
+	 */
+	public RowConfigItem(String graphFrom, int resourceIdTo,
+			int formatingType,
+			Condition condition,
+			InteractionConfig interactionConfig) {
+		super();
+		this.graphFrom = graphFrom;
+		this.resourceIdTo = resourceIdTo;
+		this.formatingType = formatingType;
+		this.condition = condition;
+		this.interactionConfig = interactionConfig;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param graphFrom A graph that will be scanned for the value to be displayed.
+	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
+	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
+	 * @param interactionConfig 
+	 */
+	public RowConfigItem(String graphFrom, int resourceIdTo, Condition condition,
+			InteractionConfig interactionConfig) {
+		super();
+		this.graphFrom = graphFrom;
+		this.resourceIdTo = resourceIdTo;
+		this.condition = condition;
+		this.interactionConfig = interactionConfig;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
+	 * @param interactionConfig 
+	 */
+	public RowConfigItem(
+			Condition condition,
+			InteractionConfig interactionConfig) {
+		super();
+		this.condition = condition;
+		this.interactionConfig = interactionConfig;
 	}
 
 	/**
@@ -136,34 +205,6 @@ public class RowConfigItem implements Serializable {
 	}
 
 	/**
-	 * @return the resourceIDForInteraction
-	 */
-	public int getResourceIDForInteraction() {
-		return resourceIDForInteraction;
-	}
-
-	/**
-	 * @param resourceIDForInteraction the resourceIDForInteraction to set
-	 */
-	public void setResourceIDForInteraction(int resourceIDForInteraction) {
-		this.resourceIDForInteraction = resourceIDForInteraction;
-	}
-
-	/**
-	 * @return the resourceTypeForInteraction
-	 */
-	public Class<?> getResourceTypeForInteraction() {
-		return resourceTypeForInteraction;
-	}
-
-	/**
-	 * @param resourceTypeForInteraction the resourceTypeForInteraction to set
-	 */
-	public void setResourceTypeForInteraction(Class<?> resourceTypeForInteraction) {
-		this.resourceTypeForInteraction = resourceTypeForInteraction;
-	}
-
-	/**
 	 * @return the condition
 	 */
 	public Condition getCondition() {
@@ -175,6 +216,95 @@ public class RowConfigItem implements Serializable {
 	 */
 	public void setCondition(Condition condition) {
 		this.condition = condition;
+	}
+
+	/**
+	 * @return the interactionConfig
+	 */
+	public InteractionConfig getInteractionConfig() {
+		return interactionConfig;
+	}
+
+	/**
+	 * @param interactionConfig the interactionConfig to set
+	 */
+	public void setInteractionConfig(InteractionConfig interactionConfig) {
+		this.interactionConfig = interactionConfig;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isInteraction() {
+		return this.getInteractionConfig() != null;
+	}
+
+	/**
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((condition == null) ? 0 : condition.hashCode());
+		result = prime * result + formatingType;
+		result = prime * result
+				+ ((graphFrom == null) ? 0 : graphFrom.hashCode());
+		result = prime
+				* result
+				+ ((interactionConfig == null) ? 0 : interactionConfig
+						.hashCode());
+		result = prime * result + resourceIdTo;
+		return result;
+	}
+
+	/**
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof RowConfigItem)) {
+			return false;
+		}
+		RowConfigItem other = (RowConfigItem) obj;
+		if (condition == null) {
+			if (other.condition != null) {
+				return false;
+			}
+		} else if (!condition.equals(other.condition)) {
+			return false;
+		}
+		if (formatingType != other.formatingType) {
+			return false;
+		}
+		if (graphFrom == null) {
+			if (other.graphFrom != null) {
+				return false;
+			}
+		} else if (!graphFrom.equals(other.graphFrom)) {
+			return false;
+		}
+		if (interactionConfig == null) {
+			if (other.interactionConfig != null) {
+				return false;
+			}
+		} else if (!interactionConfig.equals(other.interactionConfig)) {
+			return false;
+		}
+		if (resourceIdTo != other.resourceIdTo) {
+			return false;
+		}
+		return true;
 	}
 
 }

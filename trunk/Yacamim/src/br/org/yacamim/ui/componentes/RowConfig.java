@@ -18,6 +18,10 @@
  */
 package br.org.yacamim.ui.componentes;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Classe RowConfig TODO
  * 
@@ -35,7 +39,7 @@ public class RowConfig {
 	/**
 	 * 
 	 */
-	private RowConfigItem[] rowConfigItems;
+	private List<RowConfigItem> rowConfigItems;
 	
 	/**
 	 * 
@@ -56,7 +60,7 @@ public class RowConfig {
 	 * @param rowConfigItems
 	 * @param resource The identifier of a XML file layout that defines the appearance of its rows. 
 	 */
-	public RowConfig(int[] resourcesHint, RowConfigItem[] rowConfigItems,
+	public RowConfig(int[] resourcesHint, List<RowConfigItem> rowConfigItems,
 			int resource) {
 		super();
 		this.resourcesHint = resourcesHint;
@@ -83,14 +87,14 @@ public class RowConfig {
 	/**
 	 * @return the rowConfigItems
 	 */
-	public RowConfigItem[] getRowConfigItems() {
+	public List<RowConfigItem> getRowConfigItems() {
 		return rowConfigItems;
 	}
 
 	/**
 	 * @param rowConfigItems the rowConfigItems to set
 	 */
-	public void setRowConfigItems(RowConfigItem[] rowConfigItems) {
+	public void setRowConfigItems(List<RowConfigItem> rowConfigItems) {
 		this.rowConfigItems = rowConfigItems;
 	}
 
@@ -106,6 +110,78 @@ public class RowConfig {
 	 */
 	public void setResource(int resource) {
 		this.resource = resource;
+	}
+	
+	/**
+	 * 
+	 * @param rowConfigItem
+	 */
+	public void addRowConfigItem(RowConfigItem rowConfigItem) {
+		if(this.rowConfigItems == null) {
+			this.rowConfigItems = new ArrayList<RowConfigItem>();
+		}
+		this.rowConfigItems.add(rowConfigItem);
+	}
+	
+	/**
+	 * 
+	 * @param rowConfigItem
+	 * @return
+	 */
+	public boolean removeRowConfigItem(RowConfigItem rowConfigItem) {
+		if(this.rowConfigItems == null) {
+			this.rowConfigItems = new ArrayList<RowConfigItem>();
+		}
+		return this.rowConfigItems.remove(rowConfigItem);
+	}
+
+
+	/**
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + resource;
+		result = prime * result + Arrays.hashCode(resourcesHint);
+		result = prime * result
+				+ ((rowConfigItems == null) ? 0 : rowConfigItems.hashCode());
+		return result;
+	}
+
+
+	/**
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof RowConfig)) {
+			return false;
+		}
+		RowConfig other = (RowConfig) obj;
+		if (resource != other.resource) {
+			return false;
+		}
+		if (!Arrays.equals(resourcesHint, other.resourcesHint)) {
+			return false;
+		}
+		if (rowConfigItems == null) {
+			if (other.rowConfigItems != null) {
+				return false;
+			}
+		} else if (!rowConfigItems.equals(other.rowConfigItems)) {
+			return false;
+		}
+		return true;
 	}
 
 }
