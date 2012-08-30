@@ -47,12 +47,6 @@ public class AdapterConfig {
 	/**
 	 * 
 	 */
-	private int[] resourceHints;
-	
-
-	/**
-	 * 
-	 */
 	public AdapterConfig() {
 		super();
 	}
@@ -62,15 +56,13 @@ public class AdapterConfig {
 	 * @param rowConfigs
 	 * @param rowCondition
 	 * @param listModelSelection A simple list that stores the data of each selected row. Should be <tt>null</tt> if there is no <tt>CheckBox</tt>.
-	 * @param resourceHints
 	 */
 	public AdapterConfig(RowConfig[] rowConfigs, RowCondition rowCondition,
-			List<Object> listModelSelection, int[] resourceHints) {
+			List<Object> listModelSelection) {
 		super();
 		this.rowConfigs = rowConfigs;
 		this.rowCondition = rowCondition;
 		this.listModelSelection = listModelSelection;
-		this.resourceHints = resourceHints;
 	}
 
 
@@ -120,22 +112,5 @@ public class AdapterConfig {
 	public void setListModelSelection(List<Object> listModelSelection) {
 		this.listModelSelection = listModelSelection;
 	}
-
-
-	/**
-	 * @return the resourceHints
-	 */
-	public int[] getResourceHints() {
-		return resourceHints;
-	}
-
-
-	/**
-	 * @param resourceHints the resourceHints to set
-	 */
-	public void setResourceHints(int[] resourceHints) {
-		this.resourceHints = resourceHints;
-	}
-	
 
 }
