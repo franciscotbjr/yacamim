@@ -37,5 +37,10 @@ import java.lang.annotation.Target;
 @Documented
 public @interface OneToMany {
 	
-
+	/**
+	 * 
+	 * @return
+	 */
+	String mappedBy();
+	
 }
