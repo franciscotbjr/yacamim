@@ -37,5 +37,10 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ManyToMany {
 	
+	/**
+	 * 
+	 * @return
+	 */
+	String mappedBy();
 
 }

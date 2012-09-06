@@ -32,7 +32,6 @@ import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.BaseEntity;
 import br.org.yacamim.util.UtilDate;
 import br.org.yacamim.util.UtilReflection;
-import br.org.yacamim.util.UtilString;
 
 /**
  * 
@@ -366,35 +365,15 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 			
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
-				if(column != null) {
+				if(!DataAdapterHelper.isTransiente(getMethod) && column != null) {
 					final String columnName = column.name();
-					if(getMethod.getReturnType().equals(String.class)) {
-						UtilReflection.setValueToProperty(
-								UtilReflection.getPropertyName(getMethod), 
-								_cursor.getString(_cursor.getColumnIndex(columnName)), 
-								object);
-					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
-						UtilReflection.setValueToProperty(
-								UtilReflection.getPropertyName(getMethod), 
-								_cursor.getInt(_cursor.getColumnIndex(columnName)), 
-								object);
-					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
-						UtilReflection.setValueToProperty(
-								UtilReflection.getPropertyName(getMethod), 
-								_cursor.getDouble(_cursor.getColumnIndex(columnName)), 
-								object);
-					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
-						UtilReflection.setValueToProperty(
-								UtilReflection.getPropertyName(getMethod), 
-								_cursor.getLong(_cursor.getColumnIndex(columnName)), 
-								object);
-					} else if (getMethod.getReturnType().equals(Date.class)) {
-						final String strDate = _cursor.getString(_cursor.getColumnIndex(columnName));
-						if(!UtilString.isEmptyString(strDate)) {
-							UtilReflection.setValueToProperty(
-									UtilReflection.getPropertyName(getMethod), 
-									UtilDate.getSimpleDateFormatDateTime().parse(strDate), 
-									object);
+					if(!DataAdapterHelper.treatRawData(_cursor, object, getMethod, columnName)) {
+						if(DataAdapterHelper.isOneToOne(getMethod)) {
+							
+						} else if (DataAdapterHelper.isManyToOne(getMethod)) {
+							
+						} else if (DataAdapterHelper.isManyToMany(getMethod)) {
+							
 						}
 					}
 				}
