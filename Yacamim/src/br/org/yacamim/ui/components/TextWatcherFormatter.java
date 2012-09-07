@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.org.yacamim.ui.componentes;
+package br.org.yacamim.ui.components;
 
 import android.text.Editable;
 import android.text.TextWatcher;
