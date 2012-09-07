@@ -31,7 +31,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import br.org.yacamim.ui.componentes.DefaultAlertDialogBuilder;
+import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
 import br.org.yacamim.util.Constants;
 
 /**

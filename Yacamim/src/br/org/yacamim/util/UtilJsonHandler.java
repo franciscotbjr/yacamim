@@ -31,7 +31,7 @@ import org.json.JSONObject;
 import android.util.Log;
 import br.org.yacamim.BaseActivity;
 import br.org.yacamim.YacamimState;
-import br.org.yacamim.entidade.BaseEntity;
+import br.org.yacamim.entity.BaseEntity;
 
 /**
  * Class UtilJsonHandler TODO

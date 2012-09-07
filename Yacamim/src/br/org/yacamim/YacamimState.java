@@ -26,12 +26,12 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.util.Log;
-import br.org.yacamim.entidade.DeviceInfo;
-import br.org.yacamim.entidade.Preferences;
-import br.org.yacamim.entidade.ServiceURL;
-import br.org.yacamim.entidade.Session;
-import br.org.yacamim.entidade.User;
-import br.org.yacamim.persistencia.PreferencesAdapter;
+import br.org.yacamim.entity.DeviceInfo;
+import br.org.yacamim.entity.Preferences;
+import br.org.yacamim.entity.ServiceURL;
+import br.org.yacamim.entity.Session;
+import br.org.yacamim.entity.User;
+import br.org.yacamim.persistence.PreferencesAdapter;
 import br.org.yacamim.util.YacamimClassMapping;
 
 /**

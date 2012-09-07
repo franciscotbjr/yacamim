@@ -23,7 +23,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
-import br.org.yacamim.ui.componentes.DefaultAlertDialogBuilder;
+import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
 
 /**
  * Class PopupMenuBaseActivity.<br/>
