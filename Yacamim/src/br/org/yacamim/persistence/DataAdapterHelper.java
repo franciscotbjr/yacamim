@@ -98,6 +98,16 @@ public final class DataAdapterHelper {
 	 */
 	public static boolean isOneToOneOwner(Method getMethod) {
 		OneToOne oneToOne = getMethod.getAnnotation(OneToOne.class);
+		return oneToOne != null && UtilString.isEmptyString(oneToOne.mappedBy());
+	}
+	
+	/**
+	 * 
+	 * @param getMethod
+	 * @return
+	 */
+	public static boolean isOneToOneOwned(Method getMethod) {
+		OneToOne oneToOne = getMethod.getAnnotation(OneToOne.class);
 		return oneToOne != null && !UtilString.isEmptyString(oneToOne.mappedBy());
 	}
 
