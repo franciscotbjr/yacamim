@@ -33,8 +33,8 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import br.org.yacamim.BaseActivity;
 import br.org.yacamim.YacamimState;
-import br.org.yacamim.entidade.DbScript;
-import br.org.yacamim.entidade.ServiceURL;
+import br.org.yacamim.entity.DbScript;
+import br.org.yacamim.entity.ServiceURL;
 import br.org.yacamim.ssl.HttpClient;
 
 /**

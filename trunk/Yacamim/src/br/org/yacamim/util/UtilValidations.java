@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.util.Log;
-import br.org.yacamim.entidade.BaseEntity;
+import br.org.yacamim.entity.BaseEntity;
 
 /**
  * 

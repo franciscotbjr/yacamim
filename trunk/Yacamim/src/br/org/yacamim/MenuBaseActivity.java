@@ -19,7 +19,7 @@
 package br.org.yacamim;
 
 import android.util.Log;
-import br.org.yacamim.persistencia.SessionDBAdapter;
+import br.org.yacamim.persistence.SessionDBAdapter;
 
 /**
  * 

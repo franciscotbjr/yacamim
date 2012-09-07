@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import br.org.yacamim.entidade.GpsLocationInfo;
+import br.org.yacamim.entity.GpsLocationInfo;
 
 /**
  * 
