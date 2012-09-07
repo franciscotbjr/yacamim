@@ -52,7 +52,7 @@ public final class DataAdapterHelper {
 	 * @param _columnName
 	 * @throws ParseException
 	 */
-	public static boolean treatRawData(final Cursor _cursor, Object _object,	final Method _getMethod, final String _columnName) throws ParseException {
+	public static boolean treatRawData(final Cursor _cursor, Object _object, final Method _getMethod, final String _columnName) throws ParseException {
 		boolean rawData = false;
 		if(_getMethod.getReturnType().equals(String.class)) {
 			rawData = true;
@@ -96,8 +96,9 @@ public final class DataAdapterHelper {
 	 * @param getMethod
 	 * @return
 	 */
-	public static boolean isOneToOne(Method getMethod) {
-		return getMethod.getAnnotation(OneToOne.class) != null;
+	public static boolean isOneToOneOwner(Method getMethod) {
+		OneToOne oneToOne = getMethod.getAnnotation(OneToOne.class);
+		return oneToOne != null && !UtilString.isEmptyString(oneToOne.mappedBy());
 	}
 
 	/**
