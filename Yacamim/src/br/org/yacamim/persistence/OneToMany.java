@@ -41,6 +41,6 @@ public @interface OneToMany {
 	 * 
 	 * @return
 	 */
-	String mappedBy();
+	String mappedBy() default "";
 	
 }

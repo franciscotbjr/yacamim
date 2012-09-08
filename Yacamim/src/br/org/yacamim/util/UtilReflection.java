@@ -467,6 +467,21 @@ public strictfp abstract class UtilReflection {
 
 	/**
 	 * 
+	 * @param _setMethodName
+	 * @param _classType
+	 * @return
+	 */
+	public static Method getSetMethod(String _setMethodName, Class<?> _classType) {
+		try {
+			return _classType.getMethod(_setMethodName, defaultParamArrayClassReflection);
+		} catch(Exception _e) {
+			Log.e("UtilReflection.getSetMethod", _e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * 
 	 * @param _classFullyQualifiedName
 	 * @return
 	 * @throws ClassNotFoundException

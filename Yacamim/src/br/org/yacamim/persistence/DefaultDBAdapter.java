@@ -29,7 +29,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import br.org.yacamim.YacamimState;
-import br.org.yacamim.entity.BaseEntity;
 import br.org.yacamim.util.UtilDate;
 import br.org.yacamim.util.UtilReflection;
 
@@ -41,7 +40,7 @@ import br.org.yacamim.util.UtilReflection;
  * @version 1.0
  * @since 1.0
  */
-public class DefaultDBAdapter<E extends BaseEntity> {
+public class DefaultDBAdapter<E> {
 	
 	private SQLiteDatabase database;
 	private DefaultDBHelper dbHelper;
@@ -120,19 +119,6 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 
 	/**
 	 * 
-	 * @param _aeroporto
-	 * @return
-	 */
-	public void clearCache() {
-		try {
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
 	 * @return
 	 */
 	public SQLiteDatabase getDatabase() {
@@ -146,6 +132,9 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	public List<E> list() {
 		final List<E> entities = new ArrayList<E>();
 		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
 			final String[] columns = this.getColumnNamesAsArray(this.getClass());
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(this.getTableName(), columns, null, null, null,
@@ -171,11 +160,16 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 */
 	public boolean insert(final E _entity) {
 		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
 			final ContentValues initialValues = createContentValues(_entity);
 			
-			_entity.setId(this.getDatabase().insert(this.getTableName(), null, initialValues));
+			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
 			
-			return _entity.getId() > -1;
+			this.setId(_entity, newId);
+			
+			return newId > -1;
 		} catch (Exception _e) {
 			Log.e("DefaultDBAdapter.insert", _e.getMessage());
 			return false;
@@ -187,10 +181,13 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 * @return
 	 */
 	public boolean update(final E _entity) {
-		final ContentValues updateValues = createContentValues(_entity);
-		updateValues.remove(getIdColumnName(this.getClass()));
 		try {
-			return this.getDatabase().update(this.getTableName(), updateValues, this.getIdColumnName(this.getClass()) + "=" + _entity.getId(), null) > 0;
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			final ContentValues updateValues = createContentValues(_entity);
+			updateValues.remove(getIdColumnName(this.getClass()));
+			return this.getDatabase().update(this.getTableName(), updateValues, this.getIdColumnName(this.getClass()) + "=" + this.getId(_entity), null) > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -204,7 +201,10 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 */
 	public boolean delete(final E _entity) {
 		try {
-			return this.getDatabase().delete(this.getTableName(), this.getIdColumnName(this.getClass()) + "=" + _entity.getId(), null) > 0;
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			return this.getDatabase().delete(this.getTableName(), this.getIdColumnName(this.getClass()) + "=" + this.getId(_entity), null) > 0;
 		} catch (Exception _e) {
 			Log.e("DefaultDBAdapter.delete", _e.getMessage());
 			return false;
@@ -217,6 +217,9 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 */
 	public boolean deleteAll() {
 		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
 			return this.getDatabase().delete(this.getTableName(), null, null) > 0;
 		} catch (Exception _e) {
 			Log.e("DefaultDBAdapter.deleteAll", _e.getMessage());
@@ -231,7 +234,16 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 * @throws SQLException
 	 */
 	public E getByID(final long _id) throws SQLException {
-		return this.getByID(_id, this.getClass());
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			return this.getByID(_id, this.getClass());
+		} catch (Exception _e) {
+			Log.e("DefaultDBAdapter.getByID", _e.getMessage());
+			return null;
+		}
+		
 	}
 
 	/**
@@ -241,9 +253,13 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 * @return
 	 * @throws SQLException
 	 */
+	
 	E getByID(final long _id, Class<?> _type) throws SQLException {
 		E resultado = null;
 		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
 			Table table = _type.getAnnotation(Table.class);
 			final String[] colunas = this.getColumnNamesAsArray(_type);
 			if(colunas != null && colunas.length > 0) {
@@ -268,6 +284,9 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	public int getNextId() {
 		int retorno = 0;
 		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
 			StringBuilder sql = new StringBuilder();
 			sql.append("select max(" + this.getIdColumnName(this.getClass()) + ") ");
 			sql.append("from " + this.getTableName());
@@ -289,6 +308,9 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 */
 	public String getTableName() {
 		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
 			return UtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class).name();
 		} catch (Exception _e) {
 			Log.e("DefaultDBAdapter.getTableName", _e.getMessage());
@@ -303,17 +325,11 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 */
 	protected String getIdColumnName(Class<?> _type) {
 		try {
-			final Class<?> classe = UtilReflection.getGenericSuperclassClass(_type);
-			
-			final List<Method> getMethods = UtilReflection.getGetMethodList(classe);
-			
-			for(final Method getMethod : getMethods) {
-				PK pk = getMethod.getAnnotation(PK.class);
-				if(pk != null) {
-					final Column column = getMethod.getAnnotation(Column.class);
-					if(column != null) {
-						return column.name();
-					}
+			final Method getMethod = getPkGetMethod(_type);
+			if(getMethod != null) {
+				final Column column = getMethod.getAnnotation(Column.class);
+				if(column != null) {
+					return column.name();
 				}
 			}
 		} catch (Exception _e) {
@@ -327,10 +343,69 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	 * @param _type
 	 * @return
 	 */
+	protected Method getPkGetMethod(Class<?> _type) {
+		try {
+			final Class<?> classe = getGenericSuperclassClass(_type);
+			
+			final List<Method> getMethods = UtilReflection.getGetMethodList(classe);
+			
+			for(final Method getMethod : getMethods) {
+				PK pk = getMethod.getAnnotation(PK.class);
+				if(pk != null) {
+					return getMethod;
+				}
+			}
+		} catch (Exception _e) {
+			Log.e("DefaultDBAdapter.getPkGetMethod", _e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param _type
+	 * @return
+	 */
+	protected Method getPkSetMethod(Class<?> _type) {
+		try {
+			final Method getMethod = getPkGetMethod(_type);
+			if(getMethod != null) {
+				return UtilReflection.getSetMethod(
+						UtilReflection.getPropertyName(getMethod), 
+						_type);
+			}
+		} catch (Exception _e) {
+			Log.e("DefaultDBAdapter.getPkSetMethod", _e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param _type
+	 * @return
+	 */
+	protected String getPkPropertyName(Class<?> _type) {
+		try {
+			final Method getMethod = getPkGetMethod(_type);
+			if(getMethod != null) {
+				return UtilReflection.getPropertyName(getMethod);
+			}
+		} catch (Exception _e) {
+			Log.e("DefaultDBAdapter.getPkPropertyName", _e.getMessage());
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param _type
+	 * @return
+	 */
 	protected List<String> getColumnNames(Class<?> _type) {
 		final List<String> columns = new ArrayList<String>();
 		try {
-			final Class<?> genericClass = UtilReflection.getGenericSuperclassClass(_type);
+			final Class<?> genericClass = this.getGenericSuperclassClass(_type);
 			
 			final List<Method> getMethods = UtilReflection.getGetMethodList(genericClass);
 			for(final Method getMethod : getMethods) {
@@ -345,7 +420,47 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 		return columns;
 	}
 
+	/**
+	 * @param _type
+	 * @return
+	 */
+	protected Class<?> getGenericSuperclassClass(Class<?> _type) {
+		return UtilReflection.getGenericSuperclassClass(_type);
+	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	protected Class<?> getGenericSuperclassClass() {
+		return UtilReflection.getGenericSuperclassClass(this.getClass());
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected boolean isEntity() {
+		return UtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class) == null;
+	}
+
+	/**
+	 * @param _entity
+	 * @param _newId
+	 */
+	protected void setId(final E _entity, long _newId) {
+		UtilReflection.setValueToProperty(getPkPropertyName(this.getGenericSuperclassClass()), Long.valueOf(_newId), _entity);
+	}
+
+	/**
+	 * 
+	 * @param _entity
+	 * @return
+	 */
+	protected long getId(final E _entity) {
+		return (Long)UtilReflection.getPropertyValue(getPkPropertyName(this.getGenericSuperclassClass()), _entity);
+	}
+	
 	/**
 	 * 
 	 * @param _type
@@ -354,7 +469,7 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	protected String[] getColumnNamesAsArray(Class<?> _type) {
 		String[] columns = null;
 		try {
-			final List<String> columnList = getColumnNames(this.getClass());
+			final List<String> columnList = getColumnNames(_type);
 			columns = new String[columnList.size()];
 			for(int i = 0; i < columnList.size(); i++) {
 				columns[i] = columnList.get(i);
@@ -374,7 +489,7 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 	protected E build(final Cursor _cursor, final Class<?> _type) {
 		E object = null;
 		try {
-			final Class<?> genericClass = UtilReflection.getGenericSuperclassClass(_type);
+			final Class<?> genericClass = getGenericSuperclassClass(_type);
 			object = (E) genericClass.newInstance();
 			
 			final List<Method> getMethods = UtilReflection.getGetMethodList(genericClass);

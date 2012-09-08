@@ -229,7 +229,7 @@ public class DefaultDataServiceHandler {
 			if(connectivityManager != null
 					&& connectivityManager.getActiveNetworkInfo() != null) {
 				// handle wifi if the user wants to use only wifi connection
-				if(YacamimState.getInstance().getPreferencias(_baseActivity).useOnlyWifi) {
+				if(YacamimState.getInstance().getPreferences(_baseActivity).useOnlyWifi) {
 					wifi = true;
 					final NetworkInfo mWifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 					if (mWifi != null && mWifi.isConnected()) {
@@ -265,7 +265,7 @@ public class DefaultDataServiceHandler {
 			if(connectivityManager != null
 					&& connectivityManager.getActiveNetworkInfo() != null) {
 				// trata wifi se o usuário quiser usar apenas wifi
-				if(YacamimState.getInstance().getPreferencias(_baseActivity).useOnlyWifi) {
+				if(YacamimState.getInstance().getPreferences(_baseActivity).useOnlyWifi) {
 					final NetworkInfo mWifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 					if (mWifi != null && mWifi.isConnected()) {
 						return true;
