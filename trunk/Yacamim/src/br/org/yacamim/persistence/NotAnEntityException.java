@@ -1,5 +1,5 @@
 /**
- * ManyToOne.java
+ * NotAnEntityException.java
  *
  * Copyright 2012 yacamim.org.br
  * 
@@ -18,29 +18,47 @@
  */
 package br.org.yacamim.persistence;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * 
- * Class ManyToOne TODO
+ * Classe NotAnEntityException TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface ManyToMany {
-	
+public class NotAnEntityException extends Exception {
+
 	/**
 	 * 
-	 * @return
 	 */
-	String mappedBy() default "";
+	private static final long serialVersionUID = -4388691218085997790L;
+
+	/**
+	 * 
+	 */
+	public NotAnEntityException() {
+		super();
+	}
+
+	/**
+	 * @param detailMessage
+	 */
+	public NotAnEntityException(String detailMessage) {
+		super(detailMessage);
+	}
+
+	/**
+	 * @param throwable
+	 */
+	public NotAnEntityException(Throwable throwable) {
+		super(throwable);
+	}
+
+	/**
+	 * @param detailMessage
+	 * @param throwable
+	 */
+	public NotAnEntityException(String detailMessage, Throwable throwable) {
+		super(detailMessage, throwable);
+	}
 
 }

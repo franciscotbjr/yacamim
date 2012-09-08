@@ -123,27 +123,27 @@ public final class YacamimState implements Serializable {
 	 * @param _activity
 	 * @return
 	 */
-	public Preferences getPreferencias(final Activity _activity) {
+	public Preferences getPreferences(final Activity _activity) {
 		try {
 			if(YacamimState.getInstance().preferences == null) {
 				
 				final PreferencesAdapter preferenciasAdapter = new PreferencesAdapter(_activity);
 				
-				YacamimState.getInstance().setPreferencias(preferenciasAdapter.get());
+				YacamimState.getInstance().setPreferences(preferenciasAdapter.get());
 				
 			}
 		} catch (Exception _e) {
-			Log.e("YacamimState.getPreferencias", _e.getMessage());
+			Log.e("YacamimState.getPreferences", _e.getMessage());
 		}
 		return preferences;
 	}
 
 	/**
 	 * 
-	 * @param _preferencias
+	 * @param _preferences
 	 */
-	private void setPreferencias(final Preferences _preferencias) {
-		this.preferences = _preferencias;
+	private void setPreferences(final Preferences _preferences) {
+		this.preferences = _preferences;
 	}
 
 	/**
