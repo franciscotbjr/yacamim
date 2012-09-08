@@ -21,8 +21,10 @@ package br.org.yacamim.persistence;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import android.database.Cursor;
+import android.util.Log;
 import br.org.yacamim.util.UtilDate;
 import br.org.yacamim.util.UtilReflection;
 import br.org.yacamim.util.UtilString;
@@ -90,6 +92,59 @@ public final class DataAdapterHelper {
 		}
 		return rawData;
 	}
+
+	/**
+	 * @param _cursor
+	 * @param _object
+	 * @param _getMethod
+	 * @param _columnName
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void treatOneToOne(final Cursor _cursor, Object _object,
+			final Method _getMethod, final String _columnName) {
+		try {
+			String propertyOwner = "";
+			long id = _cursor.getLong(_cursor.getColumnIndex(_columnName));
+			Class<?> tipo = _getMethod.getReturnType();
+			DefaultDBAdapter<?> defaultDBAdapter = new DefaultDBAdapter();
+			Object entInstance = defaultDBAdapter.getByID(id, tipo);
+			UtilReflection.setValueToProperty(
+					propertyOwner = UtilReflection.getPropertyName(_getMethod), 
+					entInstance, 
+					_object);
+			
+			DataAdapterHelper.treatOneToOneOwned(_object, propertyOwner, entInstance);
+			
+		} catch (Exception _e) {
+			Log.e("DataAdapterHelper.treatOneToOne", _e.getMessage());
+		}
+	}
+
+	/**
+	 * @param _object
+	 * @param _propertyOwner
+	 * @param _entInstance
+	 */
+	public static void treatOneToOneOwned(Object _object, String _propertyOwner, Object _entInstance) {
+		try {
+			final Class<?> entGenericClass = UtilReflection.getGenericSuperclassClass(_entInstance.getClass());
+			
+			final List<Method> getMethods = UtilReflection.getGetMethodList(entGenericClass);
+			if(getMethods != null) {
+				for(Method getMethod : getMethods) {
+					if(DataAdapterHelper.isOneToOneOwnedBy(getMethod, _propertyOwner)) {
+						UtilReflection.setValueToProperty(
+								UtilReflection.getPropertyName(getMethod), 
+								_object, 
+								_entInstance);
+					}
+				}
+			}
+		} catch (Exception _e) {
+			Log.e("DataAdapterHelper.treatOneToOneOwned", _e.getMessage());
+		}
+	}
+	
 
 	/**
 	 * 
