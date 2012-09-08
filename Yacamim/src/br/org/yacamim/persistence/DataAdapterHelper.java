@@ -114,6 +114,21 @@ public final class DataAdapterHelper {
 	/**
 	 * 
 	 * @param getMethod
+	 * @param _owner
+	 * @return
+	 */
+	public static boolean isOneToOneOwnedBy(Method getMethod, String _owner) {
+		boolean ownedBy = false;
+		if(isOneToOneOwned(getMethod)) {
+			OneToOne oneToOne = getMethod.getAnnotation(OneToOne.class);
+			ownedBy = oneToOne.mappedBy().equals(_owner);
+		}
+		return ownedBy;
+	}
+
+	/**
+	 * 
+	 * @param getMethod
 	 * @return
 	 */
 	public static boolean isOneToMany(Method getMethod) {

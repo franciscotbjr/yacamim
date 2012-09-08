@@ -385,9 +385,7 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 					final String columnName = column.name();
 					if(!DataAdapterHelper.treatRawData(_cursor, object, getMethod, columnName)) {
 						if(DataAdapterHelper.isOneToOneOwner(getMethod)) {
-							long id = _cursor.getLong(_cursor.getColumnIndex(columnName));
-							Class<?> tipo = getMethod.getReturnType();
-							Object entInstance = this.getByID(id, tipo);
+							this.treatOneToOne(_cursor, object, getMethod, columnName);
 						} else if (DataAdapterHelper.isManyToOne(getMethod)) {
 							
 						} else if (DataAdapterHelper.isManyToMany(getMethod)) {
@@ -400,6 +398,56 @@ public class DefaultDBAdapter<E extends BaseEntity> {
 			Log.e("DefaultDBAdapter.build", _e.getMessage());
 		}
 		return object;
+	}
+
+	/**
+	 * @param _cursor
+	 * @param _object
+	 * @param _getMethod
+	 * @param _columnName
+	 */
+	protected void treatOneToOne(final Cursor _cursor, E _object,
+			final Method _getMethod, final String _columnName) {
+		try {
+			String propertyOwner = "";
+			long id = _cursor.getLong(_cursor.getColumnIndex(_columnName));
+			Class<?> tipo = _getMethod.getReturnType();
+			Object entInstance = this.getByID(id, tipo);
+			UtilReflection.setValueToProperty(
+					propertyOwner = UtilReflection.getPropertyName(_getMethod), 
+					entInstance, 
+					_object);
+			
+			this.treatOneToOneOwned(_object, propertyOwner, entInstance);
+			
+		} catch (Exception _e) {
+			Log.e("DefaultDBAdapter.treatOneToOne", _e.getMessage());
+		}
+	}
+
+	/**
+	 * @param _object
+	 * @param _propertyOwner
+	 * @param _entInstance
+	 */
+	protected void treatOneToOneOwned(E _object, String _propertyOwner, Object _entInstance) {
+		try {
+			final Class<?> entGenericClass = UtilReflection.getGenericSuperclassClass(_entInstance.getClass());
+			
+			final List<Method> getMethods = UtilReflection.getGetMethodList(entGenericClass);
+			if(getMethods != null) {
+				for(Method getMethod : getMethods) {
+					if(DataAdapterHelper.isOneToOneOwnedBy(getMethod, _propertyOwner)) {
+						UtilReflection.setValueToProperty(
+								UtilReflection.getPropertyName(getMethod), 
+								_object, 
+								_entInstance);
+					}
+				}
+			}
+		} catch (Exception _e) {
+			Log.e("DefaultDBAdapter.treatOneToOneOwned", _e.getMessage());
+		}
 	}
 	
 	/**
