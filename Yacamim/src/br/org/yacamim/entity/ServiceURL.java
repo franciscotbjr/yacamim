@@ -32,11 +32,6 @@ import br.org.yacamim.persistence.Entity;
 @Entity
 public class ServiceURL extends BaseEntity {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4142735125146364845L;
-	
 	public int id;
 	public String url;
 

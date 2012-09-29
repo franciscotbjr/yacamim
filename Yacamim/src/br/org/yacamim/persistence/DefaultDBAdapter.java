@@ -532,8 +532,14 @@ public class DefaultDBAdapter<E> {
 				if(column != null) {
 					if(getMethod.getReturnType().equals(String.class)) {
 						values.put(column.name(), (String)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+					} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
+						values.put(column.name(), (Byte)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+					} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
+						values.put(column.name(), (Short)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
 						values.put(column.name(), (Integer)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+					} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
+						values.put(column.name(), (Float)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
 						values.put(column.name(), (Double)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
@@ -549,7 +555,7 @@ public class DefaultDBAdapter<E> {
 					} else if (getMethod.getReturnType().equals(Date.class)) {
 						final Date date = (Date)UtilReflection.invokeMethodWithoutParams(getMethod, entidade);
 						if(date != null) {
-							values.put(column.name(), UtilDate.getSimpleDateFormatDateTime().format(date));
+							values.put(column.name(), date.getTime());
 						}
 					}
 				}

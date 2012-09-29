@@ -33,11 +33,6 @@ import android.util.Log;
  */
 @Entity
 public class GpsLocationInfo extends BaseEntity {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5548446327048768000L;
 	
 	private double longitude;
 	private double latitude;

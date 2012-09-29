@@ -99,12 +99,12 @@ public strictfp abstract class UtilReflection {
 	/**
 	 * 
 	 */
-	protected static final Object[] deafultParamArrayObjectReflection = new Object[]{};
+	private static final Object[] deafultParamArrayObjectReflection = new Object[]{};
 
 	/**
 	 * 
 	 */
-	protected static final Class<?>[] defaultParamArrayClassReflection = new Class[]{};
+	private static final Class<?>[] defaultParamArrayClassReflection = new Class[]{};
 
 	/**
 	 * 
@@ -183,12 +183,20 @@ public strictfp abstract class UtilReflection {
 		try {
 			if (_propertyValue != null) {
 				if(_propertyName.indexOf('.') == -1) {
-					if (_propertyValue.getClass().equals(Long.class)) {
-						parameterClass = long.class;
-					} else if (_propertyValue.getClass().equals(Double.class)) {
-						parameterClass = double.class;
+					if (_propertyValue.getClass().equals(Byte.class)) {
+						parameterClass = byte.class;
+					} else if (_propertyValue.getClass().equals(Short.class)) {
+						parameterClass = short.class;
 					} else if (_propertyValue.getClass().equals(Integer.class)) {
 						parameterClass = int.class;
+					} else if (_propertyValue.getClass().equals(Long.class)) {
+						parameterClass = long.class;
+					} else if (_propertyValue.getClass().equals(Float.class)) {
+						parameterClass = float.class;
+					} else if (_propertyValue.getClass().equals(Double.class)) {
+						parameterClass = double.class;
+					} else if (_propertyValue.getClass().equals(Boolean.class)) {
+						parameterClass = boolean.class;
 					} else {
 						parameterClass = _propertyValue.getClass();
 					}

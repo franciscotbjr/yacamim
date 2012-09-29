@@ -37,11 +37,6 @@ import br.org.yacamim.persistence.Table;
 @Table(name="session")
 public class Session extends BaseEntity {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3491760419509126643L;
-	
 	private long id;
 	private String sessionId;
 	
