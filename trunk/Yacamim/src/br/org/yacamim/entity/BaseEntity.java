@@ -18,7 +18,9 @@
  */
 package br.org.yacamim.entity;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+import br.org.yacamim.util.UtilParcel;
 
 /**
  * 
@@ -28,8 +30,7 @@ import java.io.Serializable;
  * @version 1.0
  * @since 1.0
  */
-@SuppressWarnings("serial")
-public abstract class BaseEntity implements Serializable {
+public class BaseEntity implements Parcelable {
 	
 	protected long id;
 	private String error;
@@ -40,6 +41,14 @@ public abstract class BaseEntity implements Serializable {
 	 */
 	public BaseEntity() {
 		super();
+	}
+	
+	/**
+	 * 
+	 */
+	public BaseEntity(Parcel parcel) {
+		super();
+		UtilParcel.fillAttributes(this, parcel);
 	}
 
 	/**
@@ -82,6 +91,89 @@ public abstract class BaseEntity implements Serializable {
 	 */
 	public void setMessage(String _message) {
 		this.message = _message;
+	}
+
+	// Parcelable implementations
+	
+	/**
+	 * 
+	 */
+	@Override
+	public int describeContents() {
+		return hashCode();
+	}
+
+	/**
+	 * 
+	 *
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeValue(UtilParcel.getAttributesAsBundle(this));
+	}
+	
+	/**
+	 * 
+	 */
+	public static final Parcelable.Creator<? extends BaseEntity> CREATOR = new Parcelable.Creator<BaseEntity>() {
+		public BaseEntity createFromParcel(Parcel in) {
+			return new BaseEntity(in); 
+		}
+
+		public BaseEntity[] newArray(int size) {
+			return new BaseEntity[size];
+		}
+	};
+
+	/**
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((error == null) ? 0 : error.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		return result;
+	}
+
+	/**
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof BaseEntity)) {
+			return false;
+		}
+		BaseEntity other = (BaseEntity) obj;
+		if (error == null) {
+			if (other.error != null) {
+				return false;
+			}
+		} else if (!error.equals(other.error)) {
+			return false;
+		}
+		if (id != other.id) {
+			return false;
+		}
+		if (message == null) {
+			if (other.message != null) {
+				return false;
+			}
+		} else if (!message.equals(other.message)) {
+			return false;
+		}
+		return true;
 	}
 
 }

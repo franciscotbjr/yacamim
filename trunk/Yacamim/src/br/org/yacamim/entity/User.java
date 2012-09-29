@@ -40,11 +40,6 @@ import br.org.yacamim.util.Constants;
 @Table(name = "user")
 public class User extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6103995973292541540L;
-	
 	private String login;
 	private String password;
 	private String newPassword;

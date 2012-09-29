@@ -31,11 +31,6 @@ import br.org.yacamim.persistence.Entity;
 @Entity
 public class DeviceInfo extends BaseEntity {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4775895380781227510L;
-	
 	private String imei;
 	private String macAddress;
 	private String bluetoothMacAddress;

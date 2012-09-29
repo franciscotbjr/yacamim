@@ -81,12 +81,12 @@ public final class DataAdapterHelper {
 					_cursor.getLong(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if (_getMethod.getReturnType().equals(Date.class)) {
-			final String strDate = _cursor.getString(_cursor.getColumnIndex(_columnName));
+			final long time = _cursor.getLong(_cursor.getColumnIndex(_columnName));
 			rawData = true;
-			if(!UtilString.isEmptyString(strDate)) {
+			if(time > 0) {
 				UtilReflection.setValueToProperty(
 						UtilReflection.getPropertyName(_getMethod), 
-						UtilDate.getSimpleDateFormatDateTime().parse(strDate), 
+						new Date(time), 
 						_object);
 			}
 		}

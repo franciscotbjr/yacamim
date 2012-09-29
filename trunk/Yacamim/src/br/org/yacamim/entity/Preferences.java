@@ -33,11 +33,6 @@ import br.org.yacamim.persistence.Entity;
 @Entity
 public class Preferences extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5616227882215035953L;
-
 	public boolean keepCache;
 	public boolean keepUserLogin;
 	public String keepUser;
