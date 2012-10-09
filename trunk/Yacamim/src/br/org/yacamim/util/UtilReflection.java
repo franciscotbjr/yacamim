@@ -183,22 +183,22 @@ public strictfp abstract class UtilReflection {
 		try {
 			if (_propertyValue != null) {
 				if(_propertyName.indexOf('.') == -1) {
-					if (_propertyValue.getClass().equals(Byte.class)) {
+					Method setMethod = UtilReflection.getSetMethod(_propertyName, _object.getClass());
+					parameterClass = setMethod.getParameterTypes()[0];
+					if (parameterClass.equals(Byte.class)) {
 						parameterClass = byte.class;
-					} else if (_propertyValue.getClass().equals(Short.class)) {
+					} else if (parameterClass.equals(Short.class)) {
 						parameterClass = short.class;
-					} else if (_propertyValue.getClass().equals(Integer.class)) {
+					} else if (parameterClass.equals(Integer.class)) {
 						parameterClass = int.class;
-					} else if (_propertyValue.getClass().equals(Long.class)) {
+					} else if (parameterClass.equals(Long.class)) {
 						parameterClass = long.class;
-					} else if (_propertyValue.getClass().equals(Float.class)) {
+					} else if (parameterClass.equals(Float.class)) {
 						parameterClass = float.class;
-					} else if (_propertyValue.getClass().equals(Double.class)) {
+					} else if (parameterClass.equals(Double.class)) {
 						parameterClass = double.class;
-					} else if (_propertyValue.getClass().equals(Boolean.class)) {
+					} else if (parameterClass.equals(Boolean.class)) {
 						parameterClass = boolean.class;
-					} else {
-						parameterClass = _propertyValue.getClass();
 					}
 	
 					UtilReflection.invokeMethod(

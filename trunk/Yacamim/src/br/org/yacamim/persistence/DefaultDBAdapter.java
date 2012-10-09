@@ -51,7 +51,7 @@ public class DefaultDBAdapter<E> {
 	 */
 	public DefaultDBAdapter() {
 		super();
-		this.setDbHelper(new DefaultDBHelper(YacamimState.getInstance().getCurrentActivity()));
+		this.setDbHelper(new DefaultDBHelper(YacamimState.getInstance().getCurrentActivity().getApplicationContext()));
 	}
 	
 	/**
@@ -544,7 +544,7 @@ public class DefaultDBAdapter<E> {
 						values.put(column.name(), (Double)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
 						Long valueLong = (Long)UtilReflection.invokeMethodWithoutParams(getMethod, entidade);
-						//Quando for uma coluna de id* só adiciona se não for zero. 
+						// Quando for uma coluna de ID só adiciona se não for zero. 
 						if (column.name().indexOf("id") >= 0) {
 							if (valueLong > 0) {
 								values.put(column.name(), valueLong);
