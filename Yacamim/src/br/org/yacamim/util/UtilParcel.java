@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import br.org.yacamim.entity.YWriteToParcel;
 
 /**
  * 
@@ -76,51 +77,9 @@ public final class UtilParcel {
 			if(getMethodList != null) {
 				bundle = new Bundle(object.getClass().getClassLoader());
 				for(Method getMethod : getMethodList) {
-					String propertyName = UtilReflection.getPropertyName(getMethod);
-					Object propertyValue = UtilReflection.invokeMethodWithoutParams(getMethod, object);
-					if(getMethod.getReturnType().equals(String.class)) {
-						bundle.putString(propertyName, (String)propertyValue);
-					} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
-						bundle.putByte(propertyName, (Byte)propertyValue);
-					} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
-						bundle.putShort(propertyName, (Short)propertyValue);
-					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
-						bundle.putInt(propertyName, (Integer)propertyValue);
-					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
-						bundle.putLong(propertyName, (Long)propertyValue);
-					} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
-						bundle.putFloat(propertyName, (Float)propertyValue);
-					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
-						bundle.putDouble(propertyName, (Double)propertyValue);
-					} else if (getMethod.getReturnType().equals(Boolean.class) || getMethod.getReturnType().equals(boolean.class)) {
-						bundle.putBoolean(propertyName, (Boolean)propertyValue);
-					} else if (getMethod.getReturnType().equals(Date.class)) {
-						Date date = (Date)propertyValue;
-						bundle.putLong(propertyName, date.getTime());
-					} else if (getMethod.getReturnType().equals(Parcelable.class)) {
-						bundle.putParcelable(propertyName, (Parcelable)propertyValue);
-					} else if (getMethod.getReturnType().equals(Bundle.class)) {
-						bundle.putBundle(propertyName, (Bundle)propertyValue);
-					} else if (getMethod.getReturnType().equals(Serializable.class)) {
-						bundle.putSerializable(propertyName, (Serializable)propertyValue);
-					} else if (getMethod.getReturnType().equals(String[].class)) {
-						bundle.putStringArray(propertyName, (String[])propertyValue);
-					} else if (getMethod.getReturnType().equals(byte[].class)) {
-						bundle.putByteArray(propertyName, (byte[])propertyValue);
-					} else if (getMethod.getReturnType().equals(short[].class)) {
-						bundle.putShortArray(propertyName, (short[])propertyValue);
-					} else if (getMethod.getReturnType().equals(int[].class)) {
-						bundle.putIntArray(propertyName, (int[])propertyValue);
-					} else if (getMethod.getReturnType().equals(long[].class)) {
-						bundle.putLongArray(propertyName, (long[])propertyValue);
-					} else if (getMethod.getReturnType().equals(float[].class)) {
-						bundle.putFloatArray(propertyName, (float[])propertyValue);
-					} else if (getMethod.getReturnType().equals(double[].class)) {
-						bundle.putDoubleArray(propertyName, (double[])propertyValue);
-					} else if (getMethod.getReturnType().equals(boolean[].class)) {
-						bundle.putBooleanArray(propertyName, (boolean[])propertyValue);
-					} else if (getMethod.getReturnType().equals(Parcelable[].class)) {
-						bundle.putParcelable(propertyName, (Parcelable)propertyValue);
+					final YWriteToParcel yWriteToParcel =  getMethod.getAnnotation(YWriteToParcel.class);
+					if(yWriteToParcel == null || (yWriteToParcel != null && yWriteToParcel.value())) {
+						addToBundle(object, bundle, getMethod);
 					}
 				}
 			}
@@ -129,6 +88,64 @@ public final class UtilParcel {
 			bundle = new Bundle();
 		}
 		return bundle;
+	}
+
+
+	/**
+	 * @param object
+	 * @param bundle
+	 * @param getMethod
+	 * @return
+	 * @throws Exception
+	 */
+	protected static void addToBundle(Object object, Bundle bundle,
+			Method getMethod) throws Exception {
+		String propertyName = UtilReflection.getPropertyName(getMethod);
+		Object propertyValue = UtilReflection.invokeMethodWithoutParams(getMethod, object);
+		if(getMethod.getReturnType().equals(String.class)) {
+			bundle.putString(propertyName, (String)propertyValue);
+		} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
+			bundle.putByte(propertyName, (Byte)propertyValue);
+		} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
+			bundle.putShort(propertyName, (Short)propertyValue);
+		} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
+			bundle.putInt(propertyName, (Integer)propertyValue);
+		} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
+			bundle.putLong(propertyName, (Long)propertyValue);
+		} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
+			bundle.putFloat(propertyName, (Float)propertyValue);
+		} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
+			bundle.putDouble(propertyName, (Double)propertyValue);
+		} else if (getMethod.getReturnType().equals(Boolean.class) || getMethod.getReturnType().equals(boolean.class)) {
+			bundle.putBoolean(propertyName, (Boolean)propertyValue);
+		} else if (getMethod.getReturnType().equals(Date.class)) {
+			Date date = (Date)propertyValue;
+			bundle.putLong(propertyName, date.getTime());
+		} else if (getMethod.getReturnType().equals(Parcelable.class)) {
+			bundle.putParcelable(propertyName, (Parcelable)propertyValue);
+		} else if (getMethod.getReturnType().equals(Bundle.class)) {
+			bundle.putBundle(propertyName, (Bundle)propertyValue);
+		} else if (getMethod.getReturnType().equals(Serializable.class)) {
+			bundle.putSerializable(propertyName, (Serializable)propertyValue);
+		} else if (getMethod.getReturnType().equals(String[].class)) {
+			bundle.putStringArray(propertyName, (String[])propertyValue);
+		} else if (getMethod.getReturnType().equals(byte[].class)) {
+			bundle.putByteArray(propertyName, (byte[])propertyValue);
+		} else if (getMethod.getReturnType().equals(short[].class)) {
+			bundle.putShortArray(propertyName, (short[])propertyValue);
+		} else if (getMethod.getReturnType().equals(int[].class)) {
+			bundle.putIntArray(propertyName, (int[])propertyValue);
+		} else if (getMethod.getReturnType().equals(long[].class)) {
+			bundle.putLongArray(propertyName, (long[])propertyValue);
+		} else if (getMethod.getReturnType().equals(float[].class)) {
+			bundle.putFloatArray(propertyName, (float[])propertyValue);
+		} else if (getMethod.getReturnType().equals(double[].class)) {
+			bundle.putDoubleArray(propertyName, (double[])propertyValue);
+		} else if (getMethod.getReturnType().equals(boolean[].class)) {
+			bundle.putBooleanArray(propertyName, (boolean[])propertyValue);
+		} else if (getMethod.getReturnType().equals(Parcelable[].class)) {
+			bundle.putParcelable(propertyName, (Parcelable)propertyValue);
+		}
 	}
 
 }

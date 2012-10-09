@@ -25,7 +25,6 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.util.Log;
-import br.org.yacamim.util.UtilDate;
 import br.org.yacamim.util.UtilReflection;
 import br.org.yacamim.util.UtilString;
 
@@ -62,23 +61,36 @@ public final class DataAdapterHelper {
 					UtilReflection.getPropertyName(_getMethod), 
 					_cursor.getString(_cursor.getColumnIndex(_columnName)), 
 					_object);
+		} else if ((_getMethod.getReturnType().equals(Byte.class) || _getMethod.getReturnType().equals(byte.class))
+				|| (_getMethod.getReturnType().equals(Short.class) || _getMethod.getReturnType().equals(short.class))) {
+			rawData = true;
+			UtilReflection.setValueToProperty(
+					UtilReflection.getPropertyName(_getMethod), 
+					_cursor.getShort(_cursor.getColumnIndex(_columnName)), 
+					_object);
 		} else if (_getMethod.getReturnType().equals(Integer.class) || _getMethod.getReturnType().equals(int.class)) {
 			rawData = true;
 			UtilReflection.setValueToProperty(
 					UtilReflection.getPropertyName(_getMethod), 
 					_cursor.getInt(_cursor.getColumnIndex(_columnName)), 
 					_object);
-		} else if (_getMethod.getReturnType().equals(Double.class) || _getMethod.getReturnType().equals(double.class)) {
-			rawData = true;
-			UtilReflection.setValueToProperty(
-					UtilReflection.getPropertyName(_getMethod), 
-					_cursor.getDouble(_cursor.getColumnIndex(_columnName)), 
-					_object);
 		} else if (_getMethod.getReturnType().equals(Long.class) || _getMethod.getReturnType().equals(long.class)) {
 			rawData = true;
 			UtilReflection.setValueToProperty(
 					UtilReflection.getPropertyName(_getMethod), 
 					_cursor.getLong(_cursor.getColumnIndex(_columnName)), 
+					_object);
+		} else if (_getMethod.getReturnType().equals(Float.class) || _getMethod.getReturnType().equals(float.class)) {
+			rawData = true;
+			UtilReflection.setValueToProperty(
+					UtilReflection.getPropertyName(_getMethod), 
+					_cursor.getFloat(_cursor.getColumnIndex(_columnName)), 
+					_object);
+		} else if (_getMethod.getReturnType().equals(Double.class) || _getMethod.getReturnType().equals(double.class)) {
+			rawData = true;
+			UtilReflection.setValueToProperty(
+					UtilReflection.getPropertyName(_getMethod), 
+					_cursor.getDouble(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if (_getMethod.getReturnType().equals(Date.class)) {
 			final long time = _cursor.getLong(_cursor.getColumnIndex(_columnName));
