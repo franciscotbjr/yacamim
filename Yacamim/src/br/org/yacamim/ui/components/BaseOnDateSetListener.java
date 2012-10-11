@@ -25,7 +25,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import br.org.yacamim.util.UtilDate;
+import br.org.yacamim.util.YUtilDate;
 
 /**
  * Class BaseOnDateSetListener TODO
@@ -70,7 +70,7 @@ public class BaseOnDateSetListener implements DatePickerDialog.OnDateSetListener
 	@Override
 	public void onDateSet(final DatePicker _view, int _year, final int _monthOfYear, final int _dayOfMonth) {
 		try {
-			Calendar calendar = UtilDate.getFilledCleanedCalendar(0, 0, 0, 0, _dayOfMonth, _monthOfYear, _year);
+			Calendar calendar = YUtilDate.getFilledCleanedCalendar(0, 0, 0, 0, _dayOfMonth, _monthOfYear, _year);
             this.txtvDate.setText(DateFormat.format(this.format, calendar));
 		} catch (Exception _e) {
 			Log.e("BaseOnDateSetListener.onDateSet", _e.getMessage());

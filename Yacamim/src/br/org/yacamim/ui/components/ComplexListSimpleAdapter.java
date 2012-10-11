@@ -32,7 +32,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import br.org.yacamim.BaseListActivity;
-import br.org.yacamim.util.Constants;
+import br.org.yacamim.util.YConstants;
 
 /**
  * Class ComplexListSimpleAdapter TODO
@@ -125,7 +125,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			_convertView = super.getView(_position, _convertView, _parent);
 			
 			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
-			final Object object = (Object) data.get(Constants.OBJECT);
+			final Object object = (Object) data.get(YConstants.OBJECT);
 			final RowConfig rowConfig = super.selectRowConfig(_position, object);
 			
 			if(_convertView != null && rowConfig != null) {
