@@ -25,8 +25,8 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.util.Log;
-import br.org.yacamim.util.UtilReflection;
-import br.org.yacamim.util.UtilString;
+import br.org.yacamim.util.YUtilReflection;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * Classe DataAdapterHelper TODO
@@ -57,47 +57,47 @@ public final class DataAdapterHelper {
 		boolean rawData = false;
 		if(_getMethod.getReturnType().equals(String.class)) {
 			rawData = true;
-			UtilReflection.setValueToProperty(
-					UtilReflection.getPropertyName(_getMethod), 
+			YUtilReflection.setValueToProperty(
+					YUtilReflection.getPropertyName(_getMethod), 
 					_cursor.getString(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if ((_getMethod.getReturnType().equals(Byte.class) || _getMethod.getReturnType().equals(byte.class))
 				|| (_getMethod.getReturnType().equals(Short.class) || _getMethod.getReturnType().equals(short.class))) {
 			rawData = true;
-			UtilReflection.setValueToProperty(
-					UtilReflection.getPropertyName(_getMethod), 
+			YUtilReflection.setValueToProperty(
+					YUtilReflection.getPropertyName(_getMethod), 
 					_cursor.getShort(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if (_getMethod.getReturnType().equals(Integer.class) || _getMethod.getReturnType().equals(int.class)) {
 			rawData = true;
-			UtilReflection.setValueToProperty(
-					UtilReflection.getPropertyName(_getMethod), 
+			YUtilReflection.setValueToProperty(
+					YUtilReflection.getPropertyName(_getMethod), 
 					_cursor.getInt(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if (_getMethod.getReturnType().equals(Long.class) || _getMethod.getReturnType().equals(long.class)) {
 			rawData = true;
-			UtilReflection.setValueToProperty(
-					UtilReflection.getPropertyName(_getMethod), 
+			YUtilReflection.setValueToProperty(
+					YUtilReflection.getPropertyName(_getMethod), 
 					_cursor.getLong(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if (_getMethod.getReturnType().equals(Float.class) || _getMethod.getReturnType().equals(float.class)) {
 			rawData = true;
-			UtilReflection.setValueToProperty(
-					UtilReflection.getPropertyName(_getMethod), 
+			YUtilReflection.setValueToProperty(
+					YUtilReflection.getPropertyName(_getMethod), 
 					_cursor.getFloat(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if (_getMethod.getReturnType().equals(Double.class) || _getMethod.getReturnType().equals(double.class)) {
 			rawData = true;
-			UtilReflection.setValueToProperty(
-					UtilReflection.getPropertyName(_getMethod), 
+			YUtilReflection.setValueToProperty(
+					YUtilReflection.getPropertyName(_getMethod), 
 					_cursor.getDouble(_cursor.getColumnIndex(_columnName)), 
 					_object);
 		} else if (_getMethod.getReturnType().equals(Date.class)) {
 			final long time = _cursor.getLong(_cursor.getColumnIndex(_columnName));
 			rawData = true;
 			if(time > 0) {
-				UtilReflection.setValueToProperty(
-						UtilReflection.getPropertyName(_getMethod), 
+				YUtilReflection.setValueToProperty(
+						YUtilReflection.getPropertyName(_getMethod), 
 						new Date(time), 
 						_object);
 			}
@@ -120,8 +120,8 @@ public final class DataAdapterHelper {
 			Class<?> tipo = _getMethod.getReturnType();
 			DefaultDBAdapter<?> defaultDBAdapter = new DefaultDBAdapter();
 			Object entInstance = defaultDBAdapter.getByID(id, tipo);
-			UtilReflection.setValueToProperty(
-					propertyOwner = UtilReflection.getPropertyName(_getMethod), 
+			YUtilReflection.setValueToProperty(
+					propertyOwner = YUtilReflection.getPropertyName(_getMethod), 
 					entInstance, 
 					_object);
 			
@@ -139,14 +139,14 @@ public final class DataAdapterHelper {
 	 */
 	public static void treatOneToOneOwned(Object _object, String _propertyOwner, Object _entInstance) {
 		try {
-			final Class<?> entGenericClass = UtilReflection.getGenericSuperclassClass(_entInstance.getClass());
+			final Class<?> entGenericClass = YUtilReflection.getGenericSuperclassClass(_entInstance.getClass());
 			
-			final List<Method> getMethods = UtilReflection.getGetMethodList(entGenericClass);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(entGenericClass);
 			if(getMethods != null) {
 				for(Method getMethod : getMethods) {
 					if(DataAdapterHelper.isOneToOneOwnedBy(getMethod, _propertyOwner)) {
-						UtilReflection.setValueToProperty(
-								UtilReflection.getPropertyName(getMethod), 
+						YUtilReflection.setValueToProperty(
+								YUtilReflection.getPropertyName(getMethod), 
 								_object, 
 								_entInstance);
 					}
@@ -165,7 +165,7 @@ public final class DataAdapterHelper {
 	 */
 	public static boolean isOneToOneOwner(Method getMethod) {
 		OneToOne oneToOne = getMethod.getAnnotation(OneToOne.class);
-		return oneToOne != null && UtilString.isEmptyString(oneToOne.mappedBy());
+		return oneToOne != null && YUtilString.isEmptyString(oneToOne.mappedBy());
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public final class DataAdapterHelper {
 	 */
 	public static boolean isOneToOneOwned(Method getMethod) {
 		OneToOne oneToOne = getMethod.getAnnotation(OneToOne.class);
-		return oneToOne != null && !UtilString.isEmptyString(oneToOne.mappedBy());
+		return oneToOne != null && !YUtilString.isEmptyString(oneToOne.mappedBy());
 	}
 
 	/**
