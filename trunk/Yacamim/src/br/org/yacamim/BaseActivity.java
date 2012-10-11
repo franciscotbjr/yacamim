@@ -36,8 +36,8 @@ import android.util.Log;
 import android.view.WindowManager;
 import br.org.yacamim.entity.GpsLocationInfo;
 import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
-import br.org.yacamim.util.Constants;
-import br.org.yacamim.util.UtilUIFields;
+import br.org.yacamim.util.YConstants;
+import br.org.yacamim.util.YUtilUIFields;
 import br.org.yacamim.xml.DefaultDataServiceHandler;
 
 /**
@@ -270,10 +270,10 @@ public abstract class BaseActivity extends Activity implements Callback {
 				return;
 			}
 			switch (resultCode) {
-				case Constants.ERROR_NO_INFORMATION_FOUND:
+				case YConstants.ERROR_NO_INFORMATION_FOUND:
 					this.showDialogNoInformationFound();
 					break;
-				case Constants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS:
+				case YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS:
 					this.showDialogNoRecordFound();
 					break;
 			}
@@ -286,14 +286,14 @@ public abstract class BaseActivity extends Activity implements Callback {
 	 * 
 	 */
 	protected void showDialogNoInformationFound() {
-		showDialog(Constants.ERROR_NO_INFORMATION_FOUND);
+		showDialog(YConstants.ERROR_NO_INFORMATION_FOUND);
 	}
 	
 	/**
 	 * 
 	 */
 	protected void finishForNoInformationFound() {
-		super.setResult(Constants.ERROR_NO_INFORMATION_FOUND);
+		super.setResult(YConstants.ERROR_NO_INFORMATION_FOUND);
 		super.finish();
 	}
 	
@@ -301,21 +301,21 @@ public abstract class BaseActivity extends Activity implements Callback {
 	 * 
 	 */
 	protected void showDialogNoRecordFound() {
-		showDialog(Constants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS);
+		showDialog(YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS);
 	}
 	
 	/**
 	 * 
 	 */
 	protected void showDialogNoRecordSelected() {
-		showDialog(Constants.ERROR_NO_RECORD_SELECTED);
+		showDialog(YConstants.ERROR_NO_RECORD_SELECTED);
 	}
 	
 	/**
 	 * 
 	 */
 	protected void finishForNoRecordFound() {
-		super.setResult(Constants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS);
+		super.setResult(YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS);
 		super.finish();
 	}
 	
@@ -323,7 +323,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	 * 
 	 */
 	protected void finishForNoRecordSelected() {
-		super.setResult(Constants.ERROR_NO_RECORD_SELECTED);
+		super.setResult(YConstants.ERROR_NO_RECORD_SELECTED);
 		super.finish();
 	}
 
@@ -334,7 +334,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	@Override
 	protected Dialog onCreateDialog(final int _idDialog) {
 		switch(_idDialog) {
-			case Constants.ERROR_NO_INFORMATION_FOUND:
+			case YConstants.ERROR_NO_INFORMATION_FOUND:
 				AlertDialog.Builder builderNenhumResultadoEncontrado = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgNoInformationFound()).toString(), false);
 	        	builderNenhumResultadoEncontrado.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 	        	           public void onClick(DialogInterface _dialog, int id) {
@@ -342,7 +342,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	        	           }
 	        	       });
 	        	return builderNenhumResultadoEncontrado.show();
-			case Constants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS:
+			case YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS:
 	        	AlertDialog.Builder builderNenhumRegistro = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgNoRecordsFoundForParameters()).toString(), false);
 	        	builderNenhumRegistro.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 	        	           public void onClick(DialogInterface _dialog, int id) {
@@ -350,7 +350,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	        	           }
 	        	       });
 	        	return builderNenhumRegistro.show();
-			case Constants.ERROR_NO_RECORD_SELECTED:
+			case YConstants.ERROR_NO_RECORD_SELECTED:
 				AlertDialog.Builder builderNenhumRegistroSelecionado = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgNoRecordSelected()).toString(), false);
 				builderNenhumRegistroSelecionado.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface _dialog, int id) {
@@ -358,7 +358,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 					}
 				});
 				return builderNenhumRegistroSelecionado.show();
-			case Constants.ERROR_NO_CONNECTIVITY_AVAILABLE:
+			case YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE:
 	        	AlertDialog.Builder builderSemAcessoRede = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgNoConnectivityAvailable()).toString(), false);
 	        	builderSemAcessoRede.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 	        	           public void onClick(DialogInterface _dialog, int id) {
@@ -366,7 +366,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	        	           }
 	        	       });
 	        	return builderSemAcessoRede.show();
-			case Constants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
+			case YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
 				AlertDialog.Builder builderSemAcessoWifi = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgNoWifiConnectivityAvailable()).toString(), false);
 				builderSemAcessoWifi.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface _dialog, int id) {
@@ -374,7 +374,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 					}
 				});
 				return builderSemAcessoWifi.show();
-			case Constants.INFO_DATA_SUCCESFULLY_INSERTED:
+			case YConstants.INFO_DATA_SUCCESFULLY_INSERTED:
 		    	AlertDialog.Builder builderDadosCadastradosSucesso = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgSuccesfullyInserted()), false);
 		    	builderDadosCadastradosSucesso.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 		    		public void onClick(DialogInterface _dialog, int id) {
@@ -383,7 +383,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 		    	})
 		    	;
 		    	return builderDadosCadastradosSucesso.show();
-			case Constants.INFO_DATA_SUCCESFULLY_UPDATED:
+			case YConstants.INFO_DATA_SUCCESFULLY_UPDATED:
 				AlertDialog.Builder builderDadosAlteradosSucesso = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgSuccesfullyUpdated()), false);
 				builderDadosAlteradosSucesso.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface _dialog, int id) {
@@ -392,7 +392,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 				})
 				;
 				return builderDadosAlteradosSucesso.show();
-			case Constants.ERROR_INVALID_DATA:
+			case YConstants.ERROR_INVALID_DATA:
 		    	AlertDialog.Builder builderDadosInvalidos = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgInvalidData()), false);
 		    	builderDadosInvalidos.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 		    		public void onClick(DialogInterface _dialog, int id) {
@@ -401,7 +401,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 		    	})
 		    	;
 		    	return builderDadosInvalidos.show();
-		    case Constants.ERROR_REQUIRED_FIELDS:
+		    case YConstants.ERROR_REQUIRED_FIELDS:
 		    	AlertDialog.Builder builderCamposObrigatorios = new DefaultAlertDialogBuilder(this, this.getMessage().toString(), false);
 		    	builderCamposObrigatorios.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 		    	           public void onClick(DialogInterface _dialog, int id) {
@@ -422,11 +422,11 @@ public abstract class BaseActivity extends Activity implements Callback {
 	@Override
 	public boolean handleMessage(final Message _message) {
 		switch(_message.what){
-	        case Constants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
+	        case YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
 	        	this.clearProgressDialogStack();
 	        	this.displayDialogWifiAccess();
 	        	return true;
-	        case Constants.ERROR_NO_CONNECTIVITY_AVAILABLE:
+	        case YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE:
 	        	this.clearProgressDialogStack();
     			this.displayDialogNetworkAccess();
 	    		return true;
@@ -439,14 +439,14 @@ public abstract class BaseActivity extends Activity implements Callback {
 	 * 
 	 */
 	public final void displayDialogNetworkAccess() {
-		this.showDialog(Constants.ERROR_NO_CONNECTIVITY_AVAILABLE);
+		this.showDialog(YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE);
 	}
 	
 	/**
 	 * 
 	 */
 	public final void displayDialogWifiAccess() {
-		this.showDialog(Constants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE);
+		this.showDialog(YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE);
 	}
 	
 	/**
@@ -473,7 +473,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	 */
 	public void cleanupWindowUIFields() {
 		try {
-			UtilUIFields.clearUIFields(this, this.getFieldsForWindowsCleanup());
+			YUtilUIFields.clearUIFields(this, this.getFieldsForWindowsCleanup());
 		} catch (Exception _e) {
 			Log.e("BaseActivity.limpaTela", _e.getMessage());
 		}

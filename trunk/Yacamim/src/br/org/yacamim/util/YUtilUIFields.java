@@ -1,5 +1,5 @@
 /**
- * YacamimClassMapping.java
+ * YUtilUIFields.java
  *
  * Copyright 2012 yacamim.org.br
  * 
@@ -18,55 +18,51 @@
  */
 package br.org.yacamim.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.app.Activity;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
- * 
- * Class YacamimClassMapping TODO
+ * Class YUtilUIFields TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class YacamimClassMapping {
-	
-	private List<YKeyValuePair<String, String>> keyValues = new ArrayList<YKeyValuePair<String,String>>();
+public final class YUtilUIFields {
 
 	/**
 	 * 
 	 */
-	public YacamimClassMapping() {
+	private YUtilUIFields() {
 		super();
 	}
 	
 	/**
 	 * 
-	 * @param _key
-	 * @param _value
+	 * @param _activity
+	 * @param _idUIFields
 	 */
-	public void add(final String _key, final String _value) {
-		for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getKey().equals(_key)) {
-				keyValuePair.setValue(_value);
-				return;
+	public static void clearUIFields(final Activity _activity, final int[] _idUIFields) {
+		try {
+			for(int i = 0; i < _idUIFields.length; i++) {
+				View view = _activity.findViewById(_idUIFields[i]);
+				if(view instanceof EditText) {
+					((EditText)view).setText("");
+				} else
+				if(view instanceof TextView) {
+					((TextView)view).setText("");
+				} else
+				if(view instanceof Spinner) {
+					((Spinner)view).setSelection(0);
+				}
 			}
+		} catch (Exception _e) {
+			Log.e("YUtilUIFields.clearUIFields", _e.getMessage());
 		}
-		this.keyValues.add(new YKeyValuePair<String, String>(_key, _value));
-	}
-	
-	/**
-	 * 
-	 * @param _key
-	 * @return
-	 */
-	public String get(final String _key) {
-		for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getKey().equals(_key)) {
-				return keyValuePair.getValue();
-			}
-		}
-		return null;
 	}
 
 }

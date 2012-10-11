@@ -1,5 +1,5 @@
 /**
- * YacamimClassMapping.java
+ * YUtilListView.java
  *
  * Copyright 2012 yacamim.org.br
  * 
@@ -19,54 +19,37 @@
 package br.org.yacamim.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * 
- * Class YacamimClassMapping TODO
+ * Class YUtilListView TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class YacamimClassMapping {
+public final class YUtilListView {
 	
-	private List<YKeyValuePair<String, String>> keyValues = new ArrayList<YKeyValuePair<String,String>>();
-
-	/**
-	 * 
-	 */
-	public YacamimClassMapping() {
+	private YUtilListView() {
 		super();
 	}
 	
 	/**
 	 * 
-	 * @param _key
-	 * @param _value
-	 */
-	public void add(final String _key, final String _value) {
-		for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getKey().equals(_key)) {
-				keyValuePair.setValue(_value);
-				return;
-			}
-		}
-		this.keyValues.add(new YKeyValuePair<String, String>(_key, _value));
-	}
-	
-	/**
-	 * 
-	 * @param _key
+	 * @param dataList
 	 * @return
 	 */
-	public String get(final String _key) {
-		for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getKey().equals(_key)) {
-				return keyValuePair.getValue();
-			}
+	public static List<HashMap<String, Object>> buildListOfMappedData(final List<?> dataList) {
+		final List<HashMap<String, Object>> listOfMappedData = new ArrayList<HashMap<String, Object>>();
+		
+		for(final Object data : dataList) {
+			final HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put(YConstants.OBJECT, data);
+			listOfMappedData.add(map);
 		}
-		return null;
+		
+		return listOfMappedData;
 	}
 
 }
