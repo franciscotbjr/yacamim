@@ -48,7 +48,7 @@ public class YParcel implements Parcelable {
 	 */
 	protected YParcel(Parcel parcel) {
 		super();
-		UtilParcel.fillValueFromParcel(this, parcel);
+		YUtilParcel.fillValueFromParcel(this, parcel);
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class YParcel implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(this.value.getClass().getName());
-		UtilParcel.writeToParcel(this.value, dest);
+		YUtilParcel.writeToParcel(this.value, dest);
 	}
 	
 	/**

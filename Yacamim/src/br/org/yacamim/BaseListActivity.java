@@ -32,7 +32,7 @@ import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
-import br.org.yacamim.util.Constants;
+import br.org.yacamim.util.YConstants;
 
 /**
  * Class BaseListActivity TODO
@@ -79,14 +79,14 @@ public class BaseListActivity extends ListActivity {
 	@SuppressWarnings("unchecked")
 	protected Object getObjectFromListView(final ListView _listView,
 			final int _position) {
-		return ((HashMap<String, Object>)_listView.getAdapter().getItem(_position)).get(Constants.OBJECT);
+		return ((HashMap<String, Object>)_listView.getAdapter().getItem(_position)).get(YConstants.OBJECT);
 	}
 	
 	/**
 	 * 
 	 */
 	protected void finishForNoInformationFound() {
-		super.setResult(Constants.ERROR_NO_INFORMATION_FOUND);
+		super.setResult(YConstants.ERROR_NO_INFORMATION_FOUND);
 		super.finish();
 	}
 	
@@ -94,7 +94,7 @@ public class BaseListActivity extends ListActivity {
 	 * 
 	 */
 	protected void finishForNoRecordFound() {
-		super.setResult(Constants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS);
+		super.setResult(YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS);
 		super.finish();
 	}
 
@@ -117,7 +117,7 @@ public class BaseListActivity extends ListActivity {
 		try {
 			for(final Object item : _sourceList) {
 				final HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put(Constants.OBJECT, item);
+				map.put(YConstants.OBJECT, item);
 				_mapList.add(map);
 			}
 		} catch (Exception _e) {
@@ -156,7 +156,7 @@ public class BaseListActivity extends ListActivity {
 	 * 
 	 */
 	protected void showDialogConstraintDependency() {
-		showDialog(Constants.ERROR_CONSTRAINT_DEPENDENCY);
+		showDialog(YConstants.ERROR_CONSTRAINT_DEPENDENCY);
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class BaseListActivity extends ListActivity {
 	@Override
 	protected Dialog onCreateDialog(final int _idDialog) {
 		switch(_idDialog) {
-			case Constants.ERROR_CONSTRAINT_DEPENDENCY:
+			case YConstants.ERROR_CONSTRAINT_DEPENDENCY:
 				AlertDialog.Builder builderRegistroNaoPodeSerExcluidoPorDependencia = new DefaultAlertDialogBuilder(this, this.getText(YacamimState.getInstance().getYacamimResources().getIdResourceMsgConstraintDependency()).toString(), false);
 				builderRegistroNaoPodeSerExcluidoPorDependencia.setPositiveButton(YacamimState.getInstance().getYacamimResources().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface _dialog, int id) {

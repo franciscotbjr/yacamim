@@ -20,7 +20,7 @@ package br.org.yacamim.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import br.org.yacamim.util.UtilParcel;
+import br.org.yacamim.util.YUtilParcel;
 
 /**
  * 
@@ -48,7 +48,7 @@ public class BaseEntity implements Parcelable {
 	 */
 	protected BaseEntity(Parcel parcel) {
 		super();
-		UtilParcel.fillAttributesFromParcel(this, parcel);
+		YUtilParcel.fillAttributesFromParcel(this, parcel);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class BaseEntity implements Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		UtilParcel.writeToParcel(this, dest);
+		YUtilParcel.writeToParcel(this, dest);
 	}
 	
 	/**

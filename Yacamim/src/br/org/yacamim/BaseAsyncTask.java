@@ -21,7 +21,7 @@ package br.org.yacamim;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import br.org.yacamim.util.Constants;
+import br.org.yacamim.util.YConstants;
 import br.org.yacamim.xml.DefaultDataServiceHandler;
 
 /**
@@ -68,10 +68,10 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 		try {
 			if(this.errorWithoutConnectivity) {
 				if(!DefaultDataServiceHandler.checkInternetConnection(this.baseActivity)) {
-					this.baseActivity.showDialog(Constants.ERROR_NO_CONNECTIVITY_AVAILABLE);
+					this.baseActivity.showDialog(YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE);
 				} else
 				if(!DefaultDataServiceHandler.checkWifiConnection(this.baseActivity)) {
-					this.baseActivity.showDialog(Constants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE);
+					this.baseActivity.showDialog(YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE);
 				} 
 			}
 		} catch (Exception _e) {

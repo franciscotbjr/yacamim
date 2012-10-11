@@ -25,7 +25,7 @@ import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.PK;
 import br.org.yacamim.persistence.Table;
 import br.org.yacamim.persistence.Transiente;
-import br.org.yacamim.util.Constants;
+import br.org.yacamim.util.YConstants;
 
 
 /**
@@ -55,8 +55,8 @@ public class User extends BaseEntity {
 	 */
 	public User() {
 		super();
-		this.firstAccess = Constants.NO;
-		this.logonFail = Constants.NO;
+		this.firstAccess = YConstants.NO;
+		this.logonFail = YConstants.NO;
 	}
 	
 	/**
@@ -72,8 +72,8 @@ public class User extends BaseEntity {
 		this.question = _question;
 		this.answer = _answer;
 		
-		this.firstAccess = Constants.NO;
-		this.logonFail = Constants.NO;
+		this.firstAccess = YConstants.NO;
+		this.logonFail = YConstants.NO;
 	}
 	
 

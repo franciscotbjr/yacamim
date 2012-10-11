@@ -1,5 +1,5 @@
 /**
- * YacamimClassMapping.java
+ * YJSONDictionary.java
  *
  * Copyright 2012 yacamim.org.br
  * 
@@ -22,21 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
- * Class YacamimClassMapping TODO
+ * Class YJSONDictionary TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class YacamimClassMapping {
+public class YJSONDictionary {
 	
 	private List<YKeyValuePair<String, String>> keyValues = new ArrayList<YKeyValuePair<String,String>>();
 
 	/**
 	 * 
 	 */
-	public YacamimClassMapping() {
+	public YJSONDictionary() {
 		super();
 	}
 	
