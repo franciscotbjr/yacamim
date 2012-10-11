@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -116,75 +117,74 @@ public strictfp abstract class UtilReflection {
 
 	/**
 	 * 
-	 * @param _method
-	 * @param _objectoTo
-	 * @param _methodParams
+	 * @param method
+	 * @param objectoTo
+	 * @param methodParams
 	 * @return
 	 * @throws Exception
 	 */
-	public static Object invokeMethod(Method _method, Object _objectoTo, Object... _methodParams) throws Exception {
-		return _method.invoke(_objectoTo, _methodParams);
+	public static Object invokeMethod(Method method, Object objectoTo, Object... methodParams) throws Exception {
+		return method.invoke(objectoTo, methodParams);
 	}
 
 	/**
 	 * 
-	 * @param _method
-	 * @param _objectTo
-	 * @param _methodParams
+	 * @param method
+	 * @param objectTo
+	 * @param methodParams
 	 * @return
 	 */
-	public static String invokeMethodToString(Method _method, Object _objectTo, Object[] _methodParams) {
+	public static String invokeMethodToString(Method method, Object objectTo, Object[] methodParams) {
 		try {
-			return _method.invoke(_objectTo, _methodParams).toString();
+			return method.invoke(objectTo, methodParams).toString();
 		}
-		catch(Exception _e) {
-			Log.e("UtilReflection.invokeMethodToString", _e.getMessage());
+		catch(Exception e) {
+			Log.e("UtilReflection.invokeMethodToString", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 * 
-	 * @param _propertyName
-	 * @param _object
+	 * @param propertyName
+	 * @param object
 	 * @return
 	 */
-	public static Object getPropertyValue(String _propertyName, Object _object) {
+	public static Object getPropertyValue(String propertyName, Object object) {
 		try {
 			Object result  = null;
-			if(_propertyName.indexOf('.') == -1) {
+			if(propertyName.indexOf('.') == -1) {
 				result = UtilReflection.invokeMethodWithoutParams(
 								UtilReflection.getGetMethod(
-										UtilReflection.getGetMethodName(_propertyName)
-									, _object.getClass()), _object);
+										UtilReflection.getGetMethodName(propertyName)
+									, object.getClass()), object);
 			} else {
-				String[] properties = _propertyName.split(REGEX_POINT_SEPARATOR);
-				Object current = _object;
+				String[] properties = propertyName.split(REGEX_POINT_SEPARATOR);
+				Object current = object;
 				for(String propertie : properties) {
 					current = getPropertyValue(propertie, current);
 				}
 				result = current;
 			}
 			return result;
-		} catch(Exception _e) {
-			Log.e("UtilReflection.getPropertyValue", _e.getMessage());
+		} catch(Exception e) {
+			Log.e("UtilReflection.getPropertyValue", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 * 
-	 * @param _propertyName
-	 * @param _propertyValue
-	 * @param _object
+	 * @param propertyName
+	 * @param propertyValue
+	 * @param object
 	 */
-	public static void setValueToProperty(String _propertyName, Object _propertyValue, Object _object) {
+	public static void setValueToProperty(String propertyName, Object propertyValue, Object object) {
 		Class<?> parameterClass = null;
 		try {
-			if (_propertyValue != null) {
-				if(_propertyName.indexOf('.') == -1) {
-					Method setMethod = UtilReflection.getSetMethod(_propertyName, _object.getClass());
-					parameterClass = setMethod.getParameterTypes()[0];
+			if (propertyValue != null) {
+				if(propertyName.indexOf('.') == -1) {
+					parameterClass = propertyValue.getClass();
 					if (parameterClass.equals(Byte.class)) {
 						parameterClass = byte.class;
 					} else if (parameterClass.equals(Short.class)) {
@@ -200,35 +200,33 @@ public strictfp abstract class UtilReflection {
 					} else if (parameterClass.equals(Boolean.class)) {
 						parameterClass = boolean.class;
 					}
+					Method setMethod = UtilReflection.getSetMethod(UtilReflection.getSetMethodName(propertyName), object.getClass(), new Class<?>[]{parameterClass});
 	
-					UtilReflection.invokeMethod(
-							UtilReflection.getSetMethod(
-									UtilReflection.getSetMethodName(_propertyName)
-								, _object.getClass(), new Class<?>[] {parameterClass}), _object, _propertyValue);
+					UtilReflection.invokeMethod(setMethod, object, propertyValue);
 				} else {
-					String recoveredProperty = _propertyName.substring(0, _propertyName.lastIndexOf(REGEX_POINT_SEPARATOR));
-					Object currentObject = getPropertyValue(recoveredProperty, _object);
+					String recoveredProperty = propertyName.substring(0, propertyName.lastIndexOf(REGEX_POINT_SEPARATOR));
+					Object currentObject = getPropertyValue(recoveredProperty, object);
 					
-					String propertyAttributes = _propertyName.substring(_propertyName.lastIndexOf(REGEX_POINT_SEPARATOR)+1);
+					String propertyAttributes = propertyName.substring(propertyName.lastIndexOf(REGEX_POINT_SEPARATOR)+1);
 					
-					setValueToProperty(propertyAttributes, _propertyValue, currentObject);
+					setValueToProperty(propertyAttributes, propertyValue, currentObject);
 				}
 			}
-		} catch(Exception _e) {
-			Log.e("UtilReflection.setValueToProperty", _e.getMessage());
+		} catch(Exception e) {
+			Log.e("UtilReflection.setValueToProperty", e.getMessage());
 		}
 	}
 
 	/**
 	 * 
-	 * @param _classType
+	 * @param classType
 	 * @return
 	 */
-	public static List<Method> getSetMethodList(Class<?> _classType) {
+	public static List<Method> getSetMethodList(Class<?> classType) {
 		try {
 			List<Method> setMethods = new ArrayList<Method>();
 
-			Method[] methods = _classType.getMethods();
+			Method[] methods = classType.getMethods();
 
 			for(Method method : methods) {
 				if(method.getName().startsWith(PREFIX_SET)) {
@@ -238,22 +236,22 @@ public strictfp abstract class UtilReflection {
 
 			return setMethods;
 		}
-		catch(Exception _e) {
-			Log.e("UtilReflection.getSetMethodList", _e.getMessage());
+		catch(Exception e) {
+			Log.e("UtilReflection.getSetMethodList", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
 
 	/**
 	 * 
-	 * @param _classType
+	 * @param classType
 	 * @return
 	 */
-	public static List<Method> getGetMethodList(Class<?> _classType) {
+	public static List<Method> getGetMethodList(Class<?> classType) {
 		try {
 			List<Method> getMethods = new ArrayList<Method>();
 
-			Method[] methods = _classType.getMethods();
+			Method[] methods = classType.getMethods();
 
 			for(Method method : methods) {
 				if(method.getName().startsWith(PREFIX_GET) && !method.getName().equals(GET_CLASS_METHOD_NAME)) {
@@ -263,22 +261,54 @@ public strictfp abstract class UtilReflection {
 
 			return getMethods;
 		}
-		catch(Exception _e) {
-			Log.e("UtilReflection.getGetMethodList", _e.getMessage());
+		catch(Exception e) {
+			Log.e("UtilReflection.getGetMethodList", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
 
 	/**
 	 * 
-	 * @param _classType
+	 * @param classType
 	 * @return
 	 */
-	public static List<String> getReadOnlyPropertyNameList(Class<?> _classType) {
+	public static List<Method> getGetMethodListSortedByName(Class<?> classType) {
+		try {
+			final List<Method> getMethods = getGetMethodList(classType);
+			
+			final List<String> getMethodNames = new ArrayList<String>();
+			
+			for(final Method method : getMethods) {
+				getMethodNames.add(method.getName());
+			}
+			Collections.sort(getMethodNames);
+			
+			final List<Method> sortedGetMethods = new ArrayList<Method>();
+			for(String methodName : getMethodNames) {
+				for(Method method : getMethods) {
+					if(method.getName().equals(methodName)) {
+						sortedGetMethods.add(method);
+						break;
+					}
+				}
+			}
+			return sortedGetMethods;
+		} catch(Exception e) {
+			Log.e("UtilReflection.getGetMethodListSortedByName", e.getMessage());
+			return new ArrayList<Method>();
+		}
+	}
+
+	/**
+	 * 
+	 * @param classType
+	 * @return
+	 */
+	public static List<String> getReadOnlyPropertyNameList(Class<?> classType) {
 		try {
 			List<String> propriedades = new ArrayList<String>();
 
-			Method[] metodos = _classType.getMethods();
+			Method[] metodos = classType.getMethods();
 
 			for(Method metodo : metodos) {
 				if(metodo.getName().startsWith(PREFIX_GET) && !metodo.getName().equals(GET_CLASS_METHOD_NAME)) {
@@ -291,22 +321,22 @@ public strictfp abstract class UtilReflection {
 
 			return propriedades;
 		}
-		catch(Exception _e) {
-			Log.e("UtilReflection.getReadOnlyPropertyNameList", _e.getMessage());
+		catch(Exception e) {
+			Log.e("UtilReflection.getReadOnlyPropertyNameList", e.getMessage());
 			return new ArrayList<String>();
 		}
 	}
 
 	/**
 	 * 
-	 * @param _classType
+	 * @param classType
 	 * @return
 	 */
-	public static List<String> getReadOnlyPropertyNamesList(Class<?> _classType) {
+	public static List<String> getReadOnlyPropertyNamesList(Class<?> classType) {
 		try {
 			List<String> properties = new ArrayList<String>();
 
-			Method[] methods = _classType.getMethods();
+			Method[] methods = classType.getMethods();
 
 			for(Method method : methods) {
 				if(method.getName().startsWith(PREFIX_SET)) {
@@ -327,14 +357,14 @@ public strictfp abstract class UtilReflection {
 
 	/**
 	 * 
-	 * @param _classType
+	 * @param classType
 	 * @return
 	 */
-	public static List<String> getReadAndWritePropertyNamesList(Class<?> _classType) {
+	public static List<String> getReadAndWritePropertyNamesList(Class<?> classType) {
 		try {
-			List<String> readonlyProperties = getReadOnlyPropertyNameList(_classType);
+			List<String> readonlyProperties = getReadOnlyPropertyNameList(classType);
 
-			List<String> writableProperties = getReadOnlyPropertyNamesList(_classType);
+			List<String> writableProperties = getReadOnlyPropertyNamesList(classType);
 
 			Set<String> propertiesSet = new HashSet<String>();
 
@@ -348,125 +378,140 @@ public strictfp abstract class UtilReflection {
 
 			return properties;
 		}
-		catch(Exception _e) {
-			Log.e("UtilReflection.getReadAndWritePropertyNamesList", _e.getMessage());
+		catch(Exception e) {
+			Log.e("UtilReflection.getReadAndWritePropertyNamesList", e.getMessage());
 			return new ArrayList<String>();
 		}
 	}
 
 	/**
 	 * 
-	 * @param _setMethodName
+	 * @param setMethodName
 	 * @return
 	 */
-	public static String convertToGetMethodName(String _setMethodName) {
-		return _setMethodName.replaceFirst(REGEX_FIRST_CHARACTER_S, CHARACTER_G);
+	public static String convertToGetMethodName(String setMethodName) {
+		return setMethodName.replaceFirst(REGEX_FIRST_CHARACTER_S, CHARACTER_G);
 	}
 
 	/**
 	 * 
-	 * @param _method
+	 * @param method
 	 * @return
 	 */
-	public static String convertToGetMethodName(Method _method) {
-		if(_method == null) {
+	public static String convertToGetMethodName(Method method) {
+		if(method == null) {
 			return null;
 		}
-		return _method.getName().replaceFirst(REGEX_FIRST_CHARACTER_S, CHARACTER_G);
+		return method.getName().replaceFirst(REGEX_FIRST_CHARACTER_S, CHARACTER_G);
 	}
 
 	/**
 	 * 
-	 * @param _nomeMetodoGet
+	 * @param nomeMetodoGet
 	 * @return
 	 */
-	public static String convertToSetMethodName(String _nomeMetodoGet) {
-		return _nomeMetodoGet.replaceFirst(REGEX_FIRST_CHARACTER_G, CHARACTER_S);
+	public static String convertToSetMethodName(String nomeMetodoGet) {
+		return nomeMetodoGet.replaceFirst(REGEX_FIRST_CHARACTER_G, CHARACTER_S);
 	}
 
 	/**
 	 * 
-	 * @param _method
+	 * @param method
 	 * @return
 	 */
-	public static String convertToSetMethodName(Method _method) {
-		if(_method == null) {
+	public static String convertToSetMethodName(Method method) {
+		if(method == null) {
 			return null;
 		}
-		return _method.getName().replaceFirst(REGEX_FIRST_CHARACTER_G, CHARACTER_S);
+		return method.getName().replaceFirst(REGEX_FIRST_CHARACTER_G, CHARACTER_S);
 	}
 
 	/**
 	 * 
-	 * @param _propertyName
+	 * @param propertyName
 	 * @return
 	 */
-	public static String getGetMethodName(String _propertyName) {
-		return convertToMethodName(_propertyName, PREFIX_GET);
+	public static String getGetMethodName(String propertyName) {
+		return convertToMethodName(propertyName, PREFIX_GET);
 	}
 
 	/**
 	 * 
-	 * @param _nomePropriedade
-	 * @param _class
+	 * @param propertyName
+	 * @param classType
 	 * @return
 	 */
-	public static String getGetMethodName(String _nomePropriedade, Class<?> _class) {
+	public static String getGetMethodName(String propertyName, Class<?> classType) {
 		String prefixo = PREFIX_GET;
-		if(_class.equals(java.lang.Boolean.class)) {
+		if(classType.equals(java.lang.Boolean.class)) {
 			prefixo = PREFIX_IS;
 		}
-		return convertToMethodName(_nomePropriedade, prefixo);
+		return convertToMethodName(propertyName, prefixo);
 	}
 
 	/**
 	 * 
-	 * @param _nomePropriedade
+	 * @param propertyName
 	 * @return
 	 */
-	public static String getSetMethodName(String _nomePropriedade) {
-		return convertToMethodName(_nomePropriedade, PREFIX_SET);
+	public static String getSetMethodName(String propertyName) {
+		return convertToMethodName(propertyName, PREFIX_SET);
 	}
 
 	/**
 	 * 
-	 * @param _propertyName
-	 * @param _nomeAccessorMethod
+	 * @param propertyName
+	 * @param _accessorMethodName
 	 * @return
 	 */
-	private static String convertToMethodName(String _propertyName, String _nomeAccessorMethod) {
+	private static String convertToMethodName(String propertyName, String _accessorMethodName) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(_nomeAccessorMethod);
-		buffer.append(_propertyName.substring(0, 1).toUpperCase());
-		buffer.append(_propertyName.substring(1));
+		buffer.append(_accessorMethodName);
+		buffer.append(propertyName.substring(0, 1).toUpperCase());
+		buffer.append(propertyName.substring(1));
 		return buffer.toString();
 	}
 
 	/**
 	 * 
-	 * @param _getMethodName
-	 * @param _classType
+	 * @param getMethodName
+	 * @param classType
 	 * @return
 	 */
-	public static Method getGetMethod(String _getMethodName, Class<?> _classType) {
+	public static Method getGetMethod(String getMethodName, Class<?> classType) {
 		try {
-			return _classType.getMethod(_getMethodName, UtilReflection.defaultParamArrayClassReflection);
-		} catch(Exception _e) {
-			Log.e("UtilReflection.getGetMethod", _e.getMessage());
+			return classType.getMethod(getMethodName, UtilReflection.defaultParamArrayClassReflection);
+		} catch(Exception e) {
+			Log.e("UtilReflection.getGetMethod", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 * 
-	 * @param _setMethodName
-	 * @param _classType
-	 * @param _params
+	 * @param setMethodName
+	 * @param classType
+	 * @param params
 	 * @return
 	 */
-	public static Method getSetMethod(String _setMethodName, Class<?> _classType, Class<?>[] _params) {
+	public static Method getSetMethod(String setMethodName, Class<?> classType, Class<?>[] params) {
 		try {
-			return _classType.getMethod(_setMethodName, _params);
+			return classType.getMethod(setMethodName, params);
+		} catch(Exception e) {
+			Log.e("UtilReflection.getSetMethod", e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @param setMethodName
+	 * @param classType
+	 * @return
+	 */
+	public static Method getSetMethod(String setMethodName, Class<?> classType) {
+		try {
+			return classType.getMethod(setMethodName, defaultParamArrayClassReflection);
 		} catch(Exception _e) {
 			Log.e("UtilReflection.getSetMethod", _e.getMessage());
 			return null;
@@ -475,49 +520,34 @@ public strictfp abstract class UtilReflection {
 
 	/**
 	 * 
-	 * @param _setMethodName
-	 * @param _classType
-	 * @return
-	 */
-	public static Method getSetMethod(String _setMethodName, Class<?> _classType) {
-		try {
-			return _classType.getMethod(_setMethodName, defaultParamArrayClassReflection);
-		} catch(Exception _e) {
-			Log.e("UtilReflection.getSetMethod", _e.getMessage());
-			return null;
-		}
-	}
-
-	/**
-	 * 
-	 * @param _classFullyQualifiedName
+	 * @param classFullyQualifiedName
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	public static Class<?> convertToClass(String _classFullyQualifiedName) throws ClassNotFoundException {
-		return Class.forName(_classFullyQualifiedName);
+	public static Class<?> convertToClass(String classFullyQualifiedName) throws ClassNotFoundException {
+		return Class.forName(classFullyQualifiedName);
 	}
 
 	/**
 	 * 
-	 * @param _fullyQualifiedName
+	 * @param fullyQualifiedName
 	 * @return
 	 */
-	public static String getClassNameFromFullyQualifiedName(String _fullyQualifiedName) {
-		return _fullyQualifiedName.substring(_fullyQualifiedName.lastIndexOf(".") + 1);
+	public static String getClassNameFromFullyQualifiedName(String fullyQualifiedName) {
+		return fullyQualifiedName.substring(fullyQualifiedName.lastIndexOf(".") + 1);
 	}
 
 	/**
 	 * 
-	 * @param _tipo
+	 * @param classType
 	 * @return
 	 */
-	public static boolean implementsCollection(Class<?> _tipo) {
+	public static boolean implementsCollection(Class<?> classType) {
 		try {
-			if(_tipo.isPrimitive()) {
+			if(classType.isPrimitive()) {
 				return false;
 			}
-			Class<?>[] interfaces = _tipo.getInterfaces();
+			Class<?>[] interfaces = classType.getInterfaces();
 			for(Class<?> interfaceObj : interfaces) {
 				if(interfaceObj.getName().indexOf("java.util.Collection") != -1) {
 					return true;
@@ -525,75 +555,75 @@ public strictfp abstract class UtilReflection {
 			}
 			return false;
 		}
-		catch(Exception _e) {
-			Log.e("UtilReflection.implementsCollection", _e.getMessage());
+		catch(Exception e) {
+			Log.e("UtilReflection.implementsCollection", e.getMessage());
 			return false;
 		}
 	}
 
 	/**
 	 * 
-	 * @param _classType
-	 * @param _className
+	 * @param classType
+	 * @param className
 	 * @return
 	 */
-	public static boolean isClassOfType(Class<?> _classType, String _className) {
+	public static boolean isClassOfType(Class<?> classType, String className) {
 		try {
-			return UtilReflection.getClassNameFromFullyQualifiedName(_classType.toString()).equals(_className);
-		} catch(Exception _e) {
-			Log.e("UtilReflection.isClassOfType", _e.getMessage());
+			return UtilReflection.getClassNameFromFullyQualifiedName(classType.toString()).equals(className);
+		} catch(Exception e) {
+			Log.e("UtilReflection.isClassOfType", e.getMessage());
 			return false;
 		}
 	}
 
 	/**
 	 * 
-	 * @param _accessorMethodName
+	 * @param accessorMethodName
 	 * @return
 	 */
-	public static String getPropertyName(String _accessorMethodName) {
+	public static String getPropertyName(String accessorMethodName) {
 		try {
-			if((_accessorMethodName.startsWith(PREFIX_GET)) || (_accessorMethodName.startsWith(PREFIX_SET)) || (_accessorMethodName.startsWith(PREFIX_IS))) {
+			if((accessorMethodName.startsWith(PREFIX_GET)) || (accessorMethodName.startsWith(PREFIX_SET)) || (accessorMethodName.startsWith(PREFIX_IS))) {
 
-				_accessorMethodName = _accessorMethodName.replaceFirst(REGEX_ACCESSORS_GET_SET_IS, "");
+				accessorMethodName = accessorMethodName.replaceFirst(REGEX_ACCESSORS_GET_SET_IS, "");
 
-				_accessorMethodName = UtilString.firstCharacterToLowerCase(_accessorMethodName);
+				accessorMethodName = UtilString.firstCharacterToLowerCase(accessorMethodName);
 
-				return _accessorMethodName;
+				return accessorMethodName;
 			}
 
 			return null;
-		} catch (Exception _e) {
-			Log.e("UtilReflection.getPropertyName", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("UtilReflection.getPropertyName", e.getMessage());
 		}
 		return null;
 	}
 
 	/**
 	 * 
-	 * @param _method
+	 * @param method
 	 * @return
 	 */
-	public static String getPropertyName(Method _method) {
+	public static String getPropertyName(Method method) {
 		try {
-			String methodName = _method.getName();
+			String methodName = method.getName();
 			return UtilReflection.getPropertyName(methodName);
-		} catch (Exception _e) {
-			Log.e("UtilReflection.getPropertyName", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("UtilReflection.getPropertyName", e.getMessage());
 		}
 		return null;
 	}
 
     /**
      * 
-     * @param _classType
+     * @param classType
      * @return
      */
-    public static List<String> getPropertyList(Class<?> _classType) {
+    public static List<String> getPropertyList(Class<?> classType) {
         try {
             List<String> properties = new ArrayList<String>();
 
-            Method[] methods = _classType.getMethods();
+            Method[] methods = classType.getMethods();
 
             for(int i = 0; i < methods.length; i++) {
                 Method method  = methods[i];
@@ -605,37 +635,37 @@ public strictfp abstract class UtilReflection {
             }
 
             return properties;
-        } catch (Exception _e) {
-        	Log.e("UtilReflection.getPropertyList", _e.getMessage());
+        } catch (Exception e) {
+        	Log.e("UtilReflection.getPropertyList", e.getMessage());
             return new ArrayList<String>();
         }
     }
     
 	/**
 	 * 
-	 * @param _collection
-	 * @param _value
+	 * @param collection
+	 * @param value
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void addToCollection(Object _collection, Object _value) {
-		if(_collection instanceof java.util.List) {
-			((java.util.List)_collection).add(_value);
-		} else if(_collection instanceof java.util.Set) {
-			((java.util.Set)_collection).add(_value);
+	public static void addToCollection(Object collection, Object value) {
+		if(collection instanceof java.util.List) {
+			((java.util.List)collection).add(value);
+		} else if(collection instanceof java.util.Set) {
+			((java.util.Set)collection).add(value);
 		}
 	}
 
 
 	/**
 	 * 
-	 * @param _tipoCollection
+	 * @param collectionType
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	public static Object getCollectionInstance(Class<?> _tipoCollection) {
-		if("java.util.List".equals(_tipoCollection.getName())) {
+	public static Object getCollectionInstance(Class<?> collectionType) {
+		if("java.util.List".equals(collectionType.getName())) {
 			return new java.util.ArrayList();
-		} else if("java.util.Set".equals(_tipoCollection.getName())) {
+		} else if("java.util.Set".equals(collectionType.getName())) {
 			return new java.util.HashSet();
 		}
 		return null;
@@ -643,11 +673,11 @@ public strictfp abstract class UtilReflection {
 	
 	/**
 	 * 
-	 * @param _tipoCollection
+	 * @param collectionType
 	 * @return
 	 */
-	public static boolean isCollection(Class<?> _tipoCollection) {
-		if(_tipoCollection.getName().equals("java.util.List") 
+	public static boolean isCollection(Class<?> collectionType) {
+		if(collectionType.getName().equals("java.util.List") 
 				|| java.util.Set.class.isInstance("java.util.Set")) {
 			return true;
 		}
@@ -656,14 +686,14 @@ public strictfp abstract class UtilReflection {
 	
 	/**
 	 * 
-	 * @param _classType
+	 * @param classType
 	 * @return
 	 */
-	public static List<Method> getDeclaredMethodsGetList(Class<?> _classType) {
+	public static List<Method> getDeclaredMethodsGetList(Class<?> classType) {
 		try {
 			List<Method> getMethods = new ArrayList<Method>();
 			
-			Method[] methods = _classType.getDeclaredMethods();
+			Method[] methods = classType.getDeclaredMethods();
 			
 			for(Method method : methods) {
 				if(method.getName().startsWith(PREFIX_GET)) {
@@ -672,49 +702,49 @@ public strictfp abstract class UtilReflection {
 			}
 			return getMethods;
 		}
-		catch(Exception _e) {
-			Log.e("UtilReflection.getDeclaredMethodsGetList", _e.getMessage());
+		catch(Exception e) {
+			Log.e("UtilReflection.getDeclaredMethodsGetList", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
 
 	/**
 	 * 
-	 * @param _method
-	 * @param _objectTo
+	 * @param method
+	 * @param objectTo
 	 * @return
 	 * @throws Exception
 	 */
-	public static Object invokeMethodWithoutParams(Method _method, Object _objectTo) throws Exception {
-		return _method.invoke(_objectTo, deafultParamArrayObjectReflection);
+	public static Object invokeMethodWithoutParams(Method method, Object objectTo) throws Exception {
+		return method.invoke(objectTo, deafultParamArrayObjectReflection);
 	}
 
 	/**
 	 * 
 	 * @param _field
-	 * @param _classType
+	 * @param classType
 	 * @return
 	 */
-	public static Method getGetMethod(Field _field, Class<?> _classType) {
+	public static Method getGetMethod(Field _field, Class<?> classType) {
 		try {
-			return _classType.getMethod(_field.getName(), UtilReflection.defaultParamArrayClassReflection);
-		} catch(Exception _e) {
-			Log.e("UtilReflection.getGetMethod", _e.getMessage());
+			return classType.getMethod(_field.getName(), UtilReflection.defaultParamArrayClassReflection);
+		} catch(Exception e) {
+			Log.e("UtilReflection.getGetMethod", e.getMessage());
 			return null;
 		}
 	}
 	
 	/**
 	 * 
-	 * @param _class
+	 * @param classType
 	 * @return
 	 */
-	public static Map<Field, Method> buildDeclaredFieldMethodsMap(Class<?> _class) {
-		Field[] declaredFields = _class.getDeclaredFields();
+	public static Map<Field, Method> buildDeclaredFieldMethodsMap(Class<?> classType) {
+		Field[] declaredFields = classType.getDeclaredFields();
 		if(declaredFields != null && declaredFields.length > 0) {
 			Map<Field, Method> declaredFieldMethodsMap = new HashMap<Field, Method>();
 			for(Field field : declaredFields) {
-				Method getMethod = UtilReflection.getGetMethod(field, _class);
+				Method getMethod = UtilReflection.getGetMethod(field, classType);
 				if(getMethod != null) {
 					declaredFieldMethodsMap.put(field, getMethod);
 				}
@@ -726,44 +756,44 @@ public strictfp abstract class UtilReflection {
 	
 	/**
 	 * 
-	 * @param _object
+	 * @param object
 	 * @return
 	 */
-	public static Map<Field, Object> buildDeclaredFieldValuesMap(Object _object) {
+	public static Map<Field, Object> buildDeclaredFieldValuesMap(Object object) {
 		try {
-			Field[] declaredFields = _object.getClass().getDeclaredFields();
+			Field[] declaredFields = object.getClass().getDeclaredFields();
 			if(declaredFields != null && declaredFields.length > 0) {
 				Map<Field, Object> declaredFieldValuesMap = new HashMap<Field, Object>();
 				for(Field field : declaredFields) {
-					Method getMethod = UtilReflection.getGetMethod(field, _object.getClass());
+					Method getMethod = UtilReflection.getGetMethod(field, object.getClass());
 					if(getMethod != null) {
-						Object value = UtilReflection.invokeMethodWithoutParams(getMethod, _object);
+						Object value = UtilReflection.invokeMethodWithoutParams(getMethod, object);
 						declaredFieldValuesMap.put(field, value);
 					}
 				}
 				return declaredFieldValuesMap;
 			}
 			return new HashMap<Field, Object>();
-		} catch (Exception _e) {
-			Log.e("UtilReflection.buildDeclaredFieldValuesMap", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("UtilReflection.buildDeclaredFieldValuesMap", e.getMessage());
 		}
 		return new HashMap<Field, Object>();
 	}
 	
 	/**
 	 * 
-	 * @param _object
+	 * @param object
 	 * @return
 	 */
-	public static Map<Field, Method> buildDeclaredFieldNotNullMethodsMap(Object _object) {
+	public static Map<Field, Method> buildDeclaredFieldNotNullMethodsMap(Object object) {
 		try {
-			Field[] declaredFields = _object.getClass().getDeclaredFields();
+			Field[] declaredFields = object.getClass().getDeclaredFields();
 			if(declaredFields != null && declaredFields.length > 0) {
 				Map<Field, Method> declaredFieldNotNullMethodsMap = new HashMap<Field, Method>();
 				for(Field field : declaredFields) {
-					Method metodoGet = UtilReflection.getGetMethod(field, _object.getClass());
+					Method metodoGet = UtilReflection.getGetMethod(field, object.getClass());
 					if(metodoGet != null) {
-						Object value = UtilReflection.invokeMethodWithoutParams(metodoGet, _object);
+						Object value = UtilReflection.invokeMethodWithoutParams(metodoGet, object);
 						if(value != null) {
 							declaredFieldNotNullMethodsMap.put(field, metodoGet);
 						}
@@ -771,26 +801,26 @@ public strictfp abstract class UtilReflection {
 				}
 				return declaredFieldNotNullMethodsMap;
 			}
-		} catch (Exception _e) {
-			Log.e("UtilReflection.buildDeclaredFieldNotNullMethodsMap", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("UtilReflection.buildDeclaredFieldNotNullMethodsMap", e.getMessage());
 		}
 		return new HashMap<Field, Method>();
 	}
 	
 	/**
 	 * 
-	 * @param _object
+	 * @param object
 	 * @return
 	 */
-	public static Map<Field, Object> buildDeclaredFieldNotNullValuesMap(Object _object) {
+	public static Map<Field, Object> buildDeclaredFieldNotNullValuesMap(Object object) {
 		try {
-			Field[] declaredFields = _object.getClass().getDeclaredFields();
+			Field[] declaredFields = object.getClass().getDeclaredFields();
 			if(declaredFields != null && declaredFields.length > 0) {
 				Map<Field, Object> declaredFieldNotNullValuesMap = new HashMap<Field, Object>();
 				for(Field field : declaredFields) {
-					Method getMethod = UtilReflection.getGetMethod(field, _object.getClass());
+					Method getMethod = UtilReflection.getGetMethod(field, object.getClass());
 					if(getMethod != null) {
-						Object value = UtilReflection.invokeMethodWithoutParams(getMethod, _object);
+						Object value = UtilReflection.invokeMethodWithoutParams(getMethod, object);
 						if(value != null) {
 							declaredFieldNotNullValuesMap.put(field, value);
 						}
@@ -798,25 +828,25 @@ public strictfp abstract class UtilReflection {
 				}
 				return declaredFieldNotNullValuesMap;
 			}
-		} catch (Exception _e) {
-			Log.e("UtilReflection.buildDeclaredFieldNotNullValuesMap", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("UtilReflection.buildDeclaredFieldNotNullValuesMap", e.getMessage());
 		}
 		return new HashMap<Field, Object>();
 	}
 	
 	/**
 	 * 
-	 * @param _classe
+	 * @param classType
 	 * @return
 	 */
-	public static Object getGenericSuperclassInstance(final Class<?> _classe) {
+	public static Object getGenericSuperclassInstance(final Class<?> classType) {
 		try {
-			return getGenericSuperclassClass(_classe).newInstance();
-		} catch (InstantiationException _e) {
-			Log.e("UtilReflection.getGenericSuperclassInstance", _e.getMessage());
+			return getGenericSuperclassClass(classType).newInstance();
+		} catch (InstantiationException e) {
+			Log.e("UtilReflection.getGenericSuperclassInstance", e.getMessage());
 			return null;
-		} catch (IllegalAccessException _e) {
-			Log.e("UtilReflection.getGenericSuperclassInstance", _e.getMessage());
+		} catch (IllegalAccessException e) {
+			Log.e("UtilReflection.getGenericSuperclassInstance", e.getMessage());
 			return null;
 		}
 		
@@ -824,16 +854,16 @@ public strictfp abstract class UtilReflection {
 	
 	/**
 	 * 
-	 * @param _classe
+	 * @param classType
 	 * @return
 	 */
-	public static Class<?> getGenericSuperclassClass(final Class<?> _classe) {
+	public static Class<?> getGenericSuperclassClass(final Class<?> classType) {
 		try {
-			final ParameterizedType parameterizedType = (ParameterizedType)_classe.getGenericSuperclass();
+			final ParameterizedType parameterizedType = (ParameterizedType)classType.getGenericSuperclass();
 			
 			return (Class<?>) parameterizedType.getActualTypeArguments()[0];
-		} catch (Exception _e) {
-			Log.e("UtilReflection.getGenericSuperclassClass", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("UtilReflection.getGenericSuperclassClass", e.getMessage());
 			return null;
 		}
 		
@@ -841,15 +871,15 @@ public strictfp abstract class UtilReflection {
 	
 	/**
 	 * 
-	 * @param _object
-	 * @param _propertyName
+	 * @param object
+	 * @param propertyName
 	 */
-	public static void setSingleWhiteSpaceBetweenWords(final Object _object, final String _propertyName) {
+	public static void setSingleWhiteSpaceBetweenWords(final Object object, final String propertyName) {
 		
 		UtilReflection.setValueToProperty(
-				_propertyName,
-				UtilString.cleanMultipleWhiteSpaces((String)UtilReflection.getPropertyValue(_propertyName, _object)),
-				_object
+				propertyName,
+				UtilString.cleanMultipleWhiteSpaces((String)UtilReflection.getPropertyValue(propertyName, object)),
+				object
 		);
 		
 	}
