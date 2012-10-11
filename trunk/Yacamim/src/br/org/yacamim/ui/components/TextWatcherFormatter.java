@@ -22,8 +22,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
-import br.org.yacamim.util.UtilFormatting;
-import br.org.yacamim.util.UtilString;
+import br.org.yacamim.util.YUtilFormatting;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * 
@@ -139,26 +139,26 @@ public class TextWatcherFormatter implements TextWatcher {
         	this.editText.removeTextChangedListener(this);
         	if (filterLongEnough()) {
             	
-        		if(dynamicMask && !UtilString.isEmptyString(this.mask) && this.mask.length() > 0) {
+        		if(dynamicMask && !YUtilString.isEmptyString(this.mask) && this.mask.length() > 0) {
         			this.editText.setText(
-        					UtilFormatting.format(
-	        					UtilString.clearString(
+        					YUtilFormatting.format(
+	        					YUtilString.clearString(
 	        							this.editText.getText().toString()), this.mask, DEAFULT_CHARACTER));
         			
         		} else if (formattingType == TIPO_FORMATACAO_CPF) {
         			this.editText.setText(
-        					UtilFormatting.formatCpf(
-        							UtilString.keepOnlyNumbers(
+        					YUtilFormatting.formatCpf(
+        							YUtilString.keepOnlyNumbers(
         									this.editText.getText().toString())));
         		} else if (formattingType == TIPO_FORMATACAO_TELEFONE) {
         			this.editText.setText(
-        					UtilFormatting.formatTelefone(
-        							UtilString.keepOnlyNumbers(
+        					YUtilFormatting.formatTelefone(
+        							YUtilString.keepOnlyNumbers(
         									this.editText.getText().toString())));
         		}
         	} else if (formattingType == TIPO_FORMATACAO_DATA) {
         		this.editText.setText(
-        				UtilFormatting.formatData(
+        				YUtilFormatting.formatData(
         							this.editText.getText().toString()));
     		}
         	this.editText.addTextChangedListener(this);

@@ -24,7 +24,7 @@ import android.app.TimePickerDialog;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import br.org.yacamim.util.UtilDate;
+import br.org.yacamim.util.YUtilDate;
 
 /**
  * Class BaseOnTimeSetListener TODO
@@ -68,8 +68,8 @@ public class BaseOnTimeSetListener implements android.app.TimePickerDialog.OnTim
 	@Override
 	public void onTimeSet(TimePicker _view, int _hourOfDay, int _minute) {
 		try {
-			Calendar calendar = UtilDate.getFilledCleanedCalendar(0, 0, _minute, _hourOfDay, 0, 0, 0);
-			this.txtvTime.setText((new java.text.SimpleDateFormat(this.format, UtilDate.getLocaleBrasil())).format(calendar.getTime()));
+			Calendar calendar = YUtilDate.getFilledCleanedCalendar(0, 0, _minute, _hourOfDay, 0, 0, 0);
+			this.txtvTime.setText((new java.text.SimpleDateFormat(this.format, YUtilDate.getLocaleBrasil())).format(calendar.getTime()));
 			this.timePickerDialog.dismiss();
 		} catch (Throwable _e) {
 			Log.e("BaseOnTimeSetListener.onTimeSet", _e.getMessage());

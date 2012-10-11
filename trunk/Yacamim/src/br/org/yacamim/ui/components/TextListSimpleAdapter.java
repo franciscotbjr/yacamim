@@ -29,10 +29,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import br.org.yacamim.util.Constants;
-import br.org.yacamim.util.UtilFormatting;
-import br.org.yacamim.util.UtilReflection;
-import br.org.yacamim.util.UtilString;
+import br.org.yacamim.util.YConstants;
+import br.org.yacamim.util.YUtilFormatting;
+import br.org.yacamim.util.YUtilReflection;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * Class TextListSimpleAdapter TODO
@@ -78,7 +78,7 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 	public View getView(int _position, View convertView, ViewGroup _parent) {
 		try {
 			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
-			final Object object = (Object) data.get(Constants.OBJECT);
+			final Object object = (Object) data.get(YConstants.OBJECT);
 			
 			final RowConfig rowConfig = this.selectRowConfig(_position, object);
 			
@@ -113,7 +113,7 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 		try {
 			if(_rowConfigItem.getResourceIdTo() != -1 && _rowConfigItem.getGraphFrom() != null) {
 				final TextView textView = (TextView) _convertView.findViewById(_rowConfigItem.getResourceIdTo());
-				Object value = UtilReflection.getPropertyValue(_rowConfigItem.getGraphFrom(), _object);
+				Object value = YUtilReflection.getPropertyValue(_rowConfigItem.getGraphFrom(), _object);
 				String formmatedValue = format(_rowConfigItem, value);
 				textView.setText(formmatedValue);
 				textView.setPadding(0, 0, 0, 0);
@@ -143,23 +143,23 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 				value = _value.toString();
 			}
 			if(_value instanceof String) {
-				if(!UtilString.isEmptyString(value) && _rowConfigItem.getFormatingType() > 0) {
+				if(!YUtilString.isEmptyString(value) && _rowConfigItem.getFormatingType() > 0) {
 					if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_CPF) {
-						value = UtilFormatting.formatCpf(
-								UtilString.keepOnlyNumbers(
+						value = YUtilFormatting.formatCpf(
+								YUtilString.keepOnlyNumbers(
 										value));
 					} else if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_TELEFONE) {
-						value = UtilFormatting.formatTelefone(
-								UtilString.keepOnlyNumbers(
+						value = YUtilFormatting.formatTelefone(
+								YUtilString.keepOnlyNumbers(
 										value));
 					} else if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
-						value = UtilFormatting.formatData(value);
+						value = YUtilFormatting.formatData(value);
 					}
 				}
 			} else 
 			if(_value instanceof java.util.Date) {
 				if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
-					value = UtilFormatting.formatData((java.util.Date)_value);
+					value = YUtilFormatting.formatData((java.util.Date)_value);
 				}
 			}
 		} catch (Exception _e) {

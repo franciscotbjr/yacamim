@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import br.org.yacamim.util.UtilDate;
+import br.org.yacamim.util.YUtilDate;
 
 /**
  * Class BaseTimePickerDialog TODO
@@ -79,7 +79,7 @@ public class BaseTimePickerDialog extends TimePickerDialog {
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		if(this.updateTime) {
-			final Calendar calendarHoraria = UtilDate.getCalendarBrasil();
+			final Calendar calendarHoraria = YUtilDate.getCalendarBrasil();
 			super.updateTime(calendarHoraria.get(Calendar.HOUR_OF_DAY), calendarHoraria.get(Calendar.MINUTE));
 		}
 	}
