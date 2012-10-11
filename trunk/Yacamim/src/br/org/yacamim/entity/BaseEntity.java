@@ -46,9 +46,9 @@ public class BaseEntity implements Parcelable {
 	/**
 	 * 
 	 */
-	public BaseEntity(Parcel parcel) {
+	protected BaseEntity(Parcel parcel) {
 		super();
-		UtilParcel.fillAttributes(this, parcel);
+		UtilParcel.fillAttributesFromParcel(this, parcel);
 	}
 
 	/**
@@ -110,13 +110,13 @@ public class BaseEntity implements Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeValue(UtilParcel.getAttributesAsBundle(this));
+		UtilParcel.writeToParcel(this, dest);
 	}
 	
 	/**
 	 * 
 	 */
-	public static final Parcelable.Creator<? extends BaseEntity> CREATOR = new Parcelable.Creator<BaseEntity>() {
+	public static Parcelable.Creator<? extends BaseEntity> CREATOR = new Parcelable.Creator<BaseEntity>() {
 		public BaseEntity createFromParcel(Parcel in) {
 			return new BaseEntity(in); 
 		}
