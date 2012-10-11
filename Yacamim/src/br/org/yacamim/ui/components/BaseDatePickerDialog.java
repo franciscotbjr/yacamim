@@ -20,9 +20,9 @@ package br.org.yacamim.ui.components;
 
 import java.util.Calendar;
 
-import br.org.yacamim.util.UtilDate;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import br.org.yacamim.util.YUtilDate;
 
 /**
  * Class BaseDatePickerDialog TODO
@@ -83,7 +83,7 @@ public class BaseDatePickerDialog extends DatePickerDialog {
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		if(this.updateDate) {
-			final Calendar timeCalendar = UtilDate.getCalendarBrasil();
+			final Calendar timeCalendar = YUtilDate.getCalendarBrasil();
 			super.updateDate(timeCalendar.get(Calendar.YEAR), timeCalendar.get(Calendar.MONTH), timeCalendar.get(Calendar.DAY_OF_MONTH));
 		}
 	}
