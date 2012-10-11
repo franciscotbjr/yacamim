@@ -29,8 +29,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import br.org.yacamim.YacamimState;
-import br.org.yacamim.util.UtilDate;
-import br.org.yacamim.util.UtilReflection;
+import br.org.yacamim.util.YUtilDate;
+import br.org.yacamim.util.YUtilReflection;
 
 /**
  * 
@@ -311,7 +311,7 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			return UtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class).name();
+			return YUtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class).name();
 		} catch (Exception _e) {
 			Log.e("DefaultDBAdapter.getTableName", _e.getMessage());
 		}
@@ -347,7 +347,7 @@ public class DefaultDBAdapter<E> {
 		try {
 			final Class<?> classe = getGenericSuperclassClass(_type);
 			
-			final List<Method> getMethods = UtilReflection.getGetMethodList(classe);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(classe);
 			
 			for(final Method getMethod : getMethods) {
 				PK pk = getMethod.getAnnotation(PK.class);
@@ -370,8 +370,8 @@ public class DefaultDBAdapter<E> {
 		try {
 			final Method getMethod = getPkGetMethod(_type);
 			if(getMethod != null) {
-				return UtilReflection.getSetMethod(
-						UtilReflection.getPropertyName(getMethod), 
+				return YUtilReflection.getSetMethod(
+						YUtilReflection.getPropertyName(getMethod), 
 						_type);
 			}
 		} catch (Exception _e) {
@@ -389,7 +389,7 @@ public class DefaultDBAdapter<E> {
 		try {
 			final Method getMethod = getPkGetMethod(_type);
 			if(getMethod != null) {
-				return UtilReflection.getPropertyName(getMethod);
+				return YUtilReflection.getPropertyName(getMethod);
 			}
 		} catch (Exception _e) {
 			Log.e("DefaultDBAdapter.getPkPropertyName", _e.getMessage());
@@ -407,7 +407,7 @@ public class DefaultDBAdapter<E> {
 		try {
 			final Class<?> genericClass = this.getGenericSuperclassClass(_type);
 			
-			final List<Method> getMethods = UtilReflection.getGetMethodList(genericClass);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(column != null) {
@@ -425,7 +425,7 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	protected Class<?> getGenericSuperclassClass(Class<?> _type) {
-		return UtilReflection.getGenericSuperclassClass(_type);
+		return YUtilReflection.getGenericSuperclassClass(_type);
 	}
 
 	/**
@@ -433,7 +433,7 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	protected Class<?> getGenericSuperclassClass() {
-		return UtilReflection.getGenericSuperclassClass(this.getClass());
+		return YUtilReflection.getGenericSuperclassClass(this.getClass());
 	}
 	
 	/**
@@ -441,7 +441,7 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	protected boolean isEntity() {
-		return UtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class) == null;
+		return YUtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class) == null;
 	}
 
 	/**
@@ -449,7 +449,7 @@ public class DefaultDBAdapter<E> {
 	 * @param _newId
 	 */
 	protected void setId(final E _entity, long _newId) {
-		UtilReflection.setValueToProperty(getPkPropertyName(this.getGenericSuperclassClass()), Long.valueOf(_newId), _entity);
+		YUtilReflection.setValueToProperty(getPkPropertyName(this.getGenericSuperclassClass()), Long.valueOf(_newId), _entity);
 	}
 
 	/**
@@ -458,7 +458,7 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	protected long getId(final E _entity) {
-		return (Long)UtilReflection.getPropertyValue(getPkPropertyName(this.getGenericSuperclassClass()), _entity);
+		return (Long)YUtilReflection.getPropertyValue(getPkPropertyName(this.getGenericSuperclassClass()), _entity);
 	}
 	
 	/**
@@ -492,7 +492,7 @@ public class DefaultDBAdapter<E> {
 			final Class<?> genericClass = getGenericSuperclassClass(_type);
 			object = (E) genericClass.newInstance();
 			
-			final List<Method> getMethods = UtilReflection.getGetMethodList(genericClass);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
 			
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
@@ -523,27 +523,27 @@ public class DefaultDBAdapter<E> {
 	protected ContentValues createContentValues(final E entidade) {
 		final ContentValues values = new ContentValues();
 		try {
-			final Class<?> genericClass = UtilReflection.getGenericSuperclassClass(this.getClass());
+			final Class<?> genericClass = YUtilReflection.getGenericSuperclassClass(this.getClass());
 			
-			final List<Method> getMethods = UtilReflection.getGetMethodList(genericClass);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
 			
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(column != null) {
 					if(getMethod.getReturnType().equals(String.class)) {
-						values.put(column.name(), (String)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(column.name(), (String)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
-						values.put(column.name(), (Byte)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(column.name(), (Byte)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
-						values.put(column.name(), (Short)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(column.name(), (Short)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
-						values.put(column.name(), (Integer)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(column.name(), (Integer)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
-						values.put(column.name(), (Float)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(column.name(), (Float)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
-						values.put(column.name(), (Double)UtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(column.name(), (Double)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
-						Long valueLong = (Long)UtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+						Long valueLong = (Long)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
 						// Quando for uma coluna de ID só adiciona se não for zero. 
 						if (column.name().indexOf("id") >= 0) {
 							if (valueLong > 0) {
@@ -553,7 +553,7 @@ public class DefaultDBAdapter<E> {
 							values.put(column.name(), valueLong);
 						}
 					} else if (getMethod.getReturnType().equals(Date.class)) {
-						final Date date = (Date)UtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+						final Date date = (Date)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
 						if(date != null) {
 							values.put(column.name(), date.getTime());
 						}

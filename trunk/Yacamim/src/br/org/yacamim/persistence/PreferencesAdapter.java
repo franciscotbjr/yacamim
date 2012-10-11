@@ -26,8 +26,8 @@ import android.util.Log;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.DeviceInfo;
 import br.org.yacamim.entity.Preferences;
-import br.org.yacamim.util.UtilAndroid;
-import br.org.yacamim.util.UtilString;
+import br.org.yacamim.util.YUtilAndroid;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * 
@@ -120,7 +120,7 @@ public final class PreferencesAdapter {
 		boolean installed = false;
 		try {
 			if (this.sharedPreferences.contains(this.getKeyToken(PREF_INSTALATION_ID))) {
-				if(!UtilString.isEmptyString(sharedPreferences.getString(this.getKeyToken(PREF_INSTALATION_ID), ""))) {
+				if(!YUtilString.isEmptyString(sharedPreferences.getString(this.getKeyToken(PREF_INSTALATION_ID), ""))) {
 					installed = true;
 				}
 			}
@@ -184,10 +184,10 @@ public final class PreferencesAdapter {
 		final DeviceInfo deviceInfo = new DeviceInfo();
 		
 		deviceInfo.setInstalationId(sharedPreferences.getString(this.getKeyToken(PREF_INSTALATION_ID), null));
-		deviceInfo.setAndroidId(UtilAndroid.getAndroidID());
-		deviceInfo.setBluetoothMacAddress(UtilAndroid.getBluetoothMacAddress());
-		deviceInfo.setImei(UtilAndroid.getImei());
-		deviceInfo.setMacAddress(UtilAndroid.getMacAddress());
+		deviceInfo.setAndroidId(YUtilAndroid.getAndroidID());
+		deviceInfo.setBluetoothMacAddress(YUtilAndroid.getBluetoothMacAddress());
+		deviceInfo.setImei(YUtilAndroid.getImei());
+		deviceInfo.setMacAddress(YUtilAndroid.getMacAddress());
 		
 		return deviceInfo;
 	}
