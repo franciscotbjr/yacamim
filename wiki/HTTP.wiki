@@ -2,3 +2,4 @@
 
 = Introduction =
 
+Yacamim provides a set of classes that hides several details of an HTTP Call to services and the management of Cookies to keep track of related sessions. It also, hands down, delivers JSONObject as a result of an HTTP call to a JSON service.
