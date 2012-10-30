@@ -35,7 +35,7 @@ import br.org.yacamim.BaseActivity;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.DbScript;
 import br.org.yacamim.entity.ServiceURL;
-import br.org.yacamim.ssl.HttpClient;
+import br.org.yacamim.http.ssl.YHttpClient;
 
 /**
  * Class DefaultDataServiceHandler TODO
@@ -203,7 +203,7 @@ public class DefaultDataServiceHandler {
 	public static synchronized HttpEntity httpEntityFactory(final BaseActivity _baseActivity, final int _idUrl, final List<NameValuePair> _nameValuePairs) {
 		try {
 			if(checkInternetConnection(_baseActivity)) {
-				final HttpClient client = new HttpClient(_baseActivity.getApplicationContext());
+				final YHttpClient client = new YHttpClient();
 				final HttpPost httppost = new HttpPost(YacamimState.getInstance().getUrlServico(URL_RAIZ).url + YacamimState.getInstance().getUrlServico(_idUrl).url);
 				if(_nameValuePairs != null) {
 					httppost.setEntity(new UrlEncodedFormEntity(_nameValuePairs, "UTF-8"));

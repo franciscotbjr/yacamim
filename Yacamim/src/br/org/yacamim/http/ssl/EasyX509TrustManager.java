@@ -2,7 +2,7 @@
  * EasySSLSocketFactory.java
  *
  */
-package br.org.yacamim.ssl;
+package br.org.yacamim.http.ssl;
 
 import java.security.KeyStore;
 import java.security.KeyStoreException;

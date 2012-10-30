@@ -2,7 +2,7 @@
  * EasySSLSocketFactory.java
  *
  */
-package br.org.yacamim.ssl;
+package br.org.yacamim.http.ssl;
 
 import java.io.IOException;
 import java.net.InetAddress;
