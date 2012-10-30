@@ -2,7 +2,7 @@
  * HttpClient.java
  *
  */
-package br.org.yacamim.ssl;
+package br.org.yacamim.http.ssl;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.conn.ClientConnectionManager;
@@ -17,8 +17,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
-import android.content.Context;
-
 /**
  * 
  * Class HttpClient TODO
@@ -27,16 +25,21 @@ import android.content.Context;
  * @version 1.0
  * @since 1.0
  */
-public class HttpClient extends DefaultHttpClient {
+public class YHttpClient extends DefaultHttpClient {
 
-    final Context context;
+	/**
+	 * 
+	 */
+	public YHttpClient() {
+    	super();
+    }
     
-    /**
-     * 
-     * @param _context
-     */
-    public HttpClient(final Context _context) {
-        this.context = _context;
+	/**
+	 * 
+	 * @param httpParams
+	 */
+    public YHttpClient(final HttpParams httpParams) {
+    	super(httpParams);
     }
  
     /**
