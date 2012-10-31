@@ -1,3 +1,21 @@
+/**
+ * DefaultDataServiceHandler.java
+ *
+ * Copyright 2012 yacamim.org.br
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package br.org.yacamim.http;
 
 import java.util.List;
@@ -15,10 +33,26 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
-import android.os.AsyncTask;
+import android.app.Activity;
 import android.util.Log;
+import br.org.yacamim.BaseAsyncTask;
 
-public class YSimpleAsyncHttp extends AsyncTask<YSimpleHttpRequestAdpater, Integer, YSimpleHttpResponseAdapter> {
+/**
+ * Hides some complexity on handling an HTTP call.<br/>
+ * 
+ * Since it is an <tt>AsyncTask</tt>, all HTTP call process runs in background 
+ * as the recommended way to do such job on Android.<br/>
+ * 
+ * As it also is a subclass of <tt>BaseAsyncTask</tt>, the HTTP call process only 
+ * is executed as long as there is available connectivity.<br/>
+ * 
+ * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
+ * @version 1.0
+ * @since 1.0
+ * 
+ * @see android.os.AsyncTask
+ */
+public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, YSimpleHttpResponseAdapter> {
 	
 	private YSimpleHttpRequestAdpater ySimpleHttpAdpater;
 	private YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter;
@@ -26,10 +60,11 @@ public class YSimpleAsyncHttp extends AsyncTask<YSimpleHttpRequestAdpater, Integ
 	
 	/**
 	 * 
+	 * @param activity
 	 * @param asyncHttpResponseHandler
 	 */
-	public YSimpleAsyncHttp(YAsyncHttpResponseHandler asyncHttpResponseHandler) {
-		super();
+	public YSimpleAsyncHttp(final Activity activity, final YAsyncHttpResponseHandler asyncHttpResponseHandler) {
+		super(activity);
 		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
 	}
 	
@@ -39,6 +74,18 @@ public class YSimpleAsyncHttp extends AsyncTask<YSimpleHttpRequestAdpater, Integ
 	 */
 	@Override
 	protected YSimpleHttpResponseAdapter doInBackground(YSimpleHttpRequestAdpater... arg0) {
+		if(!super.isErrorWithoutConnectivity()) {
+			return doHTTP(arg0);
+		}
+		return super.doInBackground(arg0);
+	}
+
+	/**
+	 * Execute the HTTP call handling Cookies e Tokens.<br/>
+	 * @param arg0
+	 * @return
+	 */
+	private YSimpleHttpResponseAdapter doHTTP(YSimpleHttpRequestAdpater... arg0) {
 		try {
 			this.ySimpleHttpAdpater = arg0[0];
 			
@@ -70,7 +117,7 @@ public class YSimpleAsyncHttp extends AsyncTask<YSimpleHttpRequestAdpater, Integ
             YCookieProxy.getInstance().addCookies(this.ySimpleHttpResponseAdapter.getCookies());
 			
 		} catch (Exception e) {
-			Log.e("YSimpleHttpResponseAdapter.doInBackground", e.getMessage());
+			Log.e("YSimpleHttpResponseAdapter.doHTTP", e.getMessage());
 		}
 		return this.ySimpleHttpResponseAdapter;
 	}
