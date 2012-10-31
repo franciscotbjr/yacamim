@@ -18,24 +18,13 @@
  */
 package br.org.yacamim.xml;
 
-import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 import br.org.yacamim.BaseActivity;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.DbScript;
 import br.org.yacamim.entity.ServiceURL;
-import br.org.yacamim.http.ssl.YHttpClient;
 
 /**
  * Class DefaultDataServiceHandler TODO
@@ -60,12 +49,12 @@ public class DefaultDataServiceHandler {
 	
 	/**
 	 * 
-	 * @param _baseActivity
+	 * @param baseActivity
 	 */
-	public static void loadClassMapping(final BaseActivity _baseActivity) {
+	public static void loadClassMapping(final BaseActivity baseActivity) {
 		try {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
-				final XmlResourceParser xmlClassMapping = _baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceClassMapping());
+				final XmlResourceParser xmlClassMapping = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceClassMapping());
 				
 				int eventType = -1;
 				
@@ -90,12 +79,12 @@ public class DefaultDataServiceHandler {
 
 	/**
 	 * 
-	 * @param _baseActivity
+	 * @param baseActivity
 	 */
-	public static void loadParams(final BaseActivity _baseActivity) {
+	public static void loadParams(final BaseActivity baseActivity) {
 		try {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
-				final XmlResourceParser xmlParams = _baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceParams());
+				final XmlResourceParser xmlParams = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceParams());
 				
 				int eventType = -1;
 				
@@ -120,12 +109,12 @@ public class DefaultDataServiceHandler {
 	
 	/**
 	 * 
-	 * @param _baseActivity
+	 * @param baseActivity
 	 */
-	public static void loadURLsServices(final BaseActivity _baseActivity) {
+	public static void loadServiceURLs(final BaseActivity baseActivity) {
     	try {
     		if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
-    			final XmlResourceParser xmlServicos = _baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceServices());
+    			final XmlResourceParser xmlServicos = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceServices());
         		
         		int eventType = -1;
             	
@@ -190,104 +179,6 @@ public class DefaultDataServiceHandler {
 			Log.e("DefaultDataServiceHandler.loadDBScript", _e.getMessage());
 		}
 		return dbScript;
-	}
-	
-
-	/**
-	 * 
-	 * @param _baseActivity
-	 * @param _idUrl
-	 * @param _nameValuePairs
-	 * @return
-	 */
-	public static synchronized HttpEntity httpEntityFactory(final BaseActivity _baseActivity, final int _idUrl, final List<NameValuePair> _nameValuePairs) {
-		try {
-			if(checkInternetConnection(_baseActivity)) {
-				final YHttpClient client = new YHttpClient();
-				final HttpPost httppost = new HttpPost(YacamimState.getInstance().getUrlServico(URL_RAIZ).url + YacamimState.getInstance().getUrlServico(_idUrl).url);
-				if(_nameValuePairs != null) {
-					httppost.setEntity(new UrlEncodedFormEntity(_nameValuePairs, "UTF-8"));
-				}
-				final HttpResponse response = client.execute(httppost);
-				return response.getEntity();
-			}
-		} catch (Exception _e) {
-			Log.e("DefaultDataServiceHandler.httpEntityFactory", _e.getMessage());
-		}
-		return null;
-	}
-	
-	/**
-	 * 
-	 * @param _baseActivity
-	 * @return
-	 */
-	public static synchronized boolean checkInternetConnection(final BaseActivity _baseActivity) {
-		boolean wifi = false;
-		try {
-			final ConnectivityManager connectivityManager = (ConnectivityManager)_baseActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
-			if(connectivityManager != null
-					&& connectivityManager.getActiveNetworkInfo() != null) {
-				// handle wifi if the user wants to use only wifi connection
-				if(YacamimState.getInstance().getPreferences(_baseActivity).useOnlyWifi) {
-					wifi = true;
-					final NetworkInfo mWifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-					if (mWifi != null && mWifi.isConnected()) {
-						return true;
-					}
-				} else {
-					if(connectivityManager.getActiveNetworkInfo().isAvailable()
-							&& connectivityManager.getActiveNetworkInfo().isConnected()) {
-						return true;
-					}
-				}
-			}
-		} catch (Exception _e) {
-			Log.e("DefaultDataServiceHandler.checkInternetConnection", _e.getMessage());
-		}
-		_baseActivity.clearProgressDialogStack();
-		if(wifi) {
-			_baseActivity.displayDialogWifiAccess();
-		} else {
-			_baseActivity.displayDialogNetworkAccess();
-		}
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @param _baseActivity
-	 * @return
-	 */
-	public static synchronized boolean checkWifiConnection(final BaseActivity _baseActivity) {
-		try {
-			final ConnectivityManager connectivityManager = (ConnectivityManager)_baseActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
-			if(connectivityManager != null
-					&& connectivityManager.getActiveNetworkInfo() != null) {
-				// trata wifi se o usuário quiser usar apenas wifi
-				if(YacamimState.getInstance().getPreferences(_baseActivity).useOnlyWifi) {
-					final NetworkInfo mWifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-					if (mWifi != null && mWifi.isConnected()) {
-						return true;
-					}
-				} else {
-					// Wifi não é a única alternativa
-					return true;
-				}
-			}
-		} catch (Exception _e) {
-			Log.e("DefaultDataServiceHandler.checkWifiConnection", _e.getMessage());
-		}
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @param _baseActivity
-	 * @return
-	 */
-	public static boolean isOnLine(final BaseActivity _baseActivity) {
-		return checkInternetConnection(_baseActivity) || checkWifiConnection(_baseActivity);
 	}
 
 }
