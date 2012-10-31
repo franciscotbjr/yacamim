@@ -27,22 +27,36 @@ public class TesteHttp extends Activity implements YAsyncHttpResponseHandler {
     
     public void testeHttp(View view) {
     	try {
-    		YSimpleAsyncHttp ySimpleAsyncHttp = new YSimpleAsyncHttp(this);
-    		ySimpleAsyncHttp.execute(new YSimpleHttpRequestAdpaterImpl()
+    		// Creates a new instance of YSimpleAsyncHttp
+    		YSimpleAsyncHttp ySimpleAsyncHttp = new YSimpleAsyncHttp(this, (YAsyncHttpResponseHandler)this);
+    		
+    		// Call its "execute" inherited from AsyncTask
+    		ySimpleAsyncHttp.execute(
+    				// New Adapter
+    				new YSimpleHttpRequestAdpaterImpl()
 	    		.setUri("http://192.168.2.5:8080/TesteHttpServer/httpTesteServlet")
 	    		.addParam("usuario", "nome")
 	    		.addParam("senha", "123456")
+	    		// Provides a token name that would exist inside HTTP response header or
+	    		// inside HTTP response body
 	    		.manageToken("testToken")
+	    		// Provides a handler that is responsible for extract a toke
+	    		// named "testToken" from the HTTP response body, as long as it is there
 	    		.setBodyTokenRecoverHandler(new MyBodyTokenRecoverHandler())
 	    		);
     		TextView textView = (TextView)this.findViewById(R.id.textView1);
-        	textView.setText("Aguarde...");
+        	textView.setText("Wait...");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
     }
     
-    // BaseActivity
+    /**
+     * This method will be call at end of the HTTP call started throw the "execute" method call 
+     * over the instance of YSimpleAsyncHttp that was triggered "testeHttp" method of this class instance.<br/>
+     * 
+     * @see br.org.yacamim.http.YAsyncHttpResponseHandler#onAsyncHttpResponse(br.org.yacamim.http.YSimpleHttpResponseAdapter)
+     */
     public void onAsyncHttpResponse(YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter) {
     	TextView textView = (TextView)this.findViewById(R.id.textView1);
     	textView.setText(ySimpleHttpResponseAdapter.getBody());
