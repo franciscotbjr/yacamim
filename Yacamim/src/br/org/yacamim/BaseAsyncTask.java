@@ -19,10 +19,11 @@
  */
 package br.org.yacamim;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import br.org.yacamim.util.YConstants;
-import br.org.yacamim.xml.DefaultDataServiceHandler;
+import br.org.yacamim.util.YUtilAndroid;
 
 /**
  * Class BaseAsyncTask TODO
@@ -35,13 +36,17 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 
 	private boolean errorWithoutConnectivity;
 	
-	private BaseActivity baseActivity;
+	private Activity activity;
 	
 	private Integer progress = -1;
 	
-	public BaseAsyncTask(final BaseActivity _baseActivity) {
+	/**
+	 * 
+	 * @param activity
+	 */
+	public BaseAsyncTask(final Activity activity) {
 		super();
-		this.baseActivity = _baseActivity;
+		this.activity = activity;
 	}
 	
 	/**
@@ -56,26 +61,26 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 	 *
 	 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
 	 */
-	protected void onProgressUpdate(final Integer... _progress) {
-		this.progress = _progress[0];
+	protected void onProgressUpdate(final Integer... progress) {
+		this.progress = progress[0];
 	}
 	
 	/**
 	 * 
-	 * @param _resultado
+	 * @param resultado
 	 */
-	protected void onPostExecute(final Result _resultado) {
+	protected void onPostExecute(final Result resultado) {
 		try {
 			if(this.errorWithoutConnectivity) {
-				if(!DefaultDataServiceHandler.checkInternetConnection(this.baseActivity)) {
-					this.baseActivity.showDialog(YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE);
+				if(!YUtilAndroid.checkInternetConnection(this.activity)) {
+					this.activity.showDialog(YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE);
 				} else
-				if(!DefaultDataServiceHandler.checkWifiConnection(this.baseActivity)) {
-					this.baseActivity.showDialog(YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE);
+				if(!YUtilAndroid.checkWifiConnection(this.activity)) {
+					this.activity.showDialog(YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE);
 				} 
 			}
-		} catch (Exception _e) {
-			Log.e("BaseAsyncTask.onPostExecute", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("BaseAsyncTask.onPostExecute", e.getMessage());
 		}
 	}
 	
@@ -84,24 +89,24 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
 	@Override
-	protected Result doInBackground(final Params... _params) {
+	protected Result doInBackground(final Params... params) {
 		try {
-			if(!DefaultDataServiceHandler.checkInternetConnection(this.baseActivity)
-					&& !DefaultDataServiceHandler.checkWifiConnection(this.baseActivity)) {
+			if(!YUtilAndroid.checkInternetConnection(this.activity)
+					&& !YUtilAndroid.checkWifiConnection(this.activity)) {
 				this.errorWithoutConnectivity = true;
 			}
-		} catch (Exception _e) {
-			Log.e("BaseAsyncTask.doInBackground", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("BaseAsyncTask.doInBackground", e.getMessage());
 		}
 		return null;
 	}
 	
 	/**
 	 * 
-	 * @param _progress
+	 * @param progress
 	 */
-	protected void updateProgress(final Integer _progress) {
-		this.progress = _progress;
+	protected void updateProgress(final Integer progress) {
+		this.progress = progress;
 		super.publishProgress(this.progress);
 	}
 
@@ -113,24 +118,24 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 	}
 
 	/**
-	 * @param _progress the progress to set
+	 * @param progress the progress to set
 	 */
-	public void setProgress(Integer _progress) {
-		this.progress = _progress;
+	public void setProgress(Integer progress) {
+		this.progress = progress;
 	}
 
 	/**
 	 * @return the context
 	 */
-	public BaseActivity getBaseActivity() {
-		return this.baseActivity;
+	public Activity getActivity() {
+		return this.activity;
 	}
 
 	/**
-	 * @param _baseActivity the context to set
+	 * @param activity the context to set
 	 */
-	public void setBaseActivity(final BaseActivity _baseActivity) {
-		this.baseActivity = _baseActivity;
+	public void setActivity(final Activity activity) {
+		this.activity = activity;
 	}
 
 	/**

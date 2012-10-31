@@ -21,10 +21,13 @@ package br.org.yacamim.util;
 import java.io.File;
 import java.util.List;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.provider.MediaStore;
@@ -61,8 +64,8 @@ public final class YUtilAndroid {
 			if(imei == null) {
 				imei = "";
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilAndroid.getImei", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YUtilAndroid.getImei", e.getMessage());
 		}
 		return imei;
 	}
@@ -78,8 +81,8 @@ public final class YUtilAndroid {
 			if(macAddress == null) {
 				macAddress = "";
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilAndroid.getMacAddress", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YUtilAndroid.getMacAddress", e.getMessage());
 		}
 		return macAddress;
 	}
@@ -95,8 +98,8 @@ public final class YUtilAndroid {
 	    	if(bluetoothMac == null) {
 	    		bluetoothMac = "";
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilAndroid.getBluetoothMacAddress", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YUtilAndroid.getBluetoothMacAddress", e.getMessage());
 		}
 		return bluetoothMac;
 	}
@@ -112,8 +115,8 @@ public final class YUtilAndroid {
 	    	if(androidID == null) {
 	    		androidID = "";
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilAndroid.getAndroidID", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YUtilAndroid.getAndroidID", e.getMessage());
 		}
 		return androidID;
 	}
@@ -127,8 +130,8 @@ public final class YUtilAndroid {
 		try {
 			final String idsConcatenadosTemporal = getImei() + getMacAddress() + getBluetoothMacAddress() + getAndroidID() +System.currentTimeMillis();
 			idCombinadoTemporal = YUtilCryptographic.md5(idsConcatenadosTemporal);
-		} catch (Exception _e) {
-			Log.e("YUtilAndroid.getIdCombinadoTemporal", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YUtilAndroid.getIdCombinadoTemporal", e.getMessage());
 		}
 		return idCombinadoTemporal;
 	}
@@ -136,22 +139,22 @@ public final class YUtilAndroid {
 
 	/**
 	 * 
-	 * @param _fileName
-	 * @param _keyPathImagens
-	 * @param _baseActivity
-	 * @param _refs
+	 * @param fileName
+	 * @param keyPathImagens
+	 * @param baseActivity
+	 * @param refs
 	 * @return
 	 */
-	public static Intent montaIntentParaCamera(final String _fileName, final String _keyPathImagens, final BaseActivity _baseActivity,  final List<File> _refs) {
+	public static Intent montaIntentParaCamera(final String fileName, final String keyPathImagens, final BaseActivity baseActivity,  final List<File> refs) {
 		final ContentValues values = new ContentValues();
-		values.put(MediaStore.Images.Media.TITLE, _fileName);
-		values.put(MediaStore.Images.Media.DESCRIPTION, _fileName);
+		values.put(MediaStore.Images.Media.TITLE, fileName);
+		values.put(MediaStore.Images.Media.DESCRIPTION, fileName);
 		
-		checkFilePath(_keyPathImagens);
+		checkFilePath(keyPathImagens);
 		
-		final File fileImagem = new File(YacamimState.getInstance().getParams().get(_keyPathImagens) + "/" + _fileName);
+		final File fileImagem = new File(YacamimState.getInstance().getParams().get(keyPathImagens) + "/" + fileName);
 		final Uri imageUri = Uri.fromFile(fileImagem);
-		_refs.add(fileImagem);
+		refs.add(fileImagem);
 		
 		final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
 		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -160,12 +163,99 @@ public final class YUtilAndroid {
 	}
 
 	/**
-	 * @param _keyPathImagens
+	 * @param keyPathImagens
 	 */
-	protected static void checkFilePath(final String _keyPathImagens) {
-		final File fileCheckPath = new File(YacamimState.getInstance().getParams().get(_keyPathImagens));
+	protected static void checkFilePath(final String keyPathImagens) {
+		final File fileCheckPath = new File(YacamimState.getInstance().getParams().get(keyPathImagens));
 		if(!fileCheckPath.exists()) {
 			fileCheckPath.mkdirs();
+		}
+	}
+	
+
+	/**
+	 * 
+	 * @param activity
+	 * @return
+	 */
+	public static synchronized boolean checkInternetConnection(final Activity activity) {
+		boolean wifi = false;
+		try {
+			final ConnectivityManager connectivityManager = (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+			if(connectivityManager != null
+					&& connectivityManager.getActiveNetworkInfo() != null) {
+				// handle wifi if the user wants to use only wifi connection
+				if(YacamimState.getInstance().getPreferences(activity).useOnlyWifi) {
+					wifi = true;
+					final NetworkInfo mWifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+					if (mWifi != null && mWifi.isConnected()) {
+						return true;
+					}
+				} else {
+					if(connectivityManager.getActiveNetworkInfo().isAvailable()
+							&& connectivityManager.getActiveNetworkInfo().isConnected()) {
+						return true;
+					}
+				}
+			}
+		} catch (Exception _e) {
+			Log.e("YUtilAndroid.checkInternetConnection", _e.getMessage());
+		}
+		handleDefaultDialogs(activity, wifi);
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param activity
+	 * @return
+	 */
+	public static synchronized boolean checkWifiConnection(final Activity activity) {
+		try {
+			final ConnectivityManager connectivityManager = (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+			if(connectivityManager != null
+					&& connectivityManager.getActiveNetworkInfo() != null) {
+				// Check if it was chosen to work only with wifi
+				if(YacamimState.getInstance().getPreferences(activity).useOnlyWifi) {
+					final NetworkInfo mWifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+					if (mWifi != null && mWifi.isConnected()) {
+						return true;
+					}
+				} else {
+					// Wifi isn't the only way
+					return true;
+				}
+			}
+		} catch (Exception _e) {
+			Log.e("YUtilAndroid.checkWifiConnection", _e.getMessage());
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param activity
+	 * @return
+	 */
+	public static boolean isOnLine(final Activity activity) {
+		return checkInternetConnection(activity) || checkWifiConnection(activity);
+	}
+	
+
+	/**
+	 * 
+	 * @param activity
+	 * @param wifi
+	 */
+	private static void handleDefaultDialogs(final Activity activity, boolean wifi) {
+		if(activity instanceof BaseActivity) {
+			final BaseActivity baseActivity = (BaseActivity)activity;
+			baseActivity.clearProgressDialogStack();
+			if(wifi) {
+				baseActivity.displayDialogWifiAccess();
+			} else {
+				baseActivity.displayDialogNetworkAccess();
+			}
 		}
 	}
 
