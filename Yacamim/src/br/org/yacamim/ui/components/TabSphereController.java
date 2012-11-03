@@ -2,19 +2,18 @@
  * TabSphereController.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.ui.components;
 
@@ -28,51 +27,51 @@ import android.widget.LinearLayout;
 
 /**
  * Class TabSphereController TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public class TabSphereController {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private Activity activity;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private int idLinearLayoutTabSphereControl;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private int idSelectedTabSphere;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private int idNonSelectedTabSphere;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private int tabAmount;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private int selectedTabPosition;
 
 	/**
-	 * 
+	 *
 	 * @param _activity
 	 * @param _idLinearLayoutTabSphereControl
 	 * @param _idSelectedTabSphere
 	 * @param _idNonSelectedTabSphere
 	 */
-	public TabSphereController( 
+	public TabSphereController(
 			final int _idLinearLayoutTabSphereControl,
 			final int _idSelectedTabSphere,
 			final int _idNonSelectedTabSphere) {
@@ -81,9 +80,9 @@ public class TabSphereController {
 		this.idSelectedTabSphere = _idSelectedTabSphere;
 		this.idNonSelectedTabSphere = _idNonSelectedTabSphere;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param _activity
 	 * @param _selectedTabPosition
 	 * @param _tabAmount
@@ -111,7 +110,7 @@ public class TabSphereController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	protected ImageView buildNewImageView() {

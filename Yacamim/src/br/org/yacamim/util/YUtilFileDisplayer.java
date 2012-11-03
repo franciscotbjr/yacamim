@@ -2,19 +2,18 @@
  * YUtilFileDisplayer.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.util;
 
@@ -30,15 +29,15 @@ import android.widget.Toast;
 
 /**
  * Class utilitária para realizar log de funcionalidades.
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public final class YUtilFileDisplayer {
-	
+
 	/**
-	 * 
+	 *
 	 * @param _activity
 	 * @param _path
 	 * @param _fileExtension
@@ -46,7 +45,7 @@ public final class YUtilFileDisplayer {
 	 * @param _resourceMsgNoApplicationAvailableToDisplay
 	 * @param _resourceMsgFileTypeNotFound
 	 */
-	public static void displayFile(final Activity _activity, final String _path, final String _fileExtension, 
+	public static void displayFile(final Activity _activity, final String _path, final String _fileExtension,
 			final int _resourceMsgFileNotFound,
 			final int _resourceMsgNoApplicationAvailableToDisplay,
 			final int _resourceMsgFileTypeNotFound) {
@@ -58,12 +57,12 @@ public final class YUtilFileDisplayer {
                 final Intent intent = new Intent(Intent.ACTION_VIEW);
                 if(configFileType(_activity, _fileExtension, path, intent, _resourceMsgFileTypeNotFound)) {
                 	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                	
+
                 	displayFile(_activity, _fileExtension, intent, _resourceMsgNoApplicationAvailableToDisplay);
                 }
             } else {
-            	Toast.makeText(_activity, 
-            			_activity.getText(_resourceMsgFileNotFound), 
+            	Toast.makeText(_activity,
+            			_activity.getText(_resourceMsgFileNotFound),
         		        Toast.LENGTH_SHORT).show();
             }
 		} catch (final Exception _e) {
@@ -72,7 +71,7 @@ public final class YUtilFileDisplayer {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _activity
 	 * @param _fileExtension
 	 * @param _intent
@@ -83,14 +82,14 @@ public final class YUtilFileDisplayer {
 		try {
 			_activity.startActivity(_intent);
 		} catch (final ActivityNotFoundException _e) {
-		    Toast.makeText(_activity, 
-		    		_activity.getText(_resourceMsgNoApplicationAvailableToDisplay) + _fileExtension.toUpperCase(), 
+		    Toast.makeText(_activity,
+		    		_activity.getText(_resourceMsgNoApplicationAvailableToDisplay) + _fileExtension.toUpperCase(),
 		        Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _activity
 	 * @param _fileExtension
 	 * @param _path
@@ -106,11 +105,11 @@ public final class YUtilFileDisplayer {
 			_intent.setDataAndType(_path, YEnumMimeType.getMimeType(_fileExtension).getMimeType());
 			return true;
 		} catch (NullPointerException e) {
-			 Toast.makeText(_activity, 
-					 _activity.getText(_resourceMsgFileTypeNotFound) + _fileExtension.toUpperCase(), 
+			 Toast.makeText(_activity,
+					 _activity.getText(_resourceMsgFileTypeNotFound) + _fileExtension.toUpperCase(),
 		        Toast.LENGTH_SHORT).show();
 			 return false;
 		}
 	}
-	
+
 }

@@ -2,19 +2,18 @@
  * DefaultDataServiceHandler.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.http;
 
@@ -39,27 +38,27 @@ import br.org.yacamim.BaseAsyncTask;
 
 /**
  * Hides some complexity on handling an HTTP call.<br/>
- * 
- * Since it is an <tt>AsyncTask</tt>, all HTTP call process runs in background 
+ *
+ * Since it is an <tt>AsyncTask</tt>, all HTTP call process runs in background
  * as the recommended way to do such job on Android.<br/>
- * 
- * As it also is a subclass of <tt>BaseAsyncTask</tt>, the HTTP call process only 
+ *
+ * As it also is a subclass of <tt>BaseAsyncTask</tt>, the HTTP call process only
  * is executed as long as there is available connectivity.<br/>
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
- * 
+ *
  * @see android.os.AsyncTask
  */
 public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, YSimpleHttpResponseAdapter> {
-	
+
 	private YSimpleHttpRequestAdpater ySimpleHttpAdpater;
 	private YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter;
 	private YAsyncHttpResponseHandler asyncHttpResponseHandler;
-	
+
 	/**
-	 * 
+	 *
 	 * @param activity
 	 * @param asyncHttpResponseHandler
 	 */
@@ -67,9 +66,9 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 		super(activity);
 		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
 	@Override
@@ -88,7 +87,7 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 	private YSimpleHttpResponseAdapter doHTTP(YSimpleHttpRequestAdpater... arg0) {
 		try {
 			this.ySimpleHttpAdpater = arg0[0];
-			
+
 			final HttpParams params = new BasicHttpParams();
 			final DefaultHttpClient client = new DefaultHttpClient(params);
 
@@ -96,26 +95,26 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 			if((cookieStore = buildCookieStore()) != null) {
 				client.setCookieStore(cookieStore);
 			}
-            
+
             final HttpPost post = new HttpPost(this.ySimpleHttpAdpater.getUri());
-            
+
             final BasicResponseHandler handler = new BasicResponseHandler();
-            
+
             // Encoding parameters
             post.setEntity(new UrlEncodedFormEntity(this.updateParamsWithTokens(), ySimpleHttpAdpater.getEnconding()));
-                        
+
             // Http call
             final HttpResponse response = client.execute(post);
-            
+
             this.ySimpleHttpResponseAdapter = new YSimpleHttpResponseAdapterImpl()
             .setStatus(response.getStatusLine().getStatusCode())
             .setBody(buildResponseBody(handler, response))
             .addCookies(client.getCookieStore().getCookies());
-            
+
             this.heandleTokens(response, this.ySimpleHttpResponseAdapter);
-            
+
             YCookieProxy.getInstance().addCookies(this.ySimpleHttpResponseAdapter.getCookies());
-			
+
 		} catch (Exception e) {
 			Log.e("YSimpleHttpResponseAdapter.doHTTP", e.getMessage());
 		}
@@ -123,7 +122,7 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	private CookieStore buildCookieStore() {
@@ -143,9 +142,9 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 		}
 		return cookieStore;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	 */
 	@Override
@@ -155,7 +154,7 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 	}
 
 	/**
-	 * 
+	 *
 	 * @param handler
 	 * @param response
 	 * @return
@@ -170,7 +169,7 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	private List<NameValuePair> updateParamsWithTokens() {
@@ -189,19 +188,19 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 	}
 
 	/**
-	 * 
+	 *
 	 * @param response
-	 * @param ySimpleHttpResponseAdapter 
+	 * @param ySimpleHttpResponseAdapter
 	 */
 	private void heandleTokens(final HttpResponse response, final YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter) {
 		if(!handleTokensFromBody(response, ySimpleHttpResponseAdapter)) {
-			// 
+			//
 			this.handleTokensFromHeader(response);
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @param response
 	 */
 	private void handleTokensFromHeader(final HttpResponse response) {
@@ -215,14 +214,14 @@ public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, Y
 	}
 
 	/**
-	 * 
+	 *
 	 * @param response
-	 * @param ySimpleHttpResponseAdapter 
+	 * @param ySimpleHttpResponseAdapter
 	 */
 	private boolean handleTokensFromBody(final HttpResponse response, final YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter) {
 		boolean foundTokens = false;
 		if(this.ySimpleHttpAdpater.getBodyTokenRecoverHandler() != null) {
-			final List<NameValuePair> tokens = 
+			final List<NameValuePair> tokens =
 					this.ySimpleHttpAdpater.getBodyTokenRecoverHandler().recover(
 							ySimpleHttpResponseAdapter.getBody(), this.ySimpleHttpAdpater.getTokens()
 							);

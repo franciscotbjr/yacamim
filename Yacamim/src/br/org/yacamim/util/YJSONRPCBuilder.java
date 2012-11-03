@@ -2,26 +2,25 @@
  * YJSONRPCBuilder.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.util;
 
 /**
- * 
+ *
  * Class YJSONRPCBuilder TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
@@ -35,14 +34,14 @@ public class YJSONRPCBuilder {
 	private boolean objects = false;
 
 	/**
-	 * 
+	 *
 	 */
 	public YJSONRPCBuilder() {
 		super();
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void startJsonRPCStruct() {
 		this.items = false;
@@ -51,7 +50,7 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void startJsonRPCObject() {
 		this.items = false;
@@ -62,7 +61,7 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _objectName
 	 */
 	public void startJsonRPCObjectArray(String _objectName) {
@@ -77,28 +76,28 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void startJsonRPCObjectArray() {
 		this.buffer.append("[");
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void endJsonRPCStruct() {
 		this.buffer.append("}");
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void endJsonRPCObjectArray() {
 		this.buffer.append("]");
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void endJsonRPCObject() {
 		this.buffer.append("}");
@@ -106,7 +105,7 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _itemName
 	 * @param _objectValue
 	 */
@@ -131,7 +130,7 @@ public class YJSONRPCBuilder {
 
 
 	/**
-	 * 
+	 *
 	 * @param _itemName
 	 * @param _objectValue
 	 */
@@ -154,7 +153,7 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _itemName
 	 * @param _builder
 	 */
@@ -167,7 +166,7 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _builder
 	 */
 	public void addJSONRPCBuilder(YJSONRPCBuilder _builder) {
@@ -179,7 +178,7 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 *
 	 * @see java.lang.Object#toString()
 	 */
@@ -189,7 +188,7 @@ public class YJSONRPCBuilder {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean hasItems() {

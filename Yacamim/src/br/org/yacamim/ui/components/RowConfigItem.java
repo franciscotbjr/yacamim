@@ -1,20 +1,19 @@
 /**
  * RowConfigItem.java
- * 
+ *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.ui.components;
 
@@ -22,53 +21,53 @@ import java.io.Serializable;
 
 /**
  * Classe RowConfigItem TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public class RowConfigItem implements Serializable {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5662063538709959966L;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private int formatingType = -1;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private String graphFrom = null;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private int resourceIdTo = -1;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private Condition condition = null;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private InteractionConfig interactionConfig = null;
 
 	/**
-	 * 
+	 *
 	 */
 	public RowConfigItem() {
 		super();
 	}
-	
+
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param graphFrom A graph that will be scanned for the value to be displayed.
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
 	 */
@@ -77,10 +76,10 @@ public class RowConfigItem implements Serializable {
 		this.graphFrom = graphFrom;
 		this.resourceIdTo = resourceIdTo;
 	}
-	
+
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param graphFrom A graph that will be scanned for the value to be displayed.
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
 	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
@@ -91,10 +90,10 @@ public class RowConfigItem implements Serializable {
 		this.resourceIdTo = resourceIdTo;
 		this.formatingType = formatingType;
 	}
-	
+
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param graphFrom A graph that will be scanned for the value to be displayed.
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
 	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
@@ -109,15 +108,15 @@ public class RowConfigItem implements Serializable {
 		this.formatingType = formatingType;
 		this.condition = condition;
 	}
-	
+
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param graphFrom A graph that will be scanned for the value to be displayed.
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
 	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
 	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
-	 * @param interactionConfig 
+	 * @param interactionConfig
 	 */
 	public RowConfigItem(String graphFrom, int resourceIdTo,
 			int formatingType,
@@ -130,14 +129,14 @@ public class RowConfigItem implements Serializable {
 		this.condition = condition;
 		this.interactionConfig = interactionConfig;
 	}
-	
+
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param graphFrom A graph that will be scanned for the value to be displayed.
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
 	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
-	 * @param interactionConfig 
+	 * @param interactionConfig
 	 */
 	public RowConfigItem(String graphFrom, int resourceIdTo, Condition condition,
 			InteractionConfig interactionConfig) {
@@ -147,12 +146,12 @@ public class RowConfigItem implements Serializable {
 		this.condition = condition;
 		this.interactionConfig = interactionConfig;
 	}
-	
+
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
-	 * @param interactionConfig 
+	 * @param interactionConfig
 	 */
 	public RowConfigItem(
 			Condition condition,
@@ -231,9 +230,9 @@ public class RowConfigItem implements Serializable {
 	public void setInteractionConfig(InteractionConfig interactionConfig) {
 		this.interactionConfig = interactionConfig;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isInteraction() {
