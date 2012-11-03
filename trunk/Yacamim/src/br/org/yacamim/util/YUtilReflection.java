@@ -2,19 +2,18 @@
  * YUtilReflection.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.util;
 
@@ -33,82 +32,82 @@ import android.util.Log;
 
 
 /**
- * 
+ *
  * Class YUtilReflection TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public strictfp abstract class YUtilReflection {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final String REGEX_POINT_SEPARATOR = "[.]";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String GET_CLASS_METHOD_NAME = "getClass";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String REGEX_ACCESSORS_GET_SET_IS = "get|set|is";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String CHARACTER_S = "s";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String REGEX_FIRST_CHARACTER_G = "[g]";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String CHARACTER_G = "g";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String REGEX_FIRST_CHARACTER_S = "[s]";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String PREFIX_SET = "set";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String PREFIX_IS = "is";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String PREFIX_GET = "get";
 
 	/**
-	 * 
+	 *
 	 */
 	public static final String SINGLETON_ACESS_METHOD_NAME = "getInstance";
 
 	/**
-	 * 
+	 *
 	 */
 	private static final Object[] deafultParamArrayObjectReflection = new Object[]{};
 
 	/**
-	 * 
+	 *
 	 */
 	private static final Class<?>[] defaultParamArrayClassReflection = new Class[]{};
 
 	/**
-	 * 
+	 *
 	 *
 	 */
 	private YUtilReflection() {
@@ -116,7 +115,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method
 	 * @param objectoTo
 	 * @param methodParams
@@ -128,7 +127,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method
 	 * @param objectTo
 	 * @param methodParams
@@ -145,7 +144,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param propertyName
 	 * @param object
 	 * @return
@@ -174,7 +173,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param propertyName
 	 * @param propertyValue
 	 * @param object
@@ -201,14 +200,14 @@ public strictfp abstract class YUtilReflection {
 						parameterClass = boolean.class;
 					}
 					Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(propertyName), object.getClass(), new Class<?>[]{parameterClass});
-	
+
 					YUtilReflection.invokeMethod(setMethod, object, propertyValue);
 				} else {
 					String recoveredProperty = propertyName.substring(0, propertyName.lastIndexOf(REGEX_POINT_SEPARATOR));
 					Object currentObject = getPropertyValue(recoveredProperty, object);
-					
+
 					String propertyAttributes = propertyName.substring(propertyName.lastIndexOf(REGEX_POINT_SEPARATOR)+1);
-					
+
 					setValueToProperty(propertyAttributes, propertyValue, currentObject);
 				}
 			}
@@ -218,7 +217,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -243,7 +242,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -268,21 +267,21 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
 	public static List<Method> getGetMethodListSortedByName(Class<?> classType) {
 		try {
 			final List<Method> getMethods = getGetMethodList(classType);
-			
+
 			final List<String> getMethodNames = new ArrayList<String>();
-			
+
 			for(final Method method : getMethods) {
 				getMethodNames.add(method.getName());
 			}
 			Collections.sort(getMethodNames);
-			
+
 			final List<Method> sortedGetMethods = new ArrayList<Method>();
 			for(String methodName : getMethodNames) {
 				for(Method method : getMethods) {
@@ -300,7 +299,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -328,7 +327,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -356,7 +355,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -385,7 +384,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param setMethodName
 	 * @return
 	 */
@@ -394,7 +393,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method
 	 * @return
 	 */
@@ -406,7 +405,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param nomeMetodoGet
 	 * @return
 	 */
@@ -415,7 +414,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method
 	 * @return
 	 */
@@ -427,7 +426,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param propertyName
 	 * @return
 	 */
@@ -436,7 +435,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param propertyName
 	 * @param classType
 	 * @return
@@ -450,7 +449,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param propertyName
 	 * @return
 	 */
@@ -459,7 +458,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param propertyName
 	 * @param _accessorMethodName
 	 * @return
@@ -473,7 +472,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param getMethodName
 	 * @param classType
 	 * @return
@@ -488,7 +487,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param setMethodName
 	 * @param classType
 	 * @param params
@@ -504,7 +503,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param setMethodName
 	 * @param classType
 	 * @return
@@ -519,7 +518,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classFullyQualifiedName
 	 * @return
 	 * @throws ClassNotFoundException
@@ -529,7 +528,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param fullyQualifiedName
 	 * @return
 	 */
@@ -538,7 +537,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -562,7 +561,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @param className
 	 * @return
@@ -577,7 +576,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param accessorMethodName
 	 * @return
 	 */
@@ -600,7 +599,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method
 	 * @return
 	 */
@@ -615,7 +614,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
     /**
-     * 
+     *
      * @param classType
      * @return
      */
@@ -640,9 +639,9 @@ public strictfp abstract class YUtilReflection {
             return new ArrayList<String>();
         }
     }
-    
+
 	/**
-	 * 
+	 *
 	 * @param collection
 	 * @param value
 	 */
@@ -657,7 +656,7 @@ public strictfp abstract class YUtilReflection {
 
 
 	/**
-	 * 
+	 *
 	 * @param collectionType
 	 * @return
 	 */
@@ -670,31 +669,31 @@ public strictfp abstract class YUtilReflection {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param collectionType
 	 * @return
 	 */
 	public static boolean isCollection(Class<?> collectionType) {
-		if(collectionType.getName().equals("java.util.List") 
+		if(collectionType.getName().equals("java.util.List")
 				|| java.util.Set.class.isInstance("java.util.Set")) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
 	public static List<Method> getDeclaredMethodsGetList(Class<?> classType) {
 		try {
 			List<Method> getMethods = new ArrayList<Method>();
-			
+
 			Method[] methods = classType.getDeclaredMethods();
-			
+
 			for(Method method : methods) {
 				if(method.getName().startsWith(PREFIX_GET)) {
 					getMethods.add(method);
@@ -709,7 +708,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method
 	 * @param objectTo
 	 * @return
@@ -720,7 +719,7 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _field
 	 * @param classType
 	 * @return
@@ -733,9 +732,9 @@ public strictfp abstract class YUtilReflection {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -753,9 +752,9 @@ public strictfp abstract class YUtilReflection {
 		}
 		return new HashMap<Field, Method>();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
@@ -779,9 +778,9 @@ public strictfp abstract class YUtilReflection {
 		}
 		return new HashMap<Field, Object>();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
@@ -806,9 +805,9 @@ public strictfp abstract class YUtilReflection {
 		}
 		return new HashMap<Field, Method>();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
@@ -833,9 +832,9 @@ public strictfp abstract class YUtilReflection {
 		}
 		return new HashMap<Field, Object>();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
@@ -849,39 +848,39 @@ public strictfp abstract class YUtilReflection {
 			Log.e("YUtilReflection.getGenericSuperclassInstance", e.getMessage());
 			return null;
 		}
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
 	public static Class<?> getGenericSuperclassClass(final Class<?> classType) {
 		try {
 			final ParameterizedType parameterizedType = (ParameterizedType)classType.getGenericSuperclass();
-			
+
 			return (Class<?>) parameterizedType.getActualTypeArguments()[0];
 		} catch (Exception e) {
 			Log.e("YUtilReflection.getGenericSuperclassClass", e.getMessage());
 			return null;
 		}
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @param propertyName
 	 */
 	public static void setSingleWhiteSpaceBetweenWords(final Object object, final String propertyName) {
-		
+
 		YUtilReflection.setValueToProperty(
 				propertyName,
 				YUtilString.cleanMultipleWhiteSpaces((String)YUtilReflection.getPropertyValue(propertyName, object)),
 				object
 		);
-		
+
 	}
-	
+
 }

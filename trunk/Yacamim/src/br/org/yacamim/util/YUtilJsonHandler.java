@@ -2,19 +2,18 @@
  * YUtilJsonHandler.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.util;
 
@@ -42,14 +41,14 @@ import br.org.yacamim.entity.BaseEntity;
 public final class YUtilJsonHandler {
 
 	/**
-	 * 
+	 *
 	 */
 	private YUtilJsonHandler() {
 		super();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param _baseActivity
 	 * @param _httpEntity
 	 * @return
@@ -58,23 +57,23 @@ public final class YUtilJsonHandler {
 		final List<BaseEntity> objects = new ArrayList<BaseEntity>();
 		try {
 			InputStream inputStream = _httpEntity.getContent();
-			
+
 			String strJSON = YUtilIO.convertToStringBuilder(inputStream).toString();
-			
+
 			final JSONObject root = new JSONObject(strJSON);
-			
+
 			final YJSONDictionary yJSONDictionary = buildDictionary(root, "d");
-			
+
 			final JSONArray jsonObjects = root.getJSONArray("r");
-			
+
 			if(jsonObjects != null) {
 				for(int i = 0; i < jsonObjects.length(); i++) {
-					
+
 					objects.add(getObject(jsonObjects.getJSONObject(i), yJSONDictionary));
-					
+
 				}
 			}
-			
+
 		} catch (Exception _e) {
 			Log.e("YUtilJsonHandler.getList", _e.getMessage());
 		}
@@ -89,63 +88,63 @@ public final class YUtilJsonHandler {
 		Object objectBE = null;
 		try {
 			final JSONArray names = _object.names();
-			
+
 			if(names != null) {
 				final String classServiceName = _object.getString("c");
 				final String classLocalName = YacamimState.getInstance().getMapeamentoClasses().get(_dicionarioJSON.get(classServiceName));
-				
+
 				final Class<?> classBE = Class.forName(classLocalName);
-				
+
 				objectBE = classBE.newInstance();
-				
+
 				for(int i = 0; i < names.length(); i++) {
-					
+
 					final String name = names.getString(i);
 					if(!name.equalsIgnoreCase("c")) {
-						
+
 						if(isObject(_object, name)) {
-							
+
 							setValueToJsonObject(_object, _dicionarioJSON, objectBE, name);
-							
-						} else 
+
+						} else
 						if (isArray(_object, name)) {
 							final JSONArray jsonObjects = _object.getJSONArray(name);
-							
+
 							if(jsonObjects != null) {
 								final String nomePropriedade = _dicionarioJSON.get(name);
 
 								final List<BaseEntity> baseEntities = new ArrayList<BaseEntity>();
 								for(int j = 0; j < jsonObjects.length(); j++) {
-									
-									
+
+
 									final BaseEntity baseEntity = getObject(jsonObjects.getJSONObject(j), _dicionarioJSON);
-									
+
 									baseEntities.add(baseEntity);
 								}
-								
+
 								try {
 									YUtilReflection.invokeMethod(
 											YUtilReflection.getSetMethod(
-													YUtilReflection.getSetMethodName(nomePropriedade), 
-													classBE, 
-													new Class[]{List.class}), 
-													objectBE, 
+													YUtilReflection.getSetMethodName(nomePropriedade),
+													classBE,
+													new Class[]{List.class}),
+													objectBE,
 													baseEntities);
 								} catch (Exception e) {
 									Log.e("YUtilJsonHandler.getObject", e.getMessage());
 								}
-								
-								
+
+
 							}
-							
+
 						} else {
-							setValueToJSONProperty(_object, _dicionarioJSON, objectBE, classBE, name); 
+							setValueToJSONProperty(_object, _dicionarioJSON, objectBE, classBE, name);
 						}
 
 					}
-					
+
 				}
-				
+
 			}
 		} catch (Exception _e) {
 			Log.e("YUtilJsonHandler.getObject", _e.getMessage());
@@ -166,9 +165,9 @@ public final class YUtilJsonHandler {
 			final String _name) throws JSONException {
 		try {
 			final String propertyName = _jsonDictionary.get(_name);
-			
+
 			final BaseEntity baseEntity = getObject(_object.getJSONObject(_name), _jsonDictionary);
-			
+
 			YUtilReflection.setValueToProperty(propertyName, baseEntity, _objectBE);
 		} catch (Exception _e) {
 			Log.e("YUtilJsonHandler.setValueToJsonObject", _e.getMessage());
@@ -190,17 +189,17 @@ public final class YUtilJsonHandler {
 			ParseException {
 		try {
 			final String value = _object.getString(_name);
-			
+
 			final String propertyName = _jsonDictionary.get(_name);
-			
+
 			final Class<?> valueType = YUtilReflection.getGetMethod(YUtilReflection.getGetMethodName(propertyName), _classBE).getReturnType();
-			
+
 			if(valueType.equals(String.class)) {
 				YUtilReflection.setValueToProperty(propertyName, value, _objectBE);
 			} else
 			if(valueType.equals(Long.class)) {
 				YUtilReflection.setValueToProperty(propertyName, Long.valueOf(value), _objectBE);
-			} else 
+			} else
 			if(valueType.equals(Integer.class)) {
 				YUtilReflection.setValueToProperty(propertyName, Integer.valueOf(value), _objectBE);
 			} else
@@ -213,23 +212,23 @@ public final class YUtilJsonHandler {
 				} else {
 					YUtilReflection.setValueToProperty(propertyName, YConstants.NO, _objectBE);
 				}
-			} else 
+			} else
 			if(valueType.equals(long.class)) {
 				YUtilReflection.setValueToProperty(propertyName, Long.parseLong(value), _objectBE);
-			} else 
+			} else
 			if(valueType.equals(int.class)) {
 				YUtilReflection.setValueToProperty(propertyName, Integer.parseInt(value), _objectBE);
-			} else 
+			} else
 			if(valueType.equals(double.class)) {
 				YUtilReflection.setValueToProperty(propertyName, Double.parseDouble(value), _objectBE);
-			} else 
+			} else
 			if(valueType.equals(java.util.Date.class)) {
 				String strDateTime = value;
 				if(!value.contains(":")) {
 					strDateTime += " 00:00:00";
 				}
 				YUtilReflection.setValueToProperty(propertyName, YUtilDate.getSimpleDateFormatDateTime().parse(strDateTime), _objectBE);
-			} else 
+			} else
 			if(valueType.equals(boolean.class)) {
 				if(Boolean.parseBoolean(value)) {
 					YUtilReflection.setValueToProperty(propertyName, YConstants.YES, _objectBE);
@@ -240,11 +239,11 @@ public final class YUtilJsonHandler {
 		} catch (Exception _e) {
 			Log.e("YUtilJsonHandler.setValueToJSONProperty", _e.getMessage());
 		}
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param _object
 	 * @param _name
 	 * @return
@@ -257,9 +256,9 @@ public final class YUtilJsonHandler {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param _object
 	 * @param _name
 	 * @return
@@ -281,9 +280,9 @@ public final class YUtilJsonHandler {
 		final YJSONDictionary yJSONDictionary = new YJSONDictionary();
 		try {
 			final JSONObject dictionaryObject = _root.getJSONObject(_dictionaryName);
-			
+
 			final JSONArray names = dictionaryObject.names();
-			
+
 			if(names != null) {
 				for(int i = 0; i < names.length(); i++) {
 					yJSONDictionary.add(names.getString(i), dictionaryObject.getString(names.getString(i)));
@@ -294,5 +293,5 @@ public final class YUtilJsonHandler {
 		}
 		return yJSONDictionary;
 	}
-	
+
 }

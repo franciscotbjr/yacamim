@@ -2,19 +2,18 @@
  * BaseTimePickerDialog.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.ui.components;
 
@@ -26,18 +25,18 @@ import br.org.yacamim.util.YUtilDate;
 
 /**
  * Class BaseTimePickerDialog TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public class BaseTimePickerDialog extends TimePickerDialog {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private boolean updateTime;
-	
+
 	/**
 	 * @param context
 	 * @param callBack
@@ -46,7 +45,7 @@ public class BaseTimePickerDialog extends TimePickerDialog {
 	 * @param is24HourView
 	 */
 	public BaseTimePickerDialog(final Context _context, final BaseOnTimeSetListener _callBack,
-			final int _hourOfDay, final int _minute, final boolean _is24HourView, 
+			final int _hourOfDay, final int _minute, final boolean _is24HourView,
 			final int _idResourceTituloJanela, final boolean _updateTime) {
 		super(_context, _callBack, _hourOfDay, _minute, _is24HourView);
 		_callBack.setTimePickerDialog(this);
@@ -69,9 +68,9 @@ public class BaseTimePickerDialog extends TimePickerDialog {
 		_callBack.setTimePickerDialog(this);
 		this.setTitle(_context.getText(_idResourceTituloJanela));
 	}
-	
+
 	/**
-	 * 
+	 *
 	 *
 	 * @see android.app.Dialog#onAttachedToWindow()
 	 */
@@ -83,5 +82,5 @@ public class BaseTimePickerDialog extends TimePickerDialog {
 			super.updateTime(calendarHoraria.get(Calendar.HOUR_OF_DAY), calendarHoraria.get(Calendar.MINUTE));
 		}
 	}
-	
+
 }

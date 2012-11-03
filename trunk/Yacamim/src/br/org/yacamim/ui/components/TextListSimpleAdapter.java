@@ -2,19 +2,18 @@
  * TextListSimpleAdapter.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.ui.components;
 
@@ -36,33 +35,33 @@ import br.org.yacamim.util.YUtilString;
 
 /**
  * Class TextListSimpleAdapter TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public class TextListSimpleAdapter extends SimpleAdapter {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private Activity activity;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private AdapterConfig adapterConfig;
 
 	/**
-	 * 
+	 *
 	 * @param _activity
 	 * @param _context
 	 * @param _data
 	 * @param _adapterConfig
 	 */
-	public TextListSimpleAdapter(final Activity _activity, 
-			final Context _context, 
-			final List<? extends Map<String, Object>> _data, 
+	public TextListSimpleAdapter(final Activity _activity,
+			final Context _context,
+			final List<? extends Map<String, Object>> _data,
 			final AdapterConfig _adapterConfig) {
 		super(_context, _data, 0, null, null);
 		this.activity = _activity;
@@ -79,11 +78,11 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 		try {
 			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
 			final Object object = (Object) data.get(YConstants.OBJECT);
-			
+
 			final RowConfig rowConfig = this.selectRowConfig(_position, object);
-			
+
 			convertView = this.activity.getLayoutInflater().inflate(rowConfig.getResource(), null);
-			 
+
 			if(object != null && rowConfig.getRowConfigItems() != null) {
 				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
 					this.fillField(convertView, object, rowConfigItem);
@@ -156,7 +155,7 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 						value = YUtilFormatting.formatData(value);
 					}
 				}
-			} else 
+			} else
 			if(_value instanceof java.util.Date) {
 				if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
 					value = YUtilFormatting.formatData((java.util.Date)_value);
@@ -181,5 +180,5 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 	public AdapterConfig getAdapterConfig() {
 		return this.adapterConfig;
 	}
-	
+
 }

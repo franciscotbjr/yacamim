@@ -2,19 +2,18 @@
  * ComplexListSimpleAdapter.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.ui.components;
 
@@ -36,41 +35,41 @@ import br.org.yacamim.util.YConstants;
 
 /**
  * Class ComplexListSimpleAdapter TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public static final String EVENT_HINT = "EVENT_HINT";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private BaseListActivity baseListActivity;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private boolean noListModelSelection = false;
-	
+
 	/**
 	 * <br/>
 	 * The <tt>_listModelSelection</tt> parameter is meant to be used when each row of a <tt>ListView</tt> has a <tt>CheckBox</tt>. <br/>
 	 * So each <tt>CheckBox</tt> selection action will result in a new item inside the <tt>_listModelSelection</tt>. For each deselection <br/>
 	 * action, an item will be removed from <tt>_listModelSelection</tt>.<br/><br/>
 	 * <br/>
-	 * 
-	 * 
+	 *
+	 *
 	 * @param _baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
 	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
 	 * @param _adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity, 
+	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity,
 			List<? extends Map<String, Object>> _data,
 			AdapterConfig _adapterConfig) {
 		super(_baseListActivity, _baseListActivity.getApplicationContext(), _data, _adapterConfig);
@@ -84,15 +83,15 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * So each <tt>CheckBox</tt> selection action will result in a new item inside the <tt>_listModelSelection</tt>. For each deselection <br/>
 	 * action, an item will be removed from <tt>_listModelSelection</tt>.<br/><br/>
 	 * <br/>
-	 * 
-	 * 
+	 *
+	 *
 	 * @param _baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
-	 * @param _context An instance of <tt>android.content.Context</tt>. 
+	 * @param _context An instance of <tt>android.content.Context</tt>.
 	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
 	 * @param _adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity, 
-			Context _context, 
+	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity,
+			Context _context,
 			List<? extends Map<String, Object>> _data,
 			AdapterConfig _adapterConfig) {
 		super(_baseListActivity, _context, _data, _adapterConfig);
@@ -102,7 +101,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 
 
 	/**
-	 * 
+	 *
 	 */
 	protected void configNoListModelSelection() {
 		try {
@@ -111,8 +110,8 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			Log.e("ComplexListSimpleAdapter.configNoListModelSelection", _e.getMessage());
 		}
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @see android.widget.SimpleAdapter#getView(int, android.view.View, android.view.ViewGroup)
@@ -123,11 +122,11 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 		try {
 			/* calls getView from superclasse TextListSimpleAdapter */
 			_convertView = super.getView(_position, _convertView, _parent);
-			
+
 			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
 			final Object object = (Object) data.get(YConstants.OBJECT);
 			final RowConfig rowConfig = super.selectRowConfig(_position, object);
-			
+
 			if(_convertView != null && rowConfig != null) {
 				_convertView.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -138,8 +137,8 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 					}
 				});
 			}
-			
-			 
+
+
 			if(object != null && rowConfig.getRowConfigItems() != null) {
 				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
 					if(rowConfigItem.getInteractionConfig() != null && rowConfigItem.getInteractionConfig().getResourceTypeForInteraction() != null) {
@@ -158,9 +157,9 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 		}
 		return _convertView;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param resourcesHint
 	 * @return
 	 */
@@ -178,7 +177,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _convertView
 	 * @param _object
 	 * @param _rowConfigItem
@@ -202,7 +201,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _convertView
 	 * @param _object
 	 * @param _rowConfigItem
@@ -226,7 +225,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _convertView
 	 * @param _object
 	 * @param _rowConfigItem
@@ -250,7 +249,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _object
 	 * @param _checkBox
 	 */

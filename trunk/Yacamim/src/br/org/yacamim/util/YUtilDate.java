@@ -2,19 +2,18 @@
  * YUtilDate.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.util;
 
@@ -28,20 +27,20 @@ import java.util.TimeZone;
 import br.org.yacamim.entity.GpsLocationInfo;
 
 /**
- * 
+ *
  * Class YUtilDate TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public strictfp abstract class YUtilDate {
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 */
 	public static final Locale LOCALE_BRASIL;
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 */
@@ -61,7 +60,7 @@ public strictfp abstract class YUtilDate {
 	 * <strong>Brazilian users only</strong>.<br/>
 	 */
 	public static final String GMT_PADRAO_BRASIL = "GMT-3:00";
-	
+
 	static {
 		LOCALE_BRASIL = new Locale(ISO_LANGUAGE_BRASIL, ISO_COUNTRY_BRASIL);
 
@@ -69,12 +68,12 @@ public strictfp abstract class YUtilDate {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private YUtilDate() {
 		super();
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @return
@@ -82,7 +81,7 @@ public strictfp abstract class YUtilDate {
 	public static Locale getLocaleBrasil() {
 		return LOCALE_BRASIL;
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @return
@@ -90,7 +89,7 @@ public strictfp abstract class YUtilDate {
 	public static TimeZone getTimeZoneBrasil() {
 		return TIME_ZONE_PADRAO_BRASIL;
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @return
@@ -98,7 +97,7 @@ public strictfp abstract class YUtilDate {
 	public static String getCurrentSQLLiteDateTime() {
 		return getSimpleDateFormatDateTime().format(getCalendarBrasil().getTime());
 	}
-	
+
 
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
@@ -115,7 +114,7 @@ public strictfp abstract class YUtilDate {
 	public static SimpleDateFormat getSimpleDateFormatHorario() {
 		return new SimpleDateFormat("HH:mm:ss", LOCALE_BRASIL);
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @return
@@ -131,7 +130,7 @@ public strictfp abstract class YUtilDate {
 	public static SimpleDateFormat getSimpleDateFormatData() {
 		return new SimpleDateFormat("dd/MM/yyyy", LOCALE_BRASIL);
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @param _value
@@ -146,7 +145,7 @@ public strictfp abstract class YUtilDate {
 		}
 		return retorno;
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @param _value
@@ -161,7 +160,7 @@ public strictfp abstract class YUtilDate {
 		}
 		return retorno;
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @param _value
@@ -176,7 +175,7 @@ public strictfp abstract class YUtilDate {
 		}
 		return retorno;
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @return
@@ -202,10 +201,10 @@ public strictfp abstract class YUtilDate {
 	public static Calendar getCalendarBrasil() {
 		return Calendar.getInstance(getLocaleBrasil());
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
-	 * 
+	 *
 	 * @param _millisecond
 	 * @param _second
 	 * @param _minute
@@ -216,10 +215,10 @@ public strictfp abstract class YUtilDate {
 	 * @return
 	 */
 	public static Calendar getFilledCleanedCalendar(
-			final int _millisecond, final int _second, final int _minute, 
+			final int _millisecond, final int _second, final int _minute,
 			final int _hourOfDay, final int _dayOfMonth, final int _month, final int _year) {
 		final Calendar calendar = getCleanCalendar();
-		
+
 		calendar.set(Calendar.MILLISECOND, _millisecond);
 		calendar.set(Calendar.SECOND, _second);
 		calendar.set(Calendar.MINUTE, _minute);
@@ -227,14 +226,14 @@ public strictfp abstract class YUtilDate {
 		calendar.set(Calendar.DAY_OF_MONTH, _dayOfMonth);
 		calendar.set(Calendar.MONTH, _month);
 		calendar.set(Calendar.YEAR, _year);
-		
+
 		return calendar;
 	}
-	
+
 
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
-	 * 
+	 *
 	 * @param gpsLocationInfo
 	 * @return
 	 */
@@ -246,7 +245,7 @@ public strictfp abstract class YUtilDate {
 
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
-	 * 
+	 *
 	 * @param gpsLocationInfo
 	 * @return
 	 */
@@ -259,5 +258,5 @@ public strictfp abstract class YUtilDate {
 		}
 		return calendar;
 	}
-	
+
 }

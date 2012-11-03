@@ -2,19 +2,18 @@
  * YUtilParcel.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.util;
 
@@ -30,9 +29,9 @@ import android.util.Log;
 import br.org.yacamim.entity.YWriteToParcel;
 
 /**
- * 
+ *
  * Class BaseEntity TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
@@ -40,14 +39,14 @@ import br.org.yacamim.entity.YWriteToParcel;
 public final class YUtilParcel {
 
 	/**
-	 * 
+	 *
 	 */
 	private YUtilParcel() {
 		super();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param yParcel
 	 * @param parcel
 	 */
@@ -60,10 +59,10 @@ public final class YUtilParcel {
 			Log.e("YUtilParcel.fillValueFromParcel", e.getMessage());
 		}
 	}
-	
+
 
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @param parcel
 	 */
@@ -75,70 +74,70 @@ public final class YUtilParcel {
 					String propertyName = YUtilReflection.getPropertyName(getMethod);
 					if(getMethod.getReturnType().equals(String.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readString(), 
+								propertyName,
+								parcel.readString(),
 								object);
 					} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readByte(), 
+								propertyName,
+								parcel.readByte(),
 								object);
 					} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								Short.valueOf(parcel.readInt()+""), 
+								propertyName,
+								Short.valueOf(parcel.readInt()+""),
 								object);
 					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readInt(), 
+								propertyName,
+								parcel.readInt(),
 								object);
 					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readLong(), 
+								propertyName,
+								parcel.readLong(),
 								object);
 					} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readFloat(), 
+								propertyName,
+								parcel.readFloat(),
 								object);
 					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readDouble(), 
+								propertyName,
+								parcel.readDouble(),
 								object);
 					} else if (getMethod.getReturnType().equals(Boolean.class) || getMethod.getReturnType().equals(boolean.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readInt() == 1, 
+								propertyName,
+								parcel.readInt() == 1,
 								object);
 					} else if (getMethod.getReturnType().equals(Date.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								new Date(parcel.readLong()), 
+								propertyName,
+								new Date(parcel.readLong()),
 								object);
 					} else if (getMethod.getReturnType().equals(Bundle.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readBundle(), 
+								propertyName,
+								parcel.readBundle(),
 								object);
 					} else if (getMethod.getReturnType().equals(Serializable.class)) {
 						YUtilReflection.setValueToProperty(
-								propertyName, 
-								parcel.readSerializable(), 
+								propertyName,
+								parcel.readSerializable(),
 								object);
 					}
-					
+
 				}
 			}
 		} catch (Exception e) {
 			Log.e("YUtilParcel.fillAttributesFromParcel", e.getMessage());
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
@@ -222,7 +221,7 @@ public final class YUtilParcel {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @param parcel
 	 * @return
@@ -249,7 +248,7 @@ public final class YUtilParcel {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @param parcel
 	 * @param getMethod

@@ -2,19 +2,18 @@
  * YUtilValidations.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.util;
 
@@ -25,9 +24,9 @@ import android.util.Log;
 import br.org.yacamim.entity.BaseEntity;
 
 /**
- * 
+ *
  * Class YUtilValidations TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
@@ -35,15 +34,15 @@ import br.org.yacamim.entity.BaseEntity;
 public strictfp abstract class YUtilValidations {
 
 	/**
-	 * 
+	 *
 	 */
 	private YUtilValidations() {
 		super();
 	}
-	
+
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
-	 * 
+	 *
 	 * @param _strCpfParam
 	 * @return
 	 */
@@ -107,9 +106,9 @@ public strictfp abstract class YUtilValidations {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param _email
 	 * @return
 	 */
@@ -124,10 +123,10 @@ public strictfp abstract class YUtilValidations {
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param _number
 	 * @param _digit
 	 * @return
@@ -141,36 +140,36 @@ public strictfp abstract class YUtilValidations {
 		if(!YUtilString.isInteger(strDigit)) {
 			throw new Exception("Dígito contém caracteres inválidos!");
 		}
-		
-		
+
+
 		int mod10 = mod10(_number);
 		int digito = Integer.valueOf(strDigit);
-		
+
 		return mod10 == digito;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param _number
 	 * @return
 	 * @throws Exception
 	 */
-	public static int mod10(String _number) throws Exception {  
-		
+	public static int mod10(String _number) throws Exception {
+
 		if(YUtilString.isEmptyString(_number)) {
 			throw new Exception("String vazia ou null!");
 		}
 		if(!YUtilString.isInteger(_number)) {
 			throw new Exception("String contém caracteres inválidos!");
 		}
-		
+
 	    int multi = 2;
 	    int posicao1 = _number.length()-1;
 	    int posicao2;
 	    int acumula = 0;
 	    int resultado;
 	    int dac = 0;
-	    
+
 	    while (posicao1 >= 0) {
 	        resultado = Integer.parseInt(_number.substring(posicao1,posicao1+1)) * multi;
 	        posicao2  = Integer.toString(resultado).length()-1;
@@ -179,28 +178,28 @@ public strictfp abstract class YUtilValidations {
 	            acumula += Integer.parseInt(Integer.toString(resultado).substring(posicao2,posicao2+1));
 	            posicao2--;
 	        }
-	          
+
 	        if (multi == 2) {
 	            multi = 1;
 	        } else {
 	            multi = 2;
 	        }
-	         
+
 	        posicao1--;
 	    }
-	  
+
 	    dac = acumula % 10;
 	    dac = 10 - dac;
-	      
+
 	    if (dac == 10) {
 	        dac = 0;
 	    }
-	    
+
 	    return dac;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _entity
 	 * @return
 	 */
@@ -209,6 +208,6 @@ public strictfp abstract class YUtilValidations {
 			return false;
 		}
 		return true;
-	} 
+	}
 
 }

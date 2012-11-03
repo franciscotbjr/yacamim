@@ -2,19 +2,18 @@
  * DefaultDataServiceHandler.java
  *
  * Copyright 2012 yacamim.org.br
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package br.org.yacamim.http;
 
@@ -28,13 +27,13 @@ import org.apache.http.message.BasicNameValuePair;
 
 /**
  * Class BaseAsyncTask TODO
- * 
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater {
-	
+
 	private String enconding = "UTF-8";
 	private String uri;
 	private List<NameValuePair> parameters;
@@ -46,16 +45,16 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#getUri()
 	 */
 	@Override
 	public String getUri() {
 		return this.uri;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#getEnconding()
 	 */
 	@Override
@@ -64,7 +63,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#getParameters()
 	 */
 	@Override
@@ -73,7 +72,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#setUri(java.lang.String)
 	 */
 	@Override
@@ -81,9 +80,9 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 		this.uri = uri;
 		return this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#addParams(java.util.List)
 	 */
 	@Override
@@ -94,7 +93,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#addParam(org.apache.http.NameValuePair)
 	 */
 	@Override
@@ -105,7 +104,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#addParam(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -116,7 +115,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#setEncondig(java.lang.String)
 	 */
 	@Override
@@ -124,9 +123,9 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 		this.enconding = enconding;
 		return this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private void lazyParameters() {
 		if(this.parameters == null) {
@@ -135,7 +134,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#manageToken(java.lang.String)
 	 */
 	@Override
@@ -144,9 +143,9 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 		this.tokens.add(token);
 		return this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#getTokens()
 	 */
 	public Set<String> getTokens() {
@@ -155,7 +154,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void lazyTokens() {
 		if(this.tokens ==  null) {
@@ -164,7 +163,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#setBodyTokenRecoverHandler(br.org.yacamim.http.YBodyTokenRecoverHandler)
 	 */
 	@Override
@@ -175,7 +174,7 @@ public class YSimpleHttpRequestAdpaterImpl implements YSimpleHttpRequestAdpater 
 	}
 
 	/**
-	 * 
+	 *
 	 * @see br.org.yacamim.http.YSimpleHttpRequestAdpater#getBodyTokenRecoverHandler()
 	 */
 	@Override
