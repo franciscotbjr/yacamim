@@ -1,5 +1,7 @@
 * [Introduction Introduction]
 
+* [Base_Activity Base Activity]
+
 * [Persistence Persistence]
 
 * [UI_Components UI Components]
