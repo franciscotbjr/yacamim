@@ -2,9 +2,22 @@
 
 = Introduction =
 
-....
+Yacamim BaseActivity class provides a number of built in solutions designed to shorten your development time and effort.
 
 
 = Details =
 
-......
+In addition to its built in utilities, Yacamim BaseActivity is integrated to Yacamim framework. Being so, when you extends Yacamim BaseActivity you will get more from Yacamim framework as it is detailed below.
+
+=== Features ===
+
+...
+
+=== Utilities ===
+
+...
+
+=== Samples ===
+
+
+...
