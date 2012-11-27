@@ -17,6 +17,8 @@
  */
 package br.org.yacamim.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.PK;
@@ -46,6 +48,13 @@ public class Session extends BaseEntity {
 		super();
 	}
 
+	/**
+	 *
+	 */
+	public Session(Parcel parcel) {
+		super(parcel);
+	}
+	
 	/**
 	 *
 	 */
@@ -84,7 +93,19 @@ public class Session extends BaseEntity {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-
+	
+	/**
+	 * 
+	 */
+	public static final Parcelable.Creator<Session> CREATOR = new Parcelable.Creator<Session>() {
+        public Session createFromParcel(Parcel pc) {
+            return new Session(pc);
+        }
+        public Session[] newArray(int size) {
+            return new Session[size];
+        }
+	};
+	
 	/**
 	 *
 	 * @see java.lang.Object#hashCode()

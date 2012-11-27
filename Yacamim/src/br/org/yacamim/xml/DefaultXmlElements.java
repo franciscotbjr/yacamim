@@ -27,6 +27,9 @@ package br.org.yacamim.xml;
 public enum DefaultXmlElements {
 
 	/* Elements */
+	ELEMENT_ENTITY_MAPPING("entity-mapping"),
+	ELEMENT_PACKAGE("package"),
+	ELEMENT_ENTITY("entity"),
 	ELEMENT_DB_SCRIPT("db-script"),
 	ELEMENT_TABLES("tables"),
 	ELEMENT_CREATE_TABLE("create-table"),
@@ -45,6 +48,7 @@ public enum DefaultXmlElements {
 
 
 	/* Attribute */
+	ATTR_NAME("name"),
 	ATTR_VERSION("version"),
 	ATTR_ID("id"),
 	ATTR_URL("url"),
