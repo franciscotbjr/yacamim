@@ -39,7 +39,7 @@ import br.org.yacamim.util.YUtilString;
 public final class PreferencesAdapter {
 
 	/**
-	 * Mapeamento das preferências
+	 * Preferences mapping
 	 */
 	// "__y_Prefs_#_token_@_yakamim.org.br_::"
 	private static final String PREF_YACAMIM_PREFS = YacamimState.getInstance().getPreferencesToken();

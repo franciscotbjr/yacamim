@@ -19,6 +19,8 @@ package br.org.yacamim.entity;
 
 import java.util.Date;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.PK;
@@ -56,6 +58,13 @@ public class User extends BaseEntity {
 		super();
 		this.firstAccess = YConstants.NO;
 		this.logonFail = YConstants.NO;
+	}
+	
+	/**
+	 *
+	 */
+	public User(Parcel parcel) {
+		super(parcel);
 	}
 
 	/**
@@ -226,7 +235,19 @@ public class User extends BaseEntity {
 	public void setLastAcces(Date lastAcces) {
 		this.lastAcces = lastAcces;
 	}
-
+	
+	/**
+	 * 
+	 */
+	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel pc) {
+            return new User(pc);
+        }
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+	};
+	
 	/**
 	 *
 	 * @see java.lang.Object#hashCode()
