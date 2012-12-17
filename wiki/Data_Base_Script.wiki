@@ -1,0 +1,25 @@
+#summary How to Create SQLite Data Base
+
+= Introduction =
+
+If your app use SQLite persistence, then Yacamim may help you to manage it by creating it to you or by easily gluing your OO Entities to your Data Base Tables.
+
+= Details =
+
+Yacamim does not require you to implement any annotation so (in order to) you can take advantage of its persistence features.
+You are free to create by your self your won data base script in order to get your SQLite data base for your app. But, you still can leave all the job to Yacamim. It will create your tables based on your mapped Entities. Once you decide to use your won written script to create your app date base, you will be forced to use annotation in your antities. Thats the way to glue your app entities to your data base.
+we only advise you about your primary key's. You need to do one of the following:
+
+ 
+ # - Use @Id annotation at the getter witch returns you PK value.
+ # - If you do not follow rule number 1 above, Yacamim will use the "getId" method it finds (if any exists).
+ # - In case no use of @Id ou no "getId" method found, then, there will not be created a primaty key on your script.
+
+Yacamim behaves like this on "pk" definition:
+
+ 
+ # - Try to find a @Column annotation, if it is found;
+ # - Try to find a @Id annotation, if it is found, than gets the data for PK, if not:
+ # -  Try to find only @Id, and ignore any @Column and works only based on @Id
+ # - Try to find a method called "getId", works based on it to Define the entity Primary Key
+ # - Nothing being found, no Primary Key to be created.
