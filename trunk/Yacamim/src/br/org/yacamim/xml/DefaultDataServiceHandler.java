@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.util.Log;
 import br.org.yacamim.BaseActivity;
+import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.DbScript;
 import br.org.yacamim.entity.ServiceURL;
@@ -94,7 +95,7 @@ public class DefaultDataServiceHandler {
 						if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString())) {
 							final String name = xmlParams.getAttributeValue(null, YDefaultXmlElements.ELEMENT_NAME.toString());
 							final String value = xmlParams.getAttributeValue(null, YDefaultXmlElements.ELEMENT_VALUE.toString());
-							YacamimState.getInstance().getParams().put(name, value);
+							YacamimConfig.getInstance().getConfigItems().put(name, value);
 						}
 					}
 					eventType = xmlParams.next();

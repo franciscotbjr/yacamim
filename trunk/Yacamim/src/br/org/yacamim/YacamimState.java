@@ -17,11 +17,8 @@
  */
 package br.org.yacamim;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.Activity;
 import android.util.Log;
@@ -41,20 +38,13 @@ import br.org.yacamim.util.YacamimClassMapping;
  * @version 1.0
  * @since 1.0
  */
-public final class YacamimState implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6841969142735431809L;
+public final class YacamimState {
 
 	private static final YacamimState singletonYacamimState = new YacamimState();
 	
 	private YacamimClassMapping yacamimClassMapping = new YacamimClassMapping();
 	
 	private List<ServiceURL> serviceURLs = new ArrayList<ServiceURL>();
-	
-	private Map<String, String> params = new HashMap<String, String>();
 	
 	private boolean serviceUrlsLoaded = false;
 
@@ -243,13 +233,6 @@ public final class YacamimState implements Serializable {
 	 */
 	public void setClassMappingLoaded(boolean _classMappingLoaded) {
 		this.classMappingLoaded = _classMappingLoaded;
-	}
-	
-	/**
-	 * @return the params
-	 */
-	public Map<String, String> getParams() {
-		return params;
 	}
 
 	/**

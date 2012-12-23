@@ -139,19 +139,19 @@ public final class YUtilAndroid {
 	/**
 	 *
 	 * @param fileName
-	 * @param keyPathImagens
+	 * @param pathImagens
 	 * @param baseActivity
 	 * @param refs
 	 * @return
 	 */
-	public static Intent montaIntentParaCamera(final String fileName, final String keyPathImagens, final BaseActivity baseActivity,  final List<File> refs) {
+	public static Intent montaIntentParaCamera(final String fileName, final String pathImagens, final BaseActivity baseActivity,  final List<File> refs) {
 		final ContentValues values = new ContentValues();
 		values.put(MediaStore.Images.Media.TITLE, fileName);
 		values.put(MediaStore.Images.Media.DESCRIPTION, fileName);
 
-		checkFilePath(keyPathImagens);
+		checkFilePath(pathImagens);
 
-		final File fileImagem = new File(YacamimState.getInstance().getParams().get(keyPathImagens) + "/" + fileName);
+		final File fileImagem = new File(pathImagens + "/" + fileName);
 		final Uri imageUri = Uri.fromFile(fileImagem);
 		refs.add(fileImagem);
 
@@ -162,10 +162,10 @@ public final class YUtilAndroid {
 	}
 
 	/**
-	 * @param keyPathImagens
+	 * @param pathImagens
 	 */
-	protected static void checkFilePath(final String keyPathImagens) {
-		final File fileCheckPath = new File(YacamimState.getInstance().getParams().get(keyPathImagens));
+	protected static void checkFilePath(final String pathImagens) {
+		final File fileCheckPath = new File(pathImagens);
 		if(!fileCheckPath.exists()) {
 			fileCheckPath.mkdirs();
 		}
