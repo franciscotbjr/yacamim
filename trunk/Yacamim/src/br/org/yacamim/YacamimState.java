@@ -66,8 +66,6 @@ public final class YacamimState implements Serializable {
 	
 	private boolean logoff = false;
 	
-	private Map<String, Object> attributes = new HashMap<String, Object>();
-	
 	private Session session;
 	
 	private BaseActivity currentActivity;
@@ -203,57 +201,6 @@ public final class YacamimState implements Serializable {
 	 */
 	protected void setSessao(final Session _sessao) {
 		this.session = _sessao;
-	}
-
-	/**
-	 * 
-	 * @param _chave
-	 * @param _objeto
-	 */
-	public void addAttribute(final String _chave, final Object _objeto) {
-		try {
-			this.attributes.remove(_chave);
-			this.attributes.put(_chave, _objeto);
-		} catch (Exception _e) {
-			Log.e("YacamimState.addAttribute", _e.getMessage());
-		}
-	}
-	
-	/**
-	 * 
-	 * @param _chave
-	 */
-	public void removeAttribute(final String _chave) {
-		try {
-			this.attributes.remove(_chave);
-		} catch (Exception _e) {
-			Log.e("YacamimState.removeAttribute", _e.getMessage());
-		}
-	}
-	
-	/**
-	 * 
-	 * @param _chave
-	 */
-	public Object getAttribute(final String _chave) {
-		try {
-			return this.attributes.get(_chave);
-		} catch (Exception _e) {
-			Log.e("YacamimState.getAttribute", _e.getMessage());
-		}
-		return null;
-	}
-	
-	/**
-	 * 
-	 * @param _chave
-	 */
-	public void clearAttributes() {
-		try {
-			this.attributes.clear();
-		} catch (Exception _e) {
-			Log.e("YacamimState.clearAttributes", _e.getMessage());
-		}
 	}
 
 	/**

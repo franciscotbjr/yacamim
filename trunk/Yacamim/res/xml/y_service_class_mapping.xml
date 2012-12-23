@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapping>
+<!-- 
+	The mapped classes will
+	
+ -->
+<y-mapping>
     <!-- Sample -->
-    <class 
+    <y-class 
         service-name="br.gov.yacamim.test.State" 
         local-name="br.gov.yacamim.local.test.State"/>
-</mapping>
+</y-mapping>

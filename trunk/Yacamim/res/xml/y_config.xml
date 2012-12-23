@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<y-config>
+    <y-config-item name="YACAMIM_USES_PERSISTENCE" value="true"/> <!-- true/false -->
+    <y-config-item name="YACAMIM_DIR_CAPTURED_IMAGES" value="/sdcard/yacamim/images"/> 
+    <y-config-item name="YACAMIM_SQLITE_BOOLEAN_TRUE" value="Y"/> <!-- A Character representing Data Base "True" -->
+    <y-config-item name="YACAMIM_SQLITE_BOOLEAN_FALSE" value="N"/> <!-- A Character representing Data Base "False" -->
+    
+    <y-entity-mapping>
+	    <y-package name="">
+	        <y-entity name=""/>
+	    </y-package>
+    </y-entity-mapping>
+</y-config>

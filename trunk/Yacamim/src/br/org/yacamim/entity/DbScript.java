@@ -32,11 +32,6 @@ import br.org.yacamim.persistence.Entity;
 @Entity
 public class DbScript extends BaseEntity {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 3601855060801282327L;
-
 	private Integer dbVersion = 0;
 
 	final List<String> createTables = new ArrayList<String>();
@@ -46,6 +41,8 @@ public class DbScript extends BaseEntity {
 	final List<String> inserts = new ArrayList<String>();
 
 	final List<String> updates = new ArrayList<String>();
+	
+	final List<String> entities = new ArrayList<String>();
 
 	/**
 	 *

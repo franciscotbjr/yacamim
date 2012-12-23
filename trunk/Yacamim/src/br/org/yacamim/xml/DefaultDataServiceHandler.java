@@ -61,9 +61,9 @@ public class DefaultDataServiceHandler {
 					if (eventType == XmlResourceParser.START_TAG) {
 
 						final String strName = xmlClassMapping.getName();
-						if (strName.equals(DefaultXmlElements.ELEMENT_CLASS.toString())) {
-							final String classeServico = xmlClassMapping.getAttributeValue(null, DefaultXmlElements.ATTR_SERVICE_NAME.toString());
-							final String classeAndroid = xmlClassMapping.getAttributeValue(null, DefaultXmlElements.ATTR_LOCAL_NAME.toString());
+						if (strName.equals(YDefaultXmlElements.ELEMENT_CLASS.toString())) {
+							final String classeServico = xmlClassMapping.getAttributeValue(null, YDefaultXmlElements.ATTR_SERVICE_NAME.toString());
+							final String classeAndroid = xmlClassMapping.getAttributeValue(null, YDefaultXmlElements.ATTR_LOCAL_NAME.toString());
 							YacamimState.getInstance().getMapeamentoClasses().add(classeServico, classeAndroid);
 						}
 					}
@@ -91,9 +91,9 @@ public class DefaultDataServiceHandler {
 					if (eventType == XmlResourceParser.START_TAG) {
 
 						final String strName = xmlParams.getName();
-						if (strName.equals(DefaultXmlElements.ELEMENT_PARAM.toString())) {
-							final String name = xmlParams.getAttributeValue(null, DefaultXmlElements.ELEMENT_NAME.toString());
-							final String value = xmlParams.getAttributeValue(null, DefaultXmlElements.ELEMENT_VALUE.toString());
+						if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString())) {
+							final String name = xmlParams.getAttributeValue(null, YDefaultXmlElements.ELEMENT_NAME.toString());
+							final String value = xmlParams.getAttributeValue(null, YDefaultXmlElements.ELEMENT_VALUE.toString());
 							YacamimState.getInstance().getParams().put(name, value);
 						}
 					}
@@ -121,10 +121,10 @@ public class DefaultDataServiceHandler {
             		if (eventType == XmlResourceParser.START_TAG) {
 
             			final String strName = xmlServicos.getName();
-            			if (strName.equals(DefaultXmlElements.ELEMENT_SERVICE.toString())) {
+            			if (strName.equals(YDefaultXmlElements.ELEMENT_SERVICE.toString())) {
             				final ServiceURL serviceURL = new ServiceURL();
-            				serviceURL.id = Integer.parseInt(xmlServicos.getAttributeValue(null, DefaultXmlElements.ATTR_ID.toString()));
-            				serviceURL.url = xmlServicos.getAttributeValue(null, DefaultXmlElements.ATTR_URL.toString());
+            				serviceURL.id = Integer.parseInt(xmlServicos.getAttributeValue(null, YDefaultXmlElements.ATTR_ID.toString()));
+            				serviceURL.url = xmlServicos.getAttributeValue(null, YDefaultXmlElements.ATTR_URL.toString());
             				YacamimState.getInstance().getUrlServicos().add(serviceURL);
             			}
             		}
@@ -152,22 +152,22 @@ public class DefaultDataServiceHandler {
 				if (eventType == XmlResourceParser.START_TAG) {
 					final String strName = xmlDbScript.getName();
 
-					if (strName.equals(DefaultXmlElements.ELEMENT_DB.toString())) {
-						dbScript.setDbVersion(Integer.parseInt(xmlDbScript.getAttributeValue(null, DefaultXmlElements.ATTR_VERSION.toString())));
+					if (strName.equals(YDefaultXmlElements.ELEMENT_DB.toString())) {
+						dbScript.setDbVersion(Integer.parseInt(xmlDbScript.getAttributeValue(null, YDefaultXmlElements.ATTR_VERSION.toString())));
 					}
-					else if (strName.equals(DefaultXmlElements.ELEMENT_CREATE_TABLE.toString())) {
+					else if (strName.equals(YDefaultXmlElements.ELEMENT_CREATE_TABLE.toString())) {
 						final String script = xmlDbScript.nextText();
 						dbScript.getCreateTables().add(script);
 					}
-					else if (strName.equals(DefaultXmlElements.ELEMENT_ALTER_TABLE.toString())) {
+					else if (strName.equals(YDefaultXmlElements.ELEMENT_ALTER_TABLE.toString())) {
 						final String script = xmlDbScript.nextText();
 						dbScript.getCreateTables().add(script);
 					}
-					else if (strName.equals(DefaultXmlElements.ELEMENT_INSERT.toString())) {
+					else if (strName.equals(YDefaultXmlElements.ELEMENT_INSERT.toString())) {
 						final String script = xmlDbScript.nextText();
 						dbScript.getInserts().add(script);
 					}
-					else if (strName.equals(DefaultXmlElements.ELEMENT_UPDATE.toString())) {
+					else if (strName.equals(YDefaultXmlElements.ELEMENT_UPDATE.toString())) {
 						final String script = xmlDbScript.nextText();
 						dbScript.getUpdates().add(script);
 					}
