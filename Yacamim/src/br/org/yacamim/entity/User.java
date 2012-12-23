@@ -21,12 +21,12 @@ import java.util.Date;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.PK;
 import br.org.yacamim.persistence.Table;
 import br.org.yacamim.persistence.Transiente;
-import br.org.yacamim.util.YConstants;
 
 
 /**
@@ -56,8 +56,8 @@ public class User extends BaseEntity {
 	 */
 	public User() {
 		super();
-		this.firstAccess = YConstants.NO;
-		this.logonFail = YConstants.NO;
+		this.firstAccess = YacamimConfig.getInstance().getYSqliteFalse();
+		this.logonFail = YacamimConfig.getInstance().getYSqliteFalse();
 	}
 	
 	/**
@@ -80,8 +80,8 @@ public class User extends BaseEntity {
 		this.question = _question;
 		this.answer = _answer;
 
-		this.firstAccess = YConstants.NO;
-		this.logonFail = YConstants.NO;
+		this.firstAccess = YacamimConfig.getInstance().getYSqliteFalse();
+		this.logonFail = YacamimConfig.getInstance().getYSqliteFalse();
 	}
 
 

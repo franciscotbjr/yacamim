@@ -17,6 +17,7 @@
  */
 package br.org.yacamim.util;
 
+import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
 import android.app.Activity;
 import android.util.Log;
@@ -269,10 +270,10 @@ public final class YUtilText {
 	 * @return
 	 */
 	public static String getBolStringFromRadioButton(final Activity _activity, final int _viewId) {
-		String bolString = YConstants.NO;
+		String bolString = YacamimConfig.getInstance().getYSqliteFalse();
 		try {
 			if(((RadioButton)_activity.findViewById(_viewId)).isChecked()) {
-				bolString = YConstants.YES;
+				bolString = YacamimConfig.getInstance().getYSqliteTrue();
 			}
 		} catch (Exception _e) {
 			Log.e("YUtilText.getBolStringFromRadioButton", _e.getMessage());
@@ -289,7 +290,7 @@ public final class YUtilText {
 	 */
 	public static void setBolStringFromRadioButton(final Activity _activity, final int _viewIdRadio1, final int _viewIdRadio2 , final String _value) {
 		try {
-			if(_value != null && _value.equalsIgnoreCase(YConstants.YES)) {
+			if(_value != null && _value.equalsIgnoreCase(YacamimConfig.getInstance().getYSqliteTrue())) {
 				((RadioButton)_activity.findViewById(_viewIdRadio1)).setChecked(true);
 			} else {
 				((RadioButton)_activity.findViewById(_viewIdRadio2)).setChecked(true);

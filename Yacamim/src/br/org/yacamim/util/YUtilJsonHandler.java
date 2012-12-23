@@ -19,6 +19,7 @@ package br.org.yacamim.util;
 
 import java.io.InputStream;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 import br.org.yacamim.BaseActivity;
+import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.BaseEntity;
 
@@ -208,9 +210,9 @@ public final class YUtilJsonHandler {
 			} else
 			if(valueType.equals(Boolean.class)) {
 				if(Boolean.parseBoolean(value)) {
-					YUtilReflection.setValueToProperty(propertyName, YConstants.YES, _objectBE);
+					YUtilReflection.setValueToProperty(propertyName, YacamimConfig.getInstance().getYSqliteTrue(), _objectBE);
 				} else {
-					YUtilReflection.setValueToProperty(propertyName, YConstants.NO, _objectBE);
+					YUtilReflection.setValueToProperty(propertyName, YacamimConfig.getInstance().getYSqliteFalse(), _objectBE);
 				}
 			} else
 			if(valueType.equals(long.class)) {
@@ -223,17 +225,17 @@ public final class YUtilJsonHandler {
 				YUtilReflection.setValueToProperty(propertyName, Double.parseDouble(value), _objectBE);
 			} else
 			if(valueType.equals(java.util.Date.class)) {
-				String strDateTime = value;
 				if(!value.contains(":")) {
-					strDateTime += " 00:00:00";
+					YUtilReflection.setValueToProperty(propertyName, SimpleDateFormat.getDateInstance().parse(value), _objectBE);
+				} else {
+					YUtilReflection.setValueToProperty(propertyName, SimpleDateFormat.getDateTimeInstance().parse(value), _objectBE);
 				}
-				YUtilReflection.setValueToProperty(propertyName, YUtilDate.getSimpleDateFormatDateTime().parse(strDateTime), _objectBE);
 			} else
 			if(valueType.equals(boolean.class)) {
 				if(Boolean.parseBoolean(value)) {
-					YUtilReflection.setValueToProperty(propertyName, YConstants.YES, _objectBE);
+					YUtilReflection.setValueToProperty(propertyName, YacamimConfig.getInstance().getYSqliteTrue(), _objectBE);
 				} else {
-					YUtilReflection.setValueToProperty(propertyName, YConstants.NO, _objectBE);
+					YUtilReflection.setValueToProperty(propertyName, YacamimConfig.getInstance().getYSqliteFalse(), _objectBE);
 				}
 			}
 		} catch (Exception _e) {
