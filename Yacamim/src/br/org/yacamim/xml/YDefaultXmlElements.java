@@ -1,5 +1,5 @@
 /**
- * DefaultXmlElements.java
+ * YDefaultXmlElements.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -24,27 +24,27 @@ package br.org.yacamim.xml;
  * @version 1.0
  * @since 1.0
  */
-public enum DefaultXmlElements {
+public enum YDefaultXmlElements {
 
 	/* Elements */
-	ELEMENT_ENTITY_MAPPING("entity-mapping"),
-	ELEMENT_PACKAGE("package"),
-	ELEMENT_ENTITY("entity"),
-	ELEMENT_DB_SCRIPT("db-script"),
-	ELEMENT_TABLES("tables"),
-	ELEMENT_CREATE_TABLE("create-table"),
-	ELEMENT_ALTER_TABLE("alter-table"),
-	ELEMENT_CHARGE("charge"),
-	ELEMENT_INSERT("insert"),
-	ELEMENT_UPDATE("update"),
-	ELEMENT_DB("db"),
-	ELEMENT_CLASS("class"),
-	ELEMENT_SERVICES("services"),
-	ELEMENT_SERVICE("service"),
-	ELEMENT_PARAMS("params"),
-	ELEMENT_PARAM("param"),
-	ELEMENT_NAME("name"),
-	ELEMENT_VALUE("value"),
+	ELEMENT_ENTITY_MAPPING("y-entity-mapping"),
+	ELEMENT_PACKAGE("y-package"),
+	ELEMENT_ENTITY("y-entity"),
+	ELEMENT_DB_SCRIPT("y-db-script"),
+	ELEMENT_TABLES("y-tables"),
+	ELEMENT_CREATE_TABLE("y-create-table"),
+	ELEMENT_ALTER_TABLE("y-alter-table"),
+	ELEMENT_CHARGE("y-charge"),
+	ELEMENT_INSERT("y-insert"),
+	ELEMENT_UPDATE("y-update"),
+	ELEMENT_DB("y-db"),
+	ELEMENT_CLASS("y-class"),
+	ELEMENT_SERVICES("y-services"),
+	ELEMENT_SERVICE("y-service"),
+	ELEMENT_CONFIG("y-config"),
+	ELEMENT_Y_CONFIG_ITEM("y-config-item"),
+	ELEMENT_NAME("y-name"),
+	ELEMENT_VALUE("y-value"),
 
 
 	/* Attribute */
@@ -59,7 +59,7 @@ public enum DefaultXmlElements {
 
 	private String value;
 
-	private DefaultXmlElements(final String _strTag) {
+	private YDefaultXmlElements(final String _strTag) {
 		this.value = _strTag;
 	}
 

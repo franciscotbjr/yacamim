@@ -44,9 +44,6 @@ public class YConstants {
 	 public static final int ERROR_REQUIRED_FIELDS = 400007;
 	 public static final int ERROR_CONSTRAINT_DEPENDENCY = 400008;
 
-	 public static final String NO = "0";
-	 public static final String YES = "1";
-
 	 public static final String NAME = "Name";
 	 public static final String ICON = "Icon";
 

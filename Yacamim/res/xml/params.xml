@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<params>
-    <param name="DIR_YACAMIM_CAPTURED_IMAGES" value="/sdcard/yacamim/images"/>
-    <param name="YACAMIM_SQLITE_BOOLEAN_TRUE" value="Y"/>
-    <param name="YACAMIM_SQLITE_BOOLEAN_FALSE" value="N"/>
-</params>
