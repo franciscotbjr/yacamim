@@ -205,7 +205,7 @@ public class YSQLBuilder {
 	 * @return
 	 */
 	private String getColumnName(final Column column, final Method method) {
-		if(column != null && column.name() != null && !column.name().trim().equals("")) { // TODO Trocar por isEmptyString
+		if(column != null && column.name() != null && !column.name().trim().equals("")) { 
 			return column.name();
 		}
 		return this.toColumnName(method.getName());
@@ -219,7 +219,7 @@ public class YSQLBuilder {
 	 */
 	private String getTableName(final Class<?> classe) {
 		final Table table = classe.getAnnotation(Table.class);
-		if(table != null && table.name() != null && !table.name().trim().equals("")) { // TODO Trocar por isEmptyString
+		if(table != null && table.name() != null && !table.name().trim().equals("")) { 
 			return table.name();
 		}
 		return this.toTableName(classe.getSimpleName());
