@@ -33,7 +33,7 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-public class YSQLBuild {
+public class YSQLBuilder {
 	
 	public static final int NULL = 0;
 	public static final int INTEGER = 1;
@@ -90,7 +90,7 @@ public class YSQLBuild {
 	/**
 	 * 
 	 */
-	public YSQLBuild() {
+	public YSQLBuilder() {
 		super();
 	}
 	
@@ -98,7 +98,7 @@ public class YSQLBuild {
 	private StringBuilder montaSQL(final Class<?> classe) {
 		final StringBuilder sqlCreate = new StringBuilder();
 		
-//		if(this.isEntity(classe)) { 
+		if(this.isEntity(classe)) { 
 			// avaliar se as classes precisam ser Entity 
 			// | Observação: avaliar também se não seria interesamente que as anotações como Column também sejam opcionais-> 
 			// bastaria apenas mapear as classes no arquivo XML: qualquer classe.
@@ -155,7 +155,7 @@ public class YSQLBuild {
 ////					}
 					}
 				} else {
-					// Não há anotação @Column
+					// There is no @Column annotation
 					if(this.isId(method)) {
 						sqlRow.append(" PRIMARY KEY");
 						if(this.isAutoincrement(method)) {
@@ -163,8 +163,8 @@ public class YSQLBuild {
 						}
 						sqlRow.append(" NOT NULL");
 					} else {
-						// Não há anotação @Column e Nem @Id
-						// se houver um método getId, então este será considerado a PK da enidade
+						// There is no @Column annotation neither @Id
+						// if, there is a getId method, then it will be taken as the primery key for this entity
 						if(method.getName().equals("getId")) {
 							sqlRow.append(" PRIMARY KEY");
 							sqlRow.append(" AUTOINCREMENT");
@@ -185,7 +185,7 @@ public class YSQLBuild {
 				sqlCreate.append(row);
 			}
 			sqlCreate.append(" ); ");
-//		}
+		}
 		return sqlCreate;
 	}
 
