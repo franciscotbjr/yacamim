@@ -33,6 +33,8 @@ public final class YacamimConfig {
 	private static final YacamimConfig singleton = new YacamimConfig();
 
 	private Map<String, String> configItems = new HashMap<String, String>();
+	
+	private boolean configItemsLoaded = false;
 
 	/**
 	 * 
@@ -51,10 +53,23 @@ public final class YacamimConfig {
 	
 	
 	/**
-	 * @return the params
+	 * 
+	 * @return
 	 */
 	public Map<String, String> getConfigItems() {
-		return configItems;
+		// Returns a clone
+		return new HashMap<String, String>(this.configItems);
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void add(final String key, final String value) {
+		if(!this.isConfigItemsLoaded()) {
+			this.configItems.put(key, value);
+		}
 	}
 	
 	/**
@@ -88,6 +103,25 @@ public final class YacamimConfig {
 	public boolean usesPersistence() {
 		final String value = this.getConfigItems().get(YacamimKeys.YACAMIM_USES_PERSISTENCE.toString());
 		return (value != null && Boolean.valueOf(value));
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isConfigItemsLoaded() {
+		return configItemsLoaded;
+	}
+
+	/**
+	 * 
+	 * @param configItemsLoaded
+	 */
+	public void setConfigItemsLoaded(boolean configItemsLoaded) {
+		// May be changed only once
+		if(!this.configItemsLoaded) {
+			this.configItemsLoaded = configItemsLoaded;
+		}
 	}
 
 }

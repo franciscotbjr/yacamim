@@ -24,7 +24,7 @@ import android.os.Parcelable;
 import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
-import br.org.yacamim.persistence.PK;
+import br.org.yacamim.persistence.Id;
 import br.org.yacamim.persistence.Table;
 import br.org.yacamim.persistence.Transiente;
 
@@ -88,7 +88,7 @@ public class User extends BaseEntity {
 	/**
 	 * @return the id
 	 */
-	@PK()
+	@Id()
 	@Column(name="id_user")
 	public long getId() {
 		return id;

@@ -24,7 +24,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import br.org.yacamim.entity.DbScript;
-import br.org.yacamim.xml.DefaultDataServiceHandler;
+import br.org.yacamim.xml.YLoader;
 
 /**
  *
@@ -56,7 +56,7 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(final SQLiteDatabase _database) {
 		try {
-			final DbScript dbScriptCreateUpdate = DefaultDataServiceHandler.loadDBScript(this.context);
+			final DbScript dbScriptCreateUpdate = YLoader.loadDBScript(this.context);
 			if(dbScriptCreateUpdate != null) {
 				// Cria tabelas
 				if(dbScriptCreateUpdate.getCreateTables().size() > 0) {
@@ -96,7 +96,7 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(final SQLiteDatabase _database, final int _oldVersion, final int _newVersion) {
 		if(false) { // FIXME alterar quando houver update
-			final DbScript dbScriptCreateUpdate = DefaultDataServiceHandler.loadDBScript(this.context);
+			final DbScript dbScriptCreateUpdate = YLoader.loadDBScript(this.context);
 			if(dbScriptCreateUpdate != null) {
 				// Create tables
 				if(dbScriptCreateUpdate.getAlterTables().size() > 0) {

@@ -38,7 +38,7 @@ import br.org.yacamim.entity.GpsLocationInfo;
 import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
 import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilUIFields;
-import br.org.yacamim.xml.DefaultDataServiceHandler;
+import br.org.yacamim.xml.YLoader;
 
 /**
  * 
@@ -115,7 +115,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	private void loadServiceURLs() {
 		try {
 			if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
-				DefaultDataServiceHandler.loadServiceURLs(this);
+				YLoader.loadServiceURLs(this);
 			}
 		} catch (Exception _e) {
 			Log.e("BaseActivity.loadServiceURLs", _e.getMessage());
@@ -128,7 +128,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	private void loadClassMapping() {
 		try {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
-				DefaultDataServiceHandler.loadClassMapping(this);
+				YLoader.loadClassMapping(this);
 			}
 		} catch (Exception _e) {
 			Log.e("BaseActivity.loadClassMapping", _e.getMessage());
@@ -141,7 +141,7 @@ public abstract class BaseActivity extends Activity implements Callback {
 	private void loadParams() {
 		try {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
-				DefaultDataServiceHandler.loadParams(this);
+				YLoader.loadParams(this);
 			}
 		} catch (Exception _e) {
 			Log.e("BaseActivity.loadParams", _e.getMessage());
