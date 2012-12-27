@@ -43,12 +43,10 @@ public enum YDefaultXmlElements {
 	ELEMENT_SERVICE("y-service"),
 	ELEMENT_CONFIG("y-config"),
 	ELEMENT_Y_CONFIG_ITEM("y-config-item"),
-	ELEMENT_NAME("y-name"),
-	ELEMENT_VALUE("y-value"),
-
 
 	/* Attribute */
 	ATTR_NAME("name"),
+	ATTR_VALUE("value"),
 	ATTR_VERSION("version"),
 	ATTR_ID("id"),
 	ATTR_URL("url"),

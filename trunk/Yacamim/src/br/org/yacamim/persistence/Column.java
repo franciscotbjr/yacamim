@@ -89,21 +89,5 @@ public @interface Column {
 	 * @return
 	 */
 	int length() default 255;
-	
-	/**
-	 * (Optional) The precision for a decimal (exact numeric) column. (Applies only if a decimal column is used.)<br/>
-	 * default 0
-	 * 
-	 * @return
-	 */
-	int precision() default 0;
-	
-	/**
-	 * (Optional) The scale for a decimal (exact numeric) column. (Applies only if a decimal column is used.)<br/>
-	 * default 0
-	 * 
-	 * @return
-	 */
-	int scale() default 0;
 
 }

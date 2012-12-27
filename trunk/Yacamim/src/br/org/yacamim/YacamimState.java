@@ -93,12 +93,12 @@ public final class YacamimState {
 	
 	/**
 	 * 
-	 * @param _id
+	 * @param id
 	 * @return
 	 */
-	public ServiceURL getUrlServico(final int _id) {
+	public ServiceURL getUrlServico(final int id) {
 		for(ServiceURL serviceURL : serviceURLs) {
-			if(serviceURL.id == _id) {
+			if(serviceURL.id == id) {
 				return serviceURL;
 			}
 		}
@@ -107,14 +107,14 @@ public final class YacamimState {
 
 	/**
 	 * 
-	 * @param _activity
+	 * @param activity
 	 * @return
 	 */
-	public Preferences getPreferences(final Activity _activity) {
+	public Preferences getPreferences(final Activity activity) {
 		try {
 			if(YacamimState.getInstance().preferences == null) {
 				
-				final PreferencesAdapter preferenciasAdapter = new PreferencesAdapter(_activity);
+				final PreferencesAdapter preferenciasAdapter = new PreferencesAdapter(activity);
 				
 				YacamimState.getInstance().setPreferences(preferenciasAdapter.get());
 				
@@ -127,10 +127,10 @@ public final class YacamimState {
 
 	/**
 	 * 
-	 * @param _preferences
+	 * @param preferences
 	 */
-	private void setPreferences(final Preferences _preferences) {
-		this.preferences = _preferences;
+	private void setPreferences(final Preferences preferences) {
+		this.preferences = preferences;
 	}
 
 	/**
@@ -143,7 +143,7 @@ public final class YacamimState {
 	/**
 	 * @param deviceInfo the deviceInfo to set
 	 */
-	public void setDeviceInfo(DeviceInfo deviceInfo) {
+	public void setDeviceInfo(final DeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
 	}
 
@@ -159,7 +159,7 @@ public final class YacamimState {
 	 * 
 	 * @param _logoff
 	 */
-	public void setLogoff(boolean _logoff) {
+	public void setLogoff(final boolean _logoff) {
 		this.logoff = _logoff;
 	}
 
@@ -175,8 +175,11 @@ public final class YacamimState {
 	 * 
 	 * @param serviceUrlsLoaded
 	 */
-	public void setServiceUrlsLoaded(boolean serviceUrlsLoaded) {
-		this.serviceUrlsLoaded = serviceUrlsLoaded;
+	public void setServiceUrlsLoaded(final boolean serviceUrlsLoaded) {
+		// May be changed only once
+		if(!this.serviceUrlsLoaded) {
+			this.serviceUrlsLoaded = serviceUrlsLoaded;
+		}
 	}
 	
 	/**
@@ -215,10 +218,10 @@ public final class YacamimState {
 	}
 
 	/**
-	 * @param _mapeamentoClasses the yacamimClassMapping to set
+	 * @param mapeamentoClasses the yacamimClassMapping to set
 	 */
-	public void setMapeamentoClasses(final YacamimClassMapping _mapeamentoClasses) {
-		this.yacamimClassMapping = _mapeamentoClasses;
+	public void setMapeamentoClasses(final YacamimClassMapping mapeamentoClasses) {
+		this.yacamimClassMapping = mapeamentoClasses;
 	}
 
 	/**
@@ -229,10 +232,13 @@ public final class YacamimState {
 	}
 
 	/**
-	 * @param _classMappingLoaded the classMappingLoaded to set
+	 * @param classMappingLoaded the classMappingLoaded to set
 	 */
-	public void setClassMappingLoaded(boolean _classMappingLoaded) {
-		this.classMappingLoaded = _classMappingLoaded;
+	public void setClassMappingLoaded(final boolean classMappingLoaded) {
+		// May be changed only once
+		if(!this.classMappingLoaded) {
+			this.classMappingLoaded = classMappingLoaded;
+		}
 	}
 
 	/**
@@ -245,8 +251,11 @@ public final class YacamimState {
 	/**
 	 * @param paramsLoaded the paramsLoaded to set
 	 */
-	public void setParamsLoaded(boolean _paramsLoaded) {
-		this.paramsLoaded = _paramsLoaded;
+	public void setParamsLoaded(final boolean paramsLoaded) {
+		// May be changed only once
+		if(!this.paramsLoaded) {
+			this.paramsLoaded = paramsLoaded;
+		}
 	}
 
 	/**
@@ -259,7 +268,7 @@ public final class YacamimState {
 	/**
 	 * @param loggedUser the loggedUser to set
 	 */
-	public void setLoggedUser(User loggedUser) {
+	public void setLoggedUser(final User loggedUser) {
 		this.loggedUser = loggedUser;
 	}
 
@@ -280,7 +289,7 @@ public final class YacamimState {
 	/**
 	 * @param preferencesToken the preferencesToken to set
 	 */
-	public void setPreferencesToken(String preferencesToken) {
+	public void setPreferencesToken(final String preferencesToken) {
 		this.preferencesToken = preferencesToken;
 	}
 	

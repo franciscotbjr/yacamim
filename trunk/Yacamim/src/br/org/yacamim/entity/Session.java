@@ -21,7 +21,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
-import br.org.yacamim.persistence.PK;
+import br.org.yacamim.persistence.Id;
 import br.org.yacamim.persistence.Table;
 
 
@@ -66,7 +66,7 @@ public class Session extends BaseEntity {
 	/**
 	 * @return the id
 	 */
-	@PK()
+	@Id()
 	@Column(name="id_session")
 	public long getId() {
 		return id;

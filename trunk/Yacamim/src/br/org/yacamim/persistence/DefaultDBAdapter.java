@@ -349,7 +349,7 @@ public class DefaultDBAdapter<E> {
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(classe);
 
 			for(final Method getMethod : getMethods) {
-				PK pk = getMethod.getAnnotation(PK.class);
+				Id pk = getMethod.getAnnotation(Id.class);
 				if(pk != null) {
 					return getMethod;
 				}

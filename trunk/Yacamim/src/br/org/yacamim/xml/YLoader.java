@@ -1,5 +1,5 @@
 /**
- * DefaultDataServiceHandler.java
+ * YLoader.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -27,13 +27,13 @@ import br.org.yacamim.entity.DbScript;
 import br.org.yacamim.entity.ServiceURL;
 
 /**
- * Class DefaultDataServiceHandler TODO
+ * Class YLoader TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class DefaultDataServiceHandler {
+public class YLoader {
 
 	/**
 	 *
@@ -43,7 +43,7 @@ public class DefaultDataServiceHandler {
 	/**
 	 *
 	 */
-	public DefaultDataServiceHandler() {
+	public YLoader() {
 		super();
 	}
 
@@ -72,8 +72,8 @@ public class DefaultDataServiceHandler {
 				}
 				YacamimState.getInstance().setClassMappingLoaded(true);
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDataServiceHandler.loadClassMapping", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(YLoader.class.getName() + ".loadClassMapping", e.getMessage());
 		}
 	}
 
@@ -93,8 +93,8 @@ public class DefaultDataServiceHandler {
 
 						final String strName = xmlParams.getName();
 						if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString())) {
-							final String name = xmlParams.getAttributeValue(null, YDefaultXmlElements.ELEMENT_NAME.toString());
-							final String value = xmlParams.getAttributeValue(null, YDefaultXmlElements.ELEMENT_VALUE.toString());
+							final String name = xmlParams.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString());
+							final String value = xmlParams.getAttributeValue(null, YDefaultXmlElements.ATTR_VALUE.toString());
 							YacamimConfig.getInstance().getConfigItems().put(name, value);
 						}
 					}
@@ -102,8 +102,8 @@ public class DefaultDataServiceHandler {
 				}
 				YacamimState.getInstance().setParamsLoaded(true);
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDataServiceHandler.loadParams", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(YLoader.class.getName() + ".loadParams", e.getMessage());
 		}
 	}
 
@@ -133,19 +133,19 @@ public class DefaultDataServiceHandler {
             	}
             	YacamimState.getInstance().setServiceUrlsLoaded(true);
     		}
-		} catch (Exception _e) {
-			Log.e("DefaultDataServiceHandler.loadURLsServices", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(YLoader.class.getName() + ".loadURLsServices", e.getMessage());
 		}
     }
 
 	/**
 	 *
-	 * @param _context
+	 * @param context
 	 */
-	public static DbScript loadDBScript(final Context _context) {
+	public static DbScript loadDBScript(final Context context) {
 		final DbScript dbScript = new DbScript();
 		try {
-			final XmlResourceParser xmlDbScript = _context.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceDbScript());
+			final XmlResourceParser xmlDbScript = context.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceDbScript());
 
 			int eventType = -1;
 
@@ -175,10 +175,55 @@ public class DefaultDataServiceHandler {
 				}
 				eventType = xmlDbScript.next();
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDataServiceHandler.loadDBScript", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(YLoader.class.getName() + ".loadDBScript", e.getMessage());
 		}
 		return dbScript;
 	}
+	
+	/**
+	 * 
+	 * @param baseActivity
+	 */
+	public static void loadConfigs(final BaseActivity baseActivity) {
+    	try {
+    		if(!YacamimConfig.getInstance().isConfigItemsLoaded()) {
+    			final XmlResourceParser xmlConfigs = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceServices());
+
+        		int eventType = -1;
+
+        		String pacoteAtual = "";
+            	while (eventType != XmlResourceParser.END_DOCUMENT) {
+            		final String strName = xmlConfigs.getName();
+            		
+            		if (eventType == XmlResourceParser.START_TAG) {
+
+            			if (strName.equals(YDefaultXmlElements.ELEMENT_PACKAGE.toString())) {
+            				pacoteAtual = xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString());
+            			} else if (strName.equals(YDefaultXmlElements.ELEMENT_ENTITY_MAPPING.toString())) {
+            				
+            				
+            				
+            			} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString()) 
+            					&& pacoteAtual!= null 
+            					&& !pacoteAtual.trim().equals("")) {
+            				YacamimConfig.getInstance().add(
+            						xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString()), 
+            						xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_VALUE.toString())
+            						);
+            			}
+            		} else if (eventType == XmlResourceParser.END_TAG) {
+            			if (strName.equals(YDefaultXmlElements.ELEMENT_PACKAGE.toString())) {
+            				pacoteAtual = "";
+            			}
+            		}
+            		eventType = xmlConfigs.next();
+            	}
+            	YacamimConfig.getInstance().setConfigItemsLoaded(true);
+    		}
+		} catch (Exception e) {
+			Log.e(YLoader.class.getName() + ".loadConfigs", e.getMessage());
+		}
+    }
 
 }
