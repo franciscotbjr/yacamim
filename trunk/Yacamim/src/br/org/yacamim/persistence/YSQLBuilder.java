@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.org.yacamim.util.YUtilReflection;
+
 /**
  * 
  * Class YSQLBuild TODO
@@ -87,6 +89,8 @@ public class YSQLBuilder {
 	
 	// No XML de mapeamento das classes colocar um sinalizar para indicar se o Script está sendo forneciodo ao se deverá ser criado com base nas entidades declaradas.
 	
+	private List<Method> getMethods;
+	
 	/**
 	 * 
 	 */
@@ -94,99 +98,189 @@ public class YSQLBuilder {
 		super();
 	}
 	
+
+	/**
+	 * 
+	 * @param classes
+	 */
+	private void processEntities(final List<Class<?>> classes) {
+		try {
+			for(final Class<?> classe : classes) {
+				if(this.isEntity(classe)) {
+					final YProcessedEntity processedEntity = new YProcessedEntity();
+					processedEntity.setTableName(this.getTableName(classe));
+					processedEntity.setClasse(classe);
+					processedEntity.setClassName(classe.getSimpleName());
+			
+					this.initMethodsGet(classe);
+					
+					for(final Method method : this.getMethods) {
+						final Class<?> returnedType = method.getReturnType();
+						final String sqlType = this.getSqlType(returnedType);
+						if(sqlType != null) {
+							final Column column = method.getAnnotation(Column.class);
+							if(column != null) {
+								if(this.isId(method)) {
+									processedEntity.setIdColumn(this.getColumnName(column, method));
+									processedEntity.setIdMethod(method.getName());
+								} 
+							} else {
+								// Não há anotação @Column
+								if(this.isId(method)) {
+									processedEntity.setIdColumn(this.getColumnName(column, method));
+									processedEntity.setIdMethod(method.getName());									
+								} else {
+									if(method.getName().equals("getId")) {
+										processedEntity.setIdColumn(this.getColumnName(column, method));
+										processedEntity.setIdMethod("getId");										
+									}
+								}
+							}
+						}
+					}
+					this.addProcessedEntity(processedEntity);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private StringBuilder montaSQL(final Class<?> classe) {
 		final StringBuilder sqlCreate = new StringBuilder();
-		
-		if(this.isEntity(classe)) { 
+		final YProcessedEntity processedEntity = getProcessedEntity(classe);
+		if(this.isEntity(classe) && processedEntity != null) { 
 			// avaliar se as classes precisam ser Entity 
 			// | Observação: avaliar também se não seria interesamente que as anotações como Column também sejam opcionais-> 
 			// bastaria apenas mapear as classes no arquivo XML: qualquer classe.
 			// sem anotações, tudo funcionaria no modo deafult
 			
-			final Method[] methods = classe.getMethods();
-			final List<Method> getMethods = new ArrayList<Method>();
-			for(Method method : methods) {
-				if(method.getName().startsWith("get") && !method.getName().equals("getClass")) {
-					getMethods.add(method);
-				}
-			}
+			this.initMethodsGet(classe);
 			
-			final List<StringBuilder> rows = new ArrayList<StringBuilder>();
-			for(final Method method : getMethods) {
-				final StringBuilder sqlRow = new StringBuilder();
+			final List<StringBuilder> cols = new ArrayList<StringBuilder>();
+			for(final Method method : this.getMethods) {
+				final StringBuilder sqlCol = new StringBuilder();
 				final Class<?> returnedType = method.getReturnType();
 				final String sqlType = this.getSqlType(returnedType); 
 				
-				final Column column = method.getAnnotation(Column.class);
-				
-				//---
-				sqlRow.append(" " + this.getColumnName(column, method));
-				sqlRow.append(" " + sqlType);
-				
-				if(this.isText(sqlType) && column != null) {
-					sqlRow.append("(" + column.length() + ") ");
-				}
-
-				if(column != null) {
-					if(this.isId(method)) {
-						sqlRow.append(" PRIMARY KEY");
-						if(this.isAutoincrement(method)) {
-							sqlRow.append(" AUTOINCREMENT");
+				if(sqlType != null) {
+					
+					final Column column = method.getAnnotation(Column.class);
+					
+					//---
+					sqlCol.append(" " + this.getColumnName(column, method));
+					sqlCol.append(" " + sqlType);
+					
+					if(this.isText(sqlType) && column != null) {
+						sqlCol.append("(" + column.length() + ") ");
+					}
+					
+					if(column != null) {
+						if(this.isId(method)) {
+							sqlCol.append(" PRIMARY KEY");
+							if(this.isAutoincrement(method)) {
+								sqlCol.append(" AUTOINCREMENT");
+							}
+							sqlCol.append(" NOT NULL");
+						} else {
+							if(!column.nullable()) {
+								sqlCol.append(" NOT");
+							}
+							sqlCol.append(" NULL");
+							if(column.unique()) {
+								sqlCol.append(" UNIQUE");
+							}
 						}
-						sqlRow.append(" NOT NULL");
 					} else {
-						if(!column.nullable()) {
-							sqlRow.append(" NOT");
-						}
-						sqlRow.append(" NULL");
-						if(column.unique()) {
-							sqlRow.append(" UNIQUE");
+						// Não há anotação @Column
+						if(this.isId(method)) {
+							sqlCol.append(" PRIMARY KEY");
+							if(this.isAutoincrement(method)) {
+								sqlCol.append(" AUTOINCREMENT");
+							}
+							sqlCol.append(" NOT NULL");
+						} else {
+							// Não há anotação @Column e Nem @Id
+							// se houver um método getId, então este será considerado a PK da enidade
+							if(method.getName().equals("getId")) {
+								sqlCol.append(" PRIMARY KEY");
+								sqlCol.append(" AUTOINCREMENT");
+								sqlCol.append(" NOT NULL");
+							}
 						}
 					}
-					if(this.isReal(sqlType)) {
-//					// cancelado, não será usado nem precision e nem scale
-//					// avaliar se os dados ficariam melhores todos com TEXT e tratados no código de forma específica
-////					if(column.precision() > 0) {
-////						
-////					}
-////					if(column.scale() > 0) {
-////						
-////					}
-					}
+					//---
+					cols.add(sqlCol);
 				} else {
-					// There is no @Column annotation
-					if(this.isId(method)) {
-						sqlRow.append(" PRIMARY KEY");
-						if(this.isAutoincrement(method)) {
-							sqlRow.append(" AUTOINCREMENT");
+					if(this.isEntity(returnedType)) {
+						final Method[] methodsForeignEntity = returnedType.getMethods();
+						Method methodColFK = null;
+						for(final Method candidateMethodForFK : methodsForeignEntity) {
+							if(candidateMethodForFK.getName().startsWith("get") 
+									&& (this.isId(candidateMethodForFK)
+											|| candidateMethodForFK.getName().equals("getId"))
+									) {
+								methodColFK = candidateMethodForFK;
+							}
 						}
-						sqlRow.append(" NOT NULL");
-					} else {
-						// There is no @Column annotation neither @Id
-						// if, there is a getId method, then it will be taken as the primery key for this entity
-						if(method.getName().equals("getId")) {
-							sqlRow.append(" PRIMARY KEY");
-							sqlRow.append(" AUTOINCREMENT");
-							sqlRow.append(" NOT NULL");
+						if(methodColFK != null) {
+							final Class<?> returnedTypeFK = methodColFK.getReturnType();
+							final String sqlTypeFK = this.getSqlType(returnedTypeFK);
+							if(sqlTypeFK != null) {
+								System.out.println("Log col: " + methodColFK.getName() + "_" + returnedType.getSimpleName() +  " : " + sqlTypeFK);
+								System.out.println("Log constraint FK : FOREIGN KEY(" + methodColFK.getName() + "_" + returnedType.getSimpleName() + ") REFERENCES " + returnedType.getSimpleName() + "(artistid)");
+							}
 						}
 					}
 				}
-				//---
-				rows.add(sqlRow);
 			}
-			for(int i = 0; i < rows.size()-1; i++) {
-				rows.get(i).append(", ");
+			for(int i = 0; i < cols.size()-1; i++) {
+				cols.get(i).append(", ");
 			}
 			
 			sqlCreate.append("CREATE TABLE");
-			sqlCreate.append(" " + this.getTableName(classe) + " (");
-			for(StringBuilder row : rows){
+			sqlCreate.append(" " + processedEntity.getTableName() + " (");
+			for(StringBuilder row : cols){
 				sqlCreate.append(row);
 			}
 			sqlCreate.append(" ); ");
 		}
 		return sqlCreate;
+	}
+
+	/**
+	 * 
+	 * @param classe
+	 */
+	private void initMethodsGet(final Class<?> classe) {
+		if(this.getMethods == null) {
+			this.getMethods = YUtilReflection.getGetMethodList(classe);
+		}
+	}
+
+	/**
+	 * 
+	 * @param classe
+	 * @return
+	 */
+	private YProcessedEntity getProcessedEntity(final Class<?> classe) {
+		try {
+			return YCacheProcessedEntity.getInstance().getProcessedEntity(classe);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @param processedEntity
+	 */
+	private void addProcessedEntity(final YProcessedEntity processedEntity) {
+		try {
+			YCacheProcessedEntity.getInstance().addProcessedEntity(processedEntity);
+		} catch (YCacheProcessedEntityTerminatedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
