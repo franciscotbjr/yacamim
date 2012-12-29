@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.org.yacamim.util.YUtilReflection;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * 
@@ -98,6 +99,23 @@ public class YSQLBuilder {
 		super();
 	}
 	
+	public List<StringBuilder> buildCreateScript(final List<Class<?>> classes) {
+		final List<StringBuilder> createScript = new ArrayList<StringBuilder>();
+		try {
+			this.processEntities(classes);
+			
+			final YDependencyOrderer yDependencyOrderer = new YDependencyOrderer();
+			List<Class<?>> orderedList = yDependencyOrderer.order(classes);
+			
+			for(Class<?> classe : orderedList) {
+				createScript.add(this.montaSQL(classe));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return createScript;
+	}
+	
 
 	/**
 	 * 
@@ -105,40 +123,26 @@ public class YSQLBuilder {
 	 */
 	private void processEntities(final List<Class<?>> classes) {
 		try {
-			for(final Class<?> classe : classes) {
-				if(this.isEntity(classe)) {
-					final YProcessedEntity processedEntity = new YProcessedEntity();
-					processedEntity.setTableName(this.getTableName(classe));
-					processedEntity.setClasse(classe);
-					processedEntity.setClassName(classe.getSimpleName());
+			for(final Class<?> clazz : classes) {
+				if(this.isEntity(clazz)) {
+					final YProcessedEntity yProcessedEntity = new YProcessedEntity();
+					yProcessedEntity.setTableName(this.getTableName(clazz));
+					yProcessedEntity.setClasse(clazz);
+					yProcessedEntity.setClassName(clazz.getSimpleName());
 			
-					this.initMethodsGet(classe);
+					initMethodsGet(clazz);
 					
 					for(final Method method : this.getMethods) {
 						final Class<?> returnedType = method.getReturnType();
 						final String sqlType = this.getSqlType(returnedType);
 						if(sqlType != null) {
-							final Column column = method.getAnnotation(Column.class);
-							if(column != null) {
-								if(this.isId(method)) {
-									processedEntity.setIdColumn(this.getColumnName(column, method));
-									processedEntity.setIdMethod(method.getName());
-								} 
-							} else {
-								// Não há anotação @Column
-								if(this.isId(method)) {
-									processedEntity.setIdColumn(this.getColumnName(column, method));
-									processedEntity.setIdMethod(method.getName());									
-								} else {
-									if(method.getName().equals("getId")) {
-										processedEntity.setIdColumn(this.getColumnName(column, method));
-										processedEntity.setIdMethod("getId");										
-									}
-								}
+							boolean idIdentificado = locateId(yProcessedEntity, method);
+							if(idIdentificado) {
+								break;
 							}
 						}
 					}
-					this.addProcessedEntity(processedEntity);
+					this.addProcessedEntity(yProcessedEntity);
 				}
 			}
 		} catch (Exception e) {
@@ -146,20 +150,27 @@ public class YSQLBuilder {
 		}
 	}
 	
-	private StringBuilder montaSQL(final Class<?> classe) {
+	/**
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	private StringBuilder montaSQL(final Class<?> clazz) {
 		final StringBuilder sqlCreate = new StringBuilder();
-		final YProcessedEntity processedEntity = getProcessedEntity(classe);
-		if(this.isEntity(classe) && processedEntity != null) { 
+		final YProcessedEntity processedEntity = this.getYProcessedEntity(clazz);
+		if(this.isEntity(clazz) && processedEntity != null) { 
 			// avaliar se as classes precisam ser Entity 
 			// | Observação: avaliar também se não seria interesamente que as anotações como Column também sejam opcionais-> 
 			// bastaria apenas mapear as classes no arquivo XML: qualquer classe.
 			// sem anotações, tudo funcionaria no modo deafult
 			
-			this.initMethodsGet(classe);
+			this.initMethodsGet(clazz);
 			
 			final List<StringBuilder> cols = new ArrayList<StringBuilder>();
+			final List<StringBuilder> fks = new ArrayList<StringBuilder>();
 			for(final Method method : this.getMethods) {
 				final StringBuilder sqlCol = new StringBuilder();
+				final StringBuilder sqlFK = new StringBuilder();
 				final Class<?> returnedType = method.getReturnType();
 				final String sqlType = this.getSqlType(returnedType); 
 				
@@ -209,8 +220,6 @@ public class YSQLBuilder {
 							}
 						}
 					}
-					//---
-					cols.add(sqlCol);
 				} else {
 					if(this.isEntity(returnedType)) {
 						final Method[] methodsForeignEntity = returnedType.getMethods();
@@ -224,16 +233,30 @@ public class YSQLBuilder {
 							}
 						}
 						if(methodColFK != null) {
+							final Column column = method.getAnnotation(Column.class);
 							final Class<?> returnedTypeFK = methodColFK.getReturnType();
 							final String sqlTypeFK = this.getSqlType(returnedTypeFK);
 							if(sqlTypeFK != null) {
-								System.out.println("Log col: " + methodColFK.getName() + "_" + returnedType.getSimpleName() +  " : " + sqlTypeFK);
-								System.out.println("Log constraint FK : FOREIGN KEY(" + methodColFK.getName() + "_" + returnedType.getSimpleName() + ") REFERENCES " + returnedType.getSimpleName() + "(artistid)");
+								final YProcessedEntity processedEntityFK = getYProcessedEntity(returnedType);
+								
+								final String fkName = this.getColumnName(column, methodColFK) + "_" + processedEntityFK.getTableName();
+								sqlCol.append(" " + fkName);
+								sqlCol.append(" " + sqlTypeFK);
+								
+								sqlFK.append(" FOREIGN KEY(" + fkName+ ") REFERENCES " + processedEntityFK.getTableName() + "(" + processedEntityFK.getIdColumn() + ")");
 							}
 						}
 					}
 				}
+				//---
+				if(!YUtilString.isEmptyString(sqlCol)) {
+					cols.add(sqlCol);
+				}
+				if(!YUtilString.isEmptyString(sqlFK)) {
+					fks.add(sqlFK);
+				}
 			}
+			cols.addAll(fks);
 			for(int i = 0; i < cols.size()-1; i++) {
 				cols.get(i).append(", ");
 			}
@@ -263,9 +286,9 @@ public class YSQLBuilder {
 	 * @param classe
 	 * @return
 	 */
-	private YProcessedEntity getProcessedEntity(final Class<?> classe) {
+	private YProcessedEntity getYProcessedEntity(final Class<?> classe) {
 		try {
-			return YCacheProcessedEntity.getInstance().getProcessedEntity(classe);
+			return YCacheProcessedEntity.getInstance().getYProcessedEntity(classe);
 		} catch (Exception e) {
 			return null;
 		}
@@ -273,14 +296,43 @@ public class YSQLBuilder {
 
 	/**
 	 * 
-	 * @param processedEntity
+	 * @param yProcessedEntity
 	 */
-	private void addProcessedEntity(final YProcessedEntity processedEntity) {
+	private void addProcessedEntity(final YProcessedEntity yProcessedEntity) {
 		try {
-			YCacheProcessedEntity.getInstance().addProcessedEntity(processedEntity);
+			YCacheProcessedEntity.getInstance().addProcessedEntity(yProcessedEntity);
 		} catch (YCacheProcessedEntityTerminatedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 
+	 * @param yProcessedEntity
+	 * @param method
+	 * @return
+	 */
+	private boolean locateId(final YProcessedEntity yProcessedEntity, final Method method) {
+		boolean idIdentificado = false; 
+		try {
+			final Column column = method.getAnnotation(Column.class); 
+			if(column != null && this.isId(method)) { // há anotação @Column e há anotação @Id
+				yProcessedEntity.setIdColumn(this.getColumnName(column, method));
+				yProcessedEntity.setIdMethod(method.getName());
+				idIdentificado = true;
+			} else if(this.isId(method)) { // Não há anotação @Column, mas há anotação @Id
+				yProcessedEntity.setIdColumn(this.getColumnName(null, method));
+				yProcessedEntity.setIdMethod(method.getName());	
+				idIdentificado = true;
+			} else if(method.getName().equals("getId")) { // Não há nem @Column e nem @Id
+				yProcessedEntity.setIdColumn(this.getColumnName(null, method));
+				yProcessedEntity.setIdMethod("getId");										
+				idIdentificado = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return idIdentificado;
 	}
 
 	/**

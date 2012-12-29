@@ -78,7 +78,7 @@ final class YCacheProcessedEntity {
 	 * 
 	 * @return
 	 */
-	YProcessedEntity getProcessedEntity(final Class<?> classe) {
+	YProcessedEntity getYProcessedEntity(final Class<?> classe) {
 		return this.processedEntitiesMap.get(classe);
 	}
 	
