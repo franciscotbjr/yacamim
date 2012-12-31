@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.util.Log;
-import br.org.yacamim.entity.BaseEntity;
+import br.org.yacamim.entity.YBaseEntity;
 
 /**
  *
@@ -203,7 +203,7 @@ public strictfp abstract class YUtilValidations {
 	 * @param _entity
 	 * @return
 	 */
-	public static boolean isIntegralEntity(final BaseEntity _entity) {
+	public static boolean isIntegralEntity(final YBaseEntity _entity) {
 		if(_entity == null || _entity.getId() <= 0) {
 			return false;
 		}

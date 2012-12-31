@@ -28,7 +28,7 @@ import br.org.yacamim.persistence.Entity;
  * @since 1.0
  */
 @Entity
-public class DeviceInfo extends BaseEntity {
+public class DeviceInfo extends YBaseEntity {
 
 	private String imei;
 	private String macAddress;

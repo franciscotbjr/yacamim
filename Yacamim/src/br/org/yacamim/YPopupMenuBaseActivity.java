@@ -1,5 +1,5 @@
 /**
- * PopupMenuBaseActivity.java
+ * YPopupMenuBaseActivity.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -25,7 +25,7 @@ import android.view.View;
 import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
 
 /**
- * Class PopupMenuBaseActivity.<br/>
+ * Class YPopupMenuBaseActivity.<br/>
  * 
  * 
  * 
@@ -33,17 +33,17 @@ import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
  * @version 1.0
  * @since 1.0
  */
-public abstract class PopupMenuBaseActivity extends MenuBaseActivity {
+public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
 	
 	public static final int POPUP_MENU = 2011074537;
 	
-	private PopupMenuItem[] menuItems;
+	private YPopupMenuItem[] menuItems;
 
 	/**
 	 * 
 	 * @param _menuItems
 	 */
-	public PopupMenuBaseActivity(final PopupMenuItem[] _menuItems) {
+	public YPopupMenuBaseActivity(final YPopupMenuItem[] _menuItems) {
 		super();
 		this.setMenuItems(_menuItems);
 	}
@@ -64,13 +64,13 @@ public abstract class PopupMenuBaseActivity extends MenuBaseActivity {
 	 * @param _menuItem
 	 * @return
 	 */
-	protected boolean onPopupMenuItemSelected(final PopupMenuItem _menuItem) {
+	protected boolean onPopupMenuItemSelected(final YPopupMenuItem _menuItem) {
 		return true;
 	}
 
     /**
      *
-     * @see br.org.yacamim.BaseActivity#onCreateDialog(int)
+     * @see br.org.yacamim.YBaseActivity#onCreateDialog(int)
      */
 	@Override
 	protected Dialog onCreateDialog(final int _idDialog) {
@@ -81,8 +81,8 @@ public abstract class PopupMenuBaseActivity extends MenuBaseActivity {
 					AlertDialog.Builder builderCompanhiasDomesticas = new DefaultAlertDialogBuilder(this, null, null, true);
 					builderCompanhiasDomesticas.setItems(companhiasDomesticas, new DialogInterface.OnClickListener() {
 						public void onClick(final DialogInterface _dialog, final int _item) {
-							PopupMenuBaseActivity.this.removeDialog(_idDialog);
-							PopupMenuBaseActivity.this.onPopupMenuItemSelected(PopupMenuBaseActivity.this.getMenuItems()[_item]);
+							YPopupMenuBaseActivity.this.removeDialog(_idDialog);
+							YPopupMenuBaseActivity.this.onPopupMenuItemSelected(YPopupMenuBaseActivity.this.getMenuItems()[_item]);
 						}
 					});
 					return builderCompanhiasDomesticas.create();
@@ -98,7 +98,7 @@ public abstract class PopupMenuBaseActivity extends MenuBaseActivity {
 	 * 
 	 * @return
 	 */
-	protected PopupMenuItem[] getMenuItems() {
+	protected YPopupMenuItem[] getMenuItems() {
 		return this.menuItems;
 	}
 
@@ -106,7 +106,7 @@ public abstract class PopupMenuBaseActivity extends MenuBaseActivity {
 	 * 
 	 * @param _menuItems
 	 */
-	protected void setMenuItems(final PopupMenuItem[] _menuItems) {
+	protected void setMenuItems(final YPopupMenuItem[] _menuItems) {
 		this.menuItems = _menuItems;
 	}
 	
@@ -124,7 +124,7 @@ public abstract class PopupMenuBaseActivity extends MenuBaseActivity {
 				return textosMenus;
 			}
 		} catch (Exception _e) {
-			Log.e("PopupMenuBaseActivity.getMenuItemsText", _e.getMessage());
+			Log.e("YPopupMenuBaseActivity.getMenuItemsText", _e.getMessage());
 		}
 		return null;
 	}

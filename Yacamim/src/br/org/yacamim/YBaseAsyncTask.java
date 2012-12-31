@@ -1,5 +1,5 @@
 /**
- * BaseAsyncTask.java
+ * YBaseAsyncTask.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -24,13 +24,13 @@ import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilAndroid;
 
 /**
- * Class BaseAsyncTask TODO
+ * Class YBaseAsyncTask TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, Integer, Result> {
+public abstract class YBaseAsyncTask<Params, Result> extends AsyncTask<Params, Integer, Result> {
 
 	private boolean errorWithoutConnectivity;
 	
@@ -42,7 +42,7 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 	 * 
 	 * @param activity
 	 */
-	public BaseAsyncTask(final Activity activity) {
+	public YBaseAsyncTask(final Activity activity) {
 		super();
 		this.activity = activity;
 	}
@@ -78,7 +78,7 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 				} 
 			}
 		} catch (Exception e) {
-			Log.e("BaseAsyncTask.onPostExecute", e.getMessage());
+			Log.e("YBaseAsyncTask.onPostExecute", e.getMessage());
 		}
 	}
 	
@@ -94,7 +94,7 @@ public abstract class BaseAsyncTask<Params, Result> extends AsyncTask<Params, In
 				this.errorWithoutConnectivity = true;
 			}
 		} catch (Exception e) {
-			Log.e("BaseAsyncTask.doInBackground", e.getMessage());
+			Log.e("YBaseAsyncTask.doInBackground", e.getMessage());
 		}
 		return null;
 	}

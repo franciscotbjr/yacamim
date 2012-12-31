@@ -28,7 +28,6 @@ import br.org.yacamim.entity.ServiceURL;
 import br.org.yacamim.entity.Session;
 import br.org.yacamim.entity.User;
 import br.org.yacamim.persistence.PreferencesAdapter;
-import br.org.yacamim.util.YacamimClassMapping;
 
 /**
  * 
@@ -41,8 +40,6 @@ import br.org.yacamim.util.YacamimClassMapping;
 public final class YacamimState {
 
 	private static final YacamimState singletonYacamimState = new YacamimState();
-	
-	private YacamimClassMapping yacamimClassMapping = new YacamimClassMapping();
 	
 	private List<ServiceURL> serviceURLs = new ArrayList<ServiceURL>();
 	
@@ -58,15 +55,13 @@ public final class YacamimState {
 	
 	private Session session;
 	
-	private BaseActivity currentActivity;
+	private YBaseActivity currentActivity;
 	
 	private DeviceInfo deviceInfo;
 	
 	private User loggedUser = null;
 	
 	private String preferencesToken = null;
-
-	private YacamimResources yacamimResources = new YacamimResources();
 
 	/**
 	 * 
@@ -143,8 +138,9 @@ public final class YacamimState {
 	/**
 	 * @param deviceInfo the deviceInfo to set
 	 */
-	public void setDeviceInfo(final DeviceInfo deviceInfo) {
+	public YacamimState setDeviceInfo(final DeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
+		return this;
 	}
 
 	/**
@@ -159,8 +155,9 @@ public final class YacamimState {
 	 * 
 	 * @param _logoff
 	 */
-	public void setLogoff(final boolean _logoff) {
+	public YacamimState setLogoff(final boolean _logoff) {
 		this.logoff = _logoff;
+		return this;
 	}
 
 	/**
@@ -175,11 +172,12 @@ public final class YacamimState {
 	 * 
 	 * @param serviceUrlsLoaded
 	 */
-	public void setServiceUrlsLoaded(final boolean serviceUrlsLoaded) {
+	public YacamimState setServiceUrlsLoaded(final boolean serviceUrlsLoaded) {
 		// May be changed only once
 		if(!this.serviceUrlsLoaded) {
 			this.serviceUrlsLoaded = serviceUrlsLoaded;
 		}
+		return this;
 	}
 	
 	/**
@@ -192,36 +190,24 @@ public final class YacamimState {
 	/**
 	 * @param _sessao the session to set
 	 */
-	protected void setSessao(final Session _sessao) {
+	protected YacamimState setSessao(final Session _sessao) {
 		this.session = _sessao;
+		return this;
 	}
 
 	/**
 	 * @return the currentActivity
 	 */
-	public BaseActivity getCurrentActivity() {
+	public YBaseActivity getCurrentActivity() {
 		return this.currentActivity;
 	}
 
 	/**
 	 * @param currentActivity the currentActivity to set
 	 */
-	protected void setCurrentActivity(final BaseActivity currentActivity) {
+	protected YacamimState setCurrentActivity(final YBaseActivity currentActivity) {
 		this.currentActivity = currentActivity;
-	}
-
-	/**
-	 * @return the yacamimClassMapping
-	 */
-	public YacamimClassMapping getMapeamentoClasses() {
-		return this.yacamimClassMapping;
-	}
-
-	/**
-	 * @param mapeamentoClasses the yacamimClassMapping to set
-	 */
-	public void setMapeamentoClasses(final YacamimClassMapping mapeamentoClasses) {
-		this.yacamimClassMapping = mapeamentoClasses;
+		return this;
 	}
 
 	/**
@@ -234,11 +220,12 @@ public final class YacamimState {
 	/**
 	 * @param classMappingLoaded the classMappingLoaded to set
 	 */
-	public void setClassMappingLoaded(final boolean classMappingLoaded) {
+	public YacamimState setClassMappingLoaded(final boolean classMappingLoaded) {
 		// May be changed only once
 		if(!this.classMappingLoaded) {
 			this.classMappingLoaded = classMappingLoaded;
 		}
+		return this;
 	}
 
 	/**
@@ -251,11 +238,12 @@ public final class YacamimState {
 	/**
 	 * @param paramsLoaded the paramsLoaded to set
 	 */
-	public void setParamsLoaded(final boolean paramsLoaded) {
+	public YacamimState setParamsLoaded(final boolean paramsLoaded) {
 		// May be changed only once
 		if(!this.paramsLoaded) {
 			this.paramsLoaded = paramsLoaded;
 		}
+		return this;
 	}
 
 	/**
@@ -268,15 +256,9 @@ public final class YacamimState {
 	/**
 	 * @param loggedUser the loggedUser to set
 	 */
-	public void setLoggedUser(final User loggedUser) {
+	public YacamimState setLoggedUser(final User loggedUser) {
 		this.loggedUser = loggedUser;
-	}
-
-	/**
-	 * @return the yacamimResources
-	 */
-	public YacamimResources getYacamimResources() {
-		return this.yacamimResources;
+		return this;
 	}
 
 	/**
@@ -289,8 +271,9 @@ public final class YacamimState {
 	/**
 	 * @param preferencesToken the preferencesToken to set
 	 */
-	public void setPreferencesToken(final String preferencesToken) {
+	public YacamimState setPreferencesToken(final String preferencesToken) {
 		this.preferencesToken = preferencesToken;
+		return this;
 	}
 	
 }

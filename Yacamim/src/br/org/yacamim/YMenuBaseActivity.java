@@ -1,5 +1,5 @@
 /**
- * MenuBaseActivity.java
+ * YMenuBaseActivity.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -22,19 +22,19 @@ import br.org.yacamim.persistence.SessionDBAdapter;
 
 /**
  * 
- * Class MenuBaseActivity TODO
+ * Class YMenuBaseActivity TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public abstract class MenuBaseActivity extends BaseActivity {
+public abstract class YMenuBaseActivity extends YBaseActivity {
 	
 	
 	/**
 	 * 
 	 */
-	public MenuBaseActivity() {
+	public YMenuBaseActivity() {
 		super();
 	}
 
@@ -54,7 +54,7 @@ public abstract class MenuBaseActivity extends BaseActivity {
 			
 			this.finish();
 		} catch (Exception _e) {
-			Log.e("MenuBaseActivity.logoff", _e.getMessage());
+			Log.e("YMenuBaseActivity.logoff", _e.getMessage());
 		}
 	}
 

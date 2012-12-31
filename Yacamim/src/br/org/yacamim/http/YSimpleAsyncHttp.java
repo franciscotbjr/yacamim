@@ -34,7 +34,7 @@ import org.apache.http.params.HttpParams;
 
 import android.app.Activity;
 import android.util.Log;
-import br.org.yacamim.BaseAsyncTask;
+import br.org.yacamim.YBaseAsyncTask;
 
 /**
  * Hides some complexity on handling an HTTP call.<br/>
@@ -42,7 +42,7 @@ import br.org.yacamim.BaseAsyncTask;
  * Since it is an <tt>AsyncTask</tt>, all HTTP call process runs in background
  * as the recommended way to do such job on Android.<br/>
  *
- * As it also is a subclass of <tt>BaseAsyncTask</tt>, the HTTP call process only
+ * As it also is a subclass of <tt>YBaseAsyncTask</tt>, the HTTP call process only
  * is executed as long as there is available connectivity.<br/>
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
@@ -51,7 +51,7 @@ import br.org.yacamim.BaseAsyncTask;
  *
  * @see android.os.AsyncTask
  */
-public class YSimpleAsyncHttp extends BaseAsyncTask<YSimpleHttpRequestAdpater, YSimpleHttpResponseAdapter> {
+public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, YSimpleHttpResponseAdapter> {
 
 	private YSimpleHttpRequestAdpater ySimpleHttpAdpater;
 	private YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter;

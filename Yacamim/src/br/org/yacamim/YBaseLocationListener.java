@@ -1,5 +1,5 @@
 /**
- * BaseLocationListener.java
+ * YBaseLocationListener.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -25,13 +25,13 @@ import android.util.Log;
 import br.org.yacamim.entity.GpsLocationInfo;
 
 /**
- * Class BaseLocationListener TODO
+ * Class YBaseLocationListener TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class BaseLocationListener implements LocationListener {
+public class YBaseLocationListener implements LocationListener {
 	
 	private LocationManager locationManager;
 	
@@ -39,14 +39,14 @@ public class BaseLocationListener implements LocationListener {
 	
 	private GpsLocationInfo currentGpsLocationInfo;
 	
-	private BaseActivity baseActivity;
+	private YBaseActivity yBaseActivity;
 
 	/**
 	 * 
 	 */
-	public BaseLocationListener(final BaseActivity _baseActivity) {
+	public YBaseLocationListener(final YBaseActivity _baseActivity) {
 		super();
-		this.baseActivity = _baseActivity;
+		this.yBaseActivity = _baseActivity;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class BaseLocationListener implements LocationListener {
 				this.gpsLocationInfo.setAltitude(_location.getAltitude());
 				this.gpsLocationInfo.setAccuracy(_location.getAccuracy());
 				this.gpsLocationInfo.setTime(_location.getTime());
-				this.baseActivity.onUpdateGpsLocationInfo(this.gpsLocationInfo);
+				this.yBaseActivity.onUpdateGpsLocationInfo(this.gpsLocationInfo);
 			}
 			
 		} catch (Exception _e) {
@@ -94,7 +94,7 @@ public class BaseLocationListener implements LocationListener {
 		try {
 
 		} catch (Exception _e) {
-			Log.e("BaseLocationListener.onProviderDisabled", _e.getMessage());
+			Log.e("YBaseLocationListener.onProviderDisabled", _e.getMessage());
 		}
 	}
 
@@ -108,7 +108,7 @@ public class BaseLocationListener implements LocationListener {
 		try {
 
 		} catch (Exception _e) {
-			Log.e("BaseLocationListener.onProviderEnabled", _e.getMessage());
+			Log.e("YBaseLocationListener.onProviderEnabled", _e.getMessage());
 		}
 	}
 
@@ -122,7 +122,7 @@ public class BaseLocationListener implements LocationListener {
 		try {
 
 		} catch (Exception _e) {
-			Log.e("BaseLocationListener.onStatusChanged", _e.getMessage());
+			Log.e("YBaseLocationListener.onStatusChanged", _e.getMessage());
 		}
 	}
 

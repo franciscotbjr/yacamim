@@ -27,12 +27,14 @@ import java.io.Serializable;
  * @version 1.0
  * @since 1.0
  */
-public class YacamimResources implements Serializable {
+public final class YacamimResources implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -9163134809769378354L;
+	
+	private static final YacamimResources singleton = new YacamimResources();
 	
 	private int idResourceYServices;
 	private int idResourceYDbScript;
@@ -56,8 +58,16 @@ public class YacamimResources implements Serializable {
 	/**
 	 * 
 	 */
-	public YacamimResources() {
+	private YacamimResources() {
 		super();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static YacamimResources getInstance() {
+		return YacamimResources.singleton;
 	}
 
 	/**
@@ -70,7 +80,7 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceServices the idResourceServices to set
 	 */
-	public YacamimResources setIdResourceYServices(int idResourceServices) {
+	YacamimResources setIdResourceYServices(int idResourceServices) {
 		this.idResourceYServices = idResourceServices;
 		return this;
 	}
@@ -85,7 +95,7 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceYDbScript the idResourceYDbScript to set
 	 */
-	public YacamimResources setIdResourceYDbScript(int idResourceYDbScript) {
+	YacamimResources setIdResourceYDbScript(int idResourceYDbScript) {
 		this.idResourceYDbScript = idResourceYDbScript;
 		return this;
 	}
@@ -100,8 +110,8 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceYClassMapping the idResourceYClassMapping to set
 	 */
-	public YacamimResources setIdResourceYClassMapping(int _idResourceYClassMapping) {
-		this.idResourceYClassMapping = _idResourceYClassMapping;
+	public YacamimResources setIdResourceYClassMapping(int idResourceYClassMapping) {
+		this.idResourceYClassMapping = idResourceYClassMapping;
 		return this;
 	}
 

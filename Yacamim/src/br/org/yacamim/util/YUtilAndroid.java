@@ -33,7 +33,7 @@ import android.provider.MediaStore;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import br.org.yacamim.BaseActivity;
+import br.org.yacamim.YBaseActivity;
 import br.org.yacamim.YacamimState;
 
 /**
@@ -140,11 +140,11 @@ public final class YUtilAndroid {
 	 *
 	 * @param fileName
 	 * @param pathImagens
-	 * @param baseActivity
+	 * @param yBaseActivity
 	 * @param refs
 	 * @return
 	 */
-	public static Intent montaIntentParaCamera(final String fileName, final String pathImagens, final BaseActivity baseActivity,  final List<File> refs) {
+	public static Intent montaIntentParaCamera(final String fileName, final String pathImagens, final YBaseActivity yBaseActivity,  final List<File> refs) {
 		final ContentValues values = new ContentValues();
 		values.put(MediaStore.Images.Media.TITLE, fileName);
 		values.put(MediaStore.Images.Media.DESCRIPTION, fileName);
@@ -247,13 +247,13 @@ public final class YUtilAndroid {
 	 * @param wifi
 	 */
 	private static void handleDefaultDialogs(final Activity activity, boolean wifi) {
-		if(activity instanceof BaseActivity) {
-			final BaseActivity baseActivity = (BaseActivity)activity;
-			baseActivity.clearProgressDialogStack();
+		if(activity instanceof YBaseActivity) {
+			final YBaseActivity yBaseActivity = (YBaseActivity)activity;
+			yBaseActivity.clearProgressDialogStack();
 			if(wifi) {
-				baseActivity.displayDialogWifiAccess();
+				yBaseActivity.displayDialogWifiAccess();
 			} else {
-				baseActivity.displayDialogNetworkAccess();
+				yBaseActivity.displayDialogNetworkAccess();
 			}
 		}
 	}

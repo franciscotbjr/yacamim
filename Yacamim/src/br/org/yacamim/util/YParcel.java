@@ -22,7 +22,7 @@ import android.os.Parcelable;
 
 /**
  *
- * Class BaseEntity TODO
+ * Class YBaseEntity TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0

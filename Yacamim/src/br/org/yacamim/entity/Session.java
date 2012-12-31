@@ -36,7 +36,7 @@ import br.org.yacamim.persistence.Table;
  */
 @Entity
 @Table(name="session")
-public class Session extends BaseEntity {
+public class Session extends YBaseEntity {
 
 	private long id;
 	private String sessionId;
