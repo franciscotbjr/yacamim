@@ -34,10 +34,12 @@ public class YacamimResources implements Serializable {
 	 */
 	private static final long serialVersionUID = -9163134809769378354L;
 	
-	private int idResourceServices;
-	private int idResourceDbScript;
-	private int idResourceClassMapping;
-	private int idResourceParams;
+	private int idResourceYServices;
+	private int idResourceYDbScript;
+	private int idResourceYClassMapping;
+	private int idResourceYParams;
+	private int idResourceYConfig;
+	
 	private int idResourceMsgOK;
 	private int idResourceMsgSuccesfullyInserted;
 	private int idResourceMsgSuccesfullyUpdated;
@@ -59,59 +61,80 @@ public class YacamimResources implements Serializable {
 	}
 
 	/**
-	 * @return the idResourceServices
+	 * @return the idResourceYServices
 	 */
-	public int getIdResourceServices() {
-		return idResourceServices;
+	public int getIdResourceYServices() {
+		return idResourceYServices;
 	}
 
 	/**
 	 * @param idResourceServices the idResourceServices to set
 	 */
-	public void setIdResourceServices(int idResourceServices) {
-		this.idResourceServices = idResourceServices;
+	public YacamimResources setIdResourceYServices(int idResourceServices) {
+		this.idResourceYServices = idResourceServices;
+		return this;
 	}
 
 	/**
-	 * @return the idResourceDbScript
+	 * @return the idResourceYDbScript
 	 */
-	public int getIdResourceDbScript() {
-		return idResourceDbScript;
+	public int getIdResourceYDbScript() {
+		return idResourceYDbScript;
 	}
 
 	/**
-	 * @param idResourceDbScript the idResourceDbScript to set
+	 * @param idResourceYDbScript the idResourceYDbScript to set
 	 */
-	public void setIdResourceDbScript(int idResourceDbScript) {
-		this.idResourceDbScript = idResourceDbScript;
+	public YacamimResources setIdResourceYDbScript(int idResourceYDbScript) {
+		this.idResourceYDbScript = idResourceYDbScript;
+		return this;
 	}
 
 	/**
-	 * @return the idResourceClassMapping
+	 * @return the idResourceYClassMapping
 	 */
-	public int getIdResourceClassMapping() {
-		return idResourceClassMapping;
+	public int getIdResourceYClassMapping() {
+		return idResourceYClassMapping;
 	}
 
 	/**
-	 * @param idResourceClassMapping the idResourceClassMapping to set
+	 * @param idResourceYClassMapping the idResourceYClassMapping to set
 	 */
-	public void setIdResourceClassMapping(int _idResourceClassMapping) {
-		this.idResourceClassMapping = _idResourceClassMapping;
+	public YacamimResources setIdResourceYClassMapping(int _idResourceYClassMapping) {
+		this.idResourceYClassMapping = _idResourceYClassMapping;
+		return this;
 	}
 
 	/**
-	 * @return the idResourceParams
+	 * @return the idResourceYParams
 	 */
-	public int getIdResourceParams() {
-		return idResourceParams;
+	public int getIdResourceYParams() {
+		return idResourceYParams;
 	}
 
 	/**
-	 * @param idResourceParams the idResourceParams to set
+	 * @param idResourceYParams the idResourceYParams to set
 	 */
-	public void setIdResourceParams(int idResourceParams) {
-		this.idResourceParams = idResourceParams;
+	public YacamimResources setIdResourceYParams(int idResourceYParams) {
+		this.idResourceYParams = idResourceYParams;
+		return this;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getIdResourceYConfig() {
+		return idResourceYConfig;
+	}
+
+	/**
+	 * 
+	 * @param idResourceYConfig
+	 */
+	public YacamimResources setIdResourceYConfig(int idResourceYConfig) {
+		this.idResourceYConfig = idResourceYConfig;
+		return this;
 	}
 
 	/**
@@ -124,8 +147,9 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgOK the idResourceMsgOK to set
 	 */
-	public void setIdResourceMsgOK(int idResourceMsgOK) {
+	public YacamimResources setIdResourceMsgOK(int idResourceMsgOK) {
 		this.idResourceMsgOK = idResourceMsgOK;
+		return this;
 	}
 
 	/**
@@ -138,9 +162,10 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgSuccesfullyInserted the idResourceMsgSuccesfullyInserted to set
 	 */
-	public void setIdResourceMsgSuccesfullyInserted(
+	public YacamimResources setIdResourceMsgSuccesfullyInserted(
 			int idResourceMsgSuccesfullyInserted) {
 		this.idResourceMsgSuccesfullyInserted = idResourceMsgSuccesfullyInserted;
+		return this;
 	}
 
 	/**
@@ -153,9 +178,10 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgSuccesfullyUpdated the idResourceMsgSuccesfullyUpdated to set
 	 */
-	public void setIdResourceMsgSuccesfullyUpdated(
+	public YacamimResources setIdResourceMsgSuccesfullyUpdated(
 			int idResourceMsgSuccesfullyUpdated) {
 		this.idResourceMsgSuccesfullyUpdated = idResourceMsgSuccesfullyUpdated;
+		return this;
 	}
 
 	/**
@@ -168,8 +194,9 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgInvalidData the idResourceMsgInvalidData to set
 	 */
-	public void setIdResourceMsgInvalidData(int idResourceMsgInvalidData) {
+	public YacamimResources setIdResourceMsgInvalidData(int idResourceMsgInvalidData) {
 		this.idResourceMsgInvalidData = idResourceMsgInvalidData;
+		return this;
 	}
 
 	/**
@@ -182,8 +209,9 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgSelectAnItem the idResourceMsgSelectAnItem to set
 	 */
-	public void setIdResourceMsgSelectAnItem(int idResourceMsgSelectAnItem) {
+	public YacamimResources setIdResourceMsgSelectAnItem(int idResourceMsgSelectAnItem) {
 		this.idResourceMsgSelectAnItem = idResourceMsgSelectAnItem;
+		return this;
 	}
 
 	/**
@@ -196,8 +224,9 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgWait the idResourceMsgWait to set
 	 */
-	public void setIdResourceMsgWait(int idResourceMsgWait) {
+	public YacamimResources setIdResourceMsgWait(int idResourceMsgWait) {
 		this.idResourceMsgWait = idResourceMsgWait;
+		return this;
 	}
 
 	/**
@@ -210,9 +239,10 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgNoInformationFound the idResourceMsgNoInformationFound to set
 	 */
-	public void setIdResourceMsgNoInformationFound(
+	public YacamimResources setIdResourceMsgNoInformationFound(
 			int idResourceMsgNoInformationFound) {
 		this.idResourceMsgNoInformationFound = idResourceMsgNoInformationFound;
+		return this;
 	}
 
 	/**
@@ -225,9 +255,10 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgNoRecordsFoundForParameters the idResourceMsgNoRecordsFoundForParameters to set
 	 */
-	public void setIdResourceMsgNoRecordsFoundForParameters(
+	public YacamimResources setIdResourceMsgNoRecordsFoundForParameters(
 			int idResourceMsgNoRecordsFoundForParameters) {
 		this.idResourceMsgNoRecordsFoundForParameters = idResourceMsgNoRecordsFoundForParameters;
+		return this;
 	}
 
 	/**
@@ -240,8 +271,9 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgNoRecordSelected the idResourceMsgNoRecordSelected to set
 	 */
-	public void setIdResourceMsgNoRecordSelected(int idResourceMsgNoRecordSelected) {
+	public YacamimResources setIdResourceMsgNoRecordSelected(int idResourceMsgNoRecordSelected) {
 		this.idResourceMsgNoRecordSelected = idResourceMsgNoRecordSelected;
+		return this;
 	}
 
 	/**
@@ -254,9 +286,10 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgNoConnectivityAvailable the idResourceMsgNoConnectivityAvailable to set
 	 */
-	public void setIdResourceMsgNoConnectivityAvailable(
+	public YacamimResources setIdResourceMsgNoConnectivityAvailable(
 			int idResourceMsgNoConnectivityAvailable) {
 		this.idResourceMsgNoConnectivityAvailable = idResourceMsgNoConnectivityAvailable;
+		return this;
 	}
 
 	/**
@@ -269,8 +302,9 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgNoWifiConnectivityAvailable the idResourceMsgNoWifiConnectivityAvailable to set
 	 */
-	public void setIdResourceMsgNoWifiConnectivityAvailable(int idResourceMsgNoWifiConnectivityAvailable) {
+	public YacamimResources setIdResourceMsgNoWifiConnectivityAvailable(int idResourceMsgNoWifiConnectivityAvailable) {
 		this.idResourceMsgNoWifiConnectivityAvailable = idResourceMsgNoWifiConnectivityAvailable;
+		return this;
 	}
 
 	/**
@@ -283,8 +317,9 @@ public class YacamimResources implements Serializable {
 	/**
 	 * @param idResourceMsgConstraintDependency the idResourceMsgConstraintDependency to set
 	 */
-	public void setIdResourceMsgConstraintDependency(int idResourceMsgConstraintDependency) {
+	public YacamimResources setIdResourceMsgConstraintDependency(int idResourceMsgConstraintDependency) {
 		this.idResourceMsgConstraintDependency = idResourceMsgConstraintDependency;
+		return this;
 	}
 	
 }

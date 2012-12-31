@@ -54,7 +54,7 @@ public class YLoader {
 	public static void loadClassMapping(final BaseActivity baseActivity) {
 		try {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
-				final XmlResourceParser xmlClassMapping = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceClassMapping());
+				final XmlResourceParser xmlClassMapping = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYClassMapping());
 
 				int eventType = -1;
 
@@ -84,7 +84,7 @@ public class YLoader {
 	public static void loadParams(final BaseActivity baseActivity) {
 		try {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
-				final XmlResourceParser xmlParams = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceParams());
+				final XmlResourceParser xmlParams = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYParams());
 
 				int eventType = -1;
 
@@ -114,7 +114,7 @@ public class YLoader {
 	public static void loadServiceURLs(final BaseActivity baseActivity) {
     	try {
     		if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
-    			final XmlResourceParser xmlServicos = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceServices());
+    			final XmlResourceParser xmlServicos = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYServices());
 
         		int eventType = -1;
 
@@ -145,7 +145,7 @@ public class YLoader {
 	public static DbScript loadDBScript(final Context context) {
 		final DbScript dbScript = new DbScript();
 		try {
-			final XmlResourceParser xmlDbScript = context.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceDbScript());
+			final XmlResourceParser xmlDbScript = context.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYDbScript());
 
 			int eventType = -1;
 
@@ -188,7 +188,7 @@ public class YLoader {
 	public static void loadConfigs(final BaseActivity baseActivity) {
     	try {
     		if(!YacamimConfig.getInstance().isConfigItemsLoaded()) {
-    			final XmlResourceParser xmlConfigs = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceServices());
+    			final XmlResourceParser xmlConfigs = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYServices());
 
         		int eventType = -1;
 
