@@ -17,8 +17,6 @@
  */
 package br.org.yacamim.util;
 
-import br.org.yacamim.YacamimConfig;
-import br.org.yacamim.YacamimState;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +24,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import br.org.yacamim.YacamimConfig;
+import br.org.yacamim.YacamimResources;
 
 /**
  *
@@ -343,7 +343,7 @@ public final class YUtilText {
 	 */
 	public static boolean isSpinnerSelected(final Activity _activity, final int _viewId) {
 		try {
-			return !((Spinner) _activity.findViewById(_viewId)).getSelectedItem().toString().equalsIgnoreCase(_activity.getResources().getString(YacamimState.getInstance().getYacamimResources().getIdResourceMsgSelectAnItem()));
+			return !((Spinner) _activity.findViewById(_viewId)).getSelectedItem().toString().equalsIgnoreCase(_activity.getResources().getString(YacamimResources.getInstance().getIdResourceMsgSelectAnItem()));
 		} catch (Exception _e) {
 			Log.e("YUtilText.isSpinnerSelected", _e.getMessage());
 			return false;

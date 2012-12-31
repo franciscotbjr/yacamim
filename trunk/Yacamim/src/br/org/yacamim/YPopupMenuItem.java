@@ -1,5 +1,5 @@
 /**
- * PopupMenuItem.java
+ * YPopupMenuItem.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -20,13 +20,13 @@ package br.org.yacamim;
 import java.io.Serializable;
 
 /**
- * Class PopupMenuItem TODO
+ * Class YPopupMenuItem TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class PopupMenuItem implements Serializable {
+public class YPopupMenuItem implements Serializable {
 	
 	private Integer action;
 	private Integer descriptionResourceId;
@@ -39,7 +39,7 @@ public class PopupMenuItem implements Serializable {
 	/**
 	 * 
 	 */
-	public PopupMenuItem() {
+	public YPopupMenuItem() {
 		super();
 	}
 	
@@ -48,7 +48,7 @@ public class PopupMenuItem implements Serializable {
 	 * @param _action
 	 * @param _descricao
 	 */
-	public PopupMenuItem(final Integer _action, final Integer _idDescriptionResource) {
+	public YPopupMenuItem(final Integer _action, final Integer _idDescriptionResource) {
 		super();
 		this.action = _action;
 		this.descriptionResourceId = _idDescriptionResource;
@@ -106,10 +106,10 @@ public class PopupMenuItem implements Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof PopupMenuItem)) {
+		if (!(obj instanceof YPopupMenuItem)) {
 			return false;
 		}
-		final PopupMenuItem other = (PopupMenuItem) obj;
+		final YPopupMenuItem other = (YPopupMenuItem) obj;
 		if (this.action == null || other.action == null) {
 				return false;
 		} else if (this.action.intValue() != other.action.intValue()) {

@@ -29,7 +29,7 @@ import br.org.yacamim.persistence.Entity;
  * @since 1.0
  */
 @Entity
-public class ServiceURL extends BaseEntity {
+public class ServiceURL extends YBaseEntity {
 
 	public int id;
 	public String url;

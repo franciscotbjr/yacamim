@@ -39,7 +39,7 @@ import br.org.yacamim.persistence.Transiente;
  */
 @Entity
 @Table(name = "user")
-public class User extends BaseEntity {
+public class User extends YBaseEntity {
 
 	private String login;
 	private String password;

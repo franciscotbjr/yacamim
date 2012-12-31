@@ -1,5 +1,5 @@
 /**
- * BaseEntity.java
+ * YBaseEntity.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -23,13 +23,13 @@ import br.org.yacamim.util.YUtilParcel;
 
 /**
  *
- * Class BaseEntity TODO
+ * Class YBaseEntity TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim JÃºnior)
  * @version 1.0
  * @since 1.0
  */
-public class BaseEntity implements Parcelable {
+public class YBaseEntity implements Parcelable {
 
 	protected long id;
 	private String error;
@@ -38,14 +38,14 @@ public class BaseEntity implements Parcelable {
 	/**
 	 *
 	 */
-	public BaseEntity() {
+	public YBaseEntity() {
 		super();
 	}
 
 	/**
 	 *
 	 */
-	protected BaseEntity(Parcel parcel) {
+	protected YBaseEntity(Parcel parcel) {
 		super();
 		YUtilParcel.fillAttributesFromParcel(this, parcel);
 	}
@@ -115,13 +115,13 @@ public class BaseEntity implements Parcelable {
 	/**
 	 *
 	 */
-	public static Parcelable.Creator<? extends BaseEntity> CREATOR = new Parcelable.Creator<BaseEntity>() {
-		public BaseEntity createFromParcel(Parcel in) {
-			return new BaseEntity(in);
+	public static Parcelable.Creator<? extends YBaseEntity> CREATOR = new Parcelable.Creator<YBaseEntity>() {
+		public YBaseEntity createFromParcel(Parcel in) {
+			return new YBaseEntity(in);
 		}
 
-		public BaseEntity[] newArray(int size) {
-			return new BaseEntity[size];
+		public YBaseEntity[] newArray(int size) {
+			return new YBaseEntity[size];
 		}
 	};
 
@@ -151,10 +151,10 @@ public class BaseEntity implements Parcelable {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof BaseEntity)) {
+		if (!(obj instanceof YBaseEntity)) {
 			return false;
 		}
-		BaseEntity other = (BaseEntity) obj;
+		YBaseEntity other = (YBaseEntity) obj;
 		if (error == null) {
 			if (other.error != null) {
 				return false;

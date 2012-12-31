@@ -25,12 +25,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * This annotation class is meant to be use when it's necessary to sign to <strong>Yacamim</strong> that an field (that is accessed from a getter) of a <tt>BaseEntity</tt> subclass will not
+ * This annotation class is meant to be use when it's necessary to sign to <strong>Yacamim</strong> that an field (that is accessed from a getter) of a <tt>YBaseEntity</tt> subclass will not
  * be persisted when the class it's member of will be "parceled" (serialized). Its default value is <tt>true</tt>, so when it's desired to a field
  * not to be "parceled" as part of all instance, it's necessary to set it ro <tt>false</tt>.<br/>
  * <p>
  * <strong>Ex.:</strong><br/><br/>
- * public class User extends BaseEntity {<br/><br/>
+ * public class User extends YBaseEntity {<br/><br/>
  *
  * &nbsp;&nbsp;&nbsp;&nbsp;@YWriteToParcel(false)<br/>
  * &nbsp;&nbsp;&nbsp;&nbsp;private String getPassword() {<br/>

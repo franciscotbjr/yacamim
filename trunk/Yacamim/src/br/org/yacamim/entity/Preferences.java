@@ -30,7 +30,7 @@ import br.org.yacamim.persistence.Entity;
  * @since 1.0
  */
 @Entity
-public class Preferences extends BaseEntity {
+public class Preferences extends YBaseEntity {
 
 	public boolean keepCache;
 	public boolean keepUserLogin;

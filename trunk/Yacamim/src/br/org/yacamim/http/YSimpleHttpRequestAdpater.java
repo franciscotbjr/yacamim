@@ -23,7 +23,7 @@ import java.util.Set;
 import org.apache.http.NameValuePair;
 
 /**
- * Class BaseAsyncTask TODO
+ * Class YBaseAsyncTask TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0

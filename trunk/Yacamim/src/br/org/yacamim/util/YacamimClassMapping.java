@@ -28,15 +28,28 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public class YacamimClassMapping {
+public final class YacamimClassMapping {
+	
+	/**
+	 * 
+	 */
+	private static final YacamimClassMapping singleton = new YacamimClassMapping();
 
 	private List<YKeyValuePair<String, String>> keyValues = new ArrayList<YKeyValuePair<String,String>>();
 
 	/**
 	 *
 	 */
-	public YacamimClassMapping() {
+	private YacamimClassMapping() {
 		super();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static YacamimClassMapping getInstance() {
+		return YacamimClassMapping.singleton;
 	}
 
 	/**

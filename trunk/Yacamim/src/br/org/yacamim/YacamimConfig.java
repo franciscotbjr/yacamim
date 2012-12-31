@@ -17,7 +17,9 @@
  */
 package br.org.yacamim;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +35,8 @@ public final class YacamimConfig {
 	private static final YacamimConfig singleton = new YacamimConfig();
 
 	private Map<String, String> configItems = new HashMap<String, String>();
+	
+	private List<Class<?>> entities = new ArrayList<Class<?>>();
 	
 	private boolean configItemsLoaded = false;
 
@@ -123,5 +127,27 @@ public final class YacamimConfig {
 			this.configItemsLoaded = configItemsLoaded;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 */
+	public void addEntity(final Class<?> clazz) {
+		this.entities.add(clazz);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<Class<?>> getEntities() {
+		return new ArrayList<Class<?>>(this.entities);
+	}
 
+	/**
+	 * 
+	 */
+	void clearEntities() {
+		this.entities.clear();
+	}
 }

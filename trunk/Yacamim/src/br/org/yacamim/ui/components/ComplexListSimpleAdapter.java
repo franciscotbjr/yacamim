@@ -30,7 +30,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
-import br.org.yacamim.BaseListActivity;
+import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.util.YConstants;
 
 /**
@@ -50,7 +50,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	/**
 	 *
 	 */
-	private BaseListActivity baseListActivity;
+	private YBaseListActivity yBaseListActivity;
 
 	/**
 	 *
@@ -69,11 +69,11 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
 	 * @param _adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity,
+	public ComplexListSimpleAdapter(final YBaseListActivity _baseListActivity,
 			List<? extends Map<String, Object>> _data,
 			AdapterConfig _adapterConfig) {
 		super(_baseListActivity, _baseListActivity.getApplicationContext(), _data, _adapterConfig);
-		this.baseListActivity = _baseListActivity;
+		this.yBaseListActivity = _baseListActivity;
 		this.configNoListModelSelection();
 	}
 
@@ -90,12 +90,12 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
 	 * @param _adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final BaseListActivity _baseListActivity,
+	public ComplexListSimpleAdapter(final YBaseListActivity _baseListActivity,
 			Context _context,
 			List<? extends Map<String, Object>> _data,
 			AdapterConfig _adapterConfig) {
 		super(_baseListActivity, _context, _data, _adapterConfig);
-		this.baseListActivity = _baseListActivity;
+		this.yBaseListActivity = _baseListActivity;
 		this.configNoListModelSelection();
 	}
 
@@ -132,7 +132,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 					@Override
 					public void onClick(final View _view) {
 						if(rowConfig.getResourcesHint() != null && rowConfig.getResourcesHint().length > 0) {
-							Toast.makeText(ComplexListSimpleAdapter.this.baseListActivity, ComplexListSimpleAdapter.this.getTextHint(rowConfig.getResourcesHint()), Toast.LENGTH_SHORT).show();
+							Toast.makeText(ComplexListSimpleAdapter.this.yBaseListActivity, ComplexListSimpleAdapter.this.getTextHint(rowConfig.getResourcesHint()), Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
@@ -167,7 +167,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 		final StringBuffer buffer = new StringBuffer();
 		if(resourcesHint != null) {
 			for(int i = 0; i < resourcesHint.length; i++) {
-				buffer.append("- " + this.baseListActivity.getText(resourcesHint[i]));
+				buffer.append("- " + this.yBaseListActivity.getText(resourcesHint[i]));
 				if((i + 1) < resourcesHint.length) {
 					buffer.append("\n");
 				}
@@ -285,7 +285,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			_button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View _view) {
-					ComplexListSimpleAdapter.this.baseListActivity.onListViewClick(_view, _view.getTag());
+					ComplexListSimpleAdapter.this.yBaseListActivity.onListViewClick(_view, _view.getTag());
 				}
 			});
 		} catch (Exception _e) {

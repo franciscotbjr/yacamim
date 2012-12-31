@@ -17,14 +17,20 @@
  */
 package br.org.yacamim.xml;
 
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.util.Log;
-import br.org.yacamim.BaseActivity;
+import br.org.yacamim.YBaseActivity;
 import br.org.yacamim.YacamimConfig;
+import br.org.yacamim.YacamimResources;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.DbScript;
 import br.org.yacamim.entity.ServiceURL;
+import br.org.yacamim.util.YacamimClassMapping;
 
 /**
  * Class YLoader TODO
@@ -49,12 +55,12 @@ public class YLoader {
 
 	/**
 	 *
-	 * @param baseActivity
+	 * @param yBaseActivity
 	 */
-	public static void loadClassMapping(final BaseActivity baseActivity) {
+	public static void loadClassMapping(final YBaseActivity yBaseActivity, final YacamimClassMapping yacamimClassMapping) {
 		try {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
-				final XmlResourceParser xmlClassMapping = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYClassMapping());
+				final XmlResourceParser xmlClassMapping = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYClassMapping());
 
 				int eventType = -1;
 
@@ -65,7 +71,7 @@ public class YLoader {
 						if (strName.equals(YDefaultXmlElements.ELEMENT_CLASS.toString())) {
 							final String classeServico = xmlClassMapping.getAttributeValue(null, YDefaultXmlElements.ATTR_SERVICE_NAME.toString());
 							final String classeAndroid = xmlClassMapping.getAttributeValue(null, YDefaultXmlElements.ATTR_LOCAL_NAME.toString());
-							YacamimState.getInstance().getMapeamentoClasses().add(classeServico, classeAndroid);
+							yacamimClassMapping.add(classeServico, classeAndroid);
 						}
 					}
 					eventType = xmlClassMapping.next();
@@ -79,12 +85,12 @@ public class YLoader {
 
 	/**
 	 *
-	 * @param baseActivity
+	 * @param yBaseActivity
 	 */
-	public static void loadParams(final BaseActivity baseActivity) {
+	public static void loadParams(final YBaseActivity yBaseActivity) {
 		try {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
-				final XmlResourceParser xmlParams = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYParams());
+				final XmlResourceParser xmlParams = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYParams());
 
 				int eventType = -1;
 
@@ -109,12 +115,12 @@ public class YLoader {
 
 	/**
 	 *
-	 * @param baseActivity
+	 * @param yBaseActivity
 	 */
-	public static void loadServiceURLs(final BaseActivity baseActivity) {
+	public static void loadServiceURLs(final YBaseActivity yBaseActivity) {
     	try {
     		if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
-    			final XmlResourceParser xmlServicos = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYServices());
+    			final XmlResourceParser xmlServicos = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYServices());
 
         		int eventType = -1;
 
@@ -145,7 +151,7 @@ public class YLoader {
 	public static DbScript loadDBScript(final Context context) {
 		final DbScript dbScript = new DbScript();
 		try {
-			final XmlResourceParser xmlDbScript = context.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYDbScript());
+			final XmlResourceParser xmlDbScript = context.getResources().getXml(YacamimResources.getInstance().getIdResourceYDbScript());
 
 			int eventType = -1;
 
@@ -183,15 +189,17 @@ public class YLoader {
 	
 	/**
 	 * 
-	 * @param baseActivity
+	 * @param yBaseActivity
+	 * @throws ClassNotFoundException 
+	 * @throws IOException 
+	 * @throws XmlPullParserException 
 	 */
-	public static void loadConfigs(final BaseActivity baseActivity) {
-    	try {
+	public static void loadConfigs(final YBaseActivity yBaseActivity) throws ClassNotFoundException, XmlPullParserException, IOException {
     		if(!YacamimConfig.getInstance().isConfigItemsLoaded()) {
-    			final XmlResourceParser xmlConfigs = baseActivity.getResources().getXml(YacamimState.getInstance().getYacamimResources().getIdResourceYServices());
+    			final XmlResourceParser xmlConfigs = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYServices());
 
         		int eventType = -1;
-
+        		
         		String pacoteAtual = "";
             	while (eventType != XmlResourceParser.END_DOCUMENT) {
             		final String strName = xmlConfigs.getName();
@@ -202,7 +210,7 @@ public class YLoader {
             				pacoteAtual = xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString());
             			} else if (strName.equals(YDefaultXmlElements.ELEMENT_ENTITY_MAPPING.toString())) {
             				
-            				
+            				YacamimConfig.getInstance().addEntity(Class.forName(pacoteAtual + "." + xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString())));
             				
             			} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString()) 
             					&& pacoteAtual!= null 
@@ -221,9 +229,6 @@ public class YLoader {
             	}
             	YacamimConfig.getInstance().setConfigItemsLoaded(true);
     		}
-		} catch (Exception e) {
-			Log.e(YLoader.class.getName() + ".loadConfigs", e.getMessage());
-		}
     }
 
 }

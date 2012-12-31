@@ -29,10 +29,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
-import br.org.yacamim.BaseActivity;
+import br.org.yacamim.YBaseActivity;
 import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
-import br.org.yacamim.entity.BaseEntity;
+import br.org.yacamim.entity.YBaseEntity;
 
 /**
  * Class YUtilJsonHandler TODO
@@ -55,8 +55,8 @@ public final class YUtilJsonHandler {
 	 * @param _httpEntity
 	 * @return
 	 */
-	public static synchronized List<BaseEntity> getList(final BaseActivity _baseActivity, final HttpEntity _httpEntity) {
-		final List<BaseEntity> objects = new ArrayList<BaseEntity>();
+	public static synchronized List<YBaseEntity> getList(final YBaseActivity _baseActivity, final HttpEntity _httpEntity) {
+		final List<YBaseEntity> objects = new ArrayList<YBaseEntity>();
 		try {
 			InputStream inputStream = _httpEntity.getContent();
 
@@ -86,14 +86,14 @@ public final class YUtilJsonHandler {
 	 * @param _jsonObjects
 	 * @throws JSONException
 	 */
-	protected static BaseEntity getObject(final JSONObject _object, final YJSONDictionary _dicionarioJSON) throws JSONException {
+	protected static YBaseEntity getObject(final JSONObject _object, final YJSONDictionary _dicionarioJSON) throws JSONException {
 		Object objectBE = null;
 		try {
 			final JSONArray names = _object.names();
 
 			if(names != null) {
 				final String classServiceName = _object.getString("c");
-				final String classLocalName = YacamimState.getInstance().getMapeamentoClasses().get(_dicionarioJSON.get(classServiceName));
+				final String classLocalName = YacamimClassMapping.getInstance().get(_dicionarioJSON.get(classServiceName));
 
 				final Class<?> classBE = Class.forName(classLocalName);
 
@@ -115,13 +115,13 @@ public final class YUtilJsonHandler {
 							if(jsonObjects != null) {
 								final String nomePropriedade = _dicionarioJSON.get(name);
 
-								final List<BaseEntity> baseEntities = new ArrayList<BaseEntity>();
+								final List<YBaseEntity> yBaseEntities = new ArrayList<YBaseEntity>();
 								for(int j = 0; j < jsonObjects.length(); j++) {
 
 
-									final BaseEntity baseEntity = getObject(jsonObjects.getJSONObject(j), _dicionarioJSON);
+									final YBaseEntity yBaseEntity = getObject(jsonObjects.getJSONObject(j), _dicionarioJSON);
 
-									baseEntities.add(baseEntity);
+									yBaseEntities.add(yBaseEntity);
 								}
 
 								try {
@@ -131,7 +131,7 @@ public final class YUtilJsonHandler {
 													classBE,
 													new Class[]{List.class}),
 													objectBE,
-													baseEntities);
+													yBaseEntities);
 								} catch (Exception e) {
 									Log.e("YUtilJsonHandler.getObject", e.getMessage());
 								}
@@ -151,7 +151,7 @@ public final class YUtilJsonHandler {
 		} catch (Exception _e) {
 			Log.e("YUtilJsonHandler.getObject", _e.getMessage());
 		}
-		return (BaseEntity)objectBE;
+		return (YBaseEntity)objectBE;
 	}
 
 	/**
@@ -168,9 +168,9 @@ public final class YUtilJsonHandler {
 		try {
 			final String propertyName = _jsonDictionary.get(_name);
 
-			final BaseEntity baseEntity = getObject(_object.getJSONObject(_name), _jsonDictionary);
+			final YBaseEntity yBaseEntity = getObject(_object.getJSONObject(_name), _jsonDictionary);
 
-			YUtilReflection.setValueToProperty(propertyName, baseEntity, _objectBE);
+			YUtilReflection.setValueToProperty(propertyName, yBaseEntity, _objectBE);
 		} catch (Exception _e) {
 			Log.e("YUtilJsonHandler.setValueToJsonObject", _e.getMessage());
 		}

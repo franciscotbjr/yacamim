@@ -30,7 +30,7 @@ import br.org.yacamim.persistence.Entity;
  * @since 1.0
  */
 @Entity
-public class DbScript extends BaseEntity {
+public class DbScript extends YBaseEntity {
 
 	private Integer dbVersion = 0;
 

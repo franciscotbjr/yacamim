@@ -31,7 +31,7 @@ import android.util.Log;
  * @since 1.0
  */
 @Entity
-public class GpsLocationInfo extends BaseEntity {
+public class GpsLocationInfo extends YBaseEntity {
 
 	private double longitude;
 	private double latitude;
