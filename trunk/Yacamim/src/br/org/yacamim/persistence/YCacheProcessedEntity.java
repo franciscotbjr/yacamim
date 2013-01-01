@@ -63,7 +63,7 @@ final class YCacheProcessedEntity {
 	 */
 	void addProcessedEntity(final YProcessedEntity processedEntity) {
 		this.processedEntities.add(processedEntity);
-		this.processedEntitiesMap.put(processedEntity.getClass(), processedEntity);
+		this.processedEntitiesMap.put(processedEntity.getClassType(), processedEntity);
 	}
 	
 	/**

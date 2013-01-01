@@ -47,6 +47,8 @@ public final class YacamimState {
 
 	private boolean classMappingLoaded = false;
 	
+	private boolean useDBScriptResource = false;
+	
 	private boolean paramsLoaded = false;
 	
 	private Preferences preferences;
@@ -179,7 +181,7 @@ public final class YacamimState {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * @return the session
 	 */

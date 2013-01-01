@@ -196,31 +196,35 @@ public class YLoader {
 	 */
 	public static void loadConfigs(final YBaseActivity yBaseActivity) throws ClassNotFoundException, XmlPullParserException, IOException {
     		if(!YacamimConfig.getInstance().isConfigItemsLoaded()) {
-    			final XmlResourceParser xmlConfigs = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYServices());
+    			final XmlResourceParser xmlConfigs = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYConfig());
 
         		int eventType = -1;
         		
         		String pacoteAtual = "";
+        		boolean entityMappingFound = false;
             	while (eventType != XmlResourceParser.END_DOCUMENT) {
-            		final String strName = xmlConfigs.getName();
-            		
             		if (eventType == XmlResourceParser.START_TAG) {
+            			final String strName = xmlConfigs.getName();
 
             			if (strName.equals(YDefaultXmlElements.ELEMENT_PACKAGE.toString())) {
             				pacoteAtual = xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString());
             			} else if (strName.equals(YDefaultXmlElements.ELEMENT_ENTITY_MAPPING.toString())) {
+            				entityMappingFound = true;
+	            		} else if (entityMappingFound 
+	            				&& strName.equals(YDefaultXmlElements.ELEMENT_ENTITY.toString())
+            					&& pacoteAtual!= null 
+            					&& !pacoteAtual.trim().equals("")) {
             				
             				YacamimConfig.getInstance().addEntity(Class.forName(pacoteAtual + "." + xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString())));
             				
-            			} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString()) 
-            					&& pacoteAtual!= null 
-            					&& !pacoteAtual.trim().equals("")) {
+            			} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString())) {
             				YacamimConfig.getInstance().add(
             						xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString()), 
             						xmlConfigs.getAttributeValue(null, YDefaultXmlElements.ATTR_VALUE.toString())
             						);
             			}
             		} else if (eventType == XmlResourceParser.END_TAG) {
+            			final String strName = xmlConfigs.getName();
             			if (strName.equals(YDefaultXmlElements.ELEMENT_PACKAGE.toString())) {
             				pacoteAtual = "";
             			}
