@@ -187,11 +187,14 @@ class YSQLBuilder {
 			
 			final List<Method> getMethods = this.initMethodsGet(clazz);
 			
+			final StringBuilder id = new StringBuilder();
 			final List<StringBuilder> cols = new ArrayList<StringBuilder>();
 			final List<StringBuilder> fks = new ArrayList<StringBuilder>();
+			final List<StringBuilder> fkConstarints = new ArrayList<StringBuilder>();
 			for(final Method method : getMethods) {
 				final StringBuilder sqlCol = new StringBuilder();
 				final StringBuilder sqlFK = new StringBuilder();
+				final StringBuilder sqlFKConstarint = new StringBuilder();
 				final Class<?> returnedType = method.getReturnType();
 				final String sqlType = this.getSqlType(returnedType); 
 				
@@ -199,22 +202,22 @@ class YSQLBuilder {
 					
 					final Column column = method.getAnnotation(Column.class);
 					
-					//---
-					sqlCol.append(" " + this.getColumnName(column, method));
-					sqlCol.append(" " + sqlType);
-					
-					if(this.isText(sqlType) && column != null) {
-						sqlCol.append("(" + column.length() + ") ");
-					}
-					
 					if(column != null) {
 						if(this.isId(method)) {
-							sqlCol.append(SQL_WORD_PRIMARY_KEY);
+							defineColNameAndType(id, method, sqlType, column);
+							
+							id.append(SQL_WORD_PRIMARY_KEY);
 							if(this.isAutoincrement(method)) {
-								sqlCol.append(SQL_WORD_AUTOINCREMENT);
+								id.append(SQL_WORD_AUTOINCREMENT);
 							}
-							sqlCol.append(SQL_WORD_NOT + SQL_WORD_NULL);
+							id.append(SQL_WORD_NOT + SQL_WORD_NULL);
 						} else {
+							defineColNameAndType(sqlCol, method, sqlType, column);
+							
+							if(this.isText(sqlType) && column != null) {
+								sqlCol.append("(" + column.length() + ") ");
+							}
+							
 							if(!column.nullable()) {
 								sqlCol.append(SQL_WORD_NOT);
 							}
@@ -226,18 +229,22 @@ class YSQLBuilder {
 					} else {
 						// Não há anotação @Column
 						if(this.isId(method)) {
-							sqlCol.append(SQL_WORD_PRIMARY_KEY);
+							defineColNameAndType(id, method, sqlType, column);
+							
+							id.append(SQL_WORD_PRIMARY_KEY);
 							if(this.isAutoincrement(method)) {
-								sqlCol.append(SQL_WORD_AUTOINCREMENT);
+								id.append(SQL_WORD_AUTOINCREMENT);
 							}
-							sqlCol.append(SQL_WORD_NOT + SQL_WORD_NULL);
+							id.append(SQL_WORD_NOT + SQL_WORD_NULL);
 						} else {
 							// Não há anotação @Column e Nem @Id
 							// se houver um método getId, então este será considerado a PK da enidade
 							if(method.getName().equals(GET_ID_METHOD_NAME)) {
-								sqlCol.append(SQL_WORD_PRIMARY_KEY);
-								sqlCol.append(SQL_WORD_AUTOINCREMENT);
-								sqlCol.append(SQL_WORD_NOT + SQL_WORD_NULL);
+								defineColNameAndType(id, method, sqlType, column);
+								
+								id.append(SQL_WORD_PRIMARY_KEY);
+								id.append(SQL_WORD_AUTOINCREMENT);
+								id.append(SQL_WORD_NOT + SQL_WORD_NULL);
 							}
 						}
 					}
@@ -261,23 +268,30 @@ class YSQLBuilder {
 								final YProcessedEntity processedEntityFK = getYProcessedEntity(returnedType);
 								
 								final String fkName = this.getColumnName(column, methodColFK) + "_" + processedEntityFK.getTableName();
-								sqlCol.append(" " + fkName);
-								sqlCol.append(" " + sqlTypeFK);
+								sqlFK.append(" " + fkName);
+								sqlFK.append(" " + sqlTypeFK);
 								
-								sqlFK.append(SQL_WORD_FOREIGN_KEY + "(" + fkName+ ") " + SQL_WORD_REFERENCES + processedEntityFK.getTableName() + "(" + processedEntityFK.getIdColumn() + ")");
+								sqlFKConstarint.append(SQL_WORD_FOREIGN_KEY + "(" + fkName+ ") " + SQL_WORD_REFERENCES + processedEntityFK.getTableName() + "(" + processedEntityFK.getIdColumn() + ")");
 							}
 						}
 					}
 				}
 				//---
-				if(!YUtilString.isEmptyString(sqlCol)) {
-					cols.add(sqlCol);
-				}
 				if(!YUtilString.isEmptyString(sqlFK)) {
 					fks.add(sqlFK);
 				}
+				if(!YUtilString.isEmptyString(sqlCol)) {
+					cols.add(sqlCol);
+				}
+				if(!YUtilString.isEmptyString(sqlFKConstarint)) {
+					fkConstarints.add(sqlFKConstarint);
+				}
 			}
-			cols.addAll(fks);
+			for(StringBuilder builderFKs : fks) {
+				cols.add(0, builderFKs);
+			}
+			cols.add(0, id);
+			cols.addAll(fkConstarints);
 			for(int i = 0; i < cols.size()-1; i++) {
 				cols.get(i).append(", ");
 			}
@@ -290,6 +304,20 @@ class YSQLBuilder {
 			sqlCreate.append(" ); ");
 		}
 		return sqlCreate;
+	}
+
+	/**
+	 * 
+	 * @param builder
+	 * @param method
+	 * @param sqlType
+	 * @param column
+	 */
+	private void defineColNameAndType(final StringBuilder builder,
+			final Method method, final String sqlType, final Column column) {
+		//---
+		builder.append(" " + this.getColumnName(column, method));
+		builder.append(" " + sqlType);
 	}
 
 	/**
