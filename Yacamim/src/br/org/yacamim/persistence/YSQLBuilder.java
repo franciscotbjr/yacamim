@@ -102,8 +102,6 @@ class YSQLBuilder {
 		
 	}
 	
-	private List<Method> getMethods;
-	
 	/**
 	 * 
 	 */
@@ -153,9 +151,9 @@ class YSQLBuilder {
 					yProcessedEntity.setClassType(clazz);
 					yProcessedEntity.setClassName(clazz.getSimpleName());
 			
-					initMethodsGet(clazz);
+					final List<Method> getMethods = initMethodsGet(clazz);
 					
-					for(final Method method : this.getMethods) {
+					for(final Method method : getMethods) {
 						final Class<?> returnedType = method.getReturnType();
 						final String sqlType = this.getSqlType(returnedType);
 						if(sqlType != null) {
@@ -187,11 +185,11 @@ class YSQLBuilder {
 			// bastaria apenas mapear as classes no arquivo XML: qualquer classe.
 			// sem anotações, tudo funcionaria no modo deafult
 			
-			this.initMethodsGet(clazz);
+			final List<Method> getMethods = this.initMethodsGet(clazz);
 			
 			final List<StringBuilder> cols = new ArrayList<StringBuilder>();
 			final List<StringBuilder> fks = new ArrayList<StringBuilder>();
-			for(final Method method : this.getMethods) {
+			for(final Method method : getMethods) {
 				final StringBuilder sqlCol = new StringBuilder();
 				final StringBuilder sqlFK = new StringBuilder();
 				final Class<?> returnedType = method.getReturnType();
@@ -298,24 +296,23 @@ class YSQLBuilder {
 	 * 
 	 * @param classe
 	 */
-	private void initMethodsGet(final Class<?> classe) {
-		if(this.getMethods == null) {
-			this.getMethods = YUtilReflection.getGetMethodList(classe);
-			if(this.getMethods != null) {
-				List<Method> excludeMethods = new ArrayList<Method>();
-				for(Method getMethod : this.getMethods) {
-					if(getMethod.getName().equals("getYError")
-							|| getMethod.getName().equals("getYMessage")) {
-						excludeMethods.add(getMethod);
-					}
+	private List<Method> initMethodsGet(final Class<?> classe) {
+		List<Method> getMethods = YUtilReflection.getGetMethodList(classe);
+		if(getMethods != null) {
+			List<Method> excludeMethods = new ArrayList<Method>();
+			for(Method getMethod : getMethods) {
+				if(getMethod.getName().equals("getYError")
+						|| getMethod.getName().equals("getYMessage")) {
+					excludeMethods.add(getMethod);
 				}
-				if(!excludeMethods.isEmpty()) {
-					for(Method excludeMethod : excludeMethods) {
-						this.getMethods.remove(excludeMethod);
-					}
+			}
+			if(!excludeMethods.isEmpty()) {
+				for(Method excludeMethod : excludeMethods) {
+					getMethods.remove(excludeMethod);
 				}
 			}
 		}
+		return getMethods;
 	}
 
 	/**
