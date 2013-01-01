@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
+
 /**
  * 
  * Class YacamimState TODO
@@ -107,6 +109,39 @@ public final class YacamimConfig {
 	public boolean usesPersistence() {
 		final String value = this.getConfigItems().get(YacamimKeys.YACAMIM_USES_PERSISTENCE.toString());
 		return (value != null && Boolean.valueOf(value));
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean usesDBScript() {
+		final String value = this.getConfigItems().get(YacamimKeys.YACAMIM_USES_DB_SCRIPT.toString());
+		return (value != null && Boolean.valueOf(value));
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getDbVersion() {
+		try {
+			final String value = this.getConfigItems().get(YacamimKeys.YACAMIM_DB_VERSION.toString());
+			if(value != null) {
+				return Integer.valueOf(value);
+			}
+		} catch (Exception e) {
+			Log.e("YacamimConfig.getDbVersion", e.getMessage());
+		}
+		return -1;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDbName() {
+		return this.getConfigItems().get(YacamimKeys.YACAMIM_DB_NAME.toString());
 	}
 
 	/**

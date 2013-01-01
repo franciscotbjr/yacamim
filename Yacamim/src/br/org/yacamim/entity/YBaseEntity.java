@@ -32,8 +32,8 @@ import br.org.yacamim.util.YUtilParcel;
 public class YBaseEntity implements Parcelable {
 
 	protected long id;
-	private String error;
-	private String message;
+	private String yError;
+	private String yMessage;
 
 	/**
 	 *
@@ -58,38 +58,38 @@ public class YBaseEntity implements Parcelable {
 	}
 
 	/**
-	 * @param _id the id to set
+	 * @param id the id to set
 	 */
-	public void setId(long _id) {
-		this.id = _id;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	/**
 	 * @return the error
 	 */
-	public String getError() {
-		return error;
+	public String getYError() {
+		return yError;
 	}
 
 	/**
-	 * @param _error the error to set
+	 * @param yError the error to set
 	 */
-	public void setError(String _error) {
-		this.error = _error;
+	public void setYError(String yError) {
+		this.yError = yError;
 	}
 
 	/**
 	 * @return the message
 	 */
-	public String getMessage() {
-		return message;
+	public String getYMessage() {
+		return yMessage;
 	}
 
 	/**
-	 * @param _message the message to set
+	 * @param yMessage the message to set
 	 */
-	public void setMessage(String _message) {
-		this.message = _message;
+	public void setYMessage(String yMessage) {
+		this.yMessage = yMessage;
 	}
 
 	// Parcelable implementations
@@ -133,9 +133,9 @@ public class YBaseEntity implements Parcelable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((error == null) ? 0 : error.hashCode());
+		result = prime * result + ((yError == null) ? 0 : yError.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		result = prime * result + ((yMessage == null) ? 0 : yMessage.hashCode());
 		return result;
 	}
 
@@ -155,21 +155,21 @@ public class YBaseEntity implements Parcelable {
 			return false;
 		}
 		YBaseEntity other = (YBaseEntity) obj;
-		if (error == null) {
-			if (other.error != null) {
+		if (yError == null) {
+			if (other.yError != null) {
 				return false;
 			}
-		} else if (!error.equals(other.error)) {
+		} else if (!yError.equals(other.yError)) {
 			return false;
 		}
 		if (id != other.id) {
 			return false;
 		}
-		if (message == null) {
-			if (other.message != null) {
+		if (yMessage == null) {
+			if (other.yMessage != null) {
 				return false;
 			}
-		} else if (!message.equals(other.message)) {
+		} else if (!yMessage.equals(other.yMessage)) {
 			return false;
 		}
 		return true;

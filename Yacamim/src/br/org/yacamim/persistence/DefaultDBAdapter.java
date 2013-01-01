@@ -28,7 +28,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import br.org.yacamim.YacamimState;
-import br.org.yacamim.util.YUtilDate;
 import br.org.yacamim.util.YUtilReflection;
 
 /**
@@ -154,39 +153,39 @@ public class DefaultDBAdapter<E> {
 
 	/**
 	 *
-	 * @param _entity
+	 * @param entity
 	 * @return
 	 */
-	public boolean insert(final E _entity) {
+	public boolean insert(final E entity) {
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			final ContentValues initialValues = createContentValues(_entity);
+			final ContentValues initialValues = createContentValues(entity);
 
 			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
 
-			this.setId(_entity, newId);
+			this.setId(entity, newId);
 
 			return newId > -1;
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.insert", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.insert", e.getMessage());
 			return false;
 		}
 	}
 
 	/**
-	 * @param _entity
+	 * @param entity
 	 * @return
 	 */
-	public boolean update(final E _entity) {
+	public boolean update(final E entity) {
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			final ContentValues updateValues = createContentValues(_entity);
+			final ContentValues updateValues = createContentValues(entity);
 			updateValues.remove(getIdColumnName(this.getClass()));
-			return this.getDatabase().update(this.getTableName(), updateValues, this.getIdColumnName(this.getClass()) + "=" + this.getId(_entity), null) > 0;
+			return this.getDatabase().update(this.getTableName(), updateValues, this.getIdColumnName(this.getClass()) + "=" + this.getId(entity), null) > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -195,17 +194,17 @@ public class DefaultDBAdapter<E> {
 
 	/**
 	 *
-	 * @param _entity
+	 * @param entity
 	 * @return
 	 */
-	public boolean delete(final E _entity) {
+	public boolean delete(final E entity) {
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			return this.getDatabase().delete(this.getTableName(), this.getIdColumnName(this.getClass()) + "=" + this.getId(_entity), null) > 0;
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.delete", _e.getMessage());
+			return this.getDatabase().delete(this.getTableName(), this.getIdColumnName(this.getClass()) + "=" + this.getId(entity), null) > 0;
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.delete", e.getMessage());
 			return false;
 		}
 	}
@@ -220,26 +219,26 @@ public class DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			return this.getDatabase().delete(this.getTableName(), null, null) > 0;
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.deleteAll", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.deleteAll", e.getMessage());
 			return false;
 		}
 	}
 
 	/**
 	 *
-	 * @param _id
+	 * @param id
 	 * @return
 	 * @throws SQLException
 	 */
-	public E getByID(final long _id) throws SQLException {
+	public E getByID(final long id) throws SQLException {
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			return this.getByID(_id, this.getClass());
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getByID", _e.getMessage());
+			return this.getByID(id, this.getClass());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getByID", e.getMessage());
 			return null;
 		}
 
@@ -247,30 +246,30 @@ public class DefaultDBAdapter<E> {
 
 	/**
 	 *
-	 * @param _id
-	 * @param _type
+	 * @param id
+	 * @param type
 	 * @return
 	 * @throws SQLException
 	 */
 
-	E getByID(final long _id, Class<?> _type) throws SQLException {
+	E getByID(final long id, Class<?> type) throws SQLException {
 		E resultado = null;
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			Table table = _type.getAnnotation(Table.class);
-			final String[] colunas = this.getColumnNamesAsArray(_type);
+			Table table = type.getAnnotation(Table.class);
+			final String[] colunas = this.getColumnNamesAsArray(type);
 			if(colunas != null && colunas.length > 0) {
-				final Cursor cursor = this.getDatabase().query(table.name(), colunas, this.getIdColumnName(_type) + " = ?", new String[]{String.valueOf(_id)}, null,
+				final Cursor cursor = this.getDatabase().query(table.name(), colunas, this.getIdColumnName(type) + " = ?", new String[]{String.valueOf(id)}, null,
 						null, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					resultado = build(cursor, _type);
+					resultado = build(cursor, type);
 				}
 				cursor.close();
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getByID", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getByID", e.getMessage());
 		}
 		return resultado;
 	}
@@ -295,8 +294,8 @@ public class DefaultDBAdapter<E> {
 				retorno = cursor.getInt(0) + 1;
 			}
 			cursor.close();
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getNextId", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getNextId", e.getMessage());
 		}
 		return retorno;
 	}
@@ -311,100 +310,105 @@ public class DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			return YUtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class).name();
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getTableName", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getTableName", e.getMessage());
 		}
 		return null;
 	}
 
 	/**
 	 *
-	 * @param _type
+	 * @param type
 	 * @return
 	 */
-	protected String getIdColumnName(Class<?> _type) {
+	protected String getIdColumnName(Class<?> type) {
 		try {
-			final Method getMethod = getPkGetMethod(_type);
+			final Method getMethod = getIdGetMethod(type);
 			if(getMethod != null) {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(column != null) {
 					return column.name();
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getIdColumnName", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getIdColumnName", e.getMessage());
 		}
 		return null;
 	}
 
 	/**
 	 *
-	 * @param _type
+	 * @param type
 	 * @return
 	 */
-	protected Method getPkGetMethod(Class<?> _type) {
+	protected Method getIdGetMethod(Class<?> type) {
+		Method idMethod = null;
 		try {
-			final Class<?> classe = getGenericSuperclassClass(_type);
+			final Class<?> classe = getGenericSuperclassClass(type);
 
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(classe);
 
 			for(final Method getMethod : getMethods) {
 				Id pk = getMethod.getAnnotation(Id.class);
 				if(pk != null) {
-					return getMethod;
+					idMethod = getMethod;
+					break;
+				}
+				if(getMethod.getName().equals("getId")) {
+					idMethod = getMethod;
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getPkGetMethod", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getPkGetMethod", e.getMessage());
 		}
-		return null;
+		return idMethod;
 	}
 
 	/**
 	 *
-	 * @param _type
+	 * @param type
 	 * @return
 	 */
-	protected Method getPkSetMethod(Class<?> _type) {
+	protected Method getIdSetMethod(Class<?> type) {
 		try {
-			final Method getMethod = getPkGetMethod(_type);
+			final Method getMethod = getIdGetMethod(type);
 			if(getMethod != null) {
 				return YUtilReflection.getSetMethod(
 						YUtilReflection.getPropertyName(getMethod),
-						_type);
+						type);
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getPkSetMethod", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getPkSetMethod", e.getMessage());
 		}
 		return null;
 	}
 
 	/**
 	 *
-	 * @param _type
+	 * @param type
 	 * @return
 	 */
-	protected String getPkPropertyName(Class<?> _type) {
+	protected String getIdPropertyName(Class<?> type) {
 		try {
-			final Method getMethod = getPkGetMethod(_type);
+			final Method getMethod = getIdGetMethod(type);
 			if(getMethod != null) {
 				return YUtilReflection.getPropertyName(getMethod);
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getPkPropertyName", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getPkPropertyName", e.getMessage());
 		}
 		return null;
 	}
 
 	/**
 	 *
-	 * @param _type
+	 * @param type
 	 * @return
 	 */
-	protected List<String> getColumnNames(Class<?> _type) {
+	protected List<String> getColumnNames(Class<?> type) {
 		final List<String> columns = new ArrayList<String>();
 		try {
-			final Class<?> genericClass = this.getGenericSuperclassClass(_type);
+			final Class<?> genericClass = this.getGenericSuperclassClass(type);
 
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
 			for(final Method getMethod : getMethods) {
@@ -413,18 +417,18 @@ public class DefaultDBAdapter<E> {
 					columns.add(column.name());
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getColumnNames", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getColumnNames", e.getMessage());
 		}
 		return columns;
 	}
 
 	/**
-	 * @param _type
+	 * @param type
 	 * @return
 	 */
-	protected Class<?> getGenericSuperclassClass(Class<?> _type) {
-		return YUtilReflection.getGenericSuperclassClass(_type);
+	protected Class<?> getGenericSuperclassClass(Class<?> type) {
+		return YUtilReflection.getGenericSuperclassClass(type);
 	}
 
 	/**
@@ -444,51 +448,51 @@ public class DefaultDBAdapter<E> {
 	}
 
 	/**
-	 * @param _entity
-	 * @param _newId
+	 * @param entity
+	 * @param newId
 	 */
-	protected void setId(final E _entity, long _newId) {
-		YUtilReflection.setValueToProperty(getPkPropertyName(this.getGenericSuperclassClass()), Long.valueOf(_newId), _entity);
+	protected void setId(final E entity, long newId) {
+		YUtilReflection.setValueToProperty(getIdPropertyName(this.getGenericSuperclassClass()), Long.valueOf(newId), entity);
 	}
 
 	/**
 	 *
-	 * @param _entity
+	 * @param entity
 	 * @return
 	 */
-	protected long getId(final E _entity) {
-		return (Long)YUtilReflection.getPropertyValue(getPkPropertyName(this.getGenericSuperclassClass()), _entity);
+	protected long getId(final E entity) {
+		return (Long)YUtilReflection.getPropertyValue(getIdPropertyName(this.getGenericSuperclassClass()), entity);
 	}
 
 	/**
 	 *
-	 * @param _type
+	 * @param type
 	 * @return
 	 */
-	protected String[] getColumnNamesAsArray(Class<?> _type) {
+	protected String[] getColumnNamesAsArray(Class<?> type) {
 		String[] columns = null;
 		try {
-			final List<String> columnList = getColumnNames(_type);
+			final List<String> columnList = getColumnNames(type);
 			columns = new String[columnList.size()];
 			for(int i = 0; i < columnList.size(); i++) {
 				columns[i] = columnList.get(i);
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.getColumnNamesAsArray", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getColumnNamesAsArray", e.getMessage());
 		}
 		return columns;
 	}
 
 	/**
 	 *
-	 * @param _cursor
+	 * @param cursor
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected E build(final Cursor _cursor, final Class<?> _type) {
+	protected E build(final Cursor cursor, final Class<?> type) {
 		E object = null;
 		try {
-			final Class<?> genericClass = getGenericSuperclassClass(_type);
+			final Class<?> genericClass = getGenericSuperclassClass(type);
 			object = (E) genericClass.newInstance();
 
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
@@ -497,9 +501,9 @@ public class DefaultDBAdapter<E> {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(!DataAdapterHelper.isTransiente(getMethod) && column != null) {
 					final String columnName = column.name();
-					if(!DataAdapterHelper.treatRawData(_cursor, object, getMethod, columnName)) {
+					if(!DataAdapterHelper.treatRawData(cursor, object, getMethod, columnName)) {
 						if(DataAdapterHelper.isOneToOneOwner(getMethod)) {
-							DataAdapterHelper.treatOneToOne(_cursor, object, getMethod, columnName);
+							DataAdapterHelper.treatOneToOne(cursor, object, getMethod, columnName);
 						} else if (DataAdapterHelper.isManyToOne(getMethod)) {
 
 						} else if (DataAdapterHelper.isManyToMany(getMethod)) {
@@ -508,8 +512,8 @@ public class DefaultDBAdapter<E> {
 					}
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.build", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.build", e.getMessage());
 		}
 		return object;
 	}
@@ -560,8 +564,8 @@ public class DefaultDBAdapter<E> {
 				}
 			}
 
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.createContentValues", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.createContentValues", e.getMessage());
 		}
 		return values;
 	}
@@ -574,10 +578,10 @@ public class DefaultDBAdapter<E> {
 	 */
 	protected boolean configWhereOrAnd(boolean whereAdded, final StringBuilder sql) {
 		if(!whereAdded) {
-			sql.append("where ");
+			sql.append(" where ");
 			whereAdded = true;
 		} else {
-			sql.append("and ");
+			sql.append(" and ");
 		}
 		return whereAdded;
 	}
@@ -592,7 +596,7 @@ public class DefaultDBAdapter<E> {
 		if(!whereAdded) {
 			whereAdded = true;
 		} else {
-			sql.append("and ");
+			sql.append(" and ");
 		}
 		return whereAdded;
 	}

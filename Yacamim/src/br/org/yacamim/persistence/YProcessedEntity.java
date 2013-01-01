@@ -27,7 +27,7 @@ package br.org.yacamim.persistence;
 */
 final class YProcessedEntity {
 	
-	private Class<?> classe;
+	private Class<?> classType;
 	private String idMethod;
 	private String className;
 	private String idColumn;
@@ -44,16 +44,16 @@ final class YProcessedEntity {
 	 * 
 	 * @return
 	 */
-	Class<?> getClasse() {
-		return classe;
+	Class<?> getClassType() {
+		return classType;
 	}
 
 	/**
 	 * 
-	 * @param classe
+	 * @param classType
 	 */
-	void setClasse(Class<?> classe) {
-		this.classe = classe;
+	void setClassType(Class<?> classType) {
+		this.classType = classType;
 	}
 
 	/**

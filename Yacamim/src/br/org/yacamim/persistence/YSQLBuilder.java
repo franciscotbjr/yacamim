@@ -125,8 +125,11 @@ class YSQLBuilder {
 			final YDependencyOrderer yDependencyOrderer = new YDependencyOrderer();
 			List<Class<?>> orderedList = yDependencyOrderer.order(classes);
 			
-			for(Class<?> classe : orderedList) {
-				createScript.add(this.montaSQL(classe));
+			for(Class<?> clazz : orderedList) {
+				final StringBuilder sqlScript = this.montaSQL(clazz);
+				if(!YUtilString.isEmptyString(sqlScript)) {
+					createScript.add(sqlScript);
+				}
 			}
 			
 			this.terminateYCacheProcessedEntity();
@@ -147,7 +150,7 @@ class YSQLBuilder {
 				if(this.isEntity(clazz)) {
 					final YProcessedEntity yProcessedEntity = new YProcessedEntity();
 					yProcessedEntity.setTableName(this.getTableName(clazz));
-					yProcessedEntity.setClasse(clazz);
+					yProcessedEntity.setClassType(clazz);
 					yProcessedEntity.setClassName(clazz.getSimpleName());
 			
 					initMethodsGet(clazz);
@@ -298,6 +301,20 @@ class YSQLBuilder {
 	private void initMethodsGet(final Class<?> classe) {
 		if(this.getMethods == null) {
 			this.getMethods = YUtilReflection.getGetMethodList(classe);
+			if(this.getMethods != null) {
+				List<Method> excludeMethods = new ArrayList<Method>();
+				for(Method getMethod : this.getMethods) {
+					if(getMethod.getName().equals("getYError")
+							|| getMethod.getName().equals("getYMessage")) {
+						excludeMethods.add(getMethod);
+					}
+				}
+				if(!excludeMethods.isEmpty()) {
+					for(Method excludeMethod : excludeMethods) {
+						this.getMethods.remove(excludeMethod);
+					}
+				}
+			}
 		}
 	}
 
