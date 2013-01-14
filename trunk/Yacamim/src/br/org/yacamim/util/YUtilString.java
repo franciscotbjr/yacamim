@@ -130,11 +130,11 @@ public final strictfp class YUtilString {
 
 	/**
 	 *
-	 * @param _string
+	 * @param string
 	 * @return
 	 */
-	public static final boolean isEmptyString(final String _string) {
-		if(_string !=  null && !_string.trim().equals("")) {
+	public static final boolean isEmptyString(final String string) {
+		if(string !=  null && !string.trim().equals("")) {
 			return false;
 		}
 		return true;
@@ -154,14 +154,14 @@ public final strictfp class YUtilString {
 
 	/**
 	 *
-	 * @param _datum
+	 * @param data
 	 * @return
 	 */
-	public static String keepOnlyNumbers(String _datum) {
-		if ((_datum == null) || _datum.trim().equals("")) {
+	public static String keepOnlyNumbers(String data) {
+		if ((data == null) || data.trim().equals("")) {
 			return "";
 		}
-		char[] st = _datum.toCharArray();
+		char[] st = data.toCharArray();
 		StringBuffer noNumberBuffer = new StringBuffer();
 		for (int i = 0; i < st.length; i++) {
 			if (YUtilString.isNumeric(new String(new char[] { st[i] }))) {
@@ -173,106 +173,106 @@ public final strictfp class YUtilString {
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static boolean isNumeric(final String _value) {
-		if (YUtilString.isEmptyString(_value)) {
+	public static boolean isNumeric(final String value) {
+		if (YUtilString.isEmptyString(value)) {
 			return false;
 		}
-		return _value.matches(YUtilString.REGEX_FLOATING_POINT);
+		return value.matches(YUtilString.REGEX_FLOATING_POINT);
 	}
 
 	/**
 	 *
-	 * @param _string
+	 * @param string
 	 * @return
 	 */
-	public static String nullToEmptyString(final String _string) {
-		if(YUtilString.isEmptyString(_string)) {
+	public static String nullToEmptyString(final String string) {
+		if(YUtilString.isEmptyString(string)) {
 			return "";
 		}
-		return _string;
+		return string;
 	}
 
 	/**
 	 *
-	 * @param _string
+	 * @param string
 	 * @return
 	 */
-	public static String cleanMultipleWhiteSpaces(final String _string) {
-		if(YUtilString.isEmptyString(_string)) {
+	public static String cleanMultipleWhiteSpaces(final String string) {
+		if(YUtilString.isEmptyString(string)) {
 			return null;
 		}
-		return _string.replaceAll(" {2,}", " ");
+		return string.replaceAll(" {2,}", " ");
 	}
 
 	/**
 	 *
-	 * @param _string
+	 * @param string
 	 * @return
 	 */
-	public static String firstCharacterToLowerCase(final String _string) {
-		if (YUtilString.isEmptyString(_string)) {
+	public static String firstCharacterToLowerCase(final String string) {
+		if (YUtilString.isEmptyString(string)) {
 			return "";
 		}
 		try {
-			String string = "";
-			String firstCharacter = new String(new char[] { _string.toCharArray()[0] }).toLowerCase();
-			string = firstCharacter + _string.substring(1);
-			return string;
-		} catch (Exception _e) {
-			Log.e("YUtilString.firstCharacterToLowerCase", _e.getMessage());
+			String stringMod = "";
+			String firstCharacter = new String(new char[] { string.toCharArray()[0] }).toLowerCase();
+			stringMod = firstCharacter + string.substring(1);
+			return stringMod;
+		} catch (Exception e) {
+			Log.e("YUtilString.firstCharacterToLowerCase", e.getMessage());
 			return "";
 		}
 	}
 
 	/**
 	 *
-	 * @param _string
+	 * @param string
 	 * @return
 	 */
-	public static String firstCharacterToUpperCase(final String _string) {
-		if (YUtilString.isEmptyString(_string)) {
+	public static String firstCharacterToUpperCase(final String string) {
+		if (YUtilString.isEmptyString(string)) {
 			return "";
 		}
 		try {
-			String string = "";
-			String firstCharacter = new String(new char[] { _string.toCharArray()[0] }).toUpperCase();
-			string = firstCharacter + _string.substring(1);
-			return string;
-		} catch (Exception _e) {
-			Log.e("YUtilString.firstCharacterToUpperCase", _e.getMessage());
+			String stringMod = "";
+			String firstCharacter = new String(new char[] { string.toCharArray()[0] }).toUpperCase();
+			stringMod = firstCharacter + string.substring(1);
+			return stringMod;
+		} catch (Exception e) {
+			Log.e("YUtilString.firstCharacterToUpperCase", e.getMessage());
 			return "";
 		}
 	}
 
 	/**
 	 *
-	 * @param _string
+	 * @param string
 	 * @return
 	 */
-	public static String clearString(final String _string) {
-		if (YUtilString.isEmptyString(_string)) {
+	public static String clearString(final String string) {
+		if (YUtilString.isEmptyString(string)) {
 			return "";
 		}
 		try {
-			return _string.replaceAll("[^A-Za-z0-9]", "");
-		} catch (Exception _e) {
-			Log.e("YUtilString.clearString", _e.getMessage());
+			return string.replaceAll("[^A-Za-z0-9]", "");
+		} catch (Exception e) {
+			Log.e("YUtilString.clearString", e.getMessage());
 			return "";
 		}
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static boolean isInteger(final String _value) {
-		if (YUtilString.isEmptyString(_value)) {
+	public static boolean isInteger(final String value) {
+		if (YUtilString.isEmptyString(value)) {
 			return false;
 		}
-		return _value.matches(YUtilString.REGEX_INTEGER);
+		return value.matches(YUtilString.REGEX_INTEGER);
 	}
 }
