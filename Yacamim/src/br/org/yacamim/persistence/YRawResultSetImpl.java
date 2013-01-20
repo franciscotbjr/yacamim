@@ -26,18 +26,29 @@ import br.org.yacamim.YRawData;
  * @version 1.0
  * @since 1.0
  */
-public class YRawResultSetImpl implements YRawResultSet {
+class YRawResultSetImpl implements YRawResultSet {
 
+	/**
+	 * 
+	 */
 	public YRawResultSetImpl() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#hashNext()
+	 */
 	@Override
 	public boolean hashNext() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#next()
+	 */
 	@Override
 	public YRawData next() {
 		// TODO Auto-generated method stub

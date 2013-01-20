@@ -28,16 +28,27 @@ import br.org.yacamim.YRawData;
  */
 class YRawDataPersistenceImpl implements YRawData {
 
+	/**
+	 * 
+	 */
 	public YRawDataPersistenceImpl() {
 		super();
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.YRawData#add(java.lang.String, java.lang.Object)
+	 */
 	@Override
 	public void add(String key, Object value) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.YRawData#get(java.lang.String)
+	 */
 	@Override
 	public void get(String key) {
 		// TODO Auto-generated method stub
