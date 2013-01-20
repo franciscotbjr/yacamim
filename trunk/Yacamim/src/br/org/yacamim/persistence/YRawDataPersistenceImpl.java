@@ -1,5 +1,5 @@
 /**
- * YMethodFilter.java
+ * YRawDataPersistenceImpl.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -15,20 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.org.yacamim.dex;
+package br.org.yacamim.persistence;
 
-import java.lang.reflect.Method;
+import br.org.yacamim.YRawData;
 
 /**
- * 
- * Class YMethodFilter TODO
- * 
+ * Classe YRawDataPersistenceImpl TODO
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public interface YMethodFilter {
-	
-	public boolean accept(final Method method);
+class YRawDataPersistenceImpl implements YRawData {
+
+	public YRawDataPersistenceImpl() {
+		super();
+	}
+
+	@Override
+	public void add(String key, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void get(String key) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

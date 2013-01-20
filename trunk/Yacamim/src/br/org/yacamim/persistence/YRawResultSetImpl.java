@@ -1,5 +1,5 @@
 /**
- * YMethodFilter.java
+ * YRawResultSetImpl.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -15,20 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.org.yacamim.dex;
+package br.org.yacamim.persistence;
 
-import java.lang.reflect.Method;
+import br.org.yacamim.YRawData;
 
 /**
- * 
- * Class YMethodFilter TODO
- * 
+ * Classe YRawResultSetImpl TODO
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public interface YMethodFilter {
-	
-	public boolean accept(final Method method);
+public class YRawResultSetImpl implements YRawResultSet {
+
+	public YRawResultSetImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public boolean hashNext() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public YRawData next() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

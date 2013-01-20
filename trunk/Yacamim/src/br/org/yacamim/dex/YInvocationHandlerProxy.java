@@ -1,5 +1,5 @@
 /**
- * ThreadResponseHandler.java
+ * YInvocationHandlerProxy.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * 
- * Class ThreadResponseHandler TODO
+ * Class YInvocationHandlerProxy TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
