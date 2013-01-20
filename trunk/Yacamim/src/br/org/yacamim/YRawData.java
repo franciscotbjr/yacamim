@@ -1,5 +1,5 @@
 /**
- * RawResultSet.java
+ * YRawData.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -15,22 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.org.yacamim.persistence;
+package br.org.yacamim;
 
 /**
- * Classe RawResultSet TODO
+ * Classe YRawData TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class RawResultSet {
+public interface YRawData {
+	
+	public void add(final String key, final Object value);
+	
+	public void get(final String key);
 
-	/**
-	 *
-	 */
-	public RawResultSet() {
-		super();
-	}
 
 }
