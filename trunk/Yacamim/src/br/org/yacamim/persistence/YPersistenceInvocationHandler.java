@@ -33,32 +33,51 @@ import br.org.yacamim.dex.YMethodFilter;
  */
 public class YPersistenceInvocationHandler extends YInvocationHandler {
 
+	/**
+	 * 
+	 * @param yMethodFilter
+	 */
 	public YPersistenceInvocationHandler(final YMethodFilter yMethodFilter) {
 		super(yMethodFilter);
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.dex.YInvocationHandler#checkTypeConstraint(java.lang.reflect.Method)
+	 */
 	@Override
 	protected boolean checkTypeConstraint(final Method getMethod) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.dex.YInvocationHandler#getParentYRawData(java.lang.Object, java.lang.Long)
+	 */
 	@Override
-	protected YRawData getParentYRawData(final Long id) {
+	protected YRawData getParentYRawData(final Object proxyTargetObject, final Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.dex.YInvocationHandler#getChildYRawData(java.lang.Class, br.org.yacamim.YRawData)
+	 */
 	@Override
-	protected YRawData getChildYRawData(final YRawData parenrawData) {
+	protected YRawData getChildYRawData(final Class<?> clazzEntity, final YRawData parenrawData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.dex.YInvocationHandler#fillChild(java.lang.Object, br.org.yacamim.YRawData)
+	 */
 	@Override
 	protected void fillChild(final Object result, final YRawData childRawData) {
 		// TODO Auto-generated method stub
-
 	}
 
 }
