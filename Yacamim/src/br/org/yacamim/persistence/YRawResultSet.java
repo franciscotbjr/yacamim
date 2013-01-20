@@ -17,6 +17,8 @@
  */
 package br.org.yacamim.persistence;
 
+import br.org.yacamim.YRawData;
+
 /**
  * Classe YRawResultSet TODO
  *
@@ -24,13 +26,18 @@ package br.org.yacamim.persistence;
  * @version 1.0
  * @since 1.0
  */
-public class YRawResultSet {
+public interface YRawResultSet {
 
 	/**
-	 *
+	 * 
+	 * @return
 	 */
-	public YRawResultSet() {
-		super();
-	}
+	public boolean hashNext();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public YRawData next();
 
 }

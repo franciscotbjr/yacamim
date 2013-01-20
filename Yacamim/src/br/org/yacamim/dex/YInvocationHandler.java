@@ -1,5 +1,5 @@
 /**
- * ThreadResponseHandler.java
+ * YInvocationHandler.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -29,7 +29,7 @@ import com.google.dexmaker.stock.ProxyBuilder;
 
 /**
  * 
- * Class ThreadResponseHandler TODO
+ * Class YInvocationHandler TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
