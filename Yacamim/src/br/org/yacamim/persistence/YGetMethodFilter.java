@@ -1,5 +1,5 @@
 /**
- * YRawDataPersistenceImpl.java
+ * YGetMethodFilter.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -17,44 +17,31 @@
  */
 package br.org.yacamim.persistence;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Method;
 
-import br.org.yacamim.YRawData;
+import br.org.yacamim.dex.YMethodFilter;
 
 /**
- * Classe YRawDataPersistenceImpl TODO
- *
+ * 
+ * Class YGetMethodFilter TODO
+ * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-class YRawDataPersistenceImpl implements YRawData {
-	
-	private Map<String, Object> map = new HashMap<String, Object>();
+public class YGetMethodFilter implements YMethodFilter {
 
-	/**
-	 * 
-	 */
-	public YRawDataPersistenceImpl() {
+	public YGetMethodFilter() {
 		super();
 	}
 
 	/**
 	 * 
-	 * @see br.org.yacamim.YRawData#add(java.lang.String, java.lang.Object)
-	 */
-	void add(final String key, final Object value) {
-		this.map.put(key, value);
-	}
-
-	/**
-	 * 
-	 * @see br.org.yacamim.YRawData#get(java.lang.String)
+	 * @see br.org.yacamim.dex.YMethodFilter#accept(java.lang.reflect.Method)
 	 */
 	@Override
-	public Object get(final String key) {
-		return this.map.get(key);
+	public boolean accept(final Method method) {
+		return (method.getName().startsWith("get") && !method.getName().equals("getClass"));
 	}
 
 }

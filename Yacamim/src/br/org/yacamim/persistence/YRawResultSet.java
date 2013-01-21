@@ -17,6 +17,8 @@
  */
 package br.org.yacamim.persistence;
 
+import java.util.Date;
+
 import br.org.yacamim.YRawData;
 
 /**
@@ -36,8 +38,37 @@ public interface YRawResultSet {
 	
 	/**
 	 * 
+	 * @param index
 	 * @return
 	 */
-	public YRawData next();
-
+	public Object get(final int index);
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public String getString(final int index);
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public int getInt(final int index);
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public long getLong(final int index);
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Date getDate(final int index);
+	
 }

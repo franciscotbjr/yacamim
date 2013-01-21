@@ -29,15 +29,8 @@ public interface YRawData {
 	/**
 	 * 
 	 * @param key
-	 * @param value
 	 */
-	public void add(final String key, final Object value);
-	
-	/**
-	 * 
-	 * @param key
-	 */
-	public void get(final String key);
+	public Object get(final String key);
 
 
 }

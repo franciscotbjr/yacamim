@@ -60,11 +60,11 @@ public abstract class YInvocationHandler implements InvocationHandler {
 			final List<Method> getMethods = YUtilReflection.getGetMethodListSortedByName(superClass);
 			for(final Method getMethod : getMethods) {
 				if(getMethod.getName().equals(method.getName())) {
-					final Class<?> clazzEntity;
-					if(checkTypeConstraint(getMethod)) {
+					final Class<?> clazzEntity = getMethod.getReturnType();
+					if(checkTypeConstraint(clazzEntity)) {
 						final Long longId = getParentId(proxyTargetObject);
 						final YRawData parentrawData= this.getParentYRawData(proxyTargetObject, longId);
-						final YRawData childRawData = this.getChildYRawData((clazzEntity = getMethod.getReturnType()), parentrawData);
+						final YRawData childRawData = this.getChildYRawData(clazzEntity, parentrawData);
 						
 						result = ProxyBuilder.forClass(clazzEntity)
 								.handler(this)
@@ -80,10 +80,10 @@ public abstract class YInvocationHandler implements InvocationHandler {
 
 	/**
 	 * 
-	 * @param getMethod
+	 * @param clazzEntity
 	 * @return
 	 */
-	protected abstract boolean checkTypeConstraint(final Method getMethod);
+	protected abstract boolean checkTypeConstraint(final Class<?> clazzEntity);
 
 	/**
 	 * 

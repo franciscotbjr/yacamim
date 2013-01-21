@@ -17,7 +17,9 @@
  */
 package br.org.yacamim.persistence;
 
-import br.org.yacamim.YRawData;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Classe YRawResultSetImpl TODO
@@ -27,6 +29,11 @@ import br.org.yacamim.YRawData;
  * @since 1.0
  */
 class YRawResultSetImpl implements YRawResultSet {
+	
+	private List<Object> list = new ArrayList<Object>();
+	
+	private int rowLength;
+	private int currentPosition;
 
 	/**
 	 * 
@@ -44,15 +51,53 @@ class YRawResultSetImpl implements YRawResultSet {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	/**
 	 * 
-	 * @see br.org.yacamim.persistence.YRawResultSet#next()
+	 * @see br.org.yacamim.persistence.YRawResultSet#get(int)
 	 */
-	@Override
-	public YRawData next() {
-		// TODO Auto-generated method stub
+	public Object get(final int index) {
 		return null;
+	}
+	
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#getString(int)
+	 */
+	public String getString(final int index) {
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#getInt(int)
+	 */
+	public int getInt(final int index) {
+		return -1;
+	}
+	
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#getLong(int)
+	 */
+	public long getLong(final int index) {
+		return -1;
+	}
+	
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#getDate(int)
+	 */
+	public Date getDate(final int index) {
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param rowLength
+	 */
+	void setRowLength(final int rowLength) {
+		this.rowLength = rowLength;
 	}
 
 }
