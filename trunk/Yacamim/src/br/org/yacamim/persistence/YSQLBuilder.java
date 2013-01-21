@@ -51,54 +51,40 @@ class YSQLBuilder {
 	private static final String GET_PREFIX = "get";
 	private static final String GET_ID_METHOD_NAME = GET_PREFIX + "Id";
 	
-	
-	public static final int NULL = 0;
-	public static final int INTEGER = 1;
-	public static final int TEXT = 2;
-	public static final int REAL = 3;
- 	public static final int BLOB = 4;
- 	public static final int BOOLEAN = 5;
-
-	public static final String SQL_NULL = "NULL";
-	public static final String SQL_INTEGER = "INTEGER";
-	public static final String SQL_TEXT = "TEXT";
-	public static final String SQL_REAL = "REAL";
-	public static final String SQL_BLOB = "BLOB";
-	
 	private static final Map<Class<?>, String> sqlTypeMap = new HashMap<Class<?>,String>();
 	
 	static {
 		// Integer
-		sqlTypeMap.put(byte.class, SQL_INTEGER);
-		sqlTypeMap.put(short.class, SQL_INTEGER);
-		sqlTypeMap.put(int.class, SQL_INTEGER);
-		sqlTypeMap.put(long.class, SQL_INTEGER);
-		sqlTypeMap.put(Byte.class, SQL_INTEGER);
-		sqlTypeMap.put(Short.class, SQL_INTEGER);
-		sqlTypeMap.put(Integer.class, SQL_INTEGER);
-		sqlTypeMap.put(Long.class, SQL_INTEGER);
+		sqlTypeMap.put(byte.class, YUtilPersistence.SQL_INTEGER);
+		sqlTypeMap.put(short.class, YUtilPersistence.SQL_INTEGER);
+		sqlTypeMap.put(int.class, YUtilPersistence.SQL_INTEGER);
+		sqlTypeMap.put(long.class, YUtilPersistence.SQL_INTEGER);
+		sqlTypeMap.put(Byte.class, YUtilPersistence.SQL_INTEGER);
+		sqlTypeMap.put(Short.class, YUtilPersistence.SQL_INTEGER);
+		sqlTypeMap.put(Integer.class, YUtilPersistence.SQL_INTEGER);
+		sqlTypeMap.put(Long.class, YUtilPersistence.SQL_INTEGER);
 		
 		// Text
-		sqlTypeMap.put(String.class, SQL_TEXT);
-		sqlTypeMap.put(StringBuffer.class, SQL_TEXT);
-		sqlTypeMap.put(StringBuilder.class, SQL_TEXT);
+		sqlTypeMap.put(String.class, YUtilPersistence.SQL_TEXT);
+		sqlTypeMap.put(StringBuffer.class, YUtilPersistence.SQL_TEXT);
+		sqlTypeMap.put(StringBuilder.class, YUtilPersistence.SQL_TEXT);
 		
 		// Floating Point
-		sqlTypeMap.put(float.class, SQL_REAL);
-		sqlTypeMap.put(double.class, SQL_REAL);
-		sqlTypeMap.put(Float.class, SQL_REAL);
-		sqlTypeMap.put(Double.class, SQL_REAL);
+		sqlTypeMap.put(float.class, YUtilPersistence.SQL_REAL);
+		sqlTypeMap.put(double.class, YUtilPersistence.SQL_REAL);
+		sqlTypeMap.put(Float.class, YUtilPersistence.SQL_REAL);
+		sqlTypeMap.put(Double.class, YUtilPersistence.SQL_REAL);
 		
 		// BLOB
-		sqlTypeMap.put(InputStream.class, SQL_BLOB);
-		sqlTypeMap.put(byte[].class, SQL_BLOB);
+		sqlTypeMap.put(InputStream.class, YUtilPersistence.SQL_BLOB);
+		sqlTypeMap.put(byte[].class, YUtilPersistence.SQL_BLOB);
 		
 		// BLOB
-		sqlTypeMap.put(boolean.class, SQL_TEXT);
-		sqlTypeMap.put(Boolean.class, SQL_TEXT);
+		sqlTypeMap.put(boolean.class, YUtilPersistence.SQL_TEXT);
+		sqlTypeMap.put(Boolean.class, YUtilPersistence.SQL_TEXT);
 		
 		// Date
-		sqlTypeMap.put(Date.class, SQL_TEXT);
+		sqlTypeMap.put(Date.class, YUtilPersistence.SQL_TEXT);
 		
 	}
 	
@@ -145,7 +131,7 @@ class YSQLBuilder {
 	private void processEntities(final List<Class<?>> classes) {
 		try {
 			for(final Class<?> clazz : classes) {
-				if(this.isEntity(clazz)) {
+				if(YUtilPersistence.isEntity(clazz)) {
 					final YProcessedEntity yProcessedEntity = new YProcessedEntity();
 					yProcessedEntity.setTableName(this.getTableName(clazz));
 					yProcessedEntity.setClassType(clazz);
@@ -179,7 +165,7 @@ class YSQLBuilder {
 	private StringBuilder montaSQL(final Class<?> clazz) {
 		final StringBuilder sqlCreate = new StringBuilder();
 		final YProcessedEntity processedEntity = this.getYProcessedEntity(clazz);
-		if(this.isEntity(clazz) && processedEntity != null) { 
+		if(YUtilPersistence.isEntity(clazz) && processedEntity != null) { 
 			// avaliar se as classes precisam ser Entity 
 			// | Observação: avaliar também se não seria interesamente que as anotações como Column também sejam opcionais-> 
 			// bastaria apenas mapear as classes no arquivo XML: qualquer classe.
@@ -203,18 +189,18 @@ class YSQLBuilder {
 					final Column column = method.getAnnotation(Column.class);
 					
 					if(column != null) {
-						if(this.isId(method)) {
+						if(YUtilPersistence.isId(method)) {
 							defineColNameAndType(id, method, sqlType, column);
 							
 							id.append(SQL_WORD_PRIMARY_KEY);
-							if(this.isAutoincrement(method)) {
+							if(YUtilPersistence.isAutoincrement(method)) {
 								id.append(SQL_WORD_AUTOINCREMENT);
 							}
 							id.append(SQL_WORD_NOT + SQL_WORD_NULL);
 						} else {
 							defineColNameAndType(sqlCol, method, sqlType, column);
 							
-							if(this.isText(sqlType) && column != null) {
+							if(YUtilPersistence.isText(sqlType) && column != null) {
 								sqlCol.append("(" + column.length() + ") ");
 							}
 							
@@ -228,11 +214,11 @@ class YSQLBuilder {
 						}
 					} else {
 						// Não há anotação @Column
-						if(this.isId(method)) {
+						if(YUtilPersistence.isId(method)) {
 							defineColNameAndType(id, method, sqlType, column);
 							
 							id.append(SQL_WORD_PRIMARY_KEY);
-							if(this.isAutoincrement(method)) {
+							if(YUtilPersistence.isAutoincrement(method)) {
 								id.append(SQL_WORD_AUTOINCREMENT);
 							}
 							id.append(SQL_WORD_NOT + SQL_WORD_NULL);
@@ -249,12 +235,12 @@ class YSQLBuilder {
 						}
 					}
 				} else {
-					if(this.isEntity(returnedType)) {
+					if(YUtilPersistence.isEntity(returnedType)) {
 						final Method[] methodsForeignEntity = returnedType.getMethods();
 						Method methodColFK = null;
 						for(final Method candidateMethodForFK : methodsForeignEntity) {
 							if(candidateMethodForFK.getName().startsWith(GET_PREFIX) 
-									&& (this.isId(candidateMethodForFK)
+									&& (YUtilPersistence.isId(candidateMethodForFK)
 											|| candidateMethodForFK.getName().equals(GET_ID_METHOD_NAME))
 									) {
 								methodColFK = candidateMethodForFK;
@@ -389,11 +375,11 @@ class YSQLBuilder {
 		boolean idIdentificado = false; 
 		try {
 			final Column column = method.getAnnotation(Column.class); 
-			if(column != null && this.isId(method)) { // There is @Column annotation and there is @Id annotation
+			if(column != null && YUtilPersistence.isId(method)) { // There is @Column annotation and there is @Id annotation
 				yProcessedEntity.setIdColumn(this.getColumnName(column, method));
 				yProcessedEntity.setIdMethod(method.getName());
 				idIdentificado = true;
-			} else if(this.isId(method)) { // There is no @Column annotation, yet there is @Id annotation
+			} else if(YUtilPersistence.isId(method)) { // There is no @Column annotation, yet there is @Id annotation
 				yProcessedEntity.setIdColumn(this.getColumnName(null, method));
 				yProcessedEntity.setIdMethod(method.getName());	
 				idIdentificado = true;
@@ -454,57 +440,6 @@ class YSQLBuilder {
 			return name.replaceFirst(GET_PREFIX, "");
 		}
 		return name;
-	}
-	
-	/**
-	 * 
-	 * @param sqlType
-	 * @return
-	 */
-	private boolean isText(final String sqlType) {
-		if(sqlType == null) {
-			return false;
-		}
-		return SQL_TEXT.equals(sqlType);
-	}
-
-	/**
-	 * 
-	 * @param sqlType
-	 * @return
-	 */
-	private boolean isReal(final String sqlType) {
-		if(sqlType == null) {
-			return false;
-		}
-		return SQL_REAL.equals(sqlType);
-	}
-
-	/**
-	 * 
-	 * @param method
-	 * @return
-	 */
-	private boolean isId(final Method method) {
-		return method.getAnnotation(Id.class) != null;
-	}
-
-	/**
-	 * 
-	 * @param method
-	 * @return
-	 */
-	private boolean isAutoincrement(final Method method) {
-		return method.getAnnotation(Id.class).autoincrement();
-	}
-	
-	/**
-	 * 
-	 * @param classe
-	 * @return
-	 */
-	private boolean isEntity(final Class<?> classe) {
-		return classe.getAnnotation(Entity.class) != null;
 	}
 
 }

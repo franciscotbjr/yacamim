@@ -17,8 +17,6 @@
  */
 package br.org.yacamim.persistence;
 
-import java.lang.reflect.Method;
-
 import br.org.yacamim.YRawData;
 import br.org.yacamim.dex.YInvocationHandler;
 import br.org.yacamim.dex.YMethodFilter;
@@ -43,12 +41,11 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YInvocationHandler#checkTypeConstraint(java.lang.reflect.Method)
+	 * @see br.org.yacamim.dex.YInvocationHandler#checkTypeConstraint(java.lang.Class)
 	 */
 	@Override
-	protected boolean checkTypeConstraint(final Method getMethod) {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean checkTypeConstraint(final Class<?> clazzEntity) {
+		return YUtilPersistence.isEntity(clazzEntity);
 	}
 
 	/**
