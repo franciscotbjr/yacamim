@@ -499,7 +499,7 @@ public class DefaultDBAdapter<E> {
 
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
-				if(!DataAdapterHelper.isTransiente(getMethod) && column != null) {
+				if(column != null) {
 					final String columnName = column.name();
 					if(!DataAdapterHelper.treatRawData(cursor, object, getMethod, columnName)) {
 						if(DataAdapterHelper.isOneToOneOwner(getMethod)) {

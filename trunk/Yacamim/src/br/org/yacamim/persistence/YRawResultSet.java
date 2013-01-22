@@ -17,9 +17,6 @@
  */
 package br.org.yacamim.persistence;
 
-import java.util.Date;
-
-import br.org.yacamim.YRawData;
 
 /**
  * Classe YRawResultSet TODO
@@ -41,7 +38,7 @@ public interface YRawResultSet {
 	 * @param index
 	 * @return
 	 */
-	public Object get(final int index);
+	public Object getObject(final int index);
 	
 	/**
 	 * 
@@ -49,6 +46,13 @@ public interface YRawResultSet {
 	 * @return
 	 */
 	public String getString(final int index);
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public short getShort(final int index);
 	
 	/**
 	 * 
@@ -69,6 +73,19 @@ public interface YRawResultSet {
 	 * @param index
 	 * @return
 	 */
-	public Date getDate(final int index);
+	public float getFloat(final int index);
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public double getDouble(final int index);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getRowLength();
 	
 }

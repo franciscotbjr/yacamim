@@ -18,7 +18,6 @@
 package br.org.yacamim.persistence;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,16 +47,17 @@ class YRawResultSetImpl implements YRawResultSet {
 	 */
 	@Override
 	public boolean hashNext() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean next = (list.size() - this.currentPosition) >= this.rowLength;
+		this.currentPosition += this.rowLength;
+		return next;
 	}
 	
 	/**
 	 * 
-	 * @see br.org.yacamim.persistence.YRawResultSet#get(int)
+	 * @see br.org.yacamim.persistence.YRawResultSet#getObject(int)
 	 */
-	public Object get(final int index) {
-		return null;
+	public Object getObject(final int index) {
+		return this.getObject(index);
 	}
 	
 	/**
@@ -65,7 +65,15 @@ class YRawResultSetImpl implements YRawResultSet {
 	 * @see br.org.yacamim.persistence.YRawResultSet#getString(int)
 	 */
 	public String getString(final int index) {
-		return null;
+		return (String)this.list.get(index);
+	}
+
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#getShort(int)
+	 */
+	public short getShort(int index) {
+		return (Short)this.list.get(index);
 	}
 	
 	/**
@@ -73,7 +81,7 @@ class YRawResultSetImpl implements YRawResultSet {
 	 * @see br.org.yacamim.persistence.YRawResultSet#getInt(int)
 	 */
 	public int getInt(final int index) {
-		return -1;
+		return (Integer)this.list.get(index);
 	}
 	
 	/**
@@ -81,15 +89,30 @@ class YRawResultSetImpl implements YRawResultSet {
 	 * @see br.org.yacamim.persistence.YRawResultSet#getLong(int)
 	 */
 	public long getLong(final int index) {
-		return -1;
+		return (Long)this.list.get(index);
 	}
 	
 	/**
 	 * 
-	 * @see br.org.yacamim.persistence.YRawResultSet#getDate(int)
+	 * @see br.org.yacamim.persistence.YRawResultSet#getFloat(int)
 	 */
-	public Date getDate(final int index) {
-		return null;
+	public float getFloat(int index) {
+		return (Float)this.list.get(index);
+	}
+	
+	/**
+	 * 
+	 * @see br.org.yacamim.persistence.YRawResultSet#getDouble(int)
+	 */
+	public double getDouble(int index) {
+		return (Double)this.list.get(index);
+	}
+	
+	/**
+	 * 
+	 */
+	public int getRowLength() {
+		return this.rowLength;
 	}
 	
 	/**
@@ -98,6 +121,14 @@ class YRawResultSetImpl implements YRawResultSet {
 	 */
 	void setRowLength(final int rowLength) {
 		this.rowLength = rowLength;
+	}
+	
+	/**
+	 * 
+	 * @param object
+	 */
+	void add(final Object object) {
+		this.list.add(object);
 	}
 
 }
