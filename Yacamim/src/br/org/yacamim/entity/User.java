@@ -26,7 +26,6 @@ import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.Id;
 import br.org.yacamim.persistence.Table;
-import br.org.yacamim.persistence.Transiente;
 
 
 /**
@@ -119,7 +118,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the password
 	 */
-	@Transiente
 	public String getPassword() {
 		return password;
 	}
@@ -134,7 +132,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the newPassword
 	 */
-	@Transiente
 	public String getNewPassword() {
 		return newPassword;
 	}
@@ -149,7 +146,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the question
 	 */
-	@Transiente
 	public String getQuestion() {
 		return question;
 	}
@@ -164,7 +160,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the answer
 	 */
-	@Transiente
 	public String getAnswer() {
 		return answer;
 	}
@@ -179,7 +174,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the session
 	 */
-	@Transiente
 	public Session getSession() {
 		return session;
 	}
@@ -194,7 +188,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the firstAccess
 	 */
-	@Transiente
 	public String getFirstAccess() {
 		return firstAccess;
 	}
@@ -209,7 +202,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the logonFail
 	 */
-	@Transiente
 	public String getLogonFail() {
 		return logonFail;
 	}
@@ -224,7 +216,6 @@ public class User extends YBaseEntity {
 	/**
 	 * @return the lastAcces
 	 */
-	@Transiente
 	public Date getLastAcces() {
 		return lastAcces;
 	}

@@ -219,13 +219,4 @@ public final class DataAdapterHelper {
 		return getMethod.getAnnotation(ManyToMany.class) != null;
 	}
 
-	/**
-	 *
-	 * @param getMethod
-	 * @return
-	 */
-	public static boolean isTransiente(Method getMethod) {
-		return getMethod.getAnnotation(Transiente.class) != null;
-	}
-
 }
