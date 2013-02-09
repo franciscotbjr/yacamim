@@ -29,35 +29,44 @@ public final class R {
         public static final int ic_launcher=0x7f020004;
     }
     public static final class id {
-        public static final int TableLayoutConteinerBotoes=0x7f090000;
-        public static final int TableRowConteinerBotoes=0x7f090001;
-        public static final int btn_paciente=0x7f090002;
-        public static final int btn_visita=0x7f090003;
-        public static final int menu_settings=0x7f090004;
+        public static final int TableLayoutConteinerBotoes=0x7f090001;
+        public static final int TableRowConteinerBotoes=0x7f090002;
+        public static final int btn_paciente=0x7f090003;
+        public static final int btn_visita=0x7f090004;
+        public static final int lblTipoMedicacao=0x7f090000;
+        public static final int menu_settings=0x7f090005;
     }
     public static final class layout {
-        public static final int activity_radiografia_social=0x7f030000;
+        public static final int activity_paciente=0x7f030000;
+        public static final int activity_radiografia_social=0x7f030001;
     }
     public static final class menu {
-        public static final int activity_radiografia_social=0x7f080000;
+        public static final int activity_paciente=0x7f080000;
+        public static final int activity_radiografia_social=0x7f080001;
     }
     public static final class string {
         public static final int app_name=0x7f060000;
         public static final int hello_world=0x7f060001;
-        public static final int label_cpf=0x7f060003;
+        public static final int lbl_nome=0x7f060005;
+        public static final int lbl_paciente=0x7f060004;
         public static final int menu_settings=0x7f060002;
-        public static final int y_MsgConstraintDependency=0x7f06000f;
-        public static final int y_MsgInvalidData=0x7f060007;
-        public static final int y_MsgNoConnectivityAvailable=0x7f06000d;
-        public static final int y_MsgNoInformationFound=0x7f06000a;
-        public static final int y_MsgNoRecordSelected=0x7f06000c;
-        public static final int y_MsgNoRecordsFoundForParameters=0x7f06000b;
-        public static final int y_MsgNoWifiConnectivityAvailable=0x7f06000e;
-        public static final int y_MsgOK=0x7f060004;
-        public static final int y_MsgSelectAnItem=0x7f060008;
-        public static final int y_MsgSuccesfullyInserted=0x7f060005;
-        public static final int y_MsgSuccesfullyUpdated=0x7f060006;
-        public static final int y_MsgWait=0x7f060009;
+        /**  Paciente 
+         */
+        public static final int title_activity_paciente=0x7f060003;
+        public static final int y_MsgConstraintDependency=0x7f060011;
+        public static final int y_MsgInvalidData=0x7f060009;
+        public static final int y_MsgNoConnectivityAvailable=0x7f06000f;
+        public static final int y_MsgNoInformationFound=0x7f06000c;
+        public static final int y_MsgNoRecordSelected=0x7f06000e;
+        public static final int y_MsgNoRecordsFoundForParameters=0x7f06000d;
+        public static final int y_MsgNoWifiConnectivityAvailable=0x7f060010;
+        /**  Yacamin 
+         */
+        public static final int y_MsgOK=0x7f060006;
+        public static final int y_MsgSelectAnItem=0x7f06000a;
+        public static final int y_MsgSuccesfullyInserted=0x7f060007;
+        public static final int y_MsgSuccesfullyUpdated=0x7f060008;
+        public static final int y_MsgWait=0x7f06000b;
     }
     public static final class style {
         /** 

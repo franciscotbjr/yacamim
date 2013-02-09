@@ -5,9 +5,11 @@
  */
 package br.com.nuceloesperanca.radiografiasocial;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import br.org.yacamim.YBaseActivity;
 import br.org.yacamim.YacamimInitializer;
 import br.org.yacamim.YacamimState;
@@ -72,4 +74,15 @@ public class RadiografiaSocialActivity extends YBaseActivity {
 			Log.e(TAG_CLASS, e.getMessage());
 		}
     }
+
+	/**
+	 * @param _view
+	 */
+	public void manterPaciente(final View _view) {
+		try {
+			startActivity(new Intent(this, PacienteActivity.class));
+		} catch (Exception e) {
+			Log.e("RadiografiaSocialActivity.manterPaciente", e.getMessage());
+		}
+	}
 }
