@@ -1,14 +1,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/background_sem_logo"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RadiografiaSocialActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
-
+    <LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:paddingTop="150sp">
+		<TableLayout
+			android:id="@+id/TableLayoutConteinerBotoes"
+			android:stretchColumns="*"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent">
+			<TableRow 
+				android:id="@+id/TableRowConteinerBotoes"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:layout_gravity="center_vertical">
+				<Button 
+				    android:id="@+id/btn_paciente"
+					android:layout_height="wrap_content"
+					android:layout_width="fill_parent"
+					android:background="@drawable/btn_paciente_principal"
+					android:onClick="manterPaciente"/>
+				<Button 
+				    android:id="@+id/btn_visita"
+					android:layout_height="wrap_content"
+					android:layout_width="fill_parent"
+					android:background="@drawable/btn_visita_principal"
+					android:onClick="registrarVisita"/>
+			</TableRow>
+		</TableLayout>
+	</LinearLayout>
 </RelativeLayout>

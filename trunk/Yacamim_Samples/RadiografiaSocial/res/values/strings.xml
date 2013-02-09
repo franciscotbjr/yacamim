@@ -5,6 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
 
+    <string name="label_cpf">CPF</string>
+    
+    
     <string name="y_MsgOK">OK</string> 
 	<string name="y_MsgSuccesfullyInserted">Registro inserido com sucesso.</string>
 	<string name="y_MsgSuccesfullyUpdated">Regsitro atuaizado com sucesso.</string>

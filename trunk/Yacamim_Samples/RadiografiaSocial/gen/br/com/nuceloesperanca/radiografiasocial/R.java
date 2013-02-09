@@ -10,34 +10,54 @@ package br.com.nuceloesperanca.radiografiasocial;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int custom_theme_color=0x7f050006;
+        public static final int custom_theme_color_red=0x7f050007;
+        public static final int grid_fundo_impar=0x7f050003;
+        public static final int grid_fundo_par=0x7f050002;
+        public static final int grid_header_color=0x7f050004;
+        public static final int grid_linha=0x7f050001;
+        public static final int label_color=0x7f050005;
+        public static final int texto_apresentacao=0x7f050008;
+        public static final int title_color=0x7f050000;
+    }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int background_sem_logo=0x7f020000;
+        public static final int barrabackground=0x7f020001;
+        public static final int btn_paciente_principal=0x7f020002;
+        public static final int btn_visita_principal=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
     }
     public static final class id {
-        public static final int menu_settings=0x7f080000;
+        public static final int TableLayoutConteinerBotoes=0x7f090000;
+        public static final int TableRowConteinerBotoes=0x7f090001;
+        public static final int btn_paciente=0x7f090002;
+        public static final int btn_visita=0x7f090003;
+        public static final int menu_settings=0x7f090004;
     }
     public static final class layout {
         public static final int activity_radiografia_social=0x7f030000;
     }
     public static final class menu {
-        public static final int activity_radiografia_social=0x7f070000;
+        public static final int activity_radiografia_social=0x7f080000;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
-        public static final int hello_world=0x7f050001;
-        public static final int menu_settings=0x7f050002;
-        public static final int y_MsgConstraintDependency=0x7f05000e;
-        public static final int y_MsgInvalidData=0x7f050006;
-        public static final int y_MsgNoConnectivityAvailable=0x7f05000c;
-        public static final int y_MsgNoInformationFound=0x7f050009;
-        public static final int y_MsgNoRecordSelected=0x7f05000b;
-        public static final int y_MsgNoRecordsFoundForParameters=0x7f05000a;
-        public static final int y_MsgNoWifiConnectivityAvailable=0x7f05000d;
-        public static final int y_MsgOK=0x7f050003;
-        public static final int y_MsgSelectAnItem=0x7f050007;
-        public static final int y_MsgSuccesfullyInserted=0x7f050004;
-        public static final int y_MsgSuccesfullyUpdated=0x7f050005;
-        public static final int y_MsgWait=0x7f050008;
+        public static final int app_name=0x7f060000;
+        public static final int hello_world=0x7f060001;
+        public static final int label_cpf=0x7f060003;
+        public static final int menu_settings=0x7f060002;
+        public static final int y_MsgConstraintDependency=0x7f06000f;
+        public static final int y_MsgInvalidData=0x7f060007;
+        public static final int y_MsgNoConnectivityAvailable=0x7f06000d;
+        public static final int y_MsgNoInformationFound=0x7f06000a;
+        public static final int y_MsgNoRecordSelected=0x7f06000c;
+        public static final int y_MsgNoRecordsFoundForParameters=0x7f06000b;
+        public static final int y_MsgNoWifiConnectivityAvailable=0x7f06000e;
+        public static final int y_MsgOK=0x7f060004;
+        public static final int y_MsgSelectAnItem=0x7f060008;
+        public static final int y_MsgSuccesfullyInserted=0x7f060005;
+        public static final int y_MsgSuccesfullyUpdated=0x7f060006;
+        public static final int y_MsgWait=0x7f060009;
     }
     public static final class style {
         /** 
@@ -61,11 +81,20 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070004;
+        /**  Set the theme for the window title 
+ NOTE: setting android:textAppearence to style defined above 
+         */
+        public static final int CustomWindowTitle=0x7f070003;
+        /**  Changes the background color of the title bar 
+         */
+        public static final int CustomWindowTitleBackground=0x7f070002;
+        public static final int CustomWindowTitleText=0x7f070001;
+        public static final int EditText=0x7f070006;
+        public static final int fonte_label=0x7f070005;
     }
     public static final class xml {
         public static final int y_config=0x7f040000;
