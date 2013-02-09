@@ -31,7 +31,7 @@ public class Paciente extends YBaseEntity {
 	private String nomePai;
 	private String irmaos;
 	private String telefones;
-	private String endereço;
+	private String endereco;
 	private Cid cid;
 	private long latitude;
 	private long longitude;
@@ -173,18 +173,18 @@ public class Paciente extends YBaseEntity {
 	}
 
 	/**
-	 * @return the endereço
+	 * @return the endereco
 	 */
 	@Column
-	public String getEndereço() {
-		return this.endereço;
+	public String getEndereco() {
+		return this.endereco;
 	}
 
 	/**
-	 * @param endereço the endereço to set
+	 * @param endereco the endereco to set
 	 */
-	public void setEndereço(String endereço) {
-		this.endereço = endereço;
+	public void setEndereço(String endereco) {
+		this.endereco = endereco;
 	}
 
 	/**
