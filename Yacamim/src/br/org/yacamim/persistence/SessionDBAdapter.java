@@ -35,7 +35,7 @@ public class SessionDBAdapter extends DefaultDBAdapter<Session> {
 	 * @param context
 	 */
 	public SessionDBAdapter(Context context) {
-		super();
+		super(Session.class);
 		super.setDbHelper(new DefaultDBHelper(context));
 	}
 

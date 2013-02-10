@@ -34,7 +34,7 @@ public class UserDBAdapter extends DefaultDBAdapter<User> {
 	 * @param _context
 	 */
 	public UserDBAdapter(Context _context) {
-		super();
+		super(User.class);
 		super.setDbHelper(new DefaultDBHelper(_context));
 	}
 

@@ -42,14 +42,16 @@ public class DefaultDBAdapter<E> {
 
 	private SQLiteDatabase database;
 	private DefaultDBHelper dbHelper;
+	private Class<E> genericType;
 
 	/**
 	 *
 	 * @param context
 	 */
-	public DefaultDBAdapter() {
+	public DefaultDBAdapter(final Class<E> genericType) {
 		super();
 		this.setDbHelper(new DefaultDBHelper(YacamimState.getInstance().getCurrentActivity().getApplicationContext()));
+		this.genericType = genericType;
 	}
 
 	/**
@@ -133,14 +135,14 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			final String[] columns = this.getColumnNamesAsArray(this.getClass());
+			final String[] columns = this.getColumnNamesAsArray();
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(this.getTableName(), columns, null, null, null,
 						null, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					entities.add(build(cursor, this.getClass()));
+					entities.add(build(cursor));
 					while(cursor.moveToNext()) {
-						entities.add(build(cursor, this.getClass()));
+						entities.add(build(cursor));
 					}
 				}
 				cursor.close();
@@ -184,8 +186,8 @@ public class DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			final ContentValues updateValues = createContentValues(entity);
-			updateValues.remove(getIdColumnName(this.getClass()));
-			return this.getDatabase().update(this.getTableName(), updateValues, this.getIdColumnName(this.getClass()) + "=" + this.getId(entity), null) > 0;
+			updateValues.remove(getIdColumnName());
+			return this.getDatabase().update(this.getTableName(), updateValues, this.getIdColumnName() + "=" + this.getId(entity), null) > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -202,7 +204,7 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			return this.getDatabase().delete(this.getTableName(), this.getIdColumnName(this.getClass()) + "=" + this.getId(entity), null) > 0;
+			return this.getDatabase().delete(this.getTableName(), this.getIdColumnName() + "=" + this.getId(entity), null) > 0;
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.delete", e.getMessage());
 			return false;
@@ -228,43 +230,24 @@ public class DefaultDBAdapter<E> {
 	/**
 	 *
 	 * @param id
-	 * @return
-	 * @throws SQLException
-	 */
-	public E getByID(final long id) throws SQLException {
-		try {
-			if(!this.isEntity()) {
-				throw new NotAnEntityException();
-			}
-			return this.getByID(id, this.getClass());
-		} catch (Exception e) {
-			Log.e("DefaultDBAdapter.getByID", e.getMessage());
-			return null;
-		}
-
-	}
-
-	/**
-	 *
-	 * @param id
 	 * @param type
 	 * @return
 	 * @throws SQLException
 	 */
 
-	E getByID(final long id, Class<?> type) throws SQLException {
+	E getByID(final long id) throws SQLException {
 		E resultado = null;
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			Table table = type.getAnnotation(Table.class);
-			final String[] colunas = this.getColumnNamesAsArray(type);
+			Table table = this.getGenericSuperclassClass().getAnnotation(Table.class);
+			final String[] colunas = this.getColumnNamesAsArray();
 			if(colunas != null && colunas.length > 0) {
-				final Cursor cursor = this.getDatabase().query(table.name(), colunas, this.getIdColumnName(type) + " = ?", new String[]{String.valueOf(id)}, null,
+				final Cursor cursor = this.getDatabase().query(table.name(), colunas, this.getIdColumnName() + " = ?", new String[]{String.valueOf(id)}, null,
 						null, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					resultado = build(cursor, type);
+					resultado = build(cursor);
 				}
 				cursor.close();
 			}
@@ -286,7 +269,7 @@ public class DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			StringBuilder sql = new StringBuilder();
-			sql.append("select max(" + this.getIdColumnName(this.getClass()) + ") ");
+			sql.append("select max(" + this.getIdColumnName() + ") ");
 			sql.append("from " + this.getTableName());
 
 			final Cursor cursor = getDatabase().rawQuery(sql.toString(), null);
@@ -309,7 +292,7 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			return YUtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class).name();
+			return YUtilReflection.getGenericSuperclassClass(this.getGenericSuperclassClass()).getAnnotation(Table.class).name();
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.getTableName", e.getMessage());
 		}
@@ -321,9 +304,9 @@ public class DefaultDBAdapter<E> {
 	 * @param type
 	 * @return
 	 */
-	protected String getIdColumnName(Class<?> type) {
+	protected String getIdColumnName() {
 		try {
-			final Method getMethod = getIdGetMethod(type);
+			final Method getMethod = getIdGetMethod(this.getGenericSuperclassClass());
 			if(getMethod != null) {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(column != null) {
@@ -341,12 +324,10 @@ public class DefaultDBAdapter<E> {
 	 * @param type
 	 * @return
 	 */
-	protected Method getIdGetMethod(Class<?> type) {
+	protected Method getIdGetMethod(final Class<?> type) {
 		Method idMethod = null;
 		try {
-			final Class<?> classe = getGenericSuperclassClass(type);
-
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(classe);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(type);
 
 			for(final Method getMethod : getMethods) {
 				Id pk = getMethod.getAnnotation(Id.class);
@@ -405,12 +386,10 @@ public class DefaultDBAdapter<E> {
 	 * @param type
 	 * @return
 	 */
-	protected List<String> getColumnNames(Class<?> type) {
+	protected List<String> getColumnNames() {
 		final List<String> columns = new ArrayList<String>();
 		try {
-			final Class<?> genericClass = this.getGenericSuperclassClass(type);
-
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericSuperclassClass());
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(column != null) {
@@ -422,21 +401,21 @@ public class DefaultDBAdapter<E> {
 		}
 		return columns;
 	}
-
-	/**
-	 * @param type
-	 * @return
-	 */
-	protected Class<?> getGenericSuperclassClass(Class<?> type) {
-		return YUtilReflection.getGenericSuperclassClass(type);
-	}
+//
+//	/**
+//	 * @param type
+//	 * @return
+//	 */
+//	protected Class<?> getGenericSuperclassClass(Class<?> type) {
+//		return YUtilReflection.getGenericSuperclassClass(type);
+//	}
 
 	/**
 	 *
 	 * @return
 	 */
-	protected Class<?> getGenericSuperclassClass() {
-		return YUtilReflection.getGenericSuperclassClass(this.getClass());
+	protected Class<E> getGenericSuperclassClass() {
+		return this.genericType;
 	}
 
 	/**
@@ -444,7 +423,7 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	protected boolean isEntity() {
-		return YUtilReflection.getGenericSuperclassClass(this.getClass()).getAnnotation(Table.class) == null;
+		return this.getGenericSuperclassClass().getAnnotation(Entity.class) != null;
 	}
 
 	/**
@@ -469,10 +448,10 @@ public class DefaultDBAdapter<E> {
 	 * @param type
 	 * @return
 	 */
-	protected String[] getColumnNamesAsArray(Class<?> type) {
+	protected String[] getColumnNamesAsArray() {
 		String[] columns = null;
 		try {
-			final List<String> columnList = getColumnNames(type);
+			final List<String> columnList = getColumnNames();
 			columns = new String[columnList.size()];
 			for(int i = 0; i < columnList.size(); i++) {
 				columns[i] = columnList.get(i);
@@ -489,10 +468,10 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected E build(final Cursor cursor, final Class<?> type) {
+	protected E build(final Cursor cursor) {
 		E object = null;
 		try {
-			final Class<?> genericClass = getGenericSuperclassClass(type);
+			final Class<?> genericClass = getGenericSuperclassClass();
 			object = (E) genericClass.newInstance();
 
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
@@ -526,7 +505,7 @@ public class DefaultDBAdapter<E> {
 	protected ContentValues createContentValues(final E entidade) {
 		final ContentValues values = new ContentValues();
 		try {
-			final Class<?> genericClass = YUtilReflection.getGenericSuperclassClass(this.getClass());
+			final Class<?> genericClass = YUtilReflection.getGenericSuperclassClass(this.getGenericSuperclassClass());
 
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
 

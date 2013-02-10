@@ -858,9 +858,11 @@ public strictfp abstract class YUtilReflection {
 	 */
 	public static Class<?> getGenericSuperclassClass(final Class<?> classType) {
 		try {
-			final ParameterizedType parameterizedType = (ParameterizedType)classType.getGenericSuperclass();
-
-			return (Class<?>) parameterizedType.getActualTypeArguments()[0];
+			
+			return (Class<?>) classType.getTypeParameters()[0].getGenericDeclaration();
+//			final ParameterizedType parameterizedType = (ParameterizedType)classType.getGenericSuperclass();
+//
+//			return (Class<?>) parameterizedType.getActualTypeArguments()[0];
 		} catch (Exception e) {
 			Log.e("YUtilReflection.getGenericSuperclassClass", e.getMessage());
 			return null;
