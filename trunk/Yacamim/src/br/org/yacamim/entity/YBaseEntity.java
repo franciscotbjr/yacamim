@@ -25,7 +25,7 @@ import br.org.yacamim.util.YUtilParcel;
  *
  * Class YBaseEntity TODO
  *
- * @author yacamim.org.br (Francisco Tarcizo Bomfim JÃºnior)
+ * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
