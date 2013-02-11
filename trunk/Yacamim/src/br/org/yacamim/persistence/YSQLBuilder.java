@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
 
@@ -38,6 +39,9 @@ import br.org.yacamim.util.YUtilString;
  */
 class YSQLBuilder {
 	
+	public static final String SQL_WORD_INSERT_INTO = " INSERT INTO ";
+	public static final String SQL_WORD_VALUES = " VALUES ";
+
 	private static final String SQL_WORD_TABLE = " TABLE ";
 	private static final String SQL_WORD_CREATE = " CREATE ";
 	private static final String SQL_WORD_REFERENCES = " REFERENCES ";
@@ -133,7 +137,7 @@ class YSQLBuilder {
 			for(final Class<?> clazz : classes) {
 				if(YUtilPersistence.isEntity(clazz)) {
 					final YProcessedEntity yProcessedEntity = new YProcessedEntity();
-					yProcessedEntity.setTableName(this.getTableName(clazz));
+					yProcessedEntity.setTableName(YSQLBuilder.getTableName(clazz));
 					yProcessedEntity.setClassType(clazz);
 					yProcessedEntity.setClassName(clazz.getSimpleName());
 			
@@ -253,7 +257,7 @@ class YSQLBuilder {
 							if(sqlTypeFK != null) {
 								final YProcessedEntity processedEntityFK = getYProcessedEntity(returnedType);
 								
-								final String fkName = this.getColumnName(column, methodColFK) + "_" + processedEntityFK.getTableName();
+								final String fkName = YSQLBuilder.getColumnName(column, methodColFK) + "_" + processedEntityFK.getTableName();
 								sqlFK.append(" " + fkName);
 								sqlFK.append(" " + sqlTypeFK);
 								
@@ -302,7 +306,7 @@ class YSQLBuilder {
 	private void defineColNameAndType(final StringBuilder builder,
 			final Method method, final String sqlType, final Column column) {
 		//---
-		builder.append(" " + this.getColumnName(column, method));
+		builder.append(" " + YSQLBuilder.getColumnName(column, method));
 		builder.append(" " + sqlType);
 	}
 
@@ -376,15 +380,15 @@ class YSQLBuilder {
 		try {
 			final Column column = method.getAnnotation(Column.class); 
 			if(column != null && YUtilPersistence.isId(method)) { // There is @Column annotation and there is @Id annotation
-				yProcessedEntity.setIdColumn(this.getColumnName(column, method));
+				yProcessedEntity.setIdColumn(YSQLBuilder.getColumnName(column, method));
 				yProcessedEntity.setIdMethod(method.getName());
 				idIdentificado = true;
 			} else if(YUtilPersistence.isId(method)) { // There is no @Column annotation, yet there is @Id annotation
-				yProcessedEntity.setIdColumn(this.getColumnName(null, method));
+				yProcessedEntity.setIdColumn(YSQLBuilder.getColumnName(null, method));
 				yProcessedEntity.setIdMethod(method.getName());	
 				idIdentificado = true;
 			} else if(method.getName().equals(GET_ID_METHOD_NAME)) { // There is neither @Column annotation nor @Id annotation
-				yProcessedEntity.setIdColumn(this.getColumnName(null, method));
+				yProcessedEntity.setIdColumn(YSQLBuilder.getColumnName(null, method));
 				yProcessedEntity.setIdMethod(GET_ID_METHOD_NAME);										
 				idIdentificado = true;
 			}
@@ -409,11 +413,11 @@ class YSQLBuilder {
 	 * @param method
 	 * @return
 	 */
-	private String getColumnName(final Column column, final Method method) {
+	static String getColumnName(final Column column, final Method method) {
 		if(column != null && !YUtilString.isEmptyString(column.name())) { 
 			return column.name();
 		}
-		return this.toColumnName(method.getName());
+		return toColumnName(method.getName());
 	}
 	
 	/**
@@ -422,7 +426,7 @@ class YSQLBuilder {
 	 * @param method
 	 * @return
 	 */
-	private String getTableName(final Class<?> classe) {
+	static String getTableName(final Class<?> classe) {
 		final Table table = classe.getAnnotation(Table.class);
 		if(table != null && !YUtilString.isEmptyString(table.name())) { 
 			return table.name();
@@ -435,11 +439,56 @@ class YSQLBuilder {
 	 * @param name
 	 * @return
 	 */
-	private String toColumnName(final String name) {
+	static String toColumnName(final String name) {
 		if(!YUtilString.isEmptyString(name)) {
 			return name.replaceFirst(GET_PREFIX, "");
 		}
 		return name;
+	}
+	
+	/**
+	 * 
+	 * @param dbLoad
+	 * @param row
+	 * @return
+	 */
+	@SuppressLint("DefaultLocale")
+	static StringBuilder convertToColumnNames(final DbLoad dbLoad, final String row) {
+		int start = row.toUpperCase().indexOf(YSQLBuilder.SQL_WORD_VALUES);
+		String strCols = row.substring(0, start).trim();
+		strCols = strCols.substring(1, strCols.length() - 1);
+		final String[] arrCols = strCols.split("[\\,]");
+		final StringBuilder builderCols = new StringBuilder();
+		int count = 0;
+		for(final String colName : arrCols) {
+			final Method getMethod = YUtilReflection.getGetMethod(YUtilReflection.getGetMethodName(colName.trim()), dbLoad.getEntity());
+			final Column column = getMethod.getAnnotation(Column.class);
+			final String nomeColuna = YSQLBuilder.getColumnName(column, getMethod);
+			builderCols.append(nomeColuna);
+			if((count + 1) < arrCols.length) {
+				builderCols.append(", ");
+			}
+			count++;
+		}
+		return builderCols;
+	}
+	
+	/**
+	 * 
+	 * @param dbLoad
+	 * @param row
+	 * @return
+	 */
+	@SuppressLint("DefaultLocale")
+	static StringBuilder convertToInsert(final DbLoad dbLoad, final String row) {
+		StringBuilder builderInsert = new StringBuilder();
+		builderInsert.append(YSQLBuilder.SQL_WORD_INSERT_INTO);
+		builderInsert.append(YSQLBuilder.getTableName(dbLoad.getEntity()));
+		builderInsert.append(" (");
+		builderInsert.append(YSQLBuilder.convertToColumnNames(dbLoad, row));
+		builderInsert.append(") ");
+		builderInsert.append(row.substring(row.toUpperCase().indexOf(YSQLBuilder.SQL_WORD_VALUES)));
+		return builderInsert;
 	}
 
 }

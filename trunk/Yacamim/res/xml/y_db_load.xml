@@ -37,6 +37,11 @@
 				    </y-row>
 				</y-insert>
 		    </y-package>
+		    
+		    <y-insert>
+		        INSERT INTO xxx_xxxx (id_xxxx,, ds_xxx) 
+		        values (1, 'Xxxxxx Xxxxx');
+		    </y-insert>
 		</y-load>
 	</y-db>
 </y-db-script>
