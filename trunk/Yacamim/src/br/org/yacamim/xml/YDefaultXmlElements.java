@@ -37,6 +37,7 @@ public enum YDefaultXmlElements {
 	ELEMENT_Y_LOAD("y-load"),
 	ELEMENT_Y_INSERT("y-insert"),
 	ELEMENT_Y_UPDATE("y-update"),
+	ELEMENT_Y_DELETE("y-delete"),
 	ELEMENT_Y_ROW("y-row"),
 	ELEMENT_Y_DB("y-db"),
 	ELEMENT_Y_CLASS("y-class"),
@@ -44,6 +45,8 @@ public enum YDefaultXmlElements {
 	ELEMENT_Y_SERVICE("y-service"),
 	ELEMENT_Y_CONFIG("y-config"),
 	ELEMENT_Y_CONFIG_ITEM("y-config-item"),
+	ELEMENT_Y_PARAM("y-param"),
+	ELEMENT_Y_PARAM_ITEM("y-param-item"),
 
 	/* Attribute */
 	ATTR_NAME("name"),
@@ -52,7 +55,8 @@ public enum YDefaultXmlElements {
 	ATTR_ID("id"),
 	ATTR_URL("url"),
     ATTR_SERVICE_NAME("service-name"),
-    ATTR_LOCAL_NAME("local-name")
+    ATTR_LOCAL_NAME("local-name"),
+    ATTR_Y_ENTITY("y-entity")
 
 	;
 

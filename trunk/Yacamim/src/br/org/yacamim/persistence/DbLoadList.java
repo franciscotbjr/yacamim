@@ -27,7 +27,9 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public class DbLoadList {
+public final class DbLoadList {
+	
+	private static final DbLoadList singleton = new DbLoadList();
 	
 	private List<DbLoad> inserts;
 	private List<DbLoad> updates;
@@ -36,8 +38,16 @@ public class DbLoadList {
 	/**
 	 * 
 	 */
-	public DbLoadList() {
+	private DbLoadList() {
 		super();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static DbLoadList getInstance() {
+		return DbLoadList.singleton;
 	}
 	
 	/**
@@ -102,7 +112,7 @@ public class DbLoadList {
 	 * @return
 	 */
 	public List<DbLoad> getInserts() {
-		return inserts;
+		return this.inserts;
 	}
 
 	/**
@@ -110,7 +120,7 @@ public class DbLoadList {
 	 * @return
 	 */
 	public List<DbLoad> getUpdates() {
-		return updates;
+		return this.updates;
 	}
 
 	/**
@@ -118,7 +128,7 @@ public class DbLoadList {
 	 * @return
 	 */
 	public List<DbLoad> getDeletes() {
-		return deletes;
+		return this.deletes;
 	}
-
+	
 }
