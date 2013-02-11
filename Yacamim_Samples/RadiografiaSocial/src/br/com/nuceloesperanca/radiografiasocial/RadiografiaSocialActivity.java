@@ -79,7 +79,7 @@ public class RadiografiaSocialActivity extends YBaseActivity {
 	 */
 	public void manterPaciente(final View _view) {
 		try {
-			startActivity(new Intent(this, PacienteActivity.class));
+			startActivity(new Intent(this, ConsultarPacienteActivity.class));
 		} catch (Exception e) {
 			Log.e("RadiografiaSocialActivity.manterPaciente", e.getMessage());
 		}

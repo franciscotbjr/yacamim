@@ -6,8 +6,9 @@
     <string name="menu_settings">Settings</string>
 
     <!-- Paciente -->
-    <string name="title_activity_paciente">PacienteActivity</string>
+    <string name="title_activity_consultar_paciente">Consultar Paciente</string>
     <string name="lbl_paciente">Paciente</string>
+    <string name="lbl_prontuario">Prontuário</string>
     <string name="lbl_nome">Nome</string>
 
     <!-- Yacamin -->
