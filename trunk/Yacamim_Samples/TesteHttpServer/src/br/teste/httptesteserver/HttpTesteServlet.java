@@ -2,6 +2,7 @@ package br.teste.httptesteserver;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -77,5 +78,5 @@ public class HttpTesteServlet extends HttpServlet {
 		}
 		return codigoL + "";
 	}
-
+	
 }
