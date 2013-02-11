@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<y-db-script>
+	<y-db version="0">
+		<y-load>
+		    <y-package name="br.org.yacamim.ana.entidade">
+				<y-insert entity="TipoMedicacao">
+				    <y-row>
+					   (id, descricao) values (1, 'Alivium')
+				    </y-row>
+				    <y-row>
+					   (id, descricao) values (2, 'Tylenol Bebê')
+				    </y-row>
+				    <y-row>
+					   (id, descricao) values (3, 'Profenid')
+				    </y-row>
+				</y-insert>
+				<y-insert entity="TipoOcorrencia">
+				    <y-row>
+					    (id, descricao) values (1, 'Dor')
+				    </y-row>
+				    <y-row>
+					    (id, descricao) values (2, 'Febre')
+				    </y-row>
+				    <y-row>
+					    (id, descricao) values (3, 'Tosse')
+				    </y-row>
+				</y-insert>
+				<y-insert entity="Medida">
+				    <y-row>
+					    (id, descricao) values (1, 'Gotas')
+				    </y-row>
+				    <y-row>
+					    (id, descricao) values (2, 'Mls')
+				    </y-row>
+				    <y-row>
+					    (id, descricao) values (3, 'Unidade')
+				    </y-row>
+				</y-insert>
+		    </y-package>
+		</y-load>
+	</y-db>
+</y-db-script>
