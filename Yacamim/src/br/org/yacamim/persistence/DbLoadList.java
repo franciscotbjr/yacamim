@@ -60,15 +60,10 @@ public final class DbLoadList {
 		if(this.inserts == null) {
 			this.inserts = new ArrayList<DbLoad>();
 		}
-		if(!this.inserts.contains(entity)) {
-			this.inserts.add(new DbLoad(entity));
-		}
-		for(final DbLoad dbLoad : this.inserts) {
-			dbLoad.addRow(row);
-		}
+		this.addRow(entity, row, this.inserts);
 		return this;
 	}
-	
+
 	/**
 	 * 
 	 * @param entity
@@ -79,12 +74,7 @@ public final class DbLoadList {
 		if(this.updates == null) {
 			this.updates = new ArrayList<DbLoad>();
 		}
-		if(!this.updates.contains(entity)) {
-			this.updates.add(new DbLoad(entity));
-		}
-		for(final DbLoad dbLoad : this.updates) {
-			dbLoad.addRow(row);
-		}
+		this.addRow(entity, row, this.updates);
 		return this;
 	}
 	
@@ -98,13 +88,29 @@ public final class DbLoadList {
 		if(this.deletes == null) {
 			this.deletes = new ArrayList<DbLoad>();
 		}
-		if(!this.deletes.contains(entity)) {
-			this.deletes.add(new DbLoad(entity));
-		}
-		for(final DbLoad dbLoad : this.deletes) {
-			dbLoad.addRow(row);
-		}
+		this.addRow(entity, row, this.deletes);
 		return this;
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param row
+	 * @param dbLoads
+	 */
+	private void addRow(final Class<?> entity, final String row, final List<DbLoad> dbLoads) {
+		DbLoad targetDbLoad = null;
+		for(final DbLoad dbLoad : dbLoads) {
+			if(dbLoad.getEntity().equals(entity)) {
+				targetDbLoad = dbLoad;
+				break;
+			}
+		}
+		if(targetDbLoad == null) {
+			dbLoads.add((targetDbLoad = new DbLoad(entity)));
+		}
+		
+		targetDbLoad.addRow(row);
 	}
 
 	/**
