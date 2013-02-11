@@ -115,8 +115,26 @@ public final class YacamimConfig {
 	 * 
 	 * @return
 	 */
+	public boolean usesLazyProxy() {
+		final String value = this.getConfigItems().get(YacamimKeys.YACAMIM_USES_LAZY_PROXY.toString());
+		return (value != null && Boolean.valueOf(value));
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean usesDBScript() {
 		final String value = this.getConfigItems().get(YacamimKeys.YACAMIM_USES_DB_SCRIPT.toString());
+		return (value != null && Boolean.valueOf(value));
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean usesDBLoad() {
+		final String value = this.getConfigItems().get(YacamimKeys.YACAMIM_USES_DB_LOAD.toString());
 		return (value != null && Boolean.valueOf(value));
 	}
 	

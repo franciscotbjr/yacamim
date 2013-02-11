@@ -70,11 +70,18 @@ public final class YacamimInitializer {
 		if(!this.isInitialized()) {
 			
 			this.loadConfigs(yBaseActivity);
+			
+			
 			this.loadServiceURLs(yBaseActivity);
 			this.loadClassMapping(yBaseActivity);
 			this.loadParams(yBaseActivity);
 			
 			this.setInitialized(true);
+			
+			
+			if(YacamimConfig.getInstance().usesDBLoad()) {
+				
+			}
 		}
 	}
 
