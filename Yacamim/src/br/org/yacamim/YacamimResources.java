@@ -36,12 +36,6 @@ public final class YacamimResources implements Serializable {
 	
 	private static final YacamimResources singleton = new YacamimResources();
 	
-	private int idResourceYServices;
-	private int idResourceYDbScript;
-	private int idResourceYClassMapping;
-	private int idResourceYParams;
-	private int idResourceYConfig;
-	
 	private int idResourceMsgOK;
 	private int idResourceMsgSuccesfullyInserted;
 	private int idResourceMsgSuccesfullyUpdated;
@@ -68,83 +62,6 @@ public final class YacamimResources implements Serializable {
 	 */
 	public static YacamimResources getInstance() {
 		return YacamimResources.singleton;
-	}
-
-	/**
-	 * @return the idResourceYServices
-	 */
-	public int getIdResourceYServices() {
-		return idResourceYServices;
-	}
-
-	/**
-	 * @param idResourceServices the idResourceServices to set
-	 */
-	YacamimResources setIdResourceYServices(int idResourceServices) {
-		this.idResourceYServices = idResourceServices;
-		return this;
-	}
-
-	/**
-	 * @return the idResourceYDbScript
-	 */
-	public int getIdResourceYDbScript() {
-		return idResourceYDbScript;
-	}
-
-	/**
-	 * @param idResourceYDbScript the idResourceYDbScript to set
-	 */
-	YacamimResources setIdResourceYDbScript(int idResourceYDbScript) {
-		this.idResourceYDbScript = idResourceYDbScript;
-		return this;
-	}
-
-	/**
-	 * @return the idResourceYClassMapping
-	 */
-	public int getIdResourceYClassMapping() {
-		return idResourceYClassMapping;
-	}
-
-	/**
-	 * @param idResourceYClassMapping the idResourceYClassMapping to set
-	 */
-	public YacamimResources setIdResourceYClassMapping(int idResourceYClassMapping) {
-		this.idResourceYClassMapping = idResourceYClassMapping;
-		return this;
-	}
-
-	/**
-	 * @return the idResourceYParams
-	 */
-	public int getIdResourceYParams() {
-		return idResourceYParams;
-	}
-
-	/**
-	 * @param idResourceYParams the idResourceYParams to set
-	 */
-	public YacamimResources setIdResourceYParams(int idResourceYParams) {
-		this.idResourceYParams = idResourceYParams;
-		return this;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getIdResourceYConfig() {
-		return idResourceYConfig;
-	}
-
-	/**
-	 * 
-	 * @param idResourceYConfig
-	 */
-	public YacamimResources setIdResourceYConfig(int idResourceYConfig) {
-		this.idResourceYConfig = idResourceYConfig;
-		return this;
 	}
 
 	/**

@@ -3,7 +3,7 @@
 	<y-db version="0">
 		<y-load>
 		    <y-package name="br.org.yacamim.ana.entidade">
-				<y-insert entity="TipoMedicacao">
+				<y-insert y-entity="TipoMedicacao">
 				    <y-row>
 					   (id, descricao) values (1, 'Alivium')
 				    </y-row>
@@ -14,7 +14,7 @@
 					   (id, descricao) values (3, 'Profenid')
 				    </y-row>
 				</y-insert>
-				<y-insert entity="TipoOcorrencia">
+				<y-insert y-entity="TipoOcorrencia">
 				    <y-row>
 					    (id, descricao) values (1, 'Dor')
 				    </y-row>
@@ -25,7 +25,7 @@
 					    (id, descricao) values (3, 'Tosse')
 				    </y-row>
 				</y-insert>
-				<y-insert entity="Medida">
+				<y-insert y-entity="Medida">
 				    <y-row>
 					    (id, descricao) values (1, 'Gotas')
 				    </y-row>

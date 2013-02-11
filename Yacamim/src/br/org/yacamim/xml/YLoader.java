@@ -18,10 +18,6 @@
 package br.org.yacamim.xml;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -30,11 +26,11 @@ import android.content.res.XmlResourceParser;
 import android.util.Log;
 import br.org.yacamim.YBaseActivity;
 import br.org.yacamim.YacamimConfig;
-import br.org.yacamim.YacamimResources;
+import br.org.yacamim.YacamimInitializer;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.entity.DbScript;
 import br.org.yacamim.entity.ServiceURL;
-import br.org.yacamim.persistence.DbLoad;
+import br.org.yacamim.persistence.DbLoadList;
 import br.org.yacamim.util.YacamimClassMapping;
 
 /**
@@ -65,7 +61,7 @@ public class YLoader {
 	public static void loadClassMapping(final YBaseActivity yBaseActivity, final YacamimClassMapping yacamimClassMapping) {
 		try {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
-				final XmlResourceParser xmlClassMapping = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYClassMapping());
+				final XmlResourceParser xmlClassMapping = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_service_class_mapping.xml");
 
 				int eventType = -1;
 
@@ -95,7 +91,7 @@ public class YLoader {
 	public static void loadParams(final YBaseActivity yBaseActivity) {
 		try {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
-				final XmlResourceParser xmlParams = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYParams());
+				final XmlResourceParser xmlParams = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_param_mapping.xml");
 
 				int eventType = -1;
 
@@ -103,7 +99,7 @@ public class YLoader {
 					if (eventType == XmlResourceParser.START_TAG) {
 
 						final String strName = xmlParams.getName();
-						if (strName.equals(YDefaultXmlElements.ELEMENT_Y_CONFIG_ITEM.toString())) {
+						if (strName.equals(YDefaultXmlElements.ELEMENT_Y_PARAM_ITEM.toString())) {
 							final String name = xmlParams.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString());
 							final String value = xmlParams.getAttributeValue(null, YDefaultXmlElements.ATTR_VALUE.toString());
 							YacamimConfig.getInstance().getConfigItems().put(name, value);
@@ -125,7 +121,7 @@ public class YLoader {
 	public static void loadServiceURLs(final YBaseActivity yBaseActivity) {
     	try {
     		if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
-    			final XmlResourceParser xmlServicos = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYServices());
+    			final XmlResourceParser xmlServicos = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_service_mapping.xml");
 
         		int eventType = -1;
 
@@ -156,7 +152,7 @@ public class YLoader {
 	public static DbScript loadDBScript(final Context context) {
 		final DbScript dbScript = new DbScript();
 		try {
-			final XmlResourceParser xmlDbScript = context.getResources().getXml(YacamimResources.getInstance().getIdResourceYDbScript());
+			final XmlResourceParser xmlDbScript = context.getAssets().openXmlResourceParser("res/xml/y_db_script.xml");
 
 			int eventType = -1;
 
@@ -200,8 +196,8 @@ public class YLoader {
 	 * @throws XmlPullParserException 
 	 */
 	public static void loadConfigs(final YBaseActivity yBaseActivity) throws ClassNotFoundException, XmlPullParserException, IOException {
-    		if(!YacamimConfig.getInstance().isConfigItemsLoaded()) {
-    			final XmlResourceParser xmlConfigs = yBaseActivity.getResources().getXml(YacamimResources.getInstance().getIdResourceYConfig());
+    		if(!YacamimInitializer.getInstance().isInitialized()) {
+    			final XmlResourceParser xmlConfigs = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_config.xml");
 
         		int eventType = -1;
         		
@@ -240,38 +236,70 @@ public class YLoader {
     		}
     }
 	
-	
-	public Map<String, List<String>> loadDBLoad(final YBaseActivity yBaseActivity) throws ClassNotFoundException, XmlPullParserException, IOException {
-		final Map<String, List<String>> dbLoad = new HashMap<String, List<String>>();
-		final List<DbLoad> inserts = new ArrayList<DbLoad>();
-		final List<DbLoad> updates = new ArrayList<DbLoad>();
-		if(!YacamimConfig.getInstance().isConfigItemsLoaded()) {
+	/**
+	 * 
+	 * @param yBaseActivity
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	public static void loadDBLoad(final YBaseActivity yBaseActivity) throws ClassNotFoundException, XmlPullParserException, IOException {
+		final DbLoadList dbLoadList = DbLoadList.getInstance();
+		if(YacamimConfig.getInstance().isConfigItemsLoaded() && YacamimConfig.getInstance().usesDBLoad()) {
 			final XmlResourceParser xmlDbLoad = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_db_load.xml");
 			
 			int eventType = -1;
 			
 			String pacoteAtual = "";
+			String entidadeAtual = "";
+			boolean insert = false;
+			boolean update = false;
+			boolean delete = false;
 			while (eventType != XmlResourceParser.END_DOCUMENT) {
 				if (eventType == XmlResourceParser.START_TAG) {
 					final String strName = xmlDbLoad.getName();
 					if (strName.equals(YDefaultXmlElements.ELEMENT_Y_PACKAGE.toString())) {
 						pacoteAtual = xmlDbLoad.getAttributeValue(null, YDefaultXmlElements.ATTR_NAME.toString());
 					} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_INSERT.toString())) {
-						final String insert = xmlDbLoad.nextText();
+						entidadeAtual = xmlDbLoad.getAttributeValue(null, YDefaultXmlElements.ATTR_Y_ENTITY.toString());
+						insert = true;
+						update = false;
+						delete = false;
 					} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_UPDATE.toString())) {
-						final String update = xmlDbLoad.nextText();
+						entidadeAtual = xmlDbLoad.getAttributeValue(null, YDefaultXmlElements.ATTR_Y_ENTITY.toString());
+						insert = false;
+						update = true;
+						delete = false;
+					} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_DELETE.toString())) {
+						entidadeAtual = xmlDbLoad.getAttributeValue(null, YDefaultXmlElements.ATTR_Y_ENTITY.toString());
+						insert = false;
+						update = false;
+						delete = true;
+					} else if (insert && strName.equals(YDefaultXmlElements.ELEMENT_Y_ROW.toString())) {
+						dbLoadList.addRowToInsert(Class.forName(pacoteAtual + "." + entidadeAtual), xmlDbLoad.nextText());
+					} else if (update && strName.equals(YDefaultXmlElements.ELEMENT_Y_ROW.toString())) {
+						dbLoadList.addRowToInsert(Class.forName(pacoteAtual + "." + entidadeAtual), xmlDbLoad.nextText());
+					} else if (delete && strName.equals(YDefaultXmlElements.ELEMENT_Y_ROW.toString())) {
+						dbLoadList.addRowToInsert(Class.forName(pacoteAtual + "." + entidadeAtual), xmlDbLoad.nextText());
 					}
 				} else if (eventType == XmlResourceParser.END_TAG) {
 					final String strName = xmlDbLoad.getName();
 					if (strName.equals(YDefaultXmlElements.ELEMENT_Y_PACKAGE.toString())) {
 						pacoteAtual = "";
+						insert = false;
+						update = false;
+						delete = false;
+					} else if (strName.equals(YDefaultXmlElements.ELEMENT_Y_INSERT.toString())) {
+						entidadeAtual = "";
+						insert = false;
+						update = false;
+						delete = false;
 					}
 				}
 				eventType = xmlDbLoad.next();
 			}
-			YacamimConfig.getInstance().setConfigItemsLoaded(true);
 		}
-		return dbLoad;
 	}
 
 }

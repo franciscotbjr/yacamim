@@ -70,17 +70,16 @@ public final class YacamimInitializer {
 		if(!this.isInitialized()) {
 			
 			this.loadConfigs(yBaseActivity);
-			
-			
-			this.loadServiceURLs(yBaseActivity);
-			this.loadClassMapping(yBaseActivity);
-			this.loadParams(yBaseActivity);
+
+			// TODO - Revisar
+//			this.loadServiceURLs(yBaseActivity);
+//			this.loadClassMapping(yBaseActivity);
+//			this.loadParams(yBaseActivity);
 			
 			this.setInitialized(true);
 			
-			
 			if(YacamimConfig.getInstance().usesDBLoad()) {
-				
+				this.loadDBLoad(yBaseActivity);
 			}
 		}
 	}
@@ -120,9 +119,24 @@ public final class YacamimInitializer {
 			if(!YacamimInitializer.getInstance().isInitialized()) {
 				YLoader.loadConfigs(yBaseActivity);
 			}
-		} catch (Exception _e) {
+		} catch (Exception e) {
 			YacamimConfig.getInstance().clearEntities();
-			Log.e("YacamimInitializer.loadConfigs", _e.getMessage());
+			Log.e("YacamimInitializer.loadConfigs", e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * @param yBaseActivity
+	 */
+	private void loadDBLoad(final YBaseActivity yBaseActivity) {
+		try {
+			if(YacamimInitializer.getInstance().isInitialized()) {
+				YLoader.loadDBLoad(yBaseActivity);
+			}
+		} catch (Exception e) {
+			YacamimConfig.getInstance().clearEntities();
+			Log.e("YacamimInitializer.loadDBLoad", e.getMessage());
 		}
 	}
 
@@ -135,8 +149,8 @@ public final class YacamimInitializer {
 			if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
 				YLoader.loadServiceURLs(yBaseActivity);
 			}
-		} catch (Exception _e) {
-			Log.e("YacamimInitializer.loadServiceURLs", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YacamimInitializer.loadServiceURLs", e.getMessage());
 		}
 	}
 	
@@ -149,8 +163,8 @@ public final class YacamimInitializer {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
 				YLoader.loadClassMapping(yBaseActivity, this.yacamimClassMapping);
 			}
-		} catch (Exception _e) {
-			Log.e("YacamimInitializer.loadClassMapping", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YacamimInitializer.loadClassMapping", e.getMessage());
 		}
 	}
 	
@@ -163,8 +177,8 @@ public final class YacamimInitializer {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
 				YLoader.loadParams(yBaseActivity);
 			}
-		} catch (Exception _e) {
-			Log.e("YacamimInitializer.loadParams", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YacamimInitializer.loadParams", e.getMessage());
 		}
 	}
 	
@@ -177,52 +191,6 @@ public final class YacamimInitializer {
 	 * ------------------------------------------------------------------------------------------------------------
 	 * Delegates to YacamimResources setters methods.
 	 */
-
-	/**
-	 * 
-	 * @param idResourceServices
-	 * @return
-	 */
-	public YacamimResources setIdResourceYServices(final int idResourceServices) {
-		return yacamimResources.setIdResourceYServices(idResourceServices);
-	}
-
-	/**
-	 * 
-	 * @param idResourceYDbScript
-	 * @return
-	 */
-	public YacamimResources setIdResourceYDbScript(final int idResourceYDbScript) {
-		return yacamimResources.setIdResourceYDbScript(idResourceYDbScript);
-	}
-
-	/**
-	 * 
-	 * @param idResourceYClassMapping
-	 * @return
-	 */
-	public YacamimResources setIdResourceYClassMapping(final int idResourceYClassMapping) {
-		return yacamimResources
-				.setIdResourceYClassMapping(idResourceYClassMapping);
-	}
-
-	/**
-	 * 
-	 * @param idResourceYParams
-	 * @return
-	 */
-	public YacamimResources setIdResourceYParams(final int idResourceYParams) {
-		return yacamimResources.setIdResourceYParams(idResourceYParams);
-	}
-
-	/**
-	 * 
-	 * @param idResourceYConfig
-	 * @return
-	 */
-	public YacamimResources setIdResourceYConfig(final int idResourceYConfig) {
-		return yacamimResources.setIdResourceYConfig(idResourceYConfig);
-	}
 
 	/**
 	 * 

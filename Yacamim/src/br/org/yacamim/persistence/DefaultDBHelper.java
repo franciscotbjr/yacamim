@@ -67,6 +67,24 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 					}
 				}
 			}
+			
+			if(YacamimConfig.getInstance().usesDBLoad()) {
+				if(DbLoadList.getInstance().getInserts() != null) {
+					final List<DbLoad> inserts = DbLoadList.getInstance().getInserts();
+					for(final DbLoad dbLoad : inserts) {
+						final List<String> rows = dbLoad.getRows();
+						for(final String row : rows) {
+							
+						}
+					}
+				}
+				if(DbLoadList.getInstance().getUpdates() != null) {
+					
+				}
+				if(DbLoadList.getInstance().getDeletes() != null) {
+					
+				}
+			}
 		} catch (Exception e) {
 			Log.e("DefaultDBHelper.onCreate", e.getMessage());
 		}
