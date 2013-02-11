@@ -51,7 +51,6 @@ public class RadiografiaSocialActivity extends YBaseActivity {
     		YacamimState.getInstance().setPreferencesToken("__y_prefs_#_token_@_radiografia.nucleoesperanca.com.br_::");
 
     		YacamimInitializer.getInstance()
-    		.setIdResourceYConfig(R.xml.y_config)
     		.setIdResourceMsgOK(R.string.y_MsgOK)
     		.setIdResourceMsgSuccesfullyInserted(R.string.y_MsgSuccesfullyInserted)
     		.setIdResourceMsgSuccesfullyUpdated(R.string.y_MsgSuccesfullyUpdated)
