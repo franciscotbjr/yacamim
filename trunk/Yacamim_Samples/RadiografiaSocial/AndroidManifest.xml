@@ -35,8 +35,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="br.com.nuceloesperanca.radiografiasocial.PacienteActivity"
-            android:label="@string/title_activity_paciente" >
+            android:name="br.com.nuceloesperanca.radiografiasocial.ConsultarPacienteActivity"
+            android:label="@string/title_activity_consultar_paciente" >
         </activity>
     </application>
 

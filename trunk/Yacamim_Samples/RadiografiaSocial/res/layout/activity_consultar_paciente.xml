@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/background_sem_logo"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConsultarPacienteActivity" >
+
+		<ScrollView
+        android:id="@+id/ScrollViewConsultarPaciente"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:isScrollContainer="true"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+	        <LinearLayout
+	            xmlns:android="http://schemas.android.com/apk/res/android"
+	            android:id="@+id/layout_trocar_lembrar_senha"
+	            android:orientation="vertical"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:paddingLeft="5sp">
+	            
+	            <!-- Prontuário -->
+	            <TextView
+	                android:id="@+id/txtv_prontuario"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/lbl_prontuario"
+	                style="@style/fonte_label"
+	                android:paddingTop="10sp">
+	            </TextView>
+	            <EditText
+	                android:id="@+id/txte_prontuario"
+	                android:layout_width="150sp"
+	                android:maxLength="30"
+	                android:maxLines="1"
+	                android:inputType="number"
+	                style="@style/EditText">
+	            </EditText>
+
+	            <!-- Nome -->
+	            <TextView
+	                android:id="@+id/txtv_nome"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/lbl_nome"
+	                style="@style/fonte_label"
+	                android:paddingTop="10sp">
+	            </TextView>
+	            <EditText
+	                android:id="@+id/txte_nome"
+	                android:layout_width="150sp"
+	                android:maxLength="30"
+	                android:maxLines="1"
+	                android:inputType="number"
+	                style="@style/EditText">
+	            </EditText>
+	        </LinearLayout>
+
+	        <LinearLayout
+    			xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/layout_botao_acoes"
+			    android:orientation="horizontal"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="bottom|center_horizontal"
+			    android:paddingTop="30sp"
+			    android:paddingBottom="5sp">
+				<Button
+				    android:id="@+id/btnEditarTipoOcorrencia"
+				    android:layout_width="64sp"
+				    android:layout_height="64sp"
+				    android:textAppearance="?android:attr/textAppearanceSmall"
+				    android:textColor="#000000"
+				    android:background="@drawable/search_64" 
+				    android:onClick="consultarPaciente"
+				    android:gravity="center"/>
+			</LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
