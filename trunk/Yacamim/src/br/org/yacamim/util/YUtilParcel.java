@@ -71,64 +71,66 @@ public final class YUtilParcel {
 			List<Method> getMethodList = YUtilReflection.getGetMethodListSortedByName(object.getClass());
 			if(getMethodList != null) {
 				for(Method getMethod : getMethodList) {
-					String propertyName = YUtilReflection.getPropertyName(getMethod);
-					if(getMethod.getReturnType().equals(String.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readString(),
-								object);
-					} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readByte(),
-								object);
-					} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								Short.valueOf(parcel.readInt()+""),
-								object);
-					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readInt(),
-								object);
-					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readLong(),
-								object);
-					} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readFloat(),
-								object);
-					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readDouble(),
-								object);
-					} else if (getMethod.getReturnType().equals(Boolean.class) || getMethod.getReturnType().equals(boolean.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readInt() == 1,
-								object);
-					} else if (getMethod.getReturnType().equals(Date.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								new Date(parcel.readLong()),
-								object);
-					} else if (getMethod.getReturnType().equals(Bundle.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readBundle(),
-								object);
-					} else if (getMethod.getReturnType().equals(Serializable.class)) {
-						YUtilReflection.setValueToProperty(
-								propertyName,
-								parcel.readSerializable(),
-								object);
+					final YWriteToParcel yWriteToParcel =  getMethod.getAnnotation(YWriteToParcel.class);
+					if(yWriteToParcel == null || (yWriteToParcel != null && yWriteToParcel.value())) {
+						String propertyName = YUtilReflection.getPropertyName(getMethod);
+						if(getMethod.getReturnType().equals(String.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readString(),
+									object);
+						} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readByte(),
+									object);
+						} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									Short.valueOf(parcel.readInt()+""),
+									object);
+						} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readInt(),
+									object);
+						} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readLong(),
+									object);
+						} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readFloat(),
+									object);
+						} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readDouble(),
+									object);
+						} else if (getMethod.getReturnType().equals(Boolean.class) || getMethod.getReturnType().equals(boolean.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readInt() == 1,
+									object);
+						} else if (getMethod.getReturnType().equals(Date.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									new Date(parcel.readLong()),
+									object);
+						} else if (getMethod.getReturnType().equals(Bundle.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readBundle(),
+									object);
+						} else if (getMethod.getReturnType().equals(Serializable.class)) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readSerializable(),
+									object);
+						}
 					}
-
 				}
 			}
 		} catch (Exception e) {
@@ -271,10 +273,18 @@ public final class YUtilParcel {
 		} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
 			parcel.writeDouble((Double)propertyValue);
 		} else if (getMethod.getReturnType().equals(Boolean.class) || getMethod.getReturnType().equals(boolean.class)) {
-			parcel.writeInt(((Boolean)propertyValue ? 1 : 0));
+			Boolean bool = (Boolean)propertyValue;
+			if(bool == null) {
+				bool = false;
+			}
+			parcel.writeInt(bool ? 1 : 0);
 		} else if (getMethod.getReturnType().equals(Date.class)) {
 			Date date = (Date)propertyValue;
-			parcel.writeLong(date.getTime());
+			if(date != null) {
+				parcel.writeLong(date.getTime());
+			} else {
+				parcel.writeLong(-1);
+			}
 		} else if (getMethod.getReturnType().equals(Bundle.class)) {
 			parcel.writeBundle((Bundle)propertyValue);
 		} else if (getMethod.getReturnType().equals(Serializable.class)) {
