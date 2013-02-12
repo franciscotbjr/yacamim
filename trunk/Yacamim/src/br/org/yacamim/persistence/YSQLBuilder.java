@@ -205,16 +205,6 @@ class YSQLBuilder {
 								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
 							}
 							idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
-						} else {
-							// Não há anotação @Column e Nem @Id
-							// se houver um método getId, então este será considerado a PK da enidade
-							if(method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) {
-								defineColNameAndType(idBuilder, method, sqlType, column);
-								
-								idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
-								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
-								idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
-							}
 						}
 					}
 				} else {
@@ -222,11 +212,9 @@ class YSQLBuilder {
 						final Method[] methodsForeignEntity = returnedType.getMethods();
 						Method methodColFK = null;
 						for(final Method candidateMethodForFK : methodsForeignEntity) {
-							if(candidateMethodForFK.getName().startsWith(YUtilPersistence.GET_PREFIX) 
-									&& (YUtilPersistence.isId(candidateMethodForFK)
-											|| candidateMethodForFK.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME))
-									) {
+							if(YUtilPersistence.isId(candidateMethodForFK)) {
 								methodColFK = candidateMethodForFK;
+								break;
 							}
 						}
 						if(methodColFK != null) {
@@ -365,10 +353,6 @@ class YSQLBuilder {
 			} else if(YUtilPersistence.isId(method)) { // There is no @Column annotation, yet there is @Id annotation
 				yProcessedEntity.setIdColumn(YUtilPersistence.getColumnName(null, method));
 				yProcessedEntity.setIdMethod(method.getName());	
-				idIdentificado = true;
-			} else if(method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) { // There is neither @Column annotation nor @Id annotation
-				yProcessedEntity.setIdColumn(YUtilPersistence.getColumnName(null, method));
-				yProcessedEntity.setIdMethod(YUtilPersistence.GET_ID_METHOD_NAME);										
 				idIdentificado = true;
 			}
 		} catch (Exception e) {

@@ -409,10 +409,11 @@ public class DefaultDBAdapter<E> {
 			final Method getIDMethod = YUtilPersistence.getGetIdMethod(getMethods);
 			columns.add(YUtilPersistence.getColumnName(getIDMethod.getAnnotation(Column.class), getIDMethod));
 			for(final Method getMethod : getMethods) {
-				if(getMethod.equals(getIDMethod)) {
+				final Column column = getMethod.getAnnotation(Column.class);
+				if(getMethod.equals(getIDMethod)
+						|| column == null) {
 					continue;
 				}
-				final Column column = getMethod.getAnnotation(Column.class);
 				columns.add(YUtilPersistence.getColumnName(column, getMethod));
 			}
 		} catch (Exception e) {
@@ -488,8 +489,9 @@ public class DefaultDBAdapter<E> {
 
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
-				if(column != null) {
-					final String columnName = column.name();
+				if(column != null
+						|| (YUtilPersistence.isId(getMethod))) {
+					final String columnName = YUtilPersistence.getColumnName(column, getMethod);
 					if(!DataAdapterHelper.treatRawData(cursor, object, getMethod, columnName)) {
 						if(DataAdapterHelper.isOneToOneOwner(getMethod)) {
 							DataAdapterHelper.treatOneToOne(cursor, object, getMethod, columnName);

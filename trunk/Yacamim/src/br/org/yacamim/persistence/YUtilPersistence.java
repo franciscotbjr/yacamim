@@ -50,7 +50,7 @@ final class YUtilPersistence {
 	public static final String SQL_BLOB = "BLOB";
 	
 	public static final String GET_PREFIX = "get";
-	public static final String GET_ID_METHOD_NAME = GET_PREFIX + "Id";
+//	public static final String GET_ID_METHOD_NAME = GET_PREFIX + "Id";
 
 	public static final String SQL_WORD_INSERT_INTO = " INSERT INTO ";
 	public static final String SQL_WORD_VALUES = " VALUES ";
@@ -131,7 +131,7 @@ final class YUtilPersistence {
 	 */
 	static Method getGetIdMethod(final List<Method> getMethods) {
 		for(Method method : getMethods) {
-			if(isId(method) || method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) {
+			if(isId(method)) {
 				return method;
 			}
 		}
@@ -155,9 +155,6 @@ final class YUtilPersistence {
 					idMethod = getMethod;
 					break;
 				}
-				if(getMethod.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) {
-					idMethod = getMethod;
-				}
 			}
 		} catch (Exception e) {
 			Log.e("YUtilPersistence.getIdGetMethod", e.getMessage());
@@ -173,7 +170,7 @@ final class YUtilPersistence {
 	static String getGetIdColumnName(final List<Method> getMethods) {
 		String idMethodName = null;
 		for(Method method : getMethods) {
-			if(isId(method) || method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) {
+			if(isId(method)) {
 				final Column column = method.getAnnotation(Column.class);
 				idMethodName = getColumnName(column, method);
 				break;
@@ -296,8 +293,7 @@ final class YUtilPersistence {
 			final List<Method> columnGetMethods = new ArrayList<Method>();
 			for(final Method method : getMethods) {
 				if(method.getAnnotation(Column.class) != null
-						|| (YUtilPersistence.isId(method)
-								|| method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME))) {
+						|| YUtilPersistence.isId(method)) {
 					columnGetMethods.add(method);
 				}
 			}
