@@ -74,7 +74,7 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 					for(final DbLoad dbLoad : inserts) {
 						final List<String> rows = dbLoad.getRows();
 						for(final String row : rows) {
-							this.execSQL(database, YSQLBuilder.convertToInsert(dbLoad, row).toString());
+							this.execSQL(database, YUtilPersistence.convertToInsert(dbLoad, row).toString());
 						}
 					}
 				}
