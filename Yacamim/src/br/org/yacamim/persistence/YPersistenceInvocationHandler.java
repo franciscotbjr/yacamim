@@ -58,7 +58,10 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 */
 	@Override
 	protected YRawData getTargetObjectYRawData(final Class<?> realClass, final Long id, final Method targetGetMethod) {
-		// TODO Auto-generated method stub
+		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(realClass);
+		defaultDBAdapter.open();
+		defaultDBAdapter.getByID(id);
+		defaultDBAdapter.close();
 		return null;
 	}
 

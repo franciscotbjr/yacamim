@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
 
@@ -38,23 +37,6 @@ import br.org.yacamim.util.YUtilString;
  * @since 1.0
  */
 class YSQLBuilder {
-	
-	public static final String GET_PREFIX = "get";
-	public static final String GET_ID_METHOD_NAME = GET_PREFIX + "Id";
-
-	public static final String SQL_WORD_INSERT_INTO = " INSERT INTO ";
-	public static final String SQL_WORD_VALUES = " VALUES ";
-
-	private static final String SQL_WORD_TABLE = " TABLE ";
-	private static final String SQL_WORD_CREATE = " CREATE ";
-	private static final String SQL_WORD_REFERENCES = " REFERENCES ";
-	private static final String SQL_WORD_FOREIGN_KEY = " FOREIGN KEY ";
-	private static final String SQL_WORD_NULL = " NULL ";
-	private static final String SQL_WORD_NOT = " NOT ";
-	private static final String SQL_WORD_UNIQUE = " UNIQUE ";
-	private static final String SQL_WORD_AUTOINCREMENT = " AUTOINCREMENT ";
-	private static final String SQL_WORD_PRIMARY_KEY = " PRIMARY KEY ";
-	
 	
 	private static final Map<Class<?>, String> sqlTypeMap = new HashMap<Class<?>,String>();
 	
@@ -138,7 +120,7 @@ class YSQLBuilder {
 			for(final Class<?> clazz : classes) {
 				if(YUtilPersistence.isEntity(clazz)) {
 					final YProcessedEntity yProcessedEntity = new YProcessedEntity();
-					yProcessedEntity.setTableName(YSQLBuilder.getTableName(clazz));
+					yProcessedEntity.setTableName(YUtilPersistence.getTableName(clazz));
 					yProcessedEntity.setClassType(clazz);
 					yProcessedEntity.setClassName(clazz.getSimpleName());
 			
@@ -174,7 +156,7 @@ class YSQLBuilder {
 			
 			final List<Method> getMethods = this.initMethodsGet(clazz);
 			
-			final StringBuilder id = new StringBuilder();
+			final StringBuilder idBuilder = new StringBuilder();
 			final List<StringBuilder> cols = new ArrayList<StringBuilder>();
 			final List<StringBuilder> fks = new ArrayList<StringBuilder>();
 			final List<StringBuilder> fkConstarints = new ArrayList<StringBuilder>();
@@ -191,13 +173,13 @@ class YSQLBuilder {
 					
 					if(column != null) {
 						if(YUtilPersistence.isId(method)) {
-							defineColNameAndType(id, method, sqlType, column);
+							defineColNameAndType(idBuilder, method, sqlType, column);
 							
-							id.append(SQL_WORD_PRIMARY_KEY);
+							idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
 							if(YUtilPersistence.isAutoincrement(method)) {
-								id.append(SQL_WORD_AUTOINCREMENT);
+								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
 							}
-							id.append(SQL_WORD_NOT + SQL_WORD_NULL);
+							idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
 						} else {
 							defineColNameAndType(sqlCol, method, sqlType, column);
 							
@@ -206,32 +188,32 @@ class YSQLBuilder {
 							}
 							
 							if(!column.nullable()) {
-								sqlCol.append(SQL_WORD_NOT);
+								sqlCol.append(YUtilPersistence.SQL_WORD_NOT);
 							}
-							sqlCol.append(SQL_WORD_NULL);
+							sqlCol.append(YUtilPersistence.SQL_WORD_NULL);
 							if(column.unique()) {
-								sqlCol.append(SQL_WORD_UNIQUE);
+								sqlCol.append(YUtilPersistence.SQL_WORD_UNIQUE);
 							}
 						}
 					} else {
 						// Não há anotação @Column
 						if(YUtilPersistence.isId(method)) {
-							defineColNameAndType(id, method, sqlType, column);
+							defineColNameAndType(idBuilder, method, sqlType, column);
 							
-							id.append(SQL_WORD_PRIMARY_KEY);
+							idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
 							if(YUtilPersistence.isAutoincrement(method)) {
-								id.append(SQL_WORD_AUTOINCREMENT);
+								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
 							}
-							id.append(SQL_WORD_NOT + SQL_WORD_NULL);
+							idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
 						} else {
 							// Não há anotação @Column e Nem @Id
 							// se houver um método getId, então este será considerado a PK da enidade
-							if(method.getName().equals(GET_ID_METHOD_NAME)) {
-								defineColNameAndType(id, method, sqlType, column);
+							if(method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) {
+								defineColNameAndType(idBuilder, method, sqlType, column);
 								
-								id.append(SQL_WORD_PRIMARY_KEY);
-								id.append(SQL_WORD_AUTOINCREMENT);
-								id.append(SQL_WORD_NOT + SQL_WORD_NULL);
+								idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
+								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
+								idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
 							}
 						}
 					}
@@ -240,9 +222,9 @@ class YSQLBuilder {
 						final Method[] methodsForeignEntity = returnedType.getMethods();
 						Method methodColFK = null;
 						for(final Method candidateMethodForFK : methodsForeignEntity) {
-							if(candidateMethodForFK.getName().startsWith(GET_PREFIX) 
+							if(candidateMethodForFK.getName().startsWith(YUtilPersistence.GET_PREFIX) 
 									&& (YUtilPersistence.isId(candidateMethodForFK)
-											|| candidateMethodForFK.getName().equals(GET_ID_METHOD_NAME))
+											|| candidateMethodForFK.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME))
 									) {
 								methodColFK = candidateMethodForFK;
 							}
@@ -254,11 +236,11 @@ class YSQLBuilder {
 							if(sqlTypeFK != null) {
 								final YProcessedEntity processedEntityFK = getYProcessedEntity(returnedType);
 								
-								final String fkName = YSQLBuilder.getColumnName(column, methodColFK) + "_" + processedEntityFK.getTableName();
+								final String fkName = YUtilPersistence.getColumnName(column, methodColFK) + "_" + processedEntityFK.getTableName();
 								sqlFK.append(" " + fkName);
 								sqlFK.append(" " + sqlTypeFK);
 								
-								sqlFKConstarint.append(SQL_WORD_FOREIGN_KEY + "(" + fkName+ ") " + SQL_WORD_REFERENCES + processedEntityFK.getTableName() + "(" + processedEntityFK.getIdColumn() + ")");
+								sqlFKConstarint.append(YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + fkName+ ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntityFK.getTableName() + "(" + processedEntityFK.getIdColumn() + ")");
 							}
 						}
 					}
@@ -277,13 +259,13 @@ class YSQLBuilder {
 			for(StringBuilder builderFKs : fks) {
 				cols.add(0, builderFKs);
 			}
-			cols.add(0, id);
+			cols.add(0, idBuilder);
 			cols.addAll(fkConstarints);
 			for(int i = 0; i < cols.size()-1; i++) {
 				cols.get(i).append(", ");
 			}
 			
-			sqlCreate.append(SQL_WORD_CREATE + SQL_WORD_TABLE);
+			sqlCreate.append(YUtilPersistence.SQL_WORD_CREATE + YUtilPersistence.SQL_WORD_TABLE);
 			sqlCreate.append(" " + processedEntity.getTableName() + " (");
 			for(StringBuilder row : cols){
 				sqlCreate.append(row);
@@ -303,7 +285,7 @@ class YSQLBuilder {
 	private void defineColNameAndType(final StringBuilder builder,
 			final Method method, final String sqlType, final Column column) {
 		//---
-		builder.append(" " + YSQLBuilder.getColumnName(column, method));
+		builder.append(" " + YUtilPersistence.getColumnName(column, method));
 		builder.append(" " + sqlType);
 	}
 
@@ -377,16 +359,16 @@ class YSQLBuilder {
 		try {
 			final Column column = method.getAnnotation(Column.class); 
 			if(column != null && YUtilPersistence.isId(method)) { // There is @Column annotation and there is @Id annotation
-				yProcessedEntity.setIdColumn(YSQLBuilder.getColumnName(column, method));
+				yProcessedEntity.setIdColumn(YUtilPersistence.getColumnName(column, method));
 				yProcessedEntity.setIdMethod(method.getName());
 				idIdentificado = true;
 			} else if(YUtilPersistence.isId(method)) { // There is no @Column annotation, yet there is @Id annotation
-				yProcessedEntity.setIdColumn(YSQLBuilder.getColumnName(null, method));
+				yProcessedEntity.setIdColumn(YUtilPersistence.getColumnName(null, method));
 				yProcessedEntity.setIdMethod(method.getName());	
 				idIdentificado = true;
-			} else if(method.getName().equals(GET_ID_METHOD_NAME)) { // There is neither @Column annotation nor @Id annotation
-				yProcessedEntity.setIdColumn(YSQLBuilder.getColumnName(null, method));
-				yProcessedEntity.setIdMethod(GET_ID_METHOD_NAME);										
+			} else if(method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) { // There is neither @Column annotation nor @Id annotation
+				yProcessedEntity.setIdColumn(YUtilPersistence.getColumnName(null, method));
+				yProcessedEntity.setIdMethod(YUtilPersistence.GET_ID_METHOD_NAME);										
 				idIdentificado = true;
 			}
 		} catch (Exception e) {
@@ -402,90 +384,6 @@ class YSQLBuilder {
 	 */
 	private String getSqlType(Class<?> returnedType) {
 		return sqlTypeMap.get(returnedType);
-	}
-	
-	/**
-	 * 
-	 * @param column
-	 * @param method
-	 * @return
-	 */
-	static String getColumnName(final Column column, final Method method) {
-		if(column != null && !YUtilString.isEmptyString(column.name())) { 
-			return column.name();
-		}
-		return toColumnName(method.getName());
-	}
-	
-	/**
-	 * 
-	 * @param column
-	 * @param method
-	 * @return
-	 */
-	static String getTableName(final Class<?> classe) {
-		final Table table = classe.getAnnotation(Table.class);
-		if(table != null && !YUtilString.isEmptyString(table.name())) { 
-			return table.name();
-		}
-		return classe.getSimpleName();
-	}
-
-	/**
-	 * 
-	 * @param name
-	 * @return
-	 */
-	static String toColumnName(final String name) {
-		if(!YUtilString.isEmptyString(name)) {
-			return name.replaceFirst(GET_PREFIX, "");
-		}
-		return name;
-	}
-	
-	/**
-	 * 
-	 * @param dbLoad
-	 * @param row
-	 * @return
-	 */
-	@SuppressLint("DefaultLocale")
-	static StringBuilder convertToColumnNames(final DbLoad dbLoad, final String row) {
-		int start = row.toUpperCase().indexOf(YSQLBuilder.SQL_WORD_VALUES);
-		String strCols = row.substring(0, start).trim();
-		strCols = strCols.substring(1, strCols.length() - 1);
-		final String[] arrCols = strCols.split("[\\,]");
-		final StringBuilder builderCols = new StringBuilder();
-		int count = 0;
-		for(final String colName : arrCols) {
-			final Method getMethod = YUtilReflection.getGetMethod(YUtilReflection.getGetMethodName(colName.trim()), dbLoad.getEntity());
-			final Column column = getMethod.getAnnotation(Column.class);
-			final String nomeColuna = YSQLBuilder.getColumnName(column, getMethod);
-			builderCols.append(nomeColuna);
-			if((count + 1) < arrCols.length) {
-				builderCols.append(", ");
-			}
-			count++;
-		}
-		return builderCols;
-	}
-	
-	/**
-	 * 
-	 * @param dbLoad
-	 * @param row
-	 * @return
-	 */
-	@SuppressLint("DefaultLocale")
-	static StringBuilder convertToInsert(final DbLoad dbLoad, final String row) {
-		StringBuilder builderInsert = new StringBuilder();
-		builderInsert.append(YSQLBuilder.SQL_WORD_INSERT_INTO);
-		builderInsert.append(YSQLBuilder.getTableName(dbLoad.getEntity()));
-		builderInsert.append(" (");
-		builderInsert.append(YSQLBuilder.convertToColumnNames(dbLoad, row));
-		builderInsert.append(") ");
-		builderInsert.append(row.substring(row.toUpperCase().indexOf(YSQLBuilder.SQL_WORD_VALUES)));
-		return builderInsert;
 	}
 
 }
