@@ -17,10 +17,13 @@
  */
 package br.org.yacamim.persistence;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.google.dexmaker.stock.ProxyBuilder;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -28,7 +31,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import br.org.yacamim.YRawData;
+import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
+import br.org.yacamim.dex.YInvocationHandlerProxy;
 import br.org.yacamim.util.YUtilReflection;
 
 /**
@@ -473,14 +478,13 @@ public class DefaultDBAdapter<E> {
 	 * @param cursor
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	protected E build(final Cursor cursor) {
 		E object = null;
 		try {
-			final Class<?> genericClass = getGenericClass();
-			object = (E) genericClass.newInstance();
+			
+			object = this.buildNewInstance();
 
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
 
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
@@ -499,6 +503,29 @@ public class DefaultDBAdapter<E> {
 			}
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.build", e.getMessage());
+		}
+		return object;
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	private E buildNewInstance() throws IOException, InstantiationException, IllegalAccessException {
+		E object;
+		if(YacamimConfig.getInstance().usesLazyProxy()) {
+			if(!YInvocationHandlerProxy.getInstance().contains(this.getGenericClass())) {
+				YInvocationHandlerProxy.getInstance().add(this.getGenericClass(), new YPersistenceInvocationHandler(new YGetMethodFilter()));
+			}
+			
+			object = ProxyBuilder.forClass(this.getGenericClass())
+					.handler(YInvocationHandlerProxy.getInstance().get(this.getGenericClass()))
+					.build();
+		} else {
+			object = (E) this.getGenericClass().newInstance();
 		}
 		return object;
 	}
