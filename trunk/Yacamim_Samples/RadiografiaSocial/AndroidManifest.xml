@@ -36,7 +36,11 @@
         </activity>
         <activity
             android:name="br.com.nuceloesperanca.radiografiasocial.ConsultarPacienteActivity"
-            android:label="@string/title_activity_consultar_paciente" >
+            android:label="@string/title_consultar_paciente" >
+        </activity>
+        <activity android:name=".ListPacientes" 
+			android:label="@string/label_resultado_consulta" 
+			android:screenOrientation="portrait">
         </activity>
     </application>
 

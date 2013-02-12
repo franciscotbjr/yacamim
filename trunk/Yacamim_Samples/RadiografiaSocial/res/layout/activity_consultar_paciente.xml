@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".ConsultarPacienteActivity" >
 
-		<ScrollView
+	<ScrollView
         android:id="@+id/ScrollViewConsultarPaciente"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -20,6 +20,13 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
+			<TextView
+			    android:id="@+id/lblControleOcorrencias" 
+			    android:layout_width="wrap_content" 
+			    android:layout_height="wrap_content" 
+			    android:text="@string/title_consultar_paciente"
+			    style="@style/title" 
+			    />
 	        <LinearLayout
 	            xmlns:android="http://schemas.android.com/apk/res/android"
 	            android:id="@+id/layout_trocar_lembrar_senha"
@@ -66,14 +73,15 @@
 	        </LinearLayout>
 
 	        <LinearLayout
-    			xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/layout_botao_acoes"
-			    android:orientation="horizontal"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:gravity="bottom|center_horizontal"
-			    android:paddingTop="30sp"
-			    android:paddingBottom="5sp">
+	            xmlns:android="http://schemas.android.com/apk/res/android"
+	            android:id="@+id/layout_botao_acoes"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="bottom|center_horizontal"
+	            android:orientation="horizontal"
+	            android:paddingBottom="5sp"
+	            android:paddingTop="30sp" >
+
 				<Button
 				    android:id="@+id/btnEditarTipoOcorrencia"
 				    android:layout_width="64sp"

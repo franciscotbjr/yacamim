@@ -5,6 +5,7 @@
  */
 package br.com.nuceloesperanca.radiografiasocial;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,7 +48,7 @@ public class ConsultarPacienteActivity extends YBaseActivity {
      */
     public void consultarPaciente(final View view) {
     	try {
-			System.out.println("Ok...");
+    		this.startActivity(new Intent(this, ListPacientes.class));
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
 		}
