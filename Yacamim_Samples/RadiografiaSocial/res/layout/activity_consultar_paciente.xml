@@ -64,10 +64,10 @@
 	            </TextView>
 	            <EditText
 	                android:id="@+id/txte_nome"
-	                android:layout_width="150sp"
-	                android:maxLength="30"
+	                android:layout_width="200sp"
+	                android:maxLength="60"
 	                android:maxLines="1"
-	                android:inputType="number"
+	                android:inputType="text"
 	                style="@style/EditText">
 	            </EditText>
 	        </LinearLayout>
