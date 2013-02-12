@@ -63,7 +63,7 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 				List<StringBuilder> createScripts = ysqlBuilder.buildCreateScript(YacamimConfig.getInstance().getEntities());
 				if(createScripts != null) {
 					for(final StringBuilder createScript : createScripts) {
-						database.execSQL(createScript.toString());
+						this.execSQL(database, createScript.toString());
 					}
 				}
 			}
@@ -74,15 +74,15 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 					for(final DbLoad dbLoad : inserts) {
 						final List<String> rows = dbLoad.getRows();
 						for(final String row : rows) {
-							database.execSQL(YSQLBuilder.convertToInsert(dbLoad, row).toString());
+							this.execSQL(database, YSQLBuilder.convertToInsert(dbLoad, row).toString());
 						}
 					}
 				}
 				if(DbLoadList.getInstance().getUpdates() != null) {
-					
+					// TODO
 				}
 				if(DbLoadList.getInstance().getDeletes() != null) {
-					
+					// TODO
 				}
 			}
 		} catch (Exception e) {
@@ -101,22 +101,14 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 			if(dbScriptCreateUpdate.getCreateTables().size() > 0) {
 				final Collection<String> scriptsCreate = dbScriptCreateUpdate.getCreateTables();
 				for(final String scriptCreateTable : scriptsCreate) {
-					try {
-						database.execSQL(scriptCreateTable);
-					} catch (Exception _e) {
-						Log.e("DefaultDBHelper.onCreate", _e.getMessage());
-					}
+					this.execSQL(database, scriptCreateTable);
 				}
 			}
 			// Inserts (carga de dados)
 			if(dbScriptCreateUpdate.getInserts().size() > 0) {
 				final Collection<String> scriptsInsert = dbScriptCreateUpdate.getInserts();
 				for(final String scriptInserts : scriptsInsert) {
-					try {
-						database.execSQL(scriptInserts);
-					} catch (Exception _e) {
-						Log.e("DefaultDBHelper.onCreate", _e.getMessage());
-					}
+					this.execSQL(database, scriptInserts);
 				}
 			}
 		} catch (Exception e) {
@@ -139,16 +131,29 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 				// Create tables
 				if(dbScriptCreateUpdate.getAlterTables().size() > 0) {
 					for(final String scriptCreateTable : dbScriptCreateUpdate.getCreateTables()) {
-						database.execSQL(scriptCreateTable);
+						this.execSQL(database, scriptCreateTable);
 					}
 				}
 				// Inserts (carga de dados)
 				if(dbScriptCreateUpdate.getUpdates().size() > 0) {
 					for(final String scriptInserts : dbScriptCreateUpdate.getInserts()) {
-						database.execSQL(scriptInserts);
+						this.execSQL(database, scriptInserts);
 					}
 				}
 			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param database
+	 * @param script
+	 */
+	private void execSQL(final SQLiteDatabase database, final String script) {
+		try {
+			database.execSQL(script);
+		} catch (Exception e) {
+			Log.e("DefaultDBHelper.execSQL", e.getMessage());
 		}
 	}
 

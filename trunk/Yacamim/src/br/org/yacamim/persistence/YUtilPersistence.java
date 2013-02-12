@@ -18,6 +18,7 @@
 package br.org.yacamim.persistence;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * 
@@ -99,6 +100,20 @@ final class YUtilPersistence {
 	 */
 	static boolean isEntity(final Class<?> clazz) {
 		return clazz.getAnnotation(Entity.class) != null;
+	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	static Method getGetIdMethod(final List<Method> getMethods) {
+		for(Method method : getMethods) {
+			if(isId(method) || method.getName().equals(YSQLBuilder.GET_ID_METHOD_NAME)) {
+				return method;
+			}
+		}
+		return null;
 	}
 
 }
