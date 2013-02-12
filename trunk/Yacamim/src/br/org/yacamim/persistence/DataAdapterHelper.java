@@ -24,6 +24,7 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.util.Log;
+import br.org.yacamim.YRawData;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
 
@@ -54,44 +55,45 @@ public final class DataAdapterHelper {
 	 */
 	public static boolean treatRawData(final Cursor cursor, final Object object, final Method getMethod, final String columnName) throws ParseException {
 		boolean rawData = false;
-		if(getMethod.getReturnType().equals(String.class)) {
+		final Class<?> returnType = getMethod.getReturnType();
+		if(returnType.equals(String.class)) {
 			rawData = true;
 			YUtilReflection.setValueToProperty(
 					YUtilReflection.getPropertyName(getMethod),
 					cursor.getString(cursor.getColumnIndex(columnName)),
 					object);
-		} else if ((getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class))
-				|| (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class))) {
+		} else if ((returnType.equals(Byte.class) || returnType.equals(byte.class))
+				|| (returnType.equals(Short.class) || returnType.equals(short.class))) {
 			rawData = true;
 			YUtilReflection.setValueToProperty(
 					YUtilReflection.getPropertyName(getMethod),
 					cursor.getShort(cursor.getColumnIndex(columnName)),
 					object);
-		} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
+		} else if (returnType.equals(Integer.class) || returnType.equals(int.class)) {
 			rawData = true;
 			YUtilReflection.setValueToProperty(
 					YUtilReflection.getPropertyName(getMethod),
 					cursor.getInt(cursor.getColumnIndex(columnName)),
 					object);
-		} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
+		} else if (returnType.equals(Long.class) || returnType.equals(long.class)) {
 			rawData = true;
 			YUtilReflection.setValueToProperty(
 					YUtilReflection.getPropertyName(getMethod),
 					cursor.getLong(cursor.getColumnIndex(columnName)),
 					object);
-		} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
+		} else if (returnType.equals(Float.class) || returnType.equals(float.class)) {
 			rawData = true;
 			YUtilReflection.setValueToProperty(
 					YUtilReflection.getPropertyName(getMethod),
 					cursor.getFloat(cursor.getColumnIndex(columnName)),
 					object);
-		} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
+		} else if (returnType.equals(Double.class) || returnType.equals(double.class)) {
 			rawData = true;
 			YUtilReflection.setValueToProperty(
 					YUtilReflection.getPropertyName(getMethod),
 					cursor.getDouble(cursor.getColumnIndex(columnName)),
 					object);
-		} else if (getMethod.getReturnType().equals(Date.class)) {
+		} else if (returnType.equals(Date.class)) {
 			final long time = cursor.getLong(cursor.getColumnIndex(columnName));
 			rawData = true;
 			if(time > 0) {
@@ -102,6 +104,51 @@ public final class DataAdapterHelper {
 			}
 		}
 		return rawData;
+	}
+
+	/**
+	 * 
+	 * @param cursor
+	 * @param getMethod
+	 * @param columnName
+	 * @return
+	 * @throws ParseException
+	 */
+	static YRawData getYRawData(final Cursor cursor, final Method getMethod, final String columnName) throws ParseException {
+		final YRawDataPersistenceImpl yRawDataPersistenceImpl = new YRawDataPersistenceImpl();
+		final Class<?> returnType = getMethod.getReturnType();
+		if(returnType.equals(String.class)) {
+			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getString(cursor.getColumnIndex(columnName)));
+		} else if ((returnType.equals(Byte.class) || returnType.equals(byte.class))
+				|| (returnType.equals(Short.class) || returnType.equals(short.class))) {
+			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getShort(cursor.getColumnIndex(columnName)));
+		} else if (returnType.equals(Integer.class) || returnType.equals(int.class)) {
+			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getInt(cursor.getColumnIndex(columnName)));
+		} else if (returnType.equals(Long.class) || returnType.equals(long.class)) {
+			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getLong(cursor.getColumnIndex(columnName)));
+		} else if (returnType.equals(Float.class) || returnType.equals(float.class)) {
+			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getFloat(cursor.getColumnIndex(columnName)));
+		} else if (returnType.equals(Double.class) || returnType.equals(double.class)) {
+			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getDouble(cursor.getColumnIndex(columnName)));
+		} else if (returnType.equals(Date.class)) {
+			final long time = cursor.getLong(cursor.getColumnIndex(columnName));
+			if(time > 0) {
+				addRawData(getMethod, yRawDataPersistenceImpl, new Date(time));
+			}
+		}
+		return yRawDataPersistenceImpl;
+	}
+
+	/**
+	 * 
+	 * @param getMethod
+	 * @param yRawDataPersistenceImpl
+	 * @param value
+	 */
+	private static void addRawData(final Method getMethod, final YRawDataPersistenceImpl yRawDataPersistenceImpl, final Object value) {
+		if(value != null) {
+			yRawDataPersistenceImpl.add(YUtilReflection.getPropertyName(getMethod), value);
+		}
 	}
 
 	/**

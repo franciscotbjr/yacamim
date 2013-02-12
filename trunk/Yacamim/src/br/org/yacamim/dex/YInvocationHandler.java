@@ -65,7 +65,7 @@ public abstract class YInvocationHandler implements InvocationHandler {
 					if(checkTypeConstraint(clazzEntity)) {
 						final Long longId = getTargetObjectId(proxyTargetObject, Collections.unmodifiableList(getMethods));
 						final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, getMethod);
-						final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData);
+						final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, getMethod);
 						
 						result = ProxyBuilder.forClass(clazzEntity)
 								.handler(this)
@@ -101,7 +101,7 @@ public abstract class YInvocationHandler implements InvocationHandler {
 	 * @param result
 	 * @return
 	 */
-	protected abstract YRawData getChildYRawData(final Class<?> clazzEntity, final YRawData parenrawData);
+	protected abstract YRawData getChildYRawData(final Class<?> clazzEntity, final YRawData parenrawData, final Method targetGetMethod);
 	
 	/**
 	 * 

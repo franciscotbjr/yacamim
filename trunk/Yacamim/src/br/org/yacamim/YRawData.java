@@ -17,6 +17,8 @@
  */
 package br.org.yacamim;
 
+import java.util.List;
+
 /**
  * Classe YRawData TODO
  *
@@ -31,6 +33,12 @@ public interface YRawData {
 	 * @param key
 	 */
 	public Object get(final String key);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<String> getKeys();
 
 
 }

@@ -19,7 +19,6 @@ package br.org.yacamim.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -178,7 +177,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param propertyValue
 	 * @param object
 	 */
-	public static void setValueToProperty(String propertyName, Object propertyValue, Object object) {
+	public static void setValueToProperty(final String propertyName, final Object propertyValue, final Object object) {
 		Class<?> parameterClass = null;
 		try {
 			if (propertyValue != null) {
@@ -295,6 +294,39 @@ public strictfp abstract class YUtilReflection {
 		} catch(Exception e) {
 			Log.e("YUtilReflection.getGetMethodListSortedByName", e.getMessage());
 			return new ArrayList<Method>();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param classType
+	 * @return
+	 */
+	public static Method[] getGetMethodListSortedByNameAsArray(Class<?> classType) {
+		try {
+			final List<Method> getMethods = getGetMethodList(classType);
+			
+			final List<String> getMethodNames = new ArrayList<String>();
+			
+			for(final Method method : getMethods) {
+				getMethodNames.add(method.getName());
+			}
+			Collections.sort(getMethodNames);
+			
+			final Method[] sortedGetMethods = new Method[getMethodNames.size()];
+			for(int i = 0; i < getMethodNames.size(); i++) {
+				final String methodName = getMethodNames.get(i);
+				for(Method method : getMethods) {
+					if(method.getName().equals(methodName)) {
+						sortedGetMethods[i] = method;
+						break;
+					}
+				}
+			}
+			return sortedGetMethods;
+		} catch(Exception e) {
+			Log.e("YUtilReflection.getGetMethodListSortedByNameAsArray", e.getMessage());
+			return new Method[]{};
 		}
 	}
 

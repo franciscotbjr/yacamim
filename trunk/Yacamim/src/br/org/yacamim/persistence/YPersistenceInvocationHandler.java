@@ -24,6 +24,7 @@ import java.util.List;
 import br.org.yacamim.YRawData;
 import br.org.yacamim.dex.YInvocationHandler;
 import br.org.yacamim.dex.YMethodFilter;
+import br.org.yacamim.util.YUtilReflection;
 
 /**
  * 
@@ -58,21 +59,27 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 */
 	@Override
 	protected YRawData getTargetObjectYRawData(final Class<?> realClass, final Long id, final Method targetGetMethod) {
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(realClass);
 		defaultDBAdapter.open();
-		defaultDBAdapter.getByID(id);
+		final YRawData yRawData = defaultDBAdapter.getRawDataById(id, new Method[]{targetGetMethod});
 		defaultDBAdapter.close();
-		return null;
+		return yRawData;
 	}
 
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YInvocationHandler#getChildYRawData(java.lang.Class, br.org.yacamim.YRawData)
+	 * @see br.org.yacamim.dex.YInvocationHandler#getChildYRawData(java.lang.Cla'ss, br.org.yacamim.YRawData, java.lang.reflect.Method)
 	 */
 	@Override
-	protected YRawData getChildYRawData(final Class<?> clazzEntity, final YRawData parenrawData) {
-		// TODO Auto-generated method stub
-		return null;
+	protected YRawData getChildYRawData(final Class<?> clazzEntity, final YRawData parenrawData, final Method targetGetMethod) {
+		final String propertyName = YUtilReflection.getPropertyName(targetGetMethod);
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(clazzEntity);
+		defaultDBAdapter.open();
+		YRawData yRawData = defaultDBAdapter.getRawDataById((Long)parenrawData.get(propertyName), YUtilPersistence.getColumnGetMethodListSortedByNameAsArray(clazzEntity));
+		defaultDBAdapter.close();
+		return yRawData;
 	}
 
 	/**
@@ -81,7 +88,16 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 */
 	@Override
 	protected void fillChild(final Object result, final YRawData childRawData) {
-		// TODO Auto-generated method stub
+		final List<String> keys = childRawData.getKeys();
+		for(final String propertyName : keys) {
+			final Class<?> returnType = YUtilReflection.getGetMethod(YUtilReflection.getGetMethodName(propertyName), result.getClass()).getReturnType();
+			if(!YUtilPersistence.isEntity(returnType)) {
+				YUtilReflection.setValueToProperty(
+						propertyName,
+						childRawData.get(propertyName),
+						result);
+			}
+		}
 	}
 
 	/**

@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import br.org.yacamim.YRawData;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.util.YUtilReflection;
 
@@ -237,28 +238,63 @@ public class DefaultDBAdapter<E> {
 	 */
 
 	public E getByID(final long id) throws SQLException {
-		E resultado = null;
+		E result = null;
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			final String[] colunas = this.getColumnNamesAsArray();
-			if(colunas != null && colunas.length > 0) {
+			final String[] columns = this.getColumnNamesAsArray();
+			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(
 						this.getTableName(), 
-						colunas, 
+						columns, 
 						this.getIdColumnName() + " = ?", 
 						new String[]{String.valueOf(id)}, 
 						null, null, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					resultado = build(cursor);
+					result = build(cursor);
 				}
 				cursor.close();
 			}
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.getByID", e.getMessage());
 		}
-		return resultado;
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	YRawData getRawDataById(final Long id, final Method[] targetMethods) {
+		YRawData yRawData = null;
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			String[] columns = new String[targetMethods.length];
+			for(int i = 0; i < targetMethods.length; i++) {
+				columns[i] = YUtilPersistence.getColumnName(targetMethods[i]);
+			}
+			if(columns != null && columns.length > 0) {
+				final Cursor cursor = this.getDatabase().query(
+						this.getTableName(), 
+						columns, 
+						this.getIdColumnName() + " = ?", 
+						new String[]{String.valueOf(id)}, 
+						null, null, null);
+				if (cursor != null && cursor.moveToFirst()) {
+					for(int i = 0; i < targetMethods.length; i++) {
+						yRawData = DataAdapterHelper.getYRawData(cursor, targetMethods[i], columns[i]);
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getRawDataById", e.getMessage());
+		}
+		return yRawData;
+		
 	}
 
 	/**
@@ -311,7 +347,7 @@ public class DefaultDBAdapter<E> {
 	protected String getIdColumnName() {
 		String idColumnName = null;
 		try {
-			final Method getMethod = getIdGetMethod(this.getGenericClass());
+			final Method getMethod = YUtilPersistence.getIdGetMethod(this.getGenericClass());
 			
 			idColumnName = YUtilPersistence.getColumnName(getMethod.getAnnotation(Column.class), getMethod);
 		} catch (Exception e) {
@@ -325,35 +361,9 @@ public class DefaultDBAdapter<E> {
 	 * @param type
 	 * @return
 	 */
-	protected Method getIdGetMethod(final Class<?> type) {
-		Method idMethod = null;
-		try {
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(type);
-
-			for(final Method getMethod : getMethods) {
-				Id id = getMethod.getAnnotation(Id.class);
-				if(id != null) {
-					idMethod = getMethod;
-					break;
-				}
-				if(getMethod.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) {
-					idMethod = getMethod;
-				}
-			}
-		} catch (Exception e) {
-			Log.e("DefaultDBAdapter.getIdGetMethod", e.getMessage());
-		}
-		return idMethod;
-	}
-
-	/**
-	 *
-	 * @param type
-	 * @return
-	 */
 	protected Method getIdSetMethod(Class<?> type) {
 		try {
-			final Method getMethod = getIdGetMethod(type);
+			final Method getMethod = YUtilPersistence.getIdGetMethod(type);
 			if(getMethod != null) {
 				return YUtilReflection.getSetMethod(
 						YUtilReflection.getPropertyName(getMethod),
@@ -372,7 +382,7 @@ public class DefaultDBAdapter<E> {
 	 */
 	protected String getIdPropertyName(Class<?> type) {
 		try {
-			final Method getMethod = getIdGetMethod(type);
+			final Method getMethod = YUtilPersistence.getIdGetMethod(type);
 			if(getMethod != null) {
 				return YUtilReflection.getPropertyName(getMethod);
 			}
@@ -575,4 +585,5 @@ public class DefaultDBAdapter<E> {
 		}
 		return whereAdded;
 	}
+
 }
