@@ -18,9 +18,11 @@
 package br.org.yacamim.persistence;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
 
@@ -135,6 +137,33 @@ final class YUtilPersistence {
 		}
 		return null;
 	}
+	
+
+	/**
+	 *
+	 * @param type
+	 * @return
+	 */
+	static Method getIdGetMethod(final Class<?> type) {
+		Method idMethod = null;
+		try {
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(type);
+
+			for(final Method getMethod : getMethods) {
+				Id id = getMethod.getAnnotation(Id.class);
+				if(id != null) {
+					idMethod = getMethod;
+					break;
+				}
+				if(getMethod.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME)) {
+					idMethod = getMethod;
+				}
+			}
+		} catch (Exception e) {
+			Log.e("YUtilPersistence.getIdGetMethod", e.getMessage());
+		}
+		return idMethod;
+	}
 
 	/**
 	 * 
@@ -163,7 +192,15 @@ final class YUtilPersistence {
 		return getColumnName(column, idMethod);
 	}
 	
-
+	/**
+	 * 
+	 * @param method
+	 * @return
+	 */
+	static String getColumnName(final Method method) {
+		return method.getAnnotation(Column.class).name();
+	}
+	
 	/**
 	 * 
 	 * @param column
@@ -246,6 +283,33 @@ final class YUtilPersistence {
 		builderInsert.append(") ");
 		builderInsert.append(row.substring(row.toUpperCase().indexOf(YUtilPersistence.SQL_WORD_VALUES)));
 		return builderInsert;
+	}
+	
+	/**
+	 * 
+	 * @param classType
+	 * @return
+	 */
+	static Method[] getColumnGetMethodListSortedByNameAsArray(Class<?> classType) {
+		try {
+			final List<Method> getMethods = YUtilReflection.getGetMethodListSortedByName(classType);
+			final List<Method> columnGetMethods = new ArrayList<Method>();
+			for(final Method method : getMethods) {
+				if(method.getAnnotation(Column.class) != null
+						|| (YUtilPersistence.isId(method)
+								|| method.getName().equals(YUtilPersistence.GET_ID_METHOD_NAME))) {
+					columnGetMethods.add(method);
+				}
+			}
+			final Method[] sortedGetMethods = new Method[columnGetMethods.size()];
+			for(int i = 0; i < columnGetMethods.size(); i++) {
+				sortedGetMethods[i] = columnGetMethods.get(i);
+			}
+			return sortedGetMethods;
+		} catch(Exception e) {
+			Log.e("YUtilPersistence.getColumnGetMethodListSortedByNameAsArray", e.getMessage());
+			return new Method[]{};
+		}
 	}
 
 }

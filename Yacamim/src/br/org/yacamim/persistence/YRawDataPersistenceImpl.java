@@ -17,7 +17,10 @@
  */
 package br.org.yacamim.persistence;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import br.org.yacamim.YRawData;
@@ -38,6 +41,14 @@ class YRawDataPersistenceImpl implements YRawData {
 	 */
 	public YRawDataPersistenceImpl() {
 		super();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<String> getKeys() {
+		return new ArrayList<String>(this.map.keySet());
 	}
 
 	/**
