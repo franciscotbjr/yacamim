@@ -540,39 +540,39 @@ public class DefaultDBAdapter<E> {
 	protected ContentValues createContentValues(final E entidade) {
 		final ContentValues values = new ContentValues();
 		try {
-			final Class<?> genericClass = YUtilReflection.getGenericSuperclassClass(this.getGenericClass());
-
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(genericClass);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
 
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
-				if(column != null) {
+				if(column != null
+						|| YUtilPersistence.isId(getMethod)) {
+					final String columnName = YUtilPersistence.getColumnName(column, getMethod);
 					if(getMethod.getReturnType().equals(String.class)) {
-						values.put(column.name(), (String)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(columnName, (String)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
-						values.put(column.name(), (Byte)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(columnName, (Byte)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
-						values.put(column.name(), (Short)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(columnName, (Short)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
-						values.put(column.name(), (Integer)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(columnName, (Integer)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
-						values.put(column.name(), (Float)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(columnName, (Float)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
-						values.put(column.name(), (Double)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+						values.put(columnName, (Double)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
 						Long valueLong = (Long)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
-						// Quando for uma coluna de ID só adiciona se não for zero.
-						if (column.name().indexOf("id") >= 0) {
-							if (valueLong > 0) {
-								values.put(column.name(), valueLong);
+						// When a column is @Id, then it will only be added if its value is greater than zero
+						if (YUtilPersistence.isId(getMethod)) {
+							if(valueLong > 0) {
+								values.put(columnName, valueLong);
 							}
 						} else {
-							values.put(column.name(), valueLong);
+							values.put(columnName, valueLong);
 						}
 					} else if (getMethod.getReturnType().equals(Date.class)) {
 						final Date date = (Date)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
 						if(date != null) {
-							values.put(column.name(), date.getTime());
+							values.put(columnName, date.getTime());
 						}
 					}
 				}
