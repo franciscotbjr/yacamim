@@ -75,6 +75,8 @@ public class RadiografiaSocialActivity extends YBaseActivity {
     }
 
 	/**
+	 * Envia para a tela de consulta de pacientes.
+	 * 
 	 * @param _view
 	 */
 	public void manterPaciente(final View _view) {
@@ -82,6 +84,19 @@ public class RadiografiaSocialActivity extends YBaseActivity {
 			startActivity(new Intent(this, ConsultarPacienteActivity.class));
 		} catch (Exception e) {
 			Log.e("RadiografiaSocialActivity.manterPaciente", e.getMessage());
+		}
+	}
+
+	/**
+	 * Envia para a tela de registro de visita.
+	 * 
+	 * @param _view
+	 */
+	public void registrarVisita(final View _view) {
+		try {
+			//startActivity(new Intent(this, ConsultarPacienteActivity.class));
+		} catch (Exception e) {
+			Log.e("RadiografiaSocialActivity.registrarVisita", e.getMessage());
 		}
 	}
 }
