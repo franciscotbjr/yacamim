@@ -8,7 +8,6 @@ package br.com.nuceloesperanca.radiografiasocial.persitencia;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.database.Cursor;
 import br.com.nuceloesperanca.radiografiasocial.entidade.Paciente;
 import br.org.yacamim.persistence.DefaultDBAdapter;

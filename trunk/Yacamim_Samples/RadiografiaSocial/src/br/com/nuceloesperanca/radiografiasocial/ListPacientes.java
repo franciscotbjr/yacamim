@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import br.com.nuceloesperanca.radiografiasocial.entidade.Paciente;
 import br.com.nuceloesperanca.radiografiasocial.persitencia.PacienteDBAdapter;
+import br.com.nuceloesperanca.radiografiasocial.util.ConditionFactory;
 import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.ui.components.AdapterConfig;
 import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
@@ -80,7 +81,7 @@ public class ListPacientes extends YBaseListActivity {
 
 		final RowConfig[] rowConfigs = {rowConfig} ;
 
-		final AdapterConfig adapterConfig = new AdapterConfig(rowConfigs, null, null);
+		final AdapterConfig adapterConfig = new AdapterConfig(rowConfigs, ConditionFactory.getSimpleRowCondition(), null);
 		return adapterConfig;
 	}
 
@@ -93,15 +94,21 @@ public class ListPacientes extends YBaseListActivity {
 		PacienteDBAdapter adapter = new PacienteDBAdapter(Paciente.class);
 		try {
 			List<Paciente> retorno = null;
-			/*
-			Paciente parametro = null;//(Paciente) ContextState.getInstance().getAttribute("pessoaPesquisa");
+			Paciente parametro = (Paciente) getIntent().getExtras().getParcelable("pacientePesquisa");
 			adapter.open();
 			retorno = adapter.pesquisaPacientes(parametro.getProntuario(), parametro.getNome());
-			*/
 			retorno = new ArrayList<Paciente>();
 			Paciente paciente1 = new Paciente();
 			paciente1.setId(1);
+			paciente1.setNome("Paciente 1");
+			paciente1.setNomeMae("Mãe 1");
+
+			Paciente paciente2 = new Paciente();
+			paciente2.setId(2);
+			paciente2.setNome("Paciente 2");
+			paciente2.setNomeMae("Mãe 2");
 			retorno.add(paciente1);
+			retorno.add(paciente2);
 
 			return retorno;
 		} catch (Exception _e) {
