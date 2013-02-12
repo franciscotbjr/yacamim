@@ -62,7 +62,7 @@ public class ConsultarPacienteActivity extends YBaseActivity {
 	 * Monta o objeto usuário para ser parametro de pesquisa.
 	 */
 	private Intent montaParametrosPesquisa() {
-		Intent intent = new Intent(this, ListPacientes.class);
+		final Intent intent = new Intent(this, ListPacientes.class);
 		Paciente pacientePesquisa = new Paciente();
 		if (!YUtilString.isEmptyString(YUtilText.getTextFromEditText(this, R.id.txte_prontuario))) {
 			pacientePesquisa.setProntuario(Integer.valueOf(YUtilText.getTextFromEditText(this, R.id.txte_prontuario)));
