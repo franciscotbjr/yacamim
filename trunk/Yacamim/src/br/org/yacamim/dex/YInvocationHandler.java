@@ -64,7 +64,7 @@ public abstract class YInvocationHandler implements InvocationHandler {
 					final Class<?> clazzEntity = getMethod.getReturnType();
 					if(checkTypeConstraint(clazzEntity)) {
 						final Long longId = getTargetObjectId(proxyTargetObject, Collections.unmodifiableList(getMethods));
-						final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId);
+						final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, getMethod);
 						final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData);
 						
 						result = ProxyBuilder.forClass(clazzEntity)
@@ -86,7 +86,13 @@ public abstract class YInvocationHandler implements InvocationHandler {
 	 */
 	protected abstract boolean checkTypeConstraint(final Class<?> clazzEntity);
 
-	
+	/**
+	 * 
+	 * @param realClass
+	 * @param id
+	 * @param targetGetMethod
+	 * @return
+	 */
 	protected abstract YRawData getTargetObjectYRawData(final Class<?> realClass, final Long id, final Method targetGetMethod);
 	
 	/**
@@ -107,6 +113,7 @@ public abstract class YInvocationHandler implements InvocationHandler {
 	/**
 	 * 
 	 * @param proxyTargetObject
+	 * @param getMethods
 	 * @return
 	 * @throws NoSuchMethodException
 	 * @throws IllegalAccessException

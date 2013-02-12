@@ -54,10 +54,10 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YInvocationHandler#getTargetObjectYRawData(java.lang.Object, java.lang.Long)
+	 * @see br.org.yacamim.dex.YInvocationHandler#getTargetObjectYRawData(java.lang.Class, java.lang.Long, java.lang.reflect.Method)
 	 */
 	@Override
-	protected YRawData getTargetObjectYRawData(final Object proxyTargetObject, final Long id) {
+	protected YRawData getTargetObjectYRawData(final Class<?> realClass, final Long id, final Method targetGetMethod) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -81,6 +81,10 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * 
+	 * @see br.org.yacamim.dex.YInvocationHandler#getTargetObjectId(java.lang.Object, java.util.List)
+	 */
 	@Override
 	protected Long getTargetObjectId(final Object proxyTargetObject, final List<Method> getMethods) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		final Method getIDMethod = YUtilPersistence.getGetIdMethod(getMethods);
