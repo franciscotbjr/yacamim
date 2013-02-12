@@ -17,6 +17,10 @@
  */
 package br.org.yacamim.persistence;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
 import br.org.yacamim.YRawData;
 import br.org.yacamim.dex.YInvocationHandler;
 import br.org.yacamim.dex.YMethodFilter;
@@ -50,10 +54,10 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YInvocationHandler#getParentYRawData(java.lang.Object, java.lang.Long)
+	 * @see br.org.yacamim.dex.YInvocationHandler#getTargetObjectYRawData(java.lang.Object, java.lang.Long)
 	 */
 	@Override
-	protected YRawData getParentYRawData(final Object proxyTargetObject, final Long id) {
+	protected YRawData getTargetObjectYRawData(final Object proxyTargetObject, final Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -75,6 +79,13 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	@Override
 	protected void fillChild(final Object result, final YRawData childRawData) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected Long getTargetObjectId(final Object proxyTargetObject, final List<Method> getMethods) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		final Method getIDMethod = YUtilPersistence.getGetIdMethod(getMethods);
+		final Object oLongId = getIDMethod.invoke(proxyTargetObject, new Object[]{});
+		return (Long)oLongId;
 	}
 
 }

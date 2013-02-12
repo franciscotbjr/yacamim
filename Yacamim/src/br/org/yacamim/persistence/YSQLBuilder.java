@@ -39,6 +39,9 @@ import br.org.yacamim.util.YUtilString;
  */
 class YSQLBuilder {
 	
+	public static final String GET_PREFIX = "get";
+	public static final String GET_ID_METHOD_NAME = GET_PREFIX + "Id";
+
 	public static final String SQL_WORD_INSERT_INTO = " INSERT INTO ";
 	public static final String SQL_WORD_VALUES = " VALUES ";
 
@@ -52,8 +55,6 @@ class YSQLBuilder {
 	private static final String SQL_WORD_AUTOINCREMENT = " AUTOINCREMENT ";
 	private static final String SQL_WORD_PRIMARY_KEY = " PRIMARY KEY ";
 	
-	private static final String GET_PREFIX = "get";
-	private static final String GET_ID_METHOD_NAME = GET_PREFIX + "Id";
 	
 	private static final Map<Class<?>, String> sqlTypeMap = new HashMap<Class<?>,String>();
 	
@@ -170,10 +171,6 @@ class YSQLBuilder {
 		final StringBuilder sqlCreate = new StringBuilder();
 		final YProcessedEntity processedEntity = this.getYProcessedEntity(clazz);
 		if(YUtilPersistence.isEntity(clazz) && processedEntity != null) { 
-			// avaliar se as classes precisam ser Entity 
-			// | Observação: avaliar também se não seria interesamente que as anotações como Column também sejam opcionais-> 
-			// bastaria apenas mapear as classes no arquivo XML: qualquer classe.
-			// sem anotações, tudo funcionaria no modo deafult
 			
 			final List<Method> getMethods = this.initMethodsGet(clazz);
 			
