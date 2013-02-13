@@ -56,31 +56,25 @@ public abstract class YInvocationHandler implements InvocationHandler {
 		}
 		if (result == null) {
 			final Class<?> realClass = proxyTargetObject.getClass().getSuperclass();
-//			final List<Method> getMethods = YUtilReflection.getGetMethodListSortedByName(realClass);
-//			for(final Method getMethod : getMethods) {
-//				if(getMethod.getName().equals(method.getName())) {
-//					final Class<?> clazzEntity = getMethod.getReturnType();
-					final Class<?> clazzEntity = method.getReturnType();
-					if(checkTypeConstraint(clazzEntity)) {
-						final Long longId = getTargetObjectId(proxyTargetObject);
-						final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, method);
-						final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, method);
-						
-						result = ProxyBuilder.forClass(clazzEntity)
-								.handler(this)
-								.build();
-						
-						this.fillChild(result, childRawData);
-						
-						try {
-							final Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(method)), proxyTargetObject.getClass(), new Class<?>[]{clazzEntity});
-							YUtilReflection.invokeMethod(setMethod, proxyTargetObject, result);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-//				}
-//			}
+			final Class<?> clazzEntity = method.getReturnType();
+			if(checkTypeConstraint(clazzEntity)) {
+				final Long longId = getTargetObjectId(proxyTargetObject);
+				final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, method);
+				final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, method);
+				
+				result = ProxyBuilder.forClass(clazzEntity)
+						.handler(this)
+						.build();
+				
+				this.fillChild(result, childRawData);
+				
+				try {
+					final Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(method)), proxyTargetObject.getClass(), new Class<?>[]{clazzEntity});
+					YUtilReflection.invokeMethod(setMethod, proxyTargetObject, result);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return result;
 	}
