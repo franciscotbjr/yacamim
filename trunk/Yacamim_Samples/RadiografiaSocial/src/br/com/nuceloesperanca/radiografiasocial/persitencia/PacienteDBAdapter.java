@@ -54,7 +54,7 @@ public class PacienteDBAdapter extends DefaultDBAdapter<Paciente> {
 			selectionArgsList.add(String.valueOf(prontuario));
 		}
 		if (!YUtilString.isEmptyString(nome)) {
-			where += "p.nome like ? ";
+			where += "p.nome like ? and ";
 			selectionArgsList.add(nome);
 		}
 		//retira o and do final.

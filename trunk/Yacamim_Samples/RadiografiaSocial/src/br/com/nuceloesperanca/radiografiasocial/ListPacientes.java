@@ -94,11 +94,9 @@ public class ListPacientes extends YBaseListActivity {
 		PacienteDBAdapter adapter = new PacienteDBAdapter(Paciente.class);
 		try {
 			List<Paciente> retorno = null;
-			/*
 			Paciente parametro = (Paciente) getIntent().getExtras().getParcelable("pacientePesquisa");
 			adapter.open();
 			retorno = adapter.pesquisaPacientes(parametro.getProntuario(), parametro.getNome());
-			*/
 			retorno = new ArrayList<Paciente>();
 			Paciente paciente1 = new Paciente();
 			paciente1.setId(1);
