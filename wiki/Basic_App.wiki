@@ -1,0 +1,6 @@
+#summary Basic App.
+
+= Basic App =
+
+Add your content here.
+
