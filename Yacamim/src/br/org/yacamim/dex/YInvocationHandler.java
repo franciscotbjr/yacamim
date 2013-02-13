@@ -20,8 +20,6 @@ package br.org.yacamim.dex;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.List;
 
 import br.org.yacamim.YRawData;
 import br.org.yacamim.util.YUtilReflection;
@@ -58,23 +56,31 @@ public abstract class YInvocationHandler implements InvocationHandler {
 		}
 		if (result == null) {
 			final Class<?> realClass = proxyTargetObject.getClass().getSuperclass();
-			final List<Method> getMethods = YUtilReflection.getGetMethodListSortedByName(realClass);
-			for(final Method getMethod : getMethods) {
-				if(getMethod.getName().equals(method.getName())) {
-					final Class<?> clazzEntity = getMethod.getReturnType();
+//			final List<Method> getMethods = YUtilReflection.getGetMethodListSortedByName(realClass);
+//			for(final Method getMethod : getMethods) {
+//				if(getMethod.getName().equals(method.getName())) {
+//					final Class<?> clazzEntity = getMethod.getReturnType();
+					final Class<?> clazzEntity = method.getReturnType();
 					if(checkTypeConstraint(clazzEntity)) {
-						final Long longId = getTargetObjectId(proxyTargetObject, Collections.unmodifiableList(getMethods));
-						final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, getMethod);
-						final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, getMethod);
+						final Long longId = getTargetObjectId(proxyTargetObject);
+						final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, method);
+						final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, method);
 						
 						result = ProxyBuilder.forClass(clazzEntity)
 								.handler(this)
 								.build();
 						
 						this.fillChild(result, childRawData);
+						
+						try {
+							final Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(method)), proxyTargetObject.getClass(), new Class<?>[]{clazzEntity});
+							YUtilReflection.invokeMethod(setMethod, proxyTargetObject, result);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
-				}
-			}
+//				}
+//			}
 		}
 		return result;
 	}
@@ -113,13 +119,11 @@ public abstract class YInvocationHandler implements InvocationHandler {
 	/**
 	 * 
 	 * @param proxyTargetObject
-	 * @param getMethods
 	 * @return
 	 * @throws NoSuchMethodException
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	protected abstract Long getTargetObjectId(final Object proxyTargetObject, final List<Method> getMethods) 
-			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
+	protected abstract Long getTargetObjectId(final Object proxyTargetObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
 
 }
