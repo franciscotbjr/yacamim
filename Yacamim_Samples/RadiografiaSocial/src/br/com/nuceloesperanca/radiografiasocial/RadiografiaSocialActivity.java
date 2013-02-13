@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.YInitBaseActivity;
 import br.org.yacamim.YacamimInitializer;
 import br.org.yacamim.YacamimState;
 
@@ -22,7 +22,7 @@ import br.org.yacamim.YacamimState;
  * @version 1.0
  * @since 1.0
  */
-public class RadiografiaSocialActivity extends YBaseActivity {
+public class RadiografiaSocialActivity extends YInitBaseActivity {
 	private static final String TAG_CLASS = RadiografiaSocialActivity.class.getName();
 
 	/**
@@ -44,9 +44,10 @@ public class RadiografiaSocialActivity extends YBaseActivity {
 	}
 
 	/**
-	 * @see br.org.yacamim.YBaseActivity#init()
+	 * 
+	 * @see br.org.yacamim.YInitBaseActivity#initApp()
 	 */
-	protected void init() {
+	protected void initApp() {
     	try {
     		YacamimState.getInstance().setPreferencesToken("__y_prefs_#_token_@_radiografia.nucleoesperanca.com.br_::");
 
@@ -65,10 +66,6 @@ public class RadiografiaSocialActivity extends YBaseActivity {
     		.setIdResourceMsgConstraintDependency(R.string.y_MsgConstraintDependency)
     		;
     		
-			
-			// Required 
-			super.init();
-			// 
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
 		}
