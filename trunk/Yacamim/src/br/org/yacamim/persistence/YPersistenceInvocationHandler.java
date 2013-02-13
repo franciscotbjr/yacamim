@@ -102,11 +102,11 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YInvocationHandler#getTargetObjectId(java.lang.Object, java.util.List)
+	 * @see br.org.yacamim.dex.YInvocationHandler#getTargetObjectId(java.lang.Object)
 	 */
 	@Override
-	protected Long getTargetObjectId(final Object proxyTargetObject, final List<Method> getMethods) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		final Method getIDMethod = YUtilPersistence.getGetIdMethod(getMethods);
+	protected Long getTargetObjectId(final Object proxyTargetObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		final Method getIDMethod = YUtilPersistence.getIdGetMethod(proxyTargetObject.getClass().getSuperclass());
 		final Object oLongId = getIDMethod.invoke(proxyTargetObject, new Object[]{});
 		return (Long)oLongId;
 	}

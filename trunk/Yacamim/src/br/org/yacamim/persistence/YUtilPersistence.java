@@ -307,5 +307,37 @@ final class YUtilPersistence {
 			return new Method[]{};
 		}
 	}
+	
+
+	/**
+	 * 
+	 * @param targetMethod
+	 * @return
+	 */
+	static String builColumnName(final Method targetMethod) {
+		final Class<?> returnType = targetMethod.getReturnType();
+		final Column column = targetMethod.getAnnotation(Column.class);
+		String columnName = null;
+		if(YUtilPersistence.isEntity(returnType)) {
+			final Method getFkMethod = YUtilPersistence.getIdGetMethod(returnType);
+			if(getFkMethod != null) {
+				columnName = buildFkColumnName(returnType, column, getFkMethod);
+			}
+		} else {
+			columnName = YUtilPersistence.getColumnName(column, targetMethod);
+		}
+		return columnName;
+	}
+
+	/**
+	 * 
+	 * @param returnType
+	 * @param column
+	 * @param getFkMethod
+	 * @return
+	 */
+	static String buildFkColumnName(final Class<?> returnType, final Column column, final Method getFkMethod) {
+		return YUtilPersistence.getColumnName(column, getFkMethod) + "_" + YUtilPersistence.getTableName(returnType);
+	}
 
 }

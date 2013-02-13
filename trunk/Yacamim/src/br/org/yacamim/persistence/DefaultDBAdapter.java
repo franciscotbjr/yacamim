@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.dexmaker.stock.ProxyBuilder;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -35,6 +33,8 @@ import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.dex.YInvocationHandlerProxy;
 import br.org.yacamim.util.YUtilReflection;
+
+import com.google.dexmaker.stock.ProxyBuilder;
 
 /**
  *
@@ -270,6 +270,7 @@ public class DefaultDBAdapter<E> {
 	/**
 	 * 
 	 * @param id
+	 * @param targetMethods
 	 * @return
 	 */
 	YRawData getRawDataById(final Long id, final Method[] targetMethods) {
@@ -280,7 +281,10 @@ public class DefaultDBAdapter<E> {
 			}
 			String[] columns = new String[targetMethods.length];
 			for(int i = 0; i < targetMethods.length; i++) {
-				columns[i] = YUtilPersistence.getColumnName(targetMethods[i]);
+				final String columnName = YUtilPersistence.builColumnName(targetMethods[i]);
+				if(columnName != null) {
+					columns[i] = columnName;
+				}
 			}
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(
@@ -291,7 +295,7 @@ public class DefaultDBAdapter<E> {
 						null, null, null);
 				if (cursor != null && cursor.moveToFirst()) {
 					for(int i = 0; i < targetMethods.length; i++) {
-						yRawData = DataAdapterHelper.getYRawData(cursor, targetMethods[i], columns[i]);
+						yRawData = DataAdapterHelper.getYRawData(cursor, targetMethods[i], columns[i], yRawData);
 					}
 				}
 			}
@@ -414,7 +418,9 @@ public class DefaultDBAdapter<E> {
 						|| column == null) {
 					continue;
 				}
-				columns.add(YUtilPersistence.getColumnName(column, getMethod));
+				
+				columns.add(YUtilPersistence.builColumnName(getMethod));
+				
 			}
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.getColumnNames", e.getMessage());
@@ -574,10 +580,20 @@ public class DefaultDBAdapter<E> {
 						if(date != null) {
 							values.put(columnName, date.getTime());
 						}
+					} else {
+						final Object object = YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+						final Class<?> returnType = object.getClass();
+						if(object != null && YUtilPersistence.isEntity(returnType)) {
+							final Method getFkMethod = YUtilPersistence.getIdGetMethod(returnType);
+							if(getFkMethod != null) {
+								final Long idFk = (Long)YUtilReflection.invokeMethodWithoutParams(getFkMethod, object);
+								final String fkColumnName = YUtilPersistence.buildFkColumnName(returnType, column, getFkMethod);
+								values.put(fkColumnName, idFk);
+							}
+						}
 					}
 				}
 			}
-
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.createContentValues", e.getMessage());
 		}

@@ -76,17 +76,7 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		init();
-	}
-
-	/**
-	 * 
-	 */
-	protected void init() {
 		this.keepScreenOn();
-
-		YacamimInitializer.getInstance().initialize(this);
-		
 	}
 
 	/**

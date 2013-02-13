@@ -114,8 +114,11 @@ public final class DataAdapterHelper {
 	 * @return
 	 * @throws ParseException
 	 */
-	static YRawData getYRawData(final Cursor cursor, final Method getMethod, final String columnName) throws ParseException {
-		final YRawDataPersistenceImpl yRawDataPersistenceImpl = new YRawDataPersistenceImpl();
+	static YRawData getYRawData(final Cursor cursor, final Method getMethod, final String columnName, YRawData yRawData) throws ParseException {
+		if(yRawData == null) {
+			yRawData = new YRawDataPersistenceImpl();
+		}
+		YRawDataPersistenceImpl yRawDataPersistenceImpl = (YRawDataPersistenceImpl)yRawData;
 		final Class<?> returnType = getMethod.getReturnType();
 		if(returnType.equals(String.class)) {
 			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getString(cursor.getColumnIndex(columnName)));
@@ -135,6 +138,8 @@ public final class DataAdapterHelper {
 			if(time > 0) {
 				addRawData(getMethod, yRawDataPersistenceImpl, new Date(time));
 			}
+		} else if (YUtilPersistence.isEntity(returnType)) {
+			addRawData(getMethod, yRawDataPersistenceImpl, cursor.getLong(cursor.getColumnIndex(columnName)));
 		}
 		return yRawDataPersistenceImpl;
 	}
