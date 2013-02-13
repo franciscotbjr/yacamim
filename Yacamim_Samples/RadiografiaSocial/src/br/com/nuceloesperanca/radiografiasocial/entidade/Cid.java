@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import br.org.yacamim.entity.YBaseEntity;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
+import br.org.yacamim.persistence.Id;
 
 /**
  * Entidade que representa a tabela de CID.
@@ -44,6 +45,7 @@ public class Cid extends YBaseEntity {
 	/**
 	 * @return the id
 	 */
+	@Id
 	public long getId() {
 		return this.id;
 	}
