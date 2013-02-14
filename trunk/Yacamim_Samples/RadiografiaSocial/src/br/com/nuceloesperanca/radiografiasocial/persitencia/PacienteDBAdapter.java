@@ -42,19 +42,19 @@ public class PacienteDBAdapter extends DefaultDBAdapter<Paciente> {
 		List<Paciente> retorno = null;
 		String where = "";
 		StringBuilder sql = new StringBuilder();
-		sql.append("select p.id_paciente, p.nome, p.nascimento, p.nome_mae, p.nome_pai, p.irmaos, ");
-		sql.append("p.telefones, p.endereco, p.cid_id, p.latitude, p.longitude ");
-		sql.append("from paciente p ");
+		sql.append("select p.Id, p.Nome, p.Nascimento, p.NomeMae, p.NomePai, p.Irmaos, ");
+		sql.append("p.Telefones, p.Endereco, p.Id_Cid, p.Latitude, p.Longitude ");
+		sql.append("from Paciente p ");
 		sql.append("where ");
 		List<String> selectionArgsList = new ArrayList<String>();
 		String[] selectionArgs = null;
 		Integer indice = 0;
 		if (prontuario != 0) {
-			where += "p.prontuario like ? and ";
+			where += "p.Prontuario like ? and ";
 			selectionArgsList.add(String.valueOf(prontuario));
 		}
 		if (!YUtilString.isEmptyString(nome)) {
-			where += "p.nome like ? and ";
+			where += "p.Nome like ? and ";
 			selectionArgsList.add(nome);
 		}
 		//retira o and do final.
@@ -65,7 +65,7 @@ public class PacienteDBAdapter extends DefaultDBAdapter<Paciente> {
 			selectionArgs[indice++] = arg;
 		}
 
-		final Cursor cursor = super.getDatabase().rawQuery(sql.toString() + where, selectionArgs);
+		final Cursor cursor = super.getDatabase().rawQuery(sql.toString() + where + "order by p.Nome", selectionArgs);
 		if (cursor != null && cursor.moveToFirst()) {
 			retorno = new ArrayList<Paciente>();
 			retorno.add(build(cursor));
