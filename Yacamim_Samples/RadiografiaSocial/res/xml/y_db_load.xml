@@ -1,0 +1,1572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<y-db-script>
+
+    <y-db version="0" >
+        <y-load>
+            <y-package name="br.com.nuceloesperanca.radiografiasocial.entidade" >
+                <y-insert y-entity="Cid" >
+                    <y-row>
+						(id, descricao, codigo) values (28, 'NEOPLASIA MALIGNA DA GLÂNDULA PARATIREÓIDE', 'C75.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (29, 'NEOPLASIA MALIGNA DA GLÂNDULA HIPÓFISE -PITUITÁRIA', 'C75.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (30, 'NEOPLASIA MALIGNA DO CONDUTO CRANIOFARÍNGEO', 'C75.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (31, 'NEOPLASIA MALIGNA DO CÓRTEX DA SUPRA-RENAL', 'C74.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (32, 'NEOPLASIA MALIGNA DO LÁBIO ', 'C00')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (33, 'NEOPLASIA MALIGNA DO LÁBIO SUPERIOR EXTERNO ', 'C00.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (34, 'NEOPLASIA MALIGNA DO LÁBIO INFERIOR EXTERNO ', 'C00.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (36, 'NEOPLASIA MALIGNA DO LÁBIO SUPERIOR, FACE INTERNA ', 'C00.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (37, 'NEOPLASIA MALIGNA DO LÁBIO INFERIOR, FACE INTERNA ', 'C00.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (39, 'NEOPLASIA MALIGNA DA COMISSURA LABIAL ', 'C00.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (40, 'NEOPLASIA MALIGNA DO LÁBIO COM LESÃO INVASIVA ', 'C00.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (17, 'LEUCEMIA LINFOBLASTICA AGUDA', 'C91.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (18, 'LEUCEMIA MIELOIDE AGUDA', 'C92.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (16, 'LEUCEMIA PLASMOCITARIA', 'C90.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (41, 'NEOPLASIA MALIGNA DO LÁBIO, NÃO ESPECIFICADO ', 'C00.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (42, 'NEOPLASIA MALIGNA DA BASE DA LÍNGUA ', 'C01')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (44, 'NEOPLASIA MALIGNA DA FACE DORSAL DA LÍNGUA ', 'C02.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (47, 'NEOPLASIA MALIGNA DA BORDA DA LÍNGUA ', 'C02.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (48, 'NEOPLASIA MALIGNA DA FACE VENTRAL DA LÍNGUA ', 'C02.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (50, 'NEOPLASIA MALIGNA DA AMÍGDALA LINGUAL ', 'C02.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (51, 'NEOPLASIA MALIGNA DA LÍNGUA COM LESÃO INVASIVA', 'C02.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (52, 'NEOPLASIA MALIGNA DA LÍNGUA, NÃO ESPECIFICADA', 'C02.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (53, 'NEOPLASIA MALIGNA DA GENGIVA ', 'C03')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (54, 'NEOPLASIA MALIGNA DA GENGIVA SUPERIOR', 'C03.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (55, 'NEOPLASIA MALIGNA DA GENGIVA INFERIOR ', 'C03.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (56, 'NEOPLASIA MALIGNA DA GENGIVA, NÃO ESPECIFICADA', 'C03.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (57, 'NEOPLASIA MALIGNA DO ASSOALHO DA BOCA', 'C04')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (58, 'NEOPLASIA MALIGNA DO ASSOALHO ANTERIOR DA BOCA', 'C04.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (59, 'NEOPLASIA MALIGNA DO ASSOALHO LATERAL DA BOCA ', 'C04.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (62, 'NEOPLASIA MALIGNA DO PALATO', 'C05')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (63, 'NEOPLASIA MALIGNA DO PALATO DURO', 'C05.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (64, 'NEOPLASIA MALIGNA DO PALATO MOLE', 'C05.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (65, 'NEOPLASIA MALIGNA DA ÚVULA', 'C05.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (66, 'NEOPLASIA MALIGNA DO PALATO COM LESÃO INVASIVA', 'C05.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (67, 'NEOPLASIA MALIGNA DO PALATO, NÃO ESPECIFICADO', 'C05.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (69, 'NEOPLASIA MALIGNA DA MUCOSA ORAL', 'C06.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (70, 'NEOPLASIA MALIGNA DO VESTÍBULO DA BOCA', 'C06.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (71, 'NEOPLASIA MALIGNA DA ÁREA RETROMOLAR', 'C06.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (73, 'NEOPLASIA MALIGNA DA BOCA, NÃO ESPECIFICADA', 'C06.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (74, 'NEOPLASIA MALIGNA DA GLÂNDULA PARÓTIDA', 'C07')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (75, 'NEOPLASIA MALIGNA DA AMÍGDALA', 'C09')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (76, 'NEOPLASIA MALIGNA DA FOSSA AMIGDALIANA', 'C09.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (78, 'NEOPLASIA MALIGNA DA AMÍGDALA COM LESÃO INVASIVA', 'C09.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (79, 'NEOPLASIA MALIGNA DA AMÍGDALA, NÃO ESPECIFICADA', 'C09.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (80, 'NEOPLASIA MALIGNA DA OROFARINGE', 'C10')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (81, 'NEOPLASIA MALIGNA DA VALÉCULA', 'C10.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (82, 'NEOPLASIA MALIGNA DA FACE ANTERIOR DA EPIGLOTE', 'C10.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (83, 'NEOPLASIA MALIGNA DA PAREDE LATERAL DA OROFARINGE', 'C10.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (85, 'NEOPLASIA MALIGNA DA FENDA BRANQUIAL', 'C10.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (86, 'NEOPLASIA MALIGNA DA OROFARINGE COM LESÃO INVASIVA', 'C10.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (87, 'NEOPLASIA MALIGNA DA OROFARINGE, NÃO ESPECIFICADA', 'C10.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (88, 'NEOPLASIA MALIGNA DA NASOFARINGE', 'C11')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (91, 'NEOPLASIA MALIGNA DA PAREDE LATERAL DA NASOFARINGE', 'C11.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (94, 'NEOPLASIA MALIGNA DA NASOFARINGE, NÃO ESPECIFICADA', 'C11.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (95, 'NEOPLASIA MALIGNA DO SEIO PIRIFORME', 'C12')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (96, 'NEOPLASIA MALIGNA DA HIPOFARINGE', 'C13')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (97, 'NEOPLASIA MALIGNA DA REGIÃO PÓS-CRICÓIDEA', 'C13.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (101, 'NEOPLASIA MALIGNA DA HIPOFARINGE, NÃO ESPECIFICADA', 'C13.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (102, 'NEOPLASIA MALIGNA DE OUTRAS LOCALIZAÇÕES', 'C14')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (103, 'NEOPLASIA MALIGNA DA FARINGE, NÃO ESPECIFICADA', 'C14.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (104, 'NEOPLASIA MALIGNA DO ANEL DE WALDEYER', 'C14.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (110, 'NEOPLASIA MALIGNA DO TERÇO SUPERIOR DO ESÔFAGO', 'C15.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (111, 'NEOPLASIA MALIGNA DO TERÇO MÉDIO DO ESÔFAGO', 'C15.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (112, 'NEOPLASIA MALIGNA DO TERÇO INFERIOR DO ESÔFAGO', 'C15.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (99, 'NEOPLASIA MALIGNA DA PAREDE POSTERIOR DA HIPOFARINGE', 'C13.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (100, 'NEOPLASIA MALIGNA DA HIPOFARINGE COM LESÃO INVASIVA', 'C13.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (105, 'NEOPLASIA MALIGNA DO LÁBIO, CAVIDADE ORAL E FARINGE COM LESÃO INVASIVA', 'C14.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (106, 'NEOPLASIA MALIGNA DO ESÔFAGO', 'C15')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (108, 'NEOPLASIA MALIGNA DA PORÇÃO TORÁCICA DO ESÔFAGO (ESÔFAGO TORÁCICO)', 'C15.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (109, 'NEOPLASIA MALIGNA DA PORÇÃO ABDOMINAL DO ESÔFAGO (ESÔFAGO ABDOMINAL)', 'C15.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (113, 'NEOPLASIA MALIGNA DO ESÔFAGO COM LESÃO INVASIVA', 'C15.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (35, 'NEOPLASIA MALIGNA DO LÁBIO EXTERNO, NÃO ESPECIFICADO', 'C00.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (38, 'NEOPLASIA MALIGNA DO LÁBIO, SEM ESPECIFICAÇÃO, FACE INTERNA', 'C00.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (49, 'NEOPLASIA MALIGNA DE DOIS TERÇOS ANTERIORES DA LÍNGUA, PARTE NÃO ESPECIFICADA', 'C02.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (60, 'NEOPLASIA MALIGNA DO ASSOALHO DA BOCA COM LESÃO INVASIVA', 'C04.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (61, 'NEOPLASIA MALIGNA DO ASSOALHO DA BOCA, NÃO ESPECIFICADO', 'C04.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (72, 'NEOPLASIA MALIGNA DE OUTRAS PARTES E DE PARTES NÃO ESPECIFICADAS DA BOCA COM LESÃO INVASIVA', 'C06.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (77, 'NEOPLASIA MALIGNA DO PILAR AMIGDALIANO (ANTERIOR) (POSTERIOR)', 'C09.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (90, 'NEOPLASIA MALIGNA DA PAREDE POSTERIOR DA NASOFARINGE', 'C11.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (84, 'NEOPLASIA MALIGNA DA PAREDE POSTERIOR DA OROFARINGE', 'C10.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (89, 'NEOPLASIA MALIGNA DA PAREDE SUPERIOR DA NASOFARINGE', 'C11.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (92, 'NEOPLASIA MALIGNA DA PAREDE ANTERIOR DA NASOFARINGE', 'C11.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (93, 'NEOPLASIA MALIGNA DA NASOFARINGE COM LESÃO INVASIVA', 'C11.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (114, 'NEOPLASIA MALIGNA DO ESÔFAGO, NÃO ESPECIFICADO', 'C15.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (115, 'NEOPLASIA MALIGNA DO ESTÔMAGO', 'C16')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (116, 'NEOPLASIA MALIGNA DA CÁRDIA', 'C16.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (117, 'NEOPLASIA MALIGNA DO FUNDO DO ESTÔMAGO', 'C16.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (118, 'NEOPLASIA MALIGNA DO CORPO DO ESTÔMAGO', 'C16.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (119, 'NEOPLASIA MALIGNA DO ANTRO PILÓRICO', 'C16.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (120, 'NEOPLASIA MALIGNA DO PILORO', 'C16.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (122, 'NEOPLASIA MALIGNA DA GRANDE CURVATURA DO ESTÔMAGO', 'C16.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (123, 'NEOPLASIA MALIGNA DO ESTÔMAGO COM LESÃO INVASIVA', 'C16.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (124, 'NEOPLASIA MALIGNA DO ESTÔMAGO, NÃO ESPECIFICADO', 'C16.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (125, 'NEOPLASIA MALIGNA DO DUODENO', 'C17.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (126, 'NEOPLASIA MALIGNA DO INTESTINO DELGADO', 'C17')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (127, 'NEOPLASIA MALIGNA DO JEJUNO', 'C17.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (128, 'NEOPLASIA MALIGNA DO ÍLEO', 'C17.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (129, 'NEOPLASIA MALIGNA DO DIVERTÍCULO DE MECKEL', 'C17.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (132, 'NEOPLASIA MALIGNA DO CÓLON', 'C18')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (133, 'NEOPLASIA MALIGNA DO CECO', 'C18.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (134, 'NEOPLASIA MALIGNA DO APÊNDICE (VERMIFORME)', 'C18.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (135, 'NEOPLASIA MALIGNA DO CÓLON ASCENDENTE', 'C18.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (136, 'NEOPLASIA MALIGNA DA FLEXURA (ÂNGULO) HEPÁTICA(O)', 'C18.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (137, 'NEOPLASIA MALIGNA DO CÓLON TRANSVERSO', 'C18.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (138, 'NEOPLASIA MALIGNA DA FLEXURA (ÂNGULO) ESPLÊNICA(O)', 'C18.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (139, 'NEOPLASIA MALIGNA DO CÓLON DESCENDENTE', 'C18.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (140, 'NEOPLASIA MALIGNA DO CÓLON SIGMÓIDE', 'C18.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (141, 'NEOPLASIA MALIGNA DO CÓLON COM LESÃO INVASIVA', 'C18.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (142, 'NEOPLASIA MALIGNA DO CÓLON, NÃO ESPECIFICADO', 'C18.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (143, 'NEOPLASIA MALIGNA DA JUNÇÃO RETOSSIGMÓIDE', 'C19')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (144, 'NEOPLASIA MALIGNA DO RETO', 'C20')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (145, 'NEOPLASIA MALIGNA DO ÂNUS, NÃO ESPECIFICADO', 'C21.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (146, 'NEOPLASIA MALIGNA DO CANAL ANAL', 'C21.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (147, 'NEOPLASIA MALIGNA DA ZONA CLOACOGÊNICA', 'C21.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (149, 'NEOPLASIA MALIGNA DA VESÍCULA BILIAR', 'C23')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (150, 'NEOPLASIA MALIGNA DO PÂNCREAS', 'C25')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (151, 'NEOPLASIA MALIGNA DA CABEÇA DO PÂNCREAS', 'C25.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (152, 'NEOPLASIA MALIGNA DO CORPO DO PÂNCREAS', 'C25.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (153, 'NEOPLASIA MALIGNA DA CAUDA DO PÂNCREAS', 'C25.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (154, 'NEOPLASIA MALIGNA DO CANAL PANCREÁTICO', 'C25.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (155, 'NEOPLASIA MALIGNA DO PÂNCREAS ENDÓCRINO', 'C25.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (156, 'NEOPLASIA MALIGNA DE OUTRAS PARTES DO PÂNCREAS', 'C25.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (157, 'NEOPLASIA MALIGNA DO PÂNCREAS COM LESÃO INVASIVA', 'C25.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (158, 'NEOPLASIA MALIGNA DO PÂNCREAS, NÃO ESPECIFICADO', 'C25.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (159, 'NEOPLASIA MALIGNA DE OUTROS ÓRGÃOS DIGESTIVOS', 'C26')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (160, 'NEOPLASIA MALIGNA DO TRATO INTESTINAL', 'C26.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (161, 'NEOPLASIA MALIGNA DO BAÇO', 'C26.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (162, 'NEOPLASIA MALIGNA DO AP. DIGES. COM LES.  INVASIVA', 'C26.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (163, 'NEOPLASIA MALIGNA DE LOCALIZAÇÕES MAL DEFINIDAS', 'C26.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (164, 'NEOPLASIA MALIGNA DA LARINGE', 'C32')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (165, 'NEOPLASIA MALIGNA DA GLOTE', 'C32.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (166, 'NEOPLASIA MALIGNA DA REGIÃO SUPRAGLÓTICA', 'C32.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (167, 'NEOPLASIA MALIGNA DA REGIÃO SUBGLÓTICA', 'C32.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (168, 'NEOPLASIA MALIGNA DAS CARTILAGENS DA LARINGE', 'C32.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (169, 'NEOPLASIA MALIGNA DA LARINGE COM LESÃO INVASIVA', 'C32.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (170, 'NEOPLASIA MALIGNA DA LARINGE, NÃO ESPECIFICADA', 'C32.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (171, 'NEOPLASIA MALIGNA DA TRAQUÉIA', 'C33')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (172, 'NEOPLASIA MALIGNA DOS BRÔNQUIOS E DOS PULMÕES', 'C34')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (173, 'NEOPLASIA MALIGNA DO BRÔNQUIO PRINCIPAL', 'C34.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (175, 'NEOPLASIA MALIGNA DO LOBO MÉDIO BRÔNQUIO OU PULMÃO', 'C34.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (179, 'NEOPLASIA MALIGNA DO TIMO', 'C37')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (180, 'NEOPLASIA MALIGNA DE OUTRAS LOCALIZAÇÕES', 'C39')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (184, 'NEOPLASIA MALIGNA DOS OSSOS E DAS CARTILAGENS', 'C41')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (185, 'NEOPLASIA MALIGNA DOS OSSOS DO CRÂNIO E DA FACE', 'C41.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (186, 'NEOPLASIA MALIGNA DA MANDÍBULA', 'C41.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (187, 'NEOPLASIA MALIGNA DA COLUNA VERTEBRAL', 'C41.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (188, 'NEOPLASIA MALIGNA DAS COSTELAS ESTERNO E CLAVÍCULA', 'C41.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (189, 'NEOPLASIA MALIG DOS OSSOS DA PELVE, SACRO E CÓCCIX', 'C41.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (192, 'MELANOMA MALIGNO DA PELE', 'C43')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (193, 'MELANOMA MALIGNO DO LÁBIO', 'C43.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (197, 'MELANOMA MALIGNO DO COURO CABELUDO E DO PESCOÇO', 'C43.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (198, 'MELANOMA MALIGNO DO TRONCO', 'C43.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (201, 'MELANOMA MALIGNO INVASIVO DA PELE', 'C43.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (202, 'MELANOMA MALIGNO DE PELE, NÃO ESPECIFICADO', 'C43.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (203, 'OUTRAS NEOPLASIAS MALIGNAS DA PELE', 'C44')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (131, 'NEOPLASIA MALIGNA DO INTESTINO DELGADO, NÃO ESPECIFICADO', 'C17.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (148, 'NEOPLASIA MALIGNA DO RETO, ÂNUS E DO CANAL ANAL COM LESÃO INVASIVA', 'C21.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (174, 'NEOPLASIA MALIGNA DO LOBO SUPERIOR, BRÔNQUIO OU PULMÃO', 'C34.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (176, 'NEOPLASIA MALIGNA DO LOBO INFERIOR, BRÔNQUIO OU PULMÃO', 'C34.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (177, 'NEOPLASIA MALIGNA DOS BRÔNQUIOS E DOS PULMÕES COM LESÃO INVASIVA', 'C34.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (178, 'NEOPLASIA MALIGNA DOS BRÔNQUIOS OU PULMÕES, NÃO ESPECIFICADO', 'C34.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (182, 'NEOPLASIA MALIGNA DO APARELHO RESPIRATÓRIO E DOS ÓRGÃOS INTRATORÁCICOS COM LESÃO INVASIVA', 'C39.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (183, 'NEOPLASIA MALIGNA DE LOCALIZAÇÕES MAL DEFINIDAS DO APARELHO RESPIRATÓRIO', 'C39.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (191, 'NEOPLASIA MALIGNA DOS OSSOS E CARTILAGENS ARTICULARES, NÃO ESPECIFICADOS', 'C41.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (194, 'MELANOMA MALIGNO DA PÁLPEBRA, INCLUINDO AS COMISSURAS PALPEBRAIS', 'C43.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (195, 'MELANOMA MALIGNO DA ORELHA E DO CONDUTO AUDITIVO EXTERNO', 'C43.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (199, 'MELANOMA MALIGNO DO MEMBRO SUPERIOR, INCLUINDO OMBRO', 'C43.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (200, 'MELANOMA MALIGNO DO MEMBRO INFERIOR, INCLUINDO QUADRIL', 'C43.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (204, 'NEOPLASIA MALIGNA DA PELE DO LÁBIO', 'C44.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (209, 'NEOPLASIA MALIGNA DA PELE DO TRONCO', 'C44.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (212, 'NEOPLASIA MALIGNA DA PELE COM LESÃO INVASIVA', 'C44.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (213, 'NEOPLASIA MALIGNA DA PELE, NÃO ESPECIFICADA', 'C44.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (214, 'MESOTELIOMA', 'C45')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (215, 'MESOTELIOMA DA PLEURA', 'C45.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (216, 'MESOTELIOMA DO PERITÔNIO', 'C45.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (217, 'MESOTELIOMA DO PERICÁRDIO', 'C45.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (218, 'MESOTELIOMA DE OUTRAS LOCALIZAÇÕES', 'C45.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (219, 'MESOTELIOMA, NÃO ESPECIFICADO', 'C45.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (220, 'SARCOMA DE KAPOSI', 'C46')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (221, 'SARCOMA DE KAPOSI DA PELE', 'C46.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (222, 'SARCOMA DE KAPOSI DE TECIDOS MOLES', 'C46.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (223, 'SARCOMA DE KAPOSI DO PALATO', 'C46.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (224, 'SARCOMA DE KAPOSI DOS GÂNGLIOS LINFÁTICOS', 'C46.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (225, 'SARCOMA DE KAPOSI DE OUTRAS LOCALIZAÇÕES', 'C46.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (226, 'SARCOMA DE KAPOSI DE MÚLTIPLOS ÓRGÃOS', 'C46.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (227, 'SARCOMA DE KAPOSI, NÃO ESPECIFICADO', 'C46.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (228, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS', 'C47')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (232, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS DO TÓRAX', 'C47.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (233, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS DO ABDOME', 'C47.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (234, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS DA PELVE', 'C47.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (235, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS DO TRONCO', 'C47.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (238, 'NEOPLASIA MALIGNA DA MAMA', 'C50')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (239, 'NEOPLASIA MALIGNA DO MAMILO E ARÉOLA', 'C50.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (240, 'NEOPLASIA MALIGNA DA PORÇÃO CENTRAL DA MAMA', 'C50.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (245, 'NEOPLASIA MALIGNA DA PORÇÃO AXILAR DA MAMA', 'C50.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (246, 'NEOPLASIA MALIGNA DA MAMA COM LESÃO INVASIVA', 'C50.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (247, 'NEOPLASIA MALIGNA DA MAMA, NÃO ESPECIFICADA', 'C50.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (248, 'NEOPLASIA MALIGNA DA VULVA', 'C51')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (249, 'NEOPLASIA MALIGNA DOS GRANDES LÁBIOS', 'C51.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (250, 'NEOPLASIA MALIGNA DOS PEQUENOS LÁBIOS', 'C51.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (251, 'NEOPLASIA MALIGNA DO CLITÓRIS', 'C51.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (252, 'NEOPLASIA MALIGNA DA VULVA COM LESÃO INVASIVA', 'C51.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (253, 'NEOPLASIA MALIGNA DA VULVA, NÃO ESPECIFICADA', 'C51.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (254, 'NEOPLASIA MALIGNA DA VAGINA', 'C52')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (255, 'NEOPLASIA MALIGNA DO COLO DO ÚTERO', 'C53')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (256, 'NEOPLASIA MALIGNA DO ENDOCÉRVIX', 'C53.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (257, 'NEOPLASIA MALIGNA DO EXOCÉRVIX', 'C53.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (260, 'NEOPLASIA MALIGNA DO CORPO DO ÚTERO', 'C54')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (261, 'NEOPLASIA MALIGNA DO ISTMO DO ÚTERO', 'C54.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (262, 'NEOPLASIA MALIGNA DO ENDOMÉTRIO', 'C54.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (263, 'NEOPLASIA MALIGNA DO MIOMÉTRIO', 'C54.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (264, 'NEOPLASIA MALIGNA DO FUNDO DO ÚTERO', 'C54.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (267, 'NEOPLASIA MALIGNA DO OVÁRIO', 'C56')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (268, 'NEOPLASIA MALIGNA DA PLACENTA', 'C58')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (269, 'NEOPLASIA MALIGNA DO PÊNIS', 'C60')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (270, 'NEOPLASIA MALIGNA DO PREPÚCIO', 'C60.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (271, 'NEOPLASIA MALIGNA DA GLANDE', 'C60.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (272, 'NEOPLASIA MALIGNA DO CORPO DO PÊNIS', 'C60.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (273, 'NEOPLASIA MALIGNA DO PÊNIS COM LESÃO INVASIVA', 'C60.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (274, 'NEOPLASIA MALIGNA DO PÊNIS, NÃO ESPECIFICADO', 'C60.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (275, 'NEOPLASIA MALIGNA DA PRÓSTATA', 'C61')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (276, 'NEOPLASIA MALIGNA DOS TESTÍCULOS', 'C62')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (277, 'NEOPLASIA MALIGNA DO TESTÍCULO CRIPTORQUÍDICO', 'C62.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (278, 'NEOPLASIA MALIGNA DO TESTÍCULO TÓPICO', 'C62.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (281, 'NEOPLASIA MALIGNA DA PELVE RENAL', 'C65')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (282, 'NEOPLASIA MALIGNA DOS URETERES', 'C66')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (283, 'NEOPLASIA MALIGNA DA BEXIGA', 'C67')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (284, 'NEOPLASIA MALIGNA DO TRÍGONO DA BEXIGA ', 'C67.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (285, 'NEOPLASIA MALIGNA DA CÚPULA DA BEXIGA', 'C67.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (286, 'NEOPLASIA MALIGNA DA PAREDE LATERAL DA BEXIGA', 'C67.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (287, 'NEOPLASIA MALIGNA DA PAREDE ANTERIOR DA BEXIGA', 'C67.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (288, 'NEOPLASIA MALIGNA DA PAREDE POSTERIOR DA BEXIGA', 'C67.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (289, 'NEOPLASIA MALIGNA DO COLO DA BEXIGA', 'C67.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (290, 'NEOPLASIA MALIGNA DO ORIFÍCIO URETÉRICO', 'C67.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (291, 'NEOPLASIA MALIGNA DO ÚRACO', 'C67.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (292, 'NEOPLASIA MALIGNA DA BEXIGA COM LESÃO INVASIVA', 'C67.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (294, 'NEOPLASIA MALIGNA DE OUTROS ÓRGÃOS URINÁRIOS', 'C68')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (295, 'NEOPLASIA MALIGNA DA URETRA', 'C68.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (206, 'NEOPLASIA MALIGNA DA PELE DA ORELHA E DO CONDUTO AUDITIVO EXTERNO', 'C44.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (208, 'NEOPLASIA MALIGNA DA PELE DO COURO CABELUDO E DO PESCOÇO', 'C44.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (210, 'NEOPLASIA MALIGNA DA PELE DO MEMBRO SUPERIOR, INCLUINDO OMBRO', 'C44.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (211, 'NEOPLASIA MALIGNA DA PELE DO MEMBRO INFERIOR, INCLUINDO QUADRIL', 'C44.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (229, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS DA CABEÇA, FACE E PESCOÇO', 'C47.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (231, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS DOS MEMBROS INFERIORES, INCLUINDO QUADRIL', 'C47.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (236, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS E DO SISTEMA NERVOSO AUTÔNOMO COM LESÃO INVASIVA', 'C47.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (241, 'NEOPLASIA MALIGNA DO QUADRANTE SUPERIOR INTERNO DA MAMA', 'C50.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (242, 'NEOPLASIA MALIGNA DO QUADRANTE INFERIOR INTERNO DA MAMA', 'C50.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (243, 'NEOPLASIA MALIGNA DO QUADRANTE SUPERIOR EXTERNO DA MAMA', 'C50.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (244, 'NEOPLASIA MALIGNA DO QUADRANTE INFERIOR EXTERNO DA MAMA', 'C50.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (258, 'NEOPLASIA MALIGNA DO COLO DO ÚTERO COM LESÃO INVASIVA', 'C53.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (259, 'NEOPLASIA MALIGNA DO COLO DO ÚTERO, NÃO ESPECIFICADO', 'C53.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (265, 'NEOPLASIA MALIGNA DO CORPO DO ÚTERO COM LESÃO INVASIVA', 'C54.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (266, 'NEOPLASIA MALIGNA DO CORPO DO ÚTERO, NÃO ESPECIFICADO', 'C54.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (293, 'NEOPLASIA MALIGNA DA BEXIGA, SEM OUTRA ESPECIFICAÇÕES', 'C67.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (280, 'NEOPLASIA MALIGNA DO RIM, EXCETO PELVE RENAL', 'C64')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (296, 'NEOPLASIA MALIGNA DA GLÂNDULA PARAURETRAL', 'C68.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (299, 'NEOPLASIA MALIGNA DO OLHO E ANEXOS', 'C69')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (300, 'NEOPLASIA MALIGNA DA CONJUNTIVA', 'C69.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (301, 'NEOPLASIA MALIGNA DA CÓRNEA', 'C69.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (302, 'NEOPLASIA MALIGNA DA RETINA', 'C69.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (303, 'NEOPLASIA MALIGNA DA CORÓIDE', 'C69.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (304, 'NEOPLASIA MALIGNA DO CORPO CILIAR', 'C69.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (305, 'NEOPLASIA MALIGNA DA GLÂNDULA E CANAL LACRIMAL', 'C69.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (306, 'NEOPLASIA MALIGNA DA ÓRBITA', 'C69.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (308, 'NEOPLASIA MALIGNA DO OLHO, NÃO ESPECIFICADO', 'C69.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (309, 'NEOPLASIA MALIGNA DAS MENINGES', 'C70')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (310, 'NEOPLASIA MALIGNA DAS MENINGES CEREBRAIS', 'C70.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (311, 'NEOPLASIA MALIGNA DAS MENINGES ESPINHAIS', 'C70.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (312, 'NEOPLASIA MALIGNA DA MENINGE, NÃO ESPECIFICADA', 'C70.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (313, 'NEOPLASIA MALIGNA DO ENCÉFALO', 'C71')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (315, 'NEOPLASIA MALIGNA DO LOBO FRONTAL', 'C71.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (316, 'NEOPLASIA MALIGNA DO LOBO TEMPORAL', 'C71.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (317, 'NEOPLASIA MALIGNA DO LOBO PARIETAL', 'C71.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (318, 'NEOPLASIA MALIGNA DO LOBO OCCIPITAL', 'C71.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (319, 'NEOPLASIA MALIGNA DO VENTRÍCULO CEREBRAL', 'C71.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (320, 'NEOPLASIA MALIGNA DO CEREBELO', 'C71.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (321, 'NEOPLASIA MALIGNA DO TRONCO CEREBRAL', 'C71.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (322, 'NEOPLASIA MALIGNA DO ENCÉFALO COM LESÃO INVASIVA', 'C71.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (323, 'NEOPLASIA MALIGNA DO ENCÉFALO, NÃO ESPECIFICADO', 'C71.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (324, 'NEOPLASIA MALIGNA DA GLÂNDULA TIREÓIDE', 'C73')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (325, 'NEOPLASIA MALIGNA DA GLÂNDULA SUPRA-RENAL', 'C74')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (326, 'NEOPLASIA MALIGNA DA MEDULA DA SUPRA-RENAL', 'C74.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (328, 'NEOPLASIA MALIGNA DA GLÂNDULA SUBMANDIBULAR', 'C08.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (329, 'NEOPLASIA MALIGNA DA GLÂNDULA SUBLINGUAL', 'C08.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (330, 'NEOPLASIA MALIGNA DAS GLÂNDULAS SALIVARES MAIORES COM LESÃO INVASIVA', 'C08.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (331, 'NEOPLASIA MALIGNA DA GLÂNDULA SALIVAR MAIOR, NÃO ESPECIFICADA', 'C08.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (332, 'NEOPLASIA MALIGNA DO FÍGADO E DAS VIAS BILIARES INTRA-HEPÁTICAS', 'C22')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (333, 'CARCINOMA DE CÉLULAS HEPÁTICAS', 'C22.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (334, 'CARCINOMA DE VIAS BILIARES INTRA-HEPÁTICAS', 'C22.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (335, 'HEPATOBLASTOMA', 'C22.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (336, 'ANGIOSSARCOMA DO FÍGADO', 'C22.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (337, 'OUTROS SARCOMAS DO FÍGADO', 'C22.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (338, 'OUTROS CARCINOMAS ESPECIFICADOS DO FÍGADO', 'C22.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (339, 'NEOPLASIA MALIGNA DO FÍGADO, NÃO ESPECIFICADA', 'C22.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (340, 'NEOPLASIA MALIGNA DE OUTRAS PARTES, E DE PARTES NÃO ESPECIFICADAS DAS VIAS BILIARES', 'C24')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (341, 'NEOPLASIA MALIGNA DAS VIAS BILIARES EXTRA-HEPÁTICAS', 'C24.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (342, 'NEOPLASIA MALIGNA DA AMPOLA DE VATER', 'C24.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (343, 'NEOPLASIA MALIGNA DAS VIAS BILIARES COM LESÃO INVASIVA', 'C24.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (344, 'NEOPLASIA MALIGNA DA VIA BILIAR, NÃO ESPECIFICADA', 'C24.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (345, 'NEOPLASIA MALIGNA DA CAVIDADE NASAL E DO OUVIDO MÉDIO', 'C30')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (346, 'NEOPLASIA MALIGNA DA CAVIDADE NASAL', 'C30.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (347, 'NEOPLASIA MALIGNA DO OUVIDO MÉDIO', 'C30.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (348, 'NEOPLASIA MALIGNA DOS SEIOS DA FACE', 'C31')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (349, 'NEOPLASIA MALIGNA DO SEIO MAXILAR', 'C31.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (350, 'NEOPLASIA MALIGNA DO SEIO ETMOIDAL', 'C31.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (351, 'NEOPLASIA MALIGNA DO SEIO FRONTAL', 'C31.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (352, 'NEOPLASIA MALIGNA DO SEIO ESFENOIDAL', 'C31.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (353, 'NEOPLASIA MALIGNA DOS SEIOS DA FACE COM LESÃO INVASIVA', 'C31.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (354, 'NEOPLASIA MALIGNA DO SEIO DA FACE, NÃO ESPECIFICADO', 'C31.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (355, 'NEOPLASIA MALIGNA DO CORAÇÃO, MEDIASTINO E PLEURA', 'C38')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (356, 'NEOPLASIA MALIGNA DO CORAÇÃO', 'C38.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (357, 'NEOPLASIA MALIGNA DO MEDIASTINO ANTERIOR', 'C38.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (358, 'NEOPLASIA MALIGNA DO MEDIASTINO POSTERIOR', 'C38.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (359, 'NEOPLASIA MALIGNA DO MEDIASTINO, PORÇÃO NÃO ESPECIFICADA', 'C38.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (360, 'NEOPLASIA MALIGNA DA PLEURA', 'C38.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (361, 'NEOPLASIA MALIGNA DO CORAÇÃO, MEDIASTINO E PLEURA COM LESÃO INVASIVA', 'C38.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (362, 'NEOPLASIA MALIGNA DOS OSSOS E CARTILAGENS ARTICULARES DOS MEMBROS', 'C40')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (363, 'NEOPLASIA MALIGNA DA OMOPLATA [ESCÁPULA] E OSSOS LONGOS DOS MEMBROS SUPERIORES', 'C40.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (364, 'NEOPLASIA MALIGNA DOS OSSOS CURTOS DOS MEMBROS SUPERIORES', 'C40.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (365, 'NEOPLASIA MALIGNA DOS OSSOS LONGOS DOS MEMBROS INFERIORES', 'C40.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (366, 'NEOPLASIA MALIGNA DOS OSSOS CURTOS DOS MEMBROS INFERIORES', 'C40.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (367, 'NEOPLASIA MALIGNA DOS OSSOS E CARTILAGENS ARTICULARES DOS MEMBROS COM LESÃO INVASIVA', 'C40.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (368, 'NEOPLASIA MALIGNA DOS OSSOS E CARTILAGENS ARTICULARES DE MEMBRO NÃO ESPECIFICADO', 'C40.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (369, 'NEOPLASIA MALIGNA DOS TECIDOS MOLES DO RETROPERITÔNIO E DO PERITÔNIO', 'C48')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (370, 'NEOPLASIA MALIGNA DO RETROPERITÔNIO', 'C48.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (371, 'NEOPLASIA MALIGNA DE PARTES ESPECIFICADAS DO PERITÔNIO', 'C48.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (372, 'NEOPLASIA MALIGNA DO PERITÔNIO', 'C48.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (373, 'NEOPLASIA MALIGNA DOS TECIDOS MOLES DO RETROPERITÔNIO E DO PERITÔNIO COM LESÃO INVASIVA', 'C48.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (374, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E DE OUTROS TECIDOS MOLES', 'C49')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (375, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES DA CABEÇA, FACE E PESCOÇO', 'C49.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (376, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES DOS MEMBROS SUPERIORES, INCLUINDO OMBRO', 'C49.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (377, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES DOS MEMBROS INFERIORES, INCLUINDO QUADRIL', 'C49.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (378, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES DO TÓRAX', 'C49.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (298, 'NEOPLASIA MALIGNA DE ÓRGÃO URINÁRIO, NÃO ESPECIFICADO', 'C68.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (307, 'NEOPLASIA MALIGNA DO OLHO E ANEXOS COM LESÃO INVASIVA', 'C69.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (327, 'NEOPLASIA MALIGNA DA GLÂNDULA SUPRA-RENAL, NÃO ESPECIFICADA', 'C74.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (379, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES DO ABDOME', 'C49.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (381, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES DO TRONCO', 'C49.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (382, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E DOS TECIDOS MOLES COM LESÃO INVASIVA', 'C49.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (383, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES, NÃO ESPECIFICADOS', 'C49.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (384, 'NEOPLASIA MALIGNA DO ÚTERO, PORÇÃO NÃO ESPECIFICADA', 'C55')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (385, 'NEOPLASIA MALIGNA DE OUTROS ÓRGÃOS GENITAIS FEMININOS E DOS NÃO ESPECIFICADOS', 'C57')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (386, 'NEOPLASIA MALIGNA DA TROMPA DE FALÓPIO', 'C57.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (387, 'NEOPLASIA MALIGNA DO LIGAMENTO LARGO', 'C57.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (388, 'NEOPLASIA MALIGNA DO LIGAMENTO REDONDO', 'C57.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (389, 'NEOPLASIA MALIGNA DO PARAMÉTRIO', 'C57.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (390, 'NEOPLASIA MALIGNA DOS ANEXOS UTERINOS', 'C57.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (391, 'NEOPLASIA MALIGNA DE OUTRAS PARTES ESPECIFICADAS DOS ÓRGÃOS GENITAIS FEMININOS', 'C57.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (392, 'NEOPLASIA MALIGNA DOS ÓRGÃOS GENITAIS FEMININOS COM LESÃO INVASIVA', 'C57.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (393, 'NEOPLASIA MALIGNA DE ÓRGÃO GENITAL FEMININO, NÃO ESPECIFICADO', 'C57.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (394, 'NEOPLASIA MALIGNA DA MEDULA ESPINHAL, DOS NERVOS CRANIANOS E DE OUTRAS PARTES DO SISTEMA NERVOSO CENTRAL', 'C72')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (395, 'NEOPLASIA MALIGNA DA MEDULA ESPINHAL', 'C72.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (396, 'NEOPLASIA MALIGNA DA CAUDA EQÜINA', 'C72.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (397, 'NEOPLASIA MALIGNA DO NERVO OLFATIVO', 'C72.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (398, 'NEOPLASIA MALIGNA DO NERVO ÓPTICO', 'C72.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (399, 'NEOPLASIA MALIGNA DO NERVO ACÚSTICO', 'C72.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (400, 'NEOPLASIA MALIGNA DE OUTROS NERVOS CRANIANOS E OS NÃO ESPECIFICADOS', 'C72.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (401, 'NEOPLASIA MALIGNA DO ENCÉFALO E DE OUTRAS PARTES DO SISTEMA NERVOSO CENTRAL COM LESÃO INVASIVA', 'C72.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (402, 'NEOPLASIA MALIGNA DO SISTEMA NERVOSO CENTRAL, NÃO ESPECIFICADO', 'C72.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (403, 'NEOPLASIA MALIGNA DE OUTRAS GLÂNDULAS ENDÓCRINAS E DE ESTRUTURAS RELACIONADAS', 'C75')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (405, 'NEOPLASIA MALIGNA DA GLÂNDULA PINEAL', 'C75.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (406, 'NEOPLASIA MALIGNA DO CORPO CAROTÍDEO', 'C75.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (407, 'NEOPLASIA MALIGNA DO CORPO AÓRTICO E OUTROS PARAGÂNGLIOS', 'C75.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (408, 'NEOPLASIA MALIGNA COM COMPROMETIMENTO PLURIGLANDULAR, SEM OUTRA ESPECIFICAÇÃO', 'C75.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (409, 'NEOPLASIA MALIGNA DE GLÂNDULA ENDÓCRINA, NÃO ESPECIFICADA', 'C75.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (98, 'NEOPLASIA MALIGNA DA PREGA ARIEPIGLÓTICA, FACE HIPOFARÍNGEA', 'C13.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (107, 'NEOPLASIA MALIGNA DA PORÇÃO CERVICAL DO ESÔFAGO (ESÔFAGO CERVICAL)', 'C15.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (43, 'NEOPLASIA MALIGNA DE OUTRAS PARTES E DE PARTES NÃO ESPECIFICADAS DA LÍNGUA', 'C02')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (68, 'NEOPLASIA MALIGNA DE OUTRAS PARTES E DE PARTES NÃO ESPECIFICADAS DA BOCA', 'C06')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (121, 'NEOPLASIA MALIGNA DA PEQUENA CURVATURA DO ESTÔMAGO, NÃO ESPECIFICADA', 'C16.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (410, 'LINFOMA NÃO-HODGKIN, FOLICULAR (NODULAR)', 'C82')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (411, 'LINFOMA NÃO-HODGKIN, PEQUENAS CÉLULAS CLIVADAS, FOLICULAR', 'C82.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (412, 'LINFOMA NÃO-HODGKIN, MISTO, DE PEQUENAS E GRANDES CÉLULAS CLIVADAS, FOLICULAR', 'C82.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (413, 'LINFOMA NÃO-HODGKIN, GRANDES CÉLULAS, FOLICULAR', 'C82.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (414, 'OUTROS TIPOS DE LINFOMA NÃO-HODGKIN, FOLICULAR ', 'C82.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (415, 'LINFOMA NÃO-HODGKIN, FOLICULAR, NÃO ESPECIFICADO ', 'C82.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (416, 'LINFOMA NÃO-HODGKIN DIFUSO', 'C83')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (130, 'NEOPLASIA MALIGNA DO INTESTINO DELGADO COM LESÃO INVASIVA', 'C17.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (417, 'LINFOMA NÃO-HODGKIN DIFUSO, PEQUENAS CÉLULAS (DIFUSO)', 'C83.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (418, 'LINFOMA NÃO-HODGKIN DIFUSO, PEQUENAS CÉLULAS CLIVADAS (DIFUSO) ', 'C83.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (419, 'LINFOMA NÃO-HODGKIN DIFUSO, MISTO, DE PEQUENAS E GRANDES CÉLULAS (DIFUSO) ', 'C83.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (420, 'LINFOMA NÃO-HODGKIN DIFUSO, GRANDES CÉLULAS (DIFUSO) ', 'C83.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (421, 'LINFOMA NÃO-HODGKIN DIFUSO, IMUNOBLÁSTICO (DIFUSO) ', 'C83.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (422, 'LINFOMA NÃO-HODGKIN DIFUSO, LINFOBLÁSTICO (DIFUSO) ', 'C83.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (423, 'LINFOMA NÃO-HODGKIN DIFUSO, INDIFERENCIADO (DIFUSO) ', 'C83.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (424, 'TUMOR DE BURKITT ', 'C83.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (425, 'OUTROS TIPOS DE LINFOMA NÃO-HODGKIN DIFUSO ', 'C83.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (426, 'LINFOMA NÃO-HODGKIN DIFUSO, NÃO ESPECIFICADO ', 'C83.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (427, 'LEUCEMIA LINFOCÍTICA CRÔNICA ', 'C91.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (428, 'LEUCEMIA LINFOCÍTICA SUBAGUDA ', 'C91.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (429, 'LEUCEMIA PRÓ-LINFOCÍTICA', 'C91.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (430, 'LEUCEMIA DE CÉLULAS PILOSAS', 'C91.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (431, 'LEUCEMIA DE CÉLULAS T DO ADULTO', 'C91.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (432, 'OUTRAS LEUCEMIAS LINFÓIDES', 'C91.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (433, 'LEUCEMIA LINFÓIDE, NÃO ESPECIFICADA', 'C91.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (434, 'LEUCEMIA LINFÓIDE', 'C91')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (435, 'LEUCEMIA MIELÓIDE', 'C92')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (437, 'LEUCEMIA MIELÓIDE CRÔNICA', 'C92.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (181, 'NEOPLASIA MALIGNA DO TRATO RESPIRATÓRIO SUPERIOR, PORÇÃO NÃO ESPECIFICADA', 'C39.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (190, 'NEOPLASIA MALIGNA DOS OSSOS E DAS CARTILAGENS ARTICULARES COM LESÃO INVASIVA', 'C41.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (438, 'LEUCEMIA MIELÓIDE SUBAGUDA', 'C92.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (439, 'SARCOMA MIELÓIDE', 'C92.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (440, 'LEUCEMIA PRÓ-MIELOCÍTICA AGUDA', 'C92.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (441, 'LEUCEMIA MIELOMONOCÍTICA AGUDA', 'C92.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (442, 'OUTRAS LEUCEMIAS MIELÓIDES', 'C92.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (443, 'LEUCEMIA MIELÓIDE, NÃO ESPECIFICADA', 'C92.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (444, 'LEUCEMIA MONOCÍTICA', 'C93')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (445, 'LEUCEMIA MONOCÍTICA AGUDA', 'C93.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (446, 'LEUCEMIA MONOCÍTICA CRÔNICA', 'C93.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (447, 'LEUCEMIA MONOCÍTICA SUBAGUDA', 'C93.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (448, 'OUTRAS LEUCEMIAS MONOCÍTICAS', 'C93.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (449, 'LEUCEMIA MONOCÍTICA, NÃO ESPECIFICADA', 'C93.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (450, 'OUTRAS LEUCEMIAS DE CÉLULAS DE TIPO ESPECIFICADO', 'C94')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (451, 'ERITREMIA E ERITROLEUCEMIA AGUDAS', 'C94.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (452, 'ERITREMIA CRÔNICA', 'C94.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (453, 'LEUCEMIA MEGACARIOBLÁSTICA AGUDA', 'C94.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (454, 'LEUCEMIA DE MASTÓCITOS', 'C94.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (455, 'PANMIELOSE AGUDA', 'C94.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (456, 'MIELOFIBROSE AGUDA', 'C94.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (457, 'OUTRAS LEUCEMIAS ESPECIFICADAS', 'C94.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (458, 'LEUCEMIA DE TIPO CELULAR NÃO ESPECIFICADO', 'C95')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (459, 'LEUCEMIA AGUDA DE TIPO CELULAR NÃO ESPECIFICADO', 'C95.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (460, 'LEUCEMIA CRÔNICA DE TIPO CELULAR NÃO ESPECIFICADO', 'C95.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (461, 'LEUCEMIA SUBAGUDA DE TIPO CELULAR NÃO ESPECIFICADO', 'C95.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (462, 'OUTRAS LEUCEMIAS DE TIPO CELULAR NÃO ESPECIFICADO', 'C95.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (463, 'LEUCEMIA NÃO ESPECIFICADA', 'C95.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (464, 'OUTRAS NEOPLASIAS MALIGNAS E AS NÃO ESPECIFICADAS DOS TECIDOS LINFÁTICO, HEMATOPOÉTICO E TECIDOS CORRELATOS', 'C96')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (465, 'DOENÇA DE LETTERER-SIWE', 'C96.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (466, 'HISTIOCITOSE MALIGNA', 'C96.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (467, 'TUMOR MALIGNO DE MASTÓCITOS', 'C96.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (468, 'LINFOMA HISTIOCÍTICO VERDADEIRO', 'C96.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (469, 'OUTRAS NEOPLASIAS MALIGNAS ESPECIFICADAS DOS TECIDOS LINFÁTICO, HEMATOPOÉTICO E TECIDOS CORRELATOS', 'C96.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (470, 'NEOPLASIA MALIGNA DOS TECIDOS LINFÁTICO, HEMATOPOÉTICO E TECIDOS CORRELATOS, NÃO ESPECIFICADA', 'C96.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (471, 'LINFOMAS DE CÉLULAS T CUTÂNEAS E PERIFÉRICAS', 'C84')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (472, 'MICOSE FUNGÓIDE', 'C84.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (473, 'DOENÇA DE SÉZARY', 'C84.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (474, 'LINFOMA DA ZONA T', 'C84.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (475, 'LINFOMA LINFOEPITELIÓIDE', 'C84.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (476, 'LINFOMA DE CÉLULAS T, PERIFÉRICO', 'C84.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (477, 'OUTROS LINFOMAS DE CÉLULAS T E OS NÃO ESPECIFICADOS', 'C84.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (478, 'LINFOMA NÃO-HODGKIN DE OUTROS TIPOS E DE TIPO NÃO ESPECIFICADO', 'C85')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (479, 'LINFOSSARCOMA', 'C85.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (480, 'LINFOMA DE CÉLULAS B, NÃO ESPECIFICADO', 'C85.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (481, 'OUTROS TIPOS ESPECIFICADOS DE LINFOMA NÃO-HODGKIN', 'C85.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (482, 'LINFOMA NÃO-HODGKIN DE TIPO NÃO ESPECIFICADO', 'C85.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (483, 'DOENÇAS IMUNOPROLIFERATIVAS MALIGNAS', 'C88')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (484, 'MACROGLOBULINEMIA DE WALDENSTRÖM', 'C88.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (485, 'DOENÇA DE CADEIA PESADA ALFA', 'C88.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (486, 'DOENÇA DE CADEIA PESADA GAMA', 'C88.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (487, 'DOENÇA IMUNOPROLIFERATIVA DO INTESTINO DELGADO', 'C88.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (488, 'OUTRAS DOENÇAS IMUNOPROLIFERATIVAS MALIGNAS', 'C88.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (489, 'DOENÇA IMUNOPROLIFERATIVA MALIGNA, NÃO ESPECIFICADA', 'C88.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (490, 'MIELOMA MÚLTIPLO E NEOPLASIAS MALIGNAS DE PLASMÓCITOS', 'C90')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (491, 'MIELOMA MÚLTIPLO', 'C90.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (493, 'PLASMOCITOMA EXTRAMEDULAR', 'C90.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (494, 'NEOPLASIA MALIGNA DE OUTRAS LOCALIZAÇÕES E DE LOCALIZAÇÕES MAL DEFINIDAS', 'C76')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (495, 'NEOPLASIA MALIGNA DA CABEÇA, FACE E PESCOÇO', 'C76.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (496, 'NEOPLASIA MALIGNA DO TÓ', 'C76.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (497, 'NEOPLASIA MALIGNA DO ABDOME', 'C76.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (498, 'NEOPLASIA MALIGNA DA PELVE', 'C76.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (499, 'NEOPLASIA MALIGNA DO MEMBRO SUPERIOR', 'C76.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (500, 'NEOPLASIA MALIGNA DO MEMBRO INFERIOR', 'C76.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (501, 'NEOPLASIA MALIGNA DE OUTRAS LOCALIZAÇÕES MAL DEFINIDAS', 'C76.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (502, 'NEOPLASIA MALIGNA DE OUTRAS LOCALIZAÇÕES E DAS MAL DEFINIDAS COM LESÃO INVASIVA', 'C76.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (503, 'NEOPLASIA MALIGNA SECUNDÁRIA E NÃO ESPECIFICADA DOS GÂNGLIOS LINFÁTICOS', 'C77')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (504, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS GÂNGLIOS LINFÁTICOS DA CABEÇA, FACE E PESCOÇO', 'C77.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (505, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS GÂNGLIOS LINFÁTICOS INTRATORÁCICOS', 'C77.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (506, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS GÂNGLIOS LINFÁTICOS INTRA-ABDOMINAIS', 'C77.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (507, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS GÂNGLIOS LINFÁTICOS AXILARES E DOS MEMBROS SUPERIORES', 'C77.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (508, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS GÂNGLIOS LINFÁTICOS INGUINAIS E DOS MEMBROS INFERIORES', 'C77.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (509, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS GÂNGLIOS LINFÁTICOS INTRAPÉLVICOS', 'C77.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (510, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS GÂNGLIOS LINFÁTICOS DE MÚLTIPLAS REGIÕES', 'C77.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (511, 'NEOPLASIA MALIGNA SECUNDÁRIA DE GÂNGLIO LINFÁTICO, NÃO ESPECIFICADO', 'C77.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (512, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS ÓRGÃOS RESPIRATÓRIOS E DIGESTIVOS', 'C78')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (513, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS PULMÕES', 'C78.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (514, 'NEOPLASIA MALIGNA SECUNDÁRIA DO MEDIASTINO', 'C78.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (515, 'NEOPLASIA MALIGNA SECUNDÁRIA DA PLEURA', 'C78.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (516, 'NEOPLASIA MALIGNA SECUNDÁRIA DE OUTROS ÓRGÃOS RESPIRATÓRIOS E NÃO ESPECIFICADOS', 'C78.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (517, 'NEOPLASIA MALIGNA SECUNDÁRIA DO INTESTINO DELGADO', 'C78.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (518, 'NEOPLASIA MALIGNA SECUNDÁRIA DO INTESTINO GROSSO E DO RETO', 'C78.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (519, 'NEOPLASIA MALIGNA SECUNDÁRIA DO RETROPERITÔNIO E DO PERITÔNIO', 'C78.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (520, 'NEOPLASIA MALIGNA SECUNDÁRIA DO FÍGADO', 'C78.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (521, 'NEOPLASIA MALIGNA SECUNDÁRIA DE OUTROS ÓRGÃOS DIGESTIVOS E NÃO ESPECIFICADOS', 'C78.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (522, 'NEOPLASIA MALIGNA SECUNDÁRIA DE OUTRAS LOCALIZAÇÕES', 'C79')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (523, 'NEOPLASIA MALIGNA SECUNDÁRIA DO RIM E DA PELVE RENAL', 'C79.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (524, 'NEOPLASIA MALIGNA SECUNDÁRIA DA BEXIGA, DE OUTRO ÓRGÃO URINÁRIO E NÃO ESPECIFICADO', 'C79.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (525, 'NEOPLASIA MALIGNA SECUNDÁRIA DA PELE', 'C79.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (526, 'NEOPLASIA MALIGNA SECUNDÁRIA DO ENCÉFALO E DAS MENINGES CEREBRAIS', 'C79.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (527, 'NEOPLASIA MALIGNA SECUNDÁRIA DE OUTRAS PARTES DO SISTEMA NERVOSO E NÃO ESPECIFICADAS', 'C79.4')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (528, 'NEOPLASIA MALIGNA SECUNDÁRIA DOS OSSOS E DA MEDULA ÓSSEA', 'C79.5')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (529, 'NEOPLASIA MALIGNA SECUNDÁRIA DO OVÁRIO', 'C79.6')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (530, 'NEOPLASIA MALIGNA SECUNDÁRIA DAS GLÂNDULAS SUPRA-RENAIS (ADRENAIS)', 'C79.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (531, 'NEOPLASIA MALIGNA SECUNDÁRIA DE OUTRA LOCALIZAÇÃO ESPECIFICADA', 'C79.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (532, 'NEOPLASIA MALIGNA, SEM ESPECIFICAÇÃO DE LOCALIZAÇÃO', 'C80')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (196, 'MELANOMA MALIGNO DE OUTRAS PARTES E PARTES NÃO ESPECIFICADAS DA FACE', 'C43.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (205, 'NEOPLASIA MALIGNA DA PELE DA PÁLPEBRA, INCLUINDO O CANTO', 'C44.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (207, 'NEOPLASIA MALIGNA DA PELE DE OUTRAS PARTES E DE PARTES NÃO ESPECIFICADAS DA FACE', 'C44.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (230, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS DOS MEMBROS SUPERIORES, INCLUINDO OMBRO', 'C47.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (237, 'NEOPLASIA MALIGNA DOS NERVOS PERIFÉRICOS E SISTEMA NERVOSO AUTÔNOMO, NÃO ESPECIFICADOS', 'C47.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (279, 'NEOPLASIA MALIGNA DE ÓRGÃO GENITAL MASCULINO, NÃO ESPECIFICADO', 'C62.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (533, 'NEOPLASIA MALIGNA DE OUTROS ÓRGÃOS GENITAIS MASCULINOS E DOS NÃO ESPECIFICADOS', 'C63')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (534, 'NEOPLASIA MALIGNA DO EPIDÍDIMO', 'C63.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (535, 'NEOPLASIA MALIGNA DO CORDÃO ESPERMÁTICO', 'C63.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (536, 'NEOPLASIA MALIGNA DO ESCROTO', 'C63.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (537, 'NEOPLASIA MALIGNA DE OUTROS ÓRGÃOS GENITAIS MASCULINOS ESPECIFICADOS', 'C63.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (538, 'NEOPLASIA MALIGNA DOS ÓRGÃOS GENITAIS MASCULINOS COM LESÃO INVASIVA', 'C63.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (539, 'NEOPLASIA MALIGNA DE ÓRGÃO GENITAL MASCULINO, NÃO ESPECIFICADO', 'C63.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (297, 'NEOPLASIA MALIGNA DOS ÓRGÃOS URINÁRIOS COM LESÃO INVASIVA', 'C68.8')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (540, 'NEOPLASIAS [TUMORES] MALIGNAS(OS) DE LOCALIZAÇÕES MÚLTIPLAS INDEPENDENTES (PRIMÁRIAS)', 'C97')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (541, 'DOENÇA DE HODGKIN', 'C81')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (542, 'DOENÇA DE HODGKIN, PREDOMINÂNCIA LINFOCÍTICA', 'C81.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (543, 'DOENÇA DE HODGKIN, ESCLEROSE NODULAR', 'C81.1')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (544, 'DOENÇA DE HODGKIN, CELULARIDADE MISTA', 'C81.2')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (545, 'DOENÇA DE HODGKIN, DEPLEÇÃO LINFOCÍTICA', 'C81.3')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (546, 'OUTRA FORMA DA DOENÇA DE HODGKIN', 'C81.7')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (547, 'DOENÇA DE HODGKIN, NÃO ESPECIFICADA', 'C81.9')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (314, 'NEOPLASIA MALIGNA DO CÉREBRO, EXCETO LOBOS E VENTRÍCULOS', 'C71.0')
+                    </y-row>
+                    <y-row>
+						(id, descricao, codigo) values (380, 'NEOPLASIA MALIGNA DO TECIDO CONJUNTIVO E TECIDOS MOLES DA PELVE', 'C49.5')
+                    </y-row>
+                </y-insert>
+                <y-insert y-entity="Paciente" >
+                    <y-row>
+					    (id, nome, nomeMae) values (1, 'Paciente 1', 'Mãe 1')                    </y-row>
+                    <y-row>
+					    (id, nome, nomeMae) values (2, 'Paciente 2', 'Mãe 2')                    </y-row>
+                </y-insert>
+            </y-package>
+        </y-load>
+    </y-db>
+</y-db-script>

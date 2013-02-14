@@ -24,6 +24,7 @@ import br.org.yacamim.persistence.Id;
 public class Cid extends YBaseEntity {
 	private long id;
 	private String descricao;
+	private String codigo;
 
 	/**
 	 * Construtor da classe.
@@ -70,6 +71,21 @@ public class Cid extends YBaseEntity {
 	 */
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	/**
+	 * @return the codigo
+	 */
+	@Column
+	public String getCodigo() {
+		return this.codigo;
+	}
+
+	/**
+	 * @param codigo the codigo to set
+	 */
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	/**

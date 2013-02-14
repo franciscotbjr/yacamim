@@ -5,7 +5,6 @@
  */
 package br.com.nuceloesperanca.radiografiasocial;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -97,18 +96,6 @@ public class ListPacientes extends YBaseListActivity {
 			Paciente parametro = (Paciente) getIntent().getExtras().getParcelable("pacientePesquisa");
 			adapter.open();
 			retorno = adapter.pesquisaPacientes(parametro.getProntuario(), parametro.getNome());
-			retorno = new ArrayList<Paciente>();
-			Paciente paciente1 = new Paciente();
-			paciente1.setId(1);
-			paciente1.setNome("Paciente 1");
-			paciente1.setNomeMae("Mãe 1");
-
-			Paciente paciente2 = new Paciente();
-			paciente2.setId(2);
-			paciente2.setNome("Paciente 2");
-			paciente2.setNomeMae("Mãe 2");
-			retorno.add(paciente1);
-			retorno.add(paciente2);
 
 			return retorno;
 		} catch (Exception _e) {
