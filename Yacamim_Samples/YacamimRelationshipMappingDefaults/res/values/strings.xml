@@ -4,5 +4,9 @@
     <string name="app_name">YacamimRelationshipMappingDefaults</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_one_to_one">Unidirectional > OneToOne</string>
+    <string name="title_activity_many_to_one">Unidirectional > ManyToOne</string>
+    <string name="title_activity_one_to_many">OneToMany</string>
+    <string name="title_activity_many_to_many">ManyToMany</string>
 
 </resources>
