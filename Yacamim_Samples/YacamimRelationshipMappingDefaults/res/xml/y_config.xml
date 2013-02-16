@@ -21,7 +21,8 @@
 	        <y-entity name="TODO"/>
 	    </y-package>
 	    <y-package name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.entity">
-	        <y-entity name="TODO"/>
+	        <y-entity name="Employee"/>
+	        <y-entity name="TravelProfile"/>
 	    </y-package>
     </y-entity-mapping>
     
