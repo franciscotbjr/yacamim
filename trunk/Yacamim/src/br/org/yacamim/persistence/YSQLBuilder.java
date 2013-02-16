@@ -233,13 +233,19 @@ class YSQLBuilder {
 								// 2.10.3.1 Unidirectional OneToOne Relationships
 								
 								final OneToOne oneToOne = currentGetMethod.getAnnotation(OneToOne.class);
+								final ManyToOne manyToOne = currentGetMethod.getAnnotation(ManyToOne.class);
 								if(oneToOne != null) {
-									sqlFK.append(YUtilPersistence.SQL_WORD_UNIQUE);
-//									// Check if this is an Unidirectional Relationships
-//									final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, currentReturnedType, currentGetMethod);
-//									if(bidirectionalOneToOneReferenceMethod == null) { // It is an Unidirectional Relationships
-//										
-//									}
+									if(YUtilPersistence.isOneToOneOwner(oneToOne)) {
+										sqlFK.append(YUtilPersistence.SQL_WORD_UNIQUE);
+									} else {
+										// Checks if this is an Bidirectional Relationships
+										final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, currentReturnedType, currentGetMethod);
+										if(bidirectionalOneToOneReferenceMethod != null) { // It is an Bidirectional Relationships
+											// TODO
+										}
+									}
+								} else if (manyToOne != null) {
+									
 								}
 								
 								// 2.10.3.2 Unidirectional ManyToOne Relationships

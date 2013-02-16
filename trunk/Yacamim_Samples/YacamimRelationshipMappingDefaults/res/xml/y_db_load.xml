@@ -3,6 +3,11 @@
 	<y-db version="0">
 		<y-load>
 		    <y-package name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.entity">
+				<y-insert y-entity="Address">
+				    <y-row>
+					   (id, city) values (1, 'South Park')
+				    </y-row>
+				</y-insert>
 				<y-insert y-entity="TravelProfile">
 				    <y-row>
 					   (id, name) values (1, 'Travel Profile Test 1')
@@ -16,13 +21,13 @@
 				</y-insert>
 				<y-insert y-entity="Employee">
 				    <y-row>
-					   (id, name, profile) values (1, 'Eric Cartman', 1)
+					   (id, name, profile, address) values (1, 'Eric Cartman', 1, 1)
 				    </y-row>
 				    <y-row>
-					   (id, name, profile) values (2, 'Kenny McCormick', 2)
+					   (id, name, profile, address) values (2, 'Kenny McCormick', 2, 1)
 				    </y-row>
 				    <y-row>
-					   (id, name, profile) values (3, 'Kyle Broflovski', 3)
+					   (id, name, profile, address) values (3, 'Kyle Broflovski', 3, 1)
 				    </y-row>
 				</y-insert>
 		    </y-package>

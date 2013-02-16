@@ -10,6 +10,9 @@
     <string name="title_activity_bidirectional_one_to_one">Bidirectional >> OneToOne</string>
     <string name="title_activity_unidirectional_many_to_one">Unidirectional >> ManyToOne</string>
     <string name="title_activity_unidirectional_one_to_one">Unidirectional >> OneToOne</string>
+    <string name="label_employee">Employee: </string>
+    <string name="label_travel_profile">Travel Profile: </string>
+    <string name="label_city">City: </string>
     
     <string name="y_MsgOK">OK</string> 
 	<string name="y_MsgSuccesfullyInserted">Registro inserido com sucesso.</string>
