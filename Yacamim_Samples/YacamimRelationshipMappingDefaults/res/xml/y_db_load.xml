@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<y-db-script>
+	<y-db version="0">
+		<y-load>
+		    <y-package name="br.org.yacamim.relationship.mapping.defaults.entity">
+				<y-insert y-entity="XXX">
+				    <y-row>
+					   TODO
+				    </y-row>
+				</y-insert>
+		    </y-package>
+		</y-load>
+	</y-db>
+</y-db-script>
