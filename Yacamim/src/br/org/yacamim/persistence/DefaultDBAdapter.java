@@ -498,7 +498,8 @@ public class DefaultDBAdapter<E> {
 				if(column != null
 						|| (YUtilPersistence.isId(getMethod))) {
 					final String columnName = YUtilPersistence.getColumnName(column, getMethod);
-					if(!DataAdapterHelper.treatRawData(cursor, object, getMethod, columnName)) {
+					if(!DataAdapterHelper.treatRawData(cursor, object, getMethod, columnName)
+							&& !YacamimConfig.getInstance().usesLazyProxy()) {
 						if(DataAdapterHelper.isOneToOneOwner(getMethod)) {
 							DataAdapterHelper.treatOneToOne(cursor, object, getMethod, columnName);
 						} else if (DataAdapterHelper.isManyToOne(getMethod)) {
