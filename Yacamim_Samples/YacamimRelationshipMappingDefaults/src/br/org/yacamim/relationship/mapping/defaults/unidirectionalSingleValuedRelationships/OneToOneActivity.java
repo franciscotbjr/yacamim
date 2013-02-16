@@ -33,7 +33,7 @@ public class OneToOneActivity extends YBaseActivity {
 			
 			if(employees != null) {
 				for(final Employee employee : employees) {
-					Log.e(TAG, employee.getName() + " : " + employee.getProfile().getName());
+					Log.i(TAG, employee.getName() + " : " + employee.getProfile().getName());
 				}
 			}
 			
