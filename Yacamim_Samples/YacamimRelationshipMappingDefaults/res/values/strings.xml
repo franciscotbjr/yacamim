@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">YacamimRelationshipMappingDefaults</string>
+    <string name="app_name">Yacamim Relationship Mapping Defaults</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_one_to_one">Unidirectional > OneToOne</string>
-    <string name="title_activity_many_to_one">Unidirectional > ManyToOne</string>
-    <string name="title_activity_one_to_many">OneToMany</string>
-    <string name="title_activity_many_to_many">ManyToMany</string>
+    <string name="title_activity_bidirectional_many_to_many">Bidirectional > ManyToMany</string>
+    <string name="title_activity_bidirectional_many_to_one">Bidirectional > ManyToOne</string>
+    <string name="title_activity_bidirectional_one_to_many">Bidirectional > OneToMany</string>
+    <string name="title_activity_bidirectional_one_to_one">Bidirectional > OneToOne</string>
+    <string name="title_activity_unidirectional_many_to_one">Unidirectional > ManyToOne</string>
+    <string name="title_activity_unidirectional_one_to_one">Unidirectional > OneToOne</string>
 
 </resources>
