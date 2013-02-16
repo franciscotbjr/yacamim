@@ -79,8 +79,9 @@ public class RowConfig {
 	/**
 	 * @param resourcesHint the resourcesHint to set
 	 */
-	public void setResourcesHint(int[] resourcesHint) {
+	public RowConfig setResourcesHint(int[] resourcesHint) {
 		this.resourcesHint = resourcesHint;
+		return this;
 	}
 
 	/**
@@ -93,8 +94,9 @@ public class RowConfig {
 	/**
 	 * @param rowConfigItems the rowConfigItems to set
 	 */
-	public void setRowConfigItems(List<RowConfigItem> rowConfigItems) {
+	public RowConfig setRowConfigItems(List<RowConfigItem> rowConfigItems) {
 		this.rowConfigItems = rowConfigItems;
+		return this;
 	}
 
 	/**
@@ -107,19 +109,21 @@ public class RowConfig {
 	/**
 	 * @param resource the resource to set
 	 */
-	public void setResource(int resource) {
+	public RowConfig setResource(int resource) {
 		this.resource = resource;
+		return this;
 	}
 
 	/**
 	 *
 	 * @param rowConfigItem
 	 */
-	public void addRowConfigItem(RowConfigItem rowConfigItem) {
+	public RowConfig addRowConfigItem(RowConfigItem rowConfigItem) {
 		if(this.rowConfigItems == null) {
 			this.rowConfigItems = new ArrayList<RowConfigItem>();
 		}
 		this.rowConfigItems.add(rowConfigItem);
+		return this;
 	}
 
 	/**
