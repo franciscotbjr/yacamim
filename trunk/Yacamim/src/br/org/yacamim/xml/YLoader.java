@@ -42,6 +42,17 @@ import br.org.yacamim.util.YacamimClassMapping;
  */
 public class YLoader {
 
+	private static final String RES_XML_Y_DB_LOAD_XML = "res/xml/y_db_load.xml";
+	
+	private static final String RES_XML_Y_CONFIG_XML = "res/xml/y_config.xml";
+	
+	private static final String RES_XML_Y_DB_SCRIPT_XML = "res/xml/y_db_script.xml";
+	
+	private static final String RES_XML_Y_SERVICE_MAPPING_XML = "res/xml/y_service_mapping.xml";
+	
+	private static final String RES_XML_Y_PARAM_MAPPING_XML = "res/xml/y_param_mapping.xml";
+	
+	private static final String RES_XML_Y_SERVICE_CLASS_MAPPING_XML = "res/xml/y_service_class_mapping.xml";
 	/**
 	 *
 	 */
@@ -61,7 +72,7 @@ public class YLoader {
 	public static void loadClassMapping(final YBaseActivity yBaseActivity, final YacamimClassMapping yacamimClassMapping) {
 		try {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
-				final XmlResourceParser xmlClassMapping = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_service_class_mapping.xml");
+				final XmlResourceParser xmlClassMapping = yBaseActivity.getAssets().openXmlResourceParser(RES_XML_Y_SERVICE_CLASS_MAPPING_XML);
 
 				int eventType = -1;
 
@@ -91,7 +102,7 @@ public class YLoader {
 	public static void loadParams(final YBaseActivity yBaseActivity) {
 		try {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
-				final XmlResourceParser xmlParams = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_param_mapping.xml");
+				final XmlResourceParser xmlParams = yBaseActivity.getAssets().openXmlResourceParser(RES_XML_Y_PARAM_MAPPING_XML);
 
 				int eventType = -1;
 
@@ -121,7 +132,7 @@ public class YLoader {
 	public static void loadServiceURLs(final YBaseActivity yBaseActivity) {
     	try {
     		if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
-    			final XmlResourceParser xmlServicos = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_service_mapping.xml");
+    			final XmlResourceParser xmlServicos = yBaseActivity.getAssets().openXmlResourceParser(RES_XML_Y_SERVICE_MAPPING_XML);
 
         		int eventType = -1;
 
@@ -152,7 +163,7 @@ public class YLoader {
 	public static DbScript loadDBScript(final Context context) {
 		final DbScript dbScript = new DbScript();
 		try {
-			final XmlResourceParser xmlDbScript = context.getAssets().openXmlResourceParser("res/xml/y_db_script.xml");
+			final XmlResourceParser xmlDbScript = context.getAssets().openXmlResourceParser(RES_XML_Y_DB_SCRIPT_XML);
 
 			int eventType = -1;
 
@@ -197,7 +208,7 @@ public class YLoader {
 	 */
 	public static void loadConfigs(final YBaseActivity yBaseActivity) throws ClassNotFoundException, XmlPullParserException, IOException {
     		if(!YacamimInitializer.getInstance().isInitialized()) {
-    			final XmlResourceParser xmlConfigs = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_config.xml");
+    			final XmlResourceParser xmlConfigs = yBaseActivity.getAssets().openXmlResourceParser(RES_XML_Y_CONFIG_XML);
 
         		int eventType = -1;
         		
@@ -247,7 +258,7 @@ public class YLoader {
 	public static void loadDBLoad(final YBaseActivity yBaseActivity) throws ClassNotFoundException, XmlPullParserException, IOException {
 		final DbLoadList dbLoadList = DbLoadList.getInstance();
 		if(YacamimConfig.getInstance().isConfigItemsLoaded() && YacamimConfig.getInstance().usesDBLoad()) {
-			final XmlResourceParser xmlDbLoad = yBaseActivity.getAssets().openXmlResourceParser("res/xml/y_db_load.xml");
+			final XmlResourceParser xmlDbLoad = yBaseActivity.getAssets().openXmlResourceParser(RES_XML_Y_DB_LOAD_XML);
 			
 			int eventType = -1;
 			
