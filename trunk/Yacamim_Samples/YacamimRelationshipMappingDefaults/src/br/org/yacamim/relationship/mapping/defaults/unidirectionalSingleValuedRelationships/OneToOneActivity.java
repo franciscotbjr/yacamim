@@ -99,12 +99,11 @@ public class OneToOneActivity extends YBaseListActivity {
 	 * @return
 	 */
 	protected AdapterConfig buildAdapterConfig() {
-		final RowConfig rowConfig = new RowConfig();
-		rowConfig.setResource(R.layout.list_unidirectional_one_to_one);
-		rowConfig.setResourcesHint(new int[]{});
-		
-		rowConfig.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name));
-		rowConfig.addRowConfigItem(new RowConfigItem("profile.name", R.id.txtv_travel_profile_name));
+		final RowConfig rowConfig = new RowConfig()
+		.setResource(R.layout.list_unidirectional_one_to_one)
+		.setResourcesHint(new int[]{})
+		.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
+		.addRowConfigItem(new RowConfigItem("profile.name", R.id.txtv_travel_profile_name));
 		
 		final RowConfig[] rowConfigs = {rowConfig} ;
 		
