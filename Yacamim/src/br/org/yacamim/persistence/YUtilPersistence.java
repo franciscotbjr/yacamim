@@ -414,5 +414,14 @@ final class YUtilPersistence {
 				&& YUtilString.isEmptyString(oneToOneOwner.mappedBy()))
 				&& method.getReturnType().equals(referencedType));
 	}
+	
+	/**
+	 * 
+	 * @param oneToOne
+	 * @return
+	 */
+	static boolean isOneToOneOwner(final OneToOne  oneToOne) {
+		return (YUtilString.isEmptyString(oneToOne.mappedBy()));
+	}
 
 }

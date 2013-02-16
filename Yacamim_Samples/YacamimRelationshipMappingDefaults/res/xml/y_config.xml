@@ -23,6 +23,7 @@
 	    <y-package name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.entity">
 	        <y-entity name="Employee"/>
 	        <y-entity name="TravelProfile"/>
+	        <y-entity name="Address"/>
 	    </y-package>
     </y-entity-mapping>
     

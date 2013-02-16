@@ -1,16 +1,116 @@
+/**
+ * ManyToOneActivity.java
+ *
+ * Copyright 2013 yacamim.org.br
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships;
 
-import android.os.Bundle;
-import android.view.Menu;
-import br.org.yacamim.YBaseActivity;
-import br.org.yacamim.relationship.mapping.defaults.R;
+import java.util.HashMap;
+import java.util.List;
 
-public class ManyToOneActivity extends YBaseActivity {
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import br.org.yacamim.YBaseListActivity;
+import br.org.yacamim.persistence.DefaultDBAdapter;
+import br.org.yacamim.relationship.mapping.defaults.R;
+import br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.entity.Employee;
+import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
+import br.org.yacamim.ui.components.AdapterConfig;
+import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
+import br.org.yacamim.ui.components.RowConfig;
+import br.org.yacamim.ui.components.RowConfigItem;
+import br.org.yacamim.util.YUtilListView;
+
+/**
+ * Classe ManyToOneActivity TODO
+ *
+ * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
+ * @version 1.0
+ * @since 1.0
+ */
+public class ManyToOneActivity extends YBaseListActivity {
+	
+	private static final String TAG = ManyToOneActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_unidirectional_many_to_one);
+		this.init();
+	}
+	
+	/**
+	 * 
+	 */
+	protected void init() {
+		try {
+			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
+			defaultDBAdapter.open();
+			List<Employee> employees = defaultDBAdapter.list();
+			defaultDBAdapter.close();
+			
+			if(employees != null) {
+				for(final Employee employee : employees) {
+					Log.i(TAG, employee.getName() + " : " + employee.getProfile().getName() + " : " + employee.getAddress().getCity());
+				}
+			}
+			
+			this.initList(employees);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param employees
+	 */
+    private void initList(final List<Employee> employees) {
+    	try {
+			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(employees);
+			
+			final AdapterConfig adapterConfig = this.buildAdapterConfig();
+			
+			final ComplexListSimpleAdapter complexListSimpleAdapter = new ComplexListSimpleAdapter(
+					this, 
+					listOfMappedData, 
+					adapterConfig);
+			setListAdapter(complexListSimpleAdapter);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+    }
+
+	/**
+	 * @return
+	 */
+	protected AdapterConfig buildAdapterConfig() {
+		final RowConfig rowConfig = new RowConfig();
+		rowConfig.setResource(R.layout.list_unidirectional_many_to_one);
+		rowConfig.setResourcesHint(new int[]{});
+		
+		rowConfig.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name));
+		rowConfig.addRowConfigItem(new RowConfigItem("profile.name", R.id.txtv_travel_profile_name));
+		rowConfig.addRowConfigItem(new RowConfigItem("address.city", R.id.txtv_address_city));
+		
+		final RowConfig[] rowConfigs = {rowConfig} ;
+		
+		final AdapterConfig adapterConfig = new AdapterConfig(rowConfigs , ConditionFactory.getSimpleRowCondition(), null);
+		return adapterConfig;
 	}
 
 	@Override
