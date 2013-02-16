@@ -2,7 +2,28 @@
 <y-db-script>
 	<y-db version="0">
 		<y-load>
-		    <y-package name="br.org.yacamim.relationship.mapping.defaults.entity">
+		    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity">
+				<y-insert y-entity="XXX">
+				    <y-row>
+					   TODO
+				    </y-row>
+				</y-insert>
+		    </y-package>
+		    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity">
+				<y-insert y-entity="XXX">
+				    <y-row>
+					   TODO
+				    </y-row>
+				</y-insert>
+		    </y-package>
+		    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.entity">
+				<y-insert y-entity="XXX">
+				    <y-row>
+					   TODO
+				    </y-row>
+				</y-insert>
+		    </y-package>
+		    <y-package name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.entity">
 				<y-insert y-entity="XXX">
 				    <y-row>
 					   TODO
