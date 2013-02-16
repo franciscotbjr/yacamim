@@ -100,13 +100,14 @@ public class ManyToOneActivity extends YBaseListActivity {
 	 */
 	protected AdapterConfig buildAdapterConfig() {
 		final RowConfig rowConfig = new RowConfig()
-		.setResource(R.layout.list_unidirectional_many_to_one)
-		.setResourcesHint(new int[]{})
-		.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
-		.addRowConfigItem(new RowConfigItem("profile.name", R.id.txtv_travel_profile_name))
-		.addRowConfigItem(new RowConfigItem("address.city", R.id.txtv_address_city));
+			.setResource(R.layout.list_unidirectional_many_to_one)
+			.setResourcesHint(new int[]{})
+			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
+			.addRowConfigItem(new RowConfigItem("profile.name", R.id.txtv_travel_profile_name))
+			.addRowConfigItem(new RowConfigItem("address.city", R.id.txtv_address_city))
+			;
 		
-		final RowConfig[] rowConfigs = {rowConfig} ;
+		final RowConfig[] rowConfigs = {rowConfig};
 		
 		final AdapterConfig adapterConfig = new AdapterConfig(rowConfigs , ConditionFactory.getSimpleRowCondition(), null);
 		return adapterConfig;
