@@ -2,31 +2,27 @@
 <y-db-script>
 	<y-db version="0">
 		<y-load>
-		    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity">
-				<y-insert y-entity="XXX">
-				    <y-row>
-					   TODO
-				    </y-row>
-				</y-insert>
-		    </y-package>
-		    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity">
-				<y-insert y-entity="XXX">
-				    <y-row>
-					   TODO
-				    </y-row>
-				</y-insert>
-		    </y-package>
-		    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.entity">
-				<y-insert y-entity="XXX">
-				    <y-row>
-					   TODO
-				    </y-row>
-				</y-insert>
-		    </y-package>
 		    <y-package name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.entity">
-				<y-insert y-entity="XXX">
+				<y-insert y-entity="TravelProfile">
 				    <y-row>
-					   TODO
+					   (id, name) values (1, 'Travel Profile Test 1')
+				    </y-row>
+				    <y-row>
+					   (id, name) values (2, 'Travel Profile Test 2')
+				    </y-row>
+				    <y-row>
+					   (id, name) values (3, 'Travel Profile Test 3')
+				    </y-row>
+				</y-insert>
+				<y-insert y-entity="Employee">
+				    <y-row>
+					   (id, name, profile) values (1, 'Eric Cartman', 1)
+				    </y-row>
+				    <y-row>
+					   (id, name, profile) values (2, 'Kenny McCormick', 2)
+				    </y-row>
+				    <y-row>
+					   (id, name, profile) values (3, 'Kyle Broflovski', 3)
 				    </y-row>
 				</y-insert>
 		    </y-package>

@@ -1,13 +1,11 @@
 package br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships;
 
-import br.org.yacamim.relationship.mapping.defaults.R;
-import br.org.yacamim.relationship.mapping.defaults.R.layout;
-import br.org.yacamim.relationship.mapping.defaults.R.menu;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
+import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.relationship.mapping.defaults.R;
 
-public class OneToManyActivity extends Activity {
+public class OneToManyActivity extends YBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

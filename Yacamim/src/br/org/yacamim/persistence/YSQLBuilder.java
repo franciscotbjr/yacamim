@@ -160,28 +160,28 @@ class YSQLBuilder {
 			final List<StringBuilder> cols = new ArrayList<StringBuilder>();
 			final List<StringBuilder> fks = new ArrayList<StringBuilder>();
 			final List<StringBuilder> fkConstarints = new ArrayList<StringBuilder>();
-			for(final Method method : getMethods) {
+			for(final Method currentGetMethod : getMethods) {
 				final StringBuilder sqlCol = new StringBuilder();
 				final StringBuilder sqlFK = new StringBuilder();
 				final StringBuilder sqlFKConstarint = new StringBuilder();
-				final Class<?> returnedType = method.getReturnType();
-				final String sqlType = this.getSqlType(returnedType); 
+				final Class<?> currentReturnedType = currentGetMethod.getReturnType();
+				final String sqlType = this.getSqlType(currentReturnedType); 
 				
 				if(sqlType != null) {
 					
-					final Column column = method.getAnnotation(Column.class);
+					final Column column = currentGetMethod.getAnnotation(Column.class);
 					
 					if(column != null) {
-						if(YUtilPersistence.isId(method)) {
-							defineColNameAndType(idBuilder, method, sqlType, column);
+						if(YUtilPersistence.isId(currentGetMethod)) {
+							defineColNameAndType(idBuilder, currentGetMethod, sqlType, column);
 							
 							idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
-							if(YUtilPersistence.isAutoincrement(method)) {
+							if(YUtilPersistence.isAutoincrement(currentGetMethod)) {
 								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
 							}
 							idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
 						} else {
-							defineColNameAndType(sqlCol, method, sqlType, column);
+							defineColNameAndType(sqlCol, currentGetMethod, sqlType, column);
 							
 							if(YUtilPersistence.isText(sqlType) && column != null) {
 								sqlCol.append("(" + column.length() + ") ");
@@ -197,36 +197,55 @@ class YSQLBuilder {
 						}
 					} else {
 						// Não há anotação @Column
-						if(YUtilPersistence.isId(method)) {
-							defineColNameAndType(idBuilder, method, sqlType, column);
+						if(YUtilPersistence.isId(currentGetMethod)) {
+							defineColNameAndType(idBuilder, currentGetMethod, sqlType, column);
 							
 							idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
-							if(YUtilPersistence.isAutoincrement(method)) {
+							if(YUtilPersistence.isAutoincrement(currentGetMethod)) {
 								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
 							}
 							idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
 						}
 					}
 				} else {
-					if(YUtilPersistence.isEntity(returnedType)) {
-						final Method[] methodsForeignEntity = returnedType.getMethods();
+					if(YUtilPersistence.isEntity(currentReturnedType)) {
+						final Method[] typeGetMethods = currentReturnedType.getMethods();
 						Method methodColFK = null;
-						for(final Method candidateMethodForFK : methodsForeignEntity) {
+						for(final Method candidateMethodForFK : typeGetMethods) {
 							if(YUtilPersistence.isId(candidateMethodForFK)) {
 								methodColFK = candidateMethodForFK;
 								break;
 							}
 						}
 						if(methodColFK != null) {
-							final Column column = method.getAnnotation(Column.class);
+							final Column column = currentGetMethod.getAnnotation(Column.class);
 							final Class<?> returnedTypeFK = methodColFK.getReturnType();
 							final String sqlTypeFK = this.getSqlType(returnedTypeFK);
 							if(sqlTypeFK != null) {
-								final YProcessedEntity processedEntityFK = getYProcessedEntity(returnedType);
+								final YProcessedEntity processedEntityFK = getYProcessedEntity(currentReturnedType);
 								
 								final String fkName = YUtilPersistence.getColumnName(column, methodColFK) + "_" + processedEntityFK.getTableName();
 								sqlFK.append(" " + fkName);
 								sqlFK.append(" " + sqlTypeFK);
+								
+								// JPA ----------------------------------------------------------
+								// 2.10.3 Unidirectional Single-Valued Relationships
+								// 2.10.3.1 Unidirectional OneToOne Relationships
+								
+								final OneToOne oneToOne = currentGetMethod.getAnnotation(OneToOne.class);
+								if(oneToOne != null) {
+									sqlFK.append(YUtilPersistence.SQL_WORD_UNIQUE);
+//									// Check if this is an Unidirectional Relationships
+//									final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, currentReturnedType, currentGetMethod);
+//									if(bidirectionalOneToOneReferenceMethod == null) { // It is an Unidirectional Relationships
+//										
+//									}
+								}
+								
+								// 2.10.3.2 Unidirectional ManyToOne Relationships
+								
+								
+								// -------------------------------------------------------------
 								
 								sqlFKConstarint.append(YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + fkName+ ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntityFK.getTableName() + "(" + processedEntityFK.getIdColumn() + ")");
 							}

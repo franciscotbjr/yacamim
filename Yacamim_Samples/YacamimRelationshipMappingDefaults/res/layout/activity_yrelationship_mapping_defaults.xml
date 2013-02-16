@@ -4,11 +4,15 @@
     android:layout_height="match_parent"
     tools:context=".YRelationshipMappingDefaultsActivity" >
 
-    <TextView
+    <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/title_activity_unidirectional_one_to_one"
+        android:onClick="startUnidirectionalOneToOneTest" />
 
 </RelativeLayout>
