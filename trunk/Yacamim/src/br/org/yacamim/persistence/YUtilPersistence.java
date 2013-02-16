@@ -242,6 +242,7 @@ final class YUtilPersistence {
 	 * @param dbLoad
 	 * @param row
 	 * @return
+	 * @throws YCacheProcessedEntityTerminatedException 
 	 */
 	@SuppressLint("DefaultLocale")
 	static StringBuilder convertToColumnNames(final DbLoad dbLoad, final String row) {
@@ -254,7 +255,14 @@ final class YUtilPersistence {
 		for(final String colName : arrCols) {
 			final Method getMethod = YUtilReflection.getGetMethod(YUtilReflection.getGetMethodName(colName.trim()), dbLoad.getEntity());
 			final Column column = getMethod.getAnnotation(Column.class);
-			final String nomeColuna = YUtilPersistence.getColumnName(column, getMethod);
+			String nomeColuna = YUtilPersistence.getColumnName(column, getMethod);
+			if(YUtilPersistence.isEntity(getMethod.getReturnType())) {
+				final Class<?> entityType = getMethod.getReturnType();
+				final Method idGetMethod = YUtilPersistence.getIdGetMethod(entityType);
+				nomeColuna = YUtilPersistence.getColumnName(idGetMethod.getAnnotation(Column.class), idGetMethod) + "_" + YUtilPersistence.getTableName(entityType);
+			} else {
+				nomeColuna = YUtilPersistence.getColumnName(column, getMethod);
+			}
 			builderCols.append(nomeColuna);
 			if((count + 1) < arrCols.length) {
 				builderCols.append(", ");
@@ -338,6 +346,73 @@ final class YUtilPersistence {
 	 */
 	static String buildFkColumnName(final Class<?> returnType, final Column column, final Method getFkMethod) {
 		return YUtilPersistence.getColumnName(column, getFkMethod) + "_" + YUtilPersistence.getTableName(returnType);
+	}
+	
+	/**
+	 * 
+	 * @param referencedTypeGetMethods
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static Method getBidirectionalOneToOneReferenceMethod(final Method[] referencedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
+		Method methodReferenceToWoner = null;
+		for(final Method candidateMethodReferenceToWoner : referencedTypeGetMethods) {
+			if(YUtilPersistence.isBidirectionalOneToOneReferenceMethod(candidateMethodReferenceToWoner, ownerType, ownerGetMethod)) {
+				methodReferenceToWoner = candidateMethodReferenceToWoner;
+				break;
+			}
+		}
+		return methodReferenceToWoner;
+	}
+
+	/**
+	 * 
+	 * @param ownerTypeGetMethods
+	 * @param referencedType
+	 * @param referencedGetMethod
+	 * @return
+	 */
+	static Method getBidirectionalOneToOneOwnerMethod(final Method[] ownerTypeGetMethods, final Class<?> referencedType, final Method referencedGetMethod) {
+		Method methodReferenceToReferenced = null;
+		for(final Method candidateMethodWonerToReference : ownerTypeGetMethods) {
+			if(YUtilPersistence.isBidirectionalOneToOneOwnerMethod(candidateMethodWonerToReference, referencedType, referencedGetMethod)) {
+				methodReferenceToReferenced = candidateMethodWonerToReference;
+				break;
+			}
+		}
+		return methodReferenceToReferenced;
+	}
+	
+	/**
+	 * 
+	 * @param method
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static boolean isBidirectionalOneToOneReferenceMethod(final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
+		OneToOne  oneToOneRef = null;
+		return (method.getAnnotation(Column.class) != null
+				&& ((oneToOneRef = method.getAnnotation(OneToOne.class)) != null
+						&& !YUtilString.isEmptyString(oneToOneRef.mappedBy())
+						&& oneToOneRef.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
+				&& method.getReturnType().equals(ownerType));
+	}
+	
+	/**
+	 * 
+	 * @param method
+	 * @param referencedType
+	 * @param referencedGetMethod
+	 * @return
+	 */
+	static boolean isBidirectionalOneToOneOwnerMethod(final Method method, final Class<?> referencedType, final Method referencedGetMethod) {
+		OneToOne  oneToOneOwner = null;
+		return (method.getAnnotation(Column.class) != null
+				&& ((oneToOneOwner = method.getAnnotation(OneToOne.class)) != null
+				&& YUtilString.isEmptyString(oneToOneOwner.mappedBy()))
+				&& method.getReturnType().equals(referencedType));
 	}
 
 }
