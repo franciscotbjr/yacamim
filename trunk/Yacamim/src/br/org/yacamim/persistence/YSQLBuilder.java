@@ -1,5 +1,5 @@
 /**
- * YSQLBuild.java
+ * YSQLBuilder.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -25,12 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
 
 /**
  * 
- * Class YSQLBuild TODO
+ * Class YSQLBuilder TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
@@ -105,7 +106,7 @@ class YSQLBuilder {
 			
 			this.terminateYCacheProcessedEntity();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("YSQLBuilder.buildCreateScript", e.getMessage());
 		}
 		return createScript;
 	}
@@ -140,7 +141,7 @@ class YSQLBuilder {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("YSQLBuilder.processEntities", e.getMessage());
 		}
 	}
 	
@@ -148,8 +149,9 @@ class YSQLBuilder {
 	 * 
 	 * @param clazz
 	 * @return
+	 * @throws BidirectionalOneToOneException 
 	 */
-	private StringBuilder montaSQL(final Class<?> clazz) {
+	private StringBuilder montaSQL(final Class<?> clazz) throws BidirectionalOneToOneException {
 		final StringBuilder sqlCreate = new StringBuilder();
 		final YProcessedEntity processedEntity = this.getYProcessedEntity(clazz);
 		if(YUtilPersistence.isEntity(clazz) && processedEntity != null) { 
@@ -208,8 +210,9 @@ class YSQLBuilder {
 						}
 					}
 				} else {
-					if(YUtilPersistence.isEntity(currentReturnedType)) {
-						final Method[] typeGetMethods = currentReturnedType.getMethods();
+					final Column column = currentGetMethod.getAnnotation(Column.class);
+					if(YUtilPersistence.isEntity(currentReturnedType) && column != null) {
+						final Method[] typeGetMethods = YUtilReflection.getGetMethodArray(currentReturnedType);
 						Method methodColFK = null;
 						for(final Method candidateMethodForFK : typeGetMethods) {
 							if(YUtilPersistence.isId(candidateMethodForFK)) {
@@ -218,7 +221,6 @@ class YSQLBuilder {
 							}
 						}
 						if(methodColFK != null) {
-							final Column column = currentGetMethod.getAnnotation(Column.class);
 							final Class<?> returnedTypeFK = methodColFK.getReturnType();
 							final String sqlTypeFK = this.getSqlType(returnedTypeFK);
 							if(sqlTypeFK != null) {
@@ -235,13 +237,19 @@ class YSQLBuilder {
 								final OneToOne oneToOne = currentGetMethod.getAnnotation(OneToOne.class);
 								final ManyToOne manyToOne = currentGetMethod.getAnnotation(ManyToOne.class);
 								if(oneToOne != null) {
-									if(YUtilPersistence.isOneToOneOwner(oneToOne)) {
-										sqlFK.append(YUtilPersistence.SQL_WORD_UNIQUE);
+									// Checks if this is an Bidirectional Relationships
+									if(YUtilPersistence.hashBidirectionalOneToOneItem(typeGetMethods, clazz, currentGetMethod)) { // It is an Bidirectional Relationship
+										final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, clazz, currentGetMethod);
+										if(bidirectionalOneToOneReferenceMethod == null) {
+											final Method invalidBidirectionalOneToOneReferenceMethod = YUtilPersistence.getInvalidBidirectionalOneToOneReferenceMethod(typeGetMethods, clazz, currentGetMethod);
+											if(invalidBidirectionalOneToOneReferenceMethod != null) {
+												final OneToOne invalidOneToOne = invalidBidirectionalOneToOneReferenceMethod.getAnnotation(OneToOne.class);
+												throw new BidirectionalOneToOneException("Invalid Bidirectional OneToOne relationship: mappedBy=" + invalidOneToOne.mappedBy());
+											}
+										}
 									} else {
-										// Checks if this is an Bidirectional Relationships
-										final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, currentReturnedType, currentGetMethod);
-										if(bidirectionalOneToOneReferenceMethod != null) { // It is an Bidirectional Relationships
-											// TODO
+										if(YUtilPersistence.isOneToOneOwner(oneToOne)) {
+											sqlFK.append(YUtilPersistence.SQL_WORD_UNIQUE);
 										}
 									}
 								} else if (manyToOne != null) {
@@ -345,7 +353,7 @@ class YSQLBuilder {
 		try {
 			YCacheProcessedEntity.getInstance().terminate();
 		} catch (YCacheProcessedEntityTerminatedException e) {
-			e.printStackTrace();
+			Log.e("YSQLBuilder.terminateYCacheProcessedEntity", e.getMessage());
 		}
 	}
 
@@ -357,7 +365,7 @@ class YSQLBuilder {
 		try {
 			YCacheProcessedEntity.getInstance().addProcessedEntity(yProcessedEntity);
 		} catch (YCacheProcessedEntityTerminatedException e) {
-			e.printStackTrace();
+			Log.e("YSQLBuilder.addProcessedEntity", e.getMessage());
 		}
 	}
 	
@@ -381,7 +389,7 @@ class YSQLBuilder {
 				idIdentificado = true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("YSQLBuilder.locateId", e.getMessage());
 		}
 		return idIdentificado;
 	}

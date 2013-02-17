@@ -17,10 +17,22 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships;
 
+import java.util.HashMap;
+import java.util.List;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.YBaseListActivity;
+import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.entity.Employee;
+import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
+import br.org.yacamim.ui.components.AdapterConfig;
+import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
+import br.org.yacamim.ui.components.RowConfig;
+import br.org.yacamim.ui.components.RowConfigItem;
+import br.org.yacamim.util.YUtilListView;
 
 /**
  * Classe OneToOneActivity TODO
@@ -29,17 +41,83 @@ import br.org.yacamim.relationship.mapping.defaults.R;
  * @version 1.0
  * @since 1.0
  */
-public class OneToOneActivity extends YBaseActivity {
+public class OneToOneActivity extends YBaseListActivity {
+	
+	private static final String TAG = OneToOneActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bidirectional_one_to_one);
+		this.init();
+	}
+	
+	/**
+	 * 
+	 */
+	protected void init() {
+		try {
+			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
+			defaultDBAdapter.open();
+			List<Employee> employees = defaultDBAdapter.list();
+			defaultDBAdapter.close();
+			
+			if(employees != null) {
+				for(final Employee employee : employees) {
+					Log.i(TAG, employee.getName() + " : " + employee.getAssignedCubicle().getName());
+				}
+			}
+			
+			this.initList(employees);
+			
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param employees
+	 */
+    private void initList(final List<Employee> employees) {
+    	try {
+			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(employees);
+			
+			final AdapterConfig adapterConfig = this.buildAdapterConfig();
+			
+			final ComplexListSimpleAdapter complexListSimpleAdapter = new ComplexListSimpleAdapter(
+					this, 
+					listOfMappedData, 
+					adapterConfig);
+			setListAdapter(complexListSimpleAdapter);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+    }
+
+	/**
+	 * @return
+	 */
+	protected AdapterConfig buildAdapterConfig() {
+		
+		final RowConfig rowConfig = new RowConfig()
+			.setResource(R.layout.list_bidirectional_one_to_one)
+			.setResourcesHint(new int[]{})
+			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
+			.addRowConfigItem(new RowConfigItem("assignedCubicle.name", R.id.txtv_cubicle_name))
+			;
+		
+		final RowConfig[] rowConfigs = {rowConfig} ;
+		
+		final AdapterConfig adapterConfig = new AdapterConfig(rowConfigs , ConditionFactory.getSimpleRowCondition(), null);
+		return adapterConfig;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_bidirectional_one_to_one,
 				menu);
 		return true;

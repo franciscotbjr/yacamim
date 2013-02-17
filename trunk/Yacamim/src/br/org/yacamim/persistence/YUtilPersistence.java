@@ -355,10 +355,46 @@ final class YUtilPersistence {
 	 * @param ownerGetMethod
 	 * @return
 	 */
+	static boolean hashBidirectionalOneToOneItem(final Method[] referencedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
+		boolean methodReferenceToWoner = false;
+		for(final Method candidateMethodReferenceToWoner : referencedTypeGetMethods) {
+			if(isInvalidBidirectionalOneToOneReferenceMethod(candidateMethodReferenceToWoner, ownerType, ownerGetMethod)) {
+				methodReferenceToWoner = true;
+				break;
+			}
+		}
+		return methodReferenceToWoner;
+	}
+
+	/**
+	 * 
+	 * @param referencedTypeGetMethods
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
 	static Method getBidirectionalOneToOneReferenceMethod(final Method[] referencedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
 		Method methodReferenceToWoner = null;
 		for(final Method candidateMethodReferenceToWoner : referencedTypeGetMethods) {
 			if(YUtilPersistence.isBidirectionalOneToOneReferenceMethod(candidateMethodReferenceToWoner, ownerType, ownerGetMethod)) {
+				methodReferenceToWoner = candidateMethodReferenceToWoner;
+				break;
+			}
+		}
+		return methodReferenceToWoner;
+	}
+
+	/**
+	 * 
+	 * @param referencedTypeGetMethods
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static Method getInvalidBidirectionalOneToOneReferenceMethod(final Method[] referencedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
+		Method methodReferenceToWoner = null;
+		for(final Method candidateMethodReferenceToWoner : referencedTypeGetMethods) {
+			if(YUtilPersistence.isInvalidBidirectionalOneToOneReferenceMethod(candidateMethodReferenceToWoner, ownerType, ownerGetMethod)) {
 				methodReferenceToWoner = candidateMethodReferenceToWoner;
 				break;
 			}
@@ -399,7 +435,21 @@ final class YUtilPersistence {
 						&& oneToOneRef.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
 				&& method.getReturnType().equals(ownerType));
 	}
-	
+
+	/**
+	 * 
+	 * @param method
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static boolean isInvalidBidirectionalOneToOneReferenceMethod(final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
+		OneToOne  oneToOneOwner = null;
+		return (((oneToOneOwner = method.getAnnotation(OneToOne.class)) != null)
+				&& YUtilString.isEmptyString(oneToOneOwner.mappedBy())
+				&& method.getReturnType().equals(ownerType));
+	}
+
 	/**
 	 * 
 	 * @param method
