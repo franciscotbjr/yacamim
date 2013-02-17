@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.org.yacamim.util.YUtilReflection;
+
 /**
 *
 * Class YDependencyOrderer TODO
@@ -87,16 +89,10 @@ class YDependencyOrderer {
 	private long getIdEntidade(final Class<?> clazz) {
 		long idEntidade = 1;
 		try {
-			final Method[] methods = clazz.getMethods();
-			final List<Method> getMethods = new ArrayList<Method>();
-			for(Method method : methods) {
-				if(method.getName().startsWith("get") && !method.getName().equals("getClass")) {
-					getMethods.add(method);
-				}
-			}
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(clazz);
 			for(final Method method : getMethods) {
 				final Class<?> returnedType = method.getReturnType();
-				if(returnedType.getAnnotation(Entity.class) != null) {
+				if(returnedType.getAnnotation(Entity.class) != null && method.getAnnotation(Column.class) != null) {
 					if(!this.mapEntityIds.containsKey(returnedType)) {
 						this.mapEntityIds.put(returnedType, this.getIdEntidade(returnedType));
 					}

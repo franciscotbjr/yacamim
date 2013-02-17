@@ -266,6 +266,36 @@ public strictfp abstract class YUtilReflection {
 	}
 
 	/**
+	 * 
+	 * @param classType
+	 * @return
+	 */
+	public static Method[] getGetMethodArray(Class<?> classType) {
+		try {
+			final List<Method> getMethods = new ArrayList<Method>();
+			
+			final Method[] methods = classType.getMethods();
+			
+			for(Method method : methods) {
+				if(method.getName().startsWith(PREFIX_GET) && !method.getName().equals(GET_CLASS_METHOD_NAME)) {
+					getMethods.add(method);
+				}
+			}
+			
+			final Method[] arryGetMethods = new Method[getMethods.size()];
+			for(int i = 0; i < getMethods.size(); i++) {
+				arryGetMethods[i] = getMethods.get(i);
+			}
+			
+			return arryGetMethods;
+		}
+		catch(Exception e) {
+			Log.e("YUtilReflection.getGetMethodList", e.getMessage());
+			return new Method[]{};
+		}
+	}
+
+	/**
 	 *
 	 * @param classType
 	 * @return
