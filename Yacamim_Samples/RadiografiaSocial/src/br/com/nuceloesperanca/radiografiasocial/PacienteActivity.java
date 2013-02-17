@@ -91,7 +91,28 @@ public class PacienteActivity extends YBaseActivity {
      * Inicializa os campos do formulário. 
      */
     private void initCampos() {
+    	PacienteDBAdapter pacienteDBAdapter = null;
+    	
     	try {
+    		if (this.paciente != null) {
+    			pacienteDBAdapter = new PacienteDBAdapter(Paciente.class);
+    			pacienteDBAdapter.open();
+    			this.paciente = pacienteDBAdapter.getByID(this.paciente.getId());
+
+    			YUtilText.setIntegerToEditText(this, R.id.txte_prontuario, this.paciente.getProntuario());
+    			YUtilText.setTextToEditText(this, R.id.txte_nome, this.paciente.getNome());
+
+    	        final TextView textView = (TextView) findViewById(R.id.txtv_nascimento);
+    	        textView.setText(YUtilDate.getSimpleDateFormatData().format(this.paciente.getNascimento()));
+    	        
+    			YUtilText.setTextToEditText(this, R.id.txte_nome_mae, this.paciente.getNomeMae());
+    			YUtilText.setTextToEditText(this, R.id.txte_nome_pai, this.paciente.getNomePai());
+    			YUtilText.setTextToEditText(this, R.id.txte_irmaos, this.paciente.getIrmaos());
+    			YUtilText.setTextToEditText(this, R.id.txte_telefones, this.paciente.getTelefones());
+    			YUtilText.setTextToEditText(this, R.id.txte_endereco, this.paciente.getEndereco());
+    			UtilCombos.setSelectedObjectToSpinner(this, R.id.cmb_cid, this.paciente.getCid());
+    		}
+    		
     		final EditText editTextLatitude = (EditText) this.findViewById(R.id.txte_latitude);
     		final EditText editTextLongitude = (EditText) this.findViewById(R.id.txte_longitude);
 
@@ -99,6 +120,10 @@ public class PacienteActivity extends YBaseActivity {
     		editTextLongitude.setText(String.valueOf(getBestLocalization().getLongitude()));
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
+		} finally {
+			if (pacienteDBAdapter != null) {
+				pacienteDBAdapter.close();
+			}
 		}
     }
 
