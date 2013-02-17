@@ -31,7 +31,17 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_below="@+id/button2"
         android:text="@string/title_activity_bidirectional_one_to_one" 
-        android:onClick="startBidirectionalManyToOneTest"
+        android:onClick="startBidirectionalOneToOneTest"
+        />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_below="@+id/button3"
+        android:text="@string/title_activity_bidirectional_one_to_one_cubicle" 
+        android:onClick="startBidirectionalOneToOneCubicleTest"
         />
 
 </RelativeLayout>
