@@ -754,7 +754,8 @@ public class DefaultDBAdapter<E> {
 	private List<Method> filterMethodsForPersistenceAccess(final Method[] targetMethods) {
 		final List<Method> filteredMethods = new ArrayList<Method>();
 		for(final Method method : targetMethods) {
-			if(method.getAnnotation(Column.class) != null) {
+			if(method.getAnnotation(Column.class) != null
+					|| YUtilPersistence.isId(method)) {
 				filteredMethods.add(method);
 			}
 		}

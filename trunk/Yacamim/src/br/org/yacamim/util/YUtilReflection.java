@@ -780,7 +780,8 @@ public strictfp abstract class YUtilReflection {
 	 * @return
 	 */
 	public static boolean isList(Class<?> listClass) {
-		return (listClass.equals(java.util.ArrayList.class));
+		return (listClass.equals(java.util.ArrayList.class)
+				|| listClass.equals(java.util.List.class));
 	}
 
 	/**

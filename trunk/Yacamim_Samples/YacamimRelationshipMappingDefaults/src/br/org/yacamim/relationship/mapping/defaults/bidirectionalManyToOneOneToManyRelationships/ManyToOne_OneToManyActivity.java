@@ -1,5 +1,5 @@
 /**
- * ManyToOneActivity.java
+ * ManyToOne_OneToManyActivity.java
  *
  * Copyright 2013 yacamim.org.br
  *
@@ -17,24 +17,104 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships;
 
+import java.util.HashMap;
+import java.util.List;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.YBaseListActivity;
+import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity.Employee;
+import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
+import br.org.yacamim.ui.components.AdapterConfig;
+import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
+import br.org.yacamim.ui.components.RowConfig;
+import br.org.yacamim.ui.components.RowConfigItem;
+import br.org.yacamim.util.YUtilListView;
 
 /**
- * Classe ManyToOneActivity TODO
+ * Classe ManyToOne_OneToManyActivity TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class ManyToOne_OneToManyActivity extends YBaseActivity {
+public class ManyToOne_OneToManyActivity extends YBaseListActivity {
+	
+	private static final String TAG = ManyToOne_OneToManyActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_bidirectional_many_to_one);
+		setContentView(R.layout.activity_bidirectional_many_to_one_one_to_many);
+		this.init();
+	}
+	
+
+	/**
+	 * 
+	 */
+	protected void init() {
+		try {
+			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
+			defaultDBAdapter.open();
+			List<Employee> employees = defaultDBAdapter.list();
+			defaultDBAdapter.close();
+			
+			if(employees != null) {
+				for(final Employee employee : employees) {
+					Log.i(TAG, employee.getName() + " : " + employee.getDepartment().getName());
+				}
+				for(final Employee employee : employees) {
+					Log.i(TAG, "Employees : " + employee.getDepartment().getEmployees());
+				}
+			}
+			
+			this.initList(employees);
+			
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param employees
+	 */
+    private void initList(final List<Employee> employees) {
+    	try {
+			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(employees);
+			
+			final AdapterConfig adapterConfig = this.buildAdapterConfig();
+			
+			final ComplexListSimpleAdapter complexListSimpleAdapter = new ComplexListSimpleAdapter(
+					this, 
+					listOfMappedData, 
+					adapterConfig);
+			setListAdapter(complexListSimpleAdapter);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+    }
+
+	/**
+	 * @return
+	 */
+	protected AdapterConfig buildAdapterConfig() {
+		
+		final RowConfig rowConfig = new RowConfig()
+			.setResource(R.layout.list_bidirectional_many_to_one_one_to_many)
+			.setResourcesHint(new int[]{})
+			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
+			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))
+			;
+		
+		final RowConfig[] rowConfigs = {rowConfig} ;
+		
+		final AdapterConfig adapterConfig = new AdapterConfig(rowConfigs , ConditionFactory.getSimpleRowCondition(), null);
+		return adapterConfig;
 	}
 
 	@Override
