@@ -13,6 +13,7 @@ import br.org.yacamim.entity.YBaseEntity;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.Id;
+import br.org.yacamim.persistence.OneToMany;
 
 /**
  * Entidade que representa a tabela de paciente.
@@ -185,14 +186,14 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @param endereco the endereco to set
 	 */
-	public void setEndereço(String endereco) {
+	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
 
 	/**
 	 * @return the cid
 	 */
-	@Column
+	@OneToMany
 	public Cid getCid() {
 		return this.cid;
 	}

@@ -20,13 +20,6 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-			<TextView
-			    android:id="@+id/lblPacientes" 
-			    android:layout_width="wrap_content" 
-			    android:layout_height="wrap_content" 
-			    android:text="@string/lbl_paciente"
-			    style="@style/title" 
-			    />
 	        <LinearLayout
 	            xmlns:android="http://schemas.android.com/apk/res/android"
 	            android:id="@+id/layout_consultar_pacientes"
@@ -64,7 +57,7 @@
 	            </TextView>
 	            <EditText
 	                android:id="@+id/txte_nome"
-	                android:layout_width="200sp"
+	                android:layout_width="fill_parent"
 	                android:maxLength="60"
 	                android:maxLines="1"
 	                android:inputType="text"
@@ -72,19 +65,41 @@
 	            </EditText>
 
 	            <!-- Data de Nascimento -->
+	            <LinearLayout
+	                android:id="@+id/LinearLayoutNascimento"
+	                android:orientation="horizontal"
+	                android:layout_height="wrap_content"
+	                android:layout_width="fill_parent"
+	                android:paddingTop="10sp">
+	                <Button
+	                    android:id="@+id/btn_nacimento"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="fill_parent"
+	                    android:text="@string/lbl_nascimento">
+	                </Button>
+	                <TextView
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="fill_parent"
+	                    style="@style/fonte_label"
+	                    android:gravity="center"
+	                    android:id="@+id/txtv_nascimento">
+	                </TextView>
+	            </LinearLayout>
+
+	            <!-- CID -->
 	            <TextView
-	                android:id="@+id/txtv_nascimento"
+	                android:id="@+id/txtv_cid"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="@string/lbl_nascimento"
+	                android:text="@string/lbl_cid"
 	                style="@style/fonte_label"
 	                android:paddingTop="10sp">
 	            </TextView>
-	            <DatePicker
-	                android:id="@+id/datePickerNascimento"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content" 
-	                android:calendarViewShown="false"/>
+	            <Spinner 
+	                android:id="@+id/cmb_cid"
+		            android:layout_height="wrap_content"
+		            android:layout_width="fill_parent">
+	            </Spinner>
 
 	            <!-- Nome Mãe -->
 	            <TextView
@@ -97,7 +112,7 @@
 	            </TextView>
 	            <EditText
 	                android:id="@+id/txte_nome_mae"
-	                android:layout_width="200sp"
+	                android:layout_width="fill_parent"
 	                android:maxLength="60"
 	                android:maxLines="1"
 	                android:inputType="text"
@@ -115,7 +130,7 @@
 	            </TextView>
 	            <EditText
 	                android:id="@+id/txte_nome_pai"
-	                android:layout_width="200sp"
+	                android:layout_width="fill_parent"
 	                android:maxLength="60"
 	                android:maxLines="1"
 	                android:inputType="text"
@@ -133,7 +148,8 @@
 	            </TextView>
 	            <EditText
 	                android:id="@+id/txte_irmaos"
-	                android:layout_width="200sp"
+	                android:layout_width="fill_parent"
+	                android:layout_height="150sp"
 	                android:maxLength="60"
 	                android:maxLines="10"
 	                android:inputType="textMultiLine"
@@ -151,7 +167,8 @@
 	            </TextView>
 	            <EditText
 	                android:id="@+id/txte_telefones"
-	                android:layout_width="200sp"
+	                android:layout_width="fill_parent"
+	                android:layout_height="150sp"
 	                android:maxLength="60"
 	                android:maxLines="5"
 	                android:inputType="textMultiLine"
@@ -169,27 +186,13 @@
 	            </TextView>
 	            <EditText
 	                android:id="@+id/txte_endereco"
-	                android:layout_width="200sp"
+	                android:layout_width="fill_parent"
+	                android:layout_height="150sp"
 	                android:maxLength="60"
 	                android:maxLines="5"
 	                android:inputType="textMultiLine"
 	                style="@style/EditText">
 	            </EditText>
-
-	            <!-- CID -->
-	            <TextView
-	                android:id="@+id/txtv_cid"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="@string/lbl_cid"
-	                style="@style/fonte_label"
-	                android:paddingTop="10sp">
-	            </TextView>
-	            <Spinner 
-	                android:id="@+id/cmb_cid"
-	                android:layout_height="wrap_content"
-	                android:layout_width="fill_parent">
-	            </Spinner>
 
 	            <!-- Latitude -->
 	            <TextView
