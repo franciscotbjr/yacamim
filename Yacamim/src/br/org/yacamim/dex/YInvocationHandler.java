@@ -20,6 +20,8 @@ package br.org.yacamim.dex;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.util.Log;
 import br.org.yacamim.YRawData;
@@ -49,55 +51,86 @@ public abstract class YInvocationHandler implements InvocationHandler {
 	 * 
 	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
-	public Object invoke(final Object proxyTargetObject, final Method method, final Object[] args) throws Throwable {
-		Object result = ProxyBuilder.callSuper(proxyTargetObject, method, args);
-		if(!this.yMethodFilter.accept(method)) {
+	public Object invoke(final Object proxyTargetObject, final Method targetMethod, final Object[] args) throws Throwable {
+		Object result = ProxyBuilder.callSuper(proxyTargetObject, targetMethod, args);
+		if(!this.yMethodFilter.accept(targetMethod)) {
 			return result;
 		}
 		if (result == null) {
 			final Class<?> realClass = proxyTargetObject.getClass().getSuperclass();
-			final Class<?> clazzEntity = method.getReturnType();
+			final Class<?> clazzEntity = targetMethod.getReturnType();
 			if(checkTypeConstraint(clazzEntity)) {
 				final Long longId = getTargetObjectId(proxyTargetObject);
-				final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, method);
-				final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, method);
 				
-				result = ProxyBuilder.forClass(clazzEntity)
-						.handler(this)
-						.build();
-				
-				this.fillChild(result, childRawData);
-				
-				try {
-					final Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(method)), proxyTargetObject.getClass(), new Class<?>[]{clazzEntity});
-					YUtilReflection.invokeMethod(setMethod, proxyTargetObject, result);
-				} catch (Exception e) {
-					Log.e("YInvocationHandler.invoke", e.getMessage());
+				if(YUtilReflection.isList(clazzEntity)) {
+					result = new ArrayList();
+					final List<YRawData> childListRawData = this.getChildListYRawData(clazzEntity, realClass, longId);
+					if(childListRawData != null) {
+						final Class<?> genericType = YUtilReflection.getGenericType(realClass, targetMethod);
+						@SuppressWarnings("unchecked")
+						final List<Object> resultAsList = (List<Object>)result;
+						
+						for(final YRawData rawData : childListRawData) {
+							final Object child = ProxyBuilder.forClass(genericType)
+									.handler(this)
+									.build();
+							this.fillChild(child, rawData);
+							resultAsList.add(child);
+						}
+					}
+				} else {
+					final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, targetMethod);
+					final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, targetMethod, realClass, longId);
+
+					result = ProxyBuilder.forClass(clazzEntity)
+							.handler(this)
+							.build();
+					
+					this.fillChild(result, childRawData);
 				}
 				
-				this.handlePosConstruction(proxyTargetObject, method, args, result);
+				this.invokeSet(proxyTargetObject, targetMethod, result, clazzEntity);
+				
+				this.handlePosConstruction(proxyTargetObject, targetMethod, args, result);
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * 
+	 * @param proxyTargetObject
+	 * @param targetMethod
+	 * @param result
+	 * @param clazzEntity
+	 */
+	private void invokeSet(final Object proxyTargetObject, final Method targetMethod, Object result, final Class<?> clazzEntity) {
+		try {
+			final Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(targetMethod)), proxyTargetObject.getClass(), new Class<?>[]{clazzEntity});
+			YUtilReflection.invokeMethod(setMethod, proxyTargetObject, result);
+		} catch (Exception e) {
+			Log.e("YInvocationHandler.invokeSet", e.getMessage());
+		}
 	}
 	
 	/**
 	 * 
 	 * @param proxyTargetObject
-	 * @param method
+	 * @param targetMethod
 	 * @param args
 	 * @param result
 	 * @return
 	 */
-	protected abstract void handlePosConstruction(final Object proxyTargetObject, final Method method, final Object[] args, final Object result);
+	protected abstract void handlePosConstruction(final Object proxyTargetObject, final Method targetMethod, final Object[] args, final Object result);
 
 	/**
 	 * 
-	 * @param clazzEntity
+	 * @param entityClass
 	 * @return
 	 */
-	protected abstract boolean checkTypeConstraint(final Class<?> clazzEntity);
+	protected abstract boolean checkTypeConstraint(final Class<?> entityClass);
 
 	/**
 	 * 
@@ -114,7 +147,17 @@ public abstract class YInvocationHandler implements InvocationHandler {
 	 * @param result
 	 * @return
 	 */
-	protected abstract YRawData getChildYRawData(final Class<?> clazzEntity, final YRawData parenrawData, final Method targetGetMethod);
+	protected abstract YRawData getChildYRawData(final Class<?> entityClass, final YRawData parenrawData, final Method targetGetMethod, final Class<?> parentClass, final long parentId);
+	
+	/**
+	 * 
+	 * @param entityClass
+	 * @param parentClass
+	 * @param parenrawId
+	 * @param targetGetMethod
+	 * @return
+	 */
+	protected abstract List<YRawData> getChildListYRawData(final Class<?> entityClass, final Class<?> parentClass, final long parenrawId);
 	
 	/**
 	 * 

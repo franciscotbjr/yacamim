@@ -241,7 +241,6 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 * @throws SQLException
 	 */
-
 	public E getByID(final long id) throws SQLException {
 		E result = null;
 		try {
@@ -267,6 +266,42 @@ public class DefaultDBAdapter<E> {
 		return result;
 	}
 	
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<E> select(final E entity, final String... attributes) throws SQLException {
+		final List<E> entities = new ArrayList<E>();
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			final List<Method> attColumnGetMethods = YUtilPersistence.getGetColumnMethodList(this.getGenericClass(), attributes);
+			final String[] columns = this.getColumnNamesAsArray();
+			if(columns != null && columns.length > 0) {
+				final Cursor cursor = this.getDatabase().query(
+						this.getTableName(), 
+						columns, 
+						this.buildSelecion(attColumnGetMethods), 
+						this.buildSelecionArgs(attColumnGetMethods, entity), 
+						null, null, null);
+				if (cursor != null && cursor.moveToFirst()) {
+					entities.add(build(cursor));
+					while(cursor.moveToNext()) {
+						entities.add(build(cursor));
+					}
+				}
+				cursor.close();
+			}
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.select", e.getMessage());
+		}
+		return entities;
+	}
+	
 	/**
 	 * 
 	 * @param id
@@ -279,9 +314,10 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			String[] columns = new String[targetMethods.length];
-			for(int i = 0; i < targetMethods.length; i++) {
-				final String columnName = YUtilPersistence.builColumnName(targetMethods[i]);
+			final List<Method> filteredMethods = this.filterMethodsForPersistenceAccess(targetMethods);
+			String[] columns = new String[filteredMethods.size()];
+			for(int i = 0; i < filteredMethods.size(); i++) {
+				final String columnName = YUtilPersistence.builColumnName(filteredMethods.get(i));
 				if(columnName != null) {
 					columns[i] = columnName;
 				}
@@ -303,7 +339,85 @@ public class DefaultDBAdapter<E> {
 			Log.e("DefaultDBAdapter.getRawDataById", e.getMessage());
 		}
 		return yRawData;
+	}
+	
+	/**
+	 * 
+	 * @param parentClass
+	 * @param parenId
+	 * @return
+	 * @throws SQLException
+	 */
+	List<YRawData> selectRawData(final Class<?> parentClass, final long parenId) throws SQLException {
+		final List<YRawData> entities = new ArrayList<YRawData>();
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			final List<Method> attColumnGetMethods = YUtilPersistence.getGetColumnMethodList(this.getGenericClass());
+			final String[] columns = this.getColumnNamesAsArray();
+			final Method parentGetIdMethod = YUtilPersistence.getGetIdMethod(parentClass);
+			if(columns != null && columns.length > 0) {
+				final Cursor cursor = this.getDatabase().query(
+						this.getTableName(), 
+						columns, 
+						YUtilPersistence.buildFkColumnName(parentClass, parentGetIdMethod.getAnnotation(Column.class), parentGetIdMethod) + " = ? ", 
+						new String[]{parenId+""}, 
+						null, null, null);
+				if (cursor != null && cursor.moveToFirst()) {
+					YRawData yRawData = new YRawDataPersistenceImpl();
+					for(int i = 0; i < attColumnGetMethods.size(); i++) {
+						yRawData = DataAdapterHelper.getYRawData(cursor, attColumnGetMethods.get(i), columns[i], yRawData);
+					}
+					entities.add(yRawData);
+					while(cursor.moveToNext()) {
+						yRawData = new YRawDataPersistenceImpl();
+						for(int i = 0; i < attColumnGetMethods.size(); i++) {
+							yRawData = DataAdapterHelper.getYRawData(cursor, attColumnGetMethods.get(i), columns[i], yRawData);
+						}
+						entities.add(yRawData);
+					}
+				}
+				cursor.close();
+			}
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.selectRawData", e.getMessage());
+		}
+		return entities;
+	}
+	
+	/**
+	 * 
+	 * @param attColumnGetMethods
+	 * @return
+	 */
+	private String buildSelecion(final List<Method> attColumnGetMethods) {
+		final StringBuilder builder = new StringBuilder();
 		
+		int count = 0;
+		for(final Method getMethod : attColumnGetMethods) {
+			builder.append(YUtilPersistence.builColumnName(getMethod) + " = ? ");
+			if((count + 1) < attColumnGetMethods.size()) {
+				builder.append(", ");
+			}
+			count++;
+		}
+		
+		return builder.toString();
+	}
+
+	/**
+	 * 
+	 * @param attColumnGetMethods
+	 * @param entity
+	 * @return
+	 */
+	private String[] buildSelecionArgs(final List<Method> attColumnGetMethods, final E entity) {
+		final String[] selecionArgs = new String[attColumnGetMethods.size()];
+		for(int i = 0; i < attColumnGetMethods.size(); i++) {
+			selecionArgs[i] = YUtilReflection.invokeMethodToString(attColumnGetMethods.get(i), entity, YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+		}
+		return selecionArgs;
 	}
 
 	/**
@@ -356,7 +470,7 @@ public class DefaultDBAdapter<E> {
 	protected String getIdColumnName() {
 		String idColumnName = null;
 		try {
-			final Method getMethod = YUtilPersistence.getIdGetMethod(this.getGenericClass());
+			final Method getMethod = YUtilPersistence.getGetIdMethod(this.getGenericClass());
 			
 			idColumnName = YUtilPersistence.getColumnName(getMethod.getAnnotation(Column.class), getMethod);
 		} catch (Exception e) {
@@ -372,7 +486,7 @@ public class DefaultDBAdapter<E> {
 	 */
 	protected Method getIdSetMethod(Class<?> type) {
 		try {
-			final Method getMethod = YUtilPersistence.getIdGetMethod(type);
+			final Method getMethod = YUtilPersistence.getGetIdMethod(type);
 			if(getMethod != null) {
 				return YUtilReflection.getSetMethod(
 						YUtilReflection.getPropertyName(getMethod),
@@ -391,7 +505,7 @@ public class DefaultDBAdapter<E> {
 	 */
 	protected String getIdPropertyName(Class<?> type) {
 		try {
-			final Method getMethod = YUtilPersistence.getIdGetMethod(type);
+			final Method getMethod = YUtilPersistence.getGetIdMethod(type);
 			if(getMethod != null) {
 				return YUtilReflection.getPropertyName(getMethod);
 			}
@@ -585,7 +699,7 @@ public class DefaultDBAdapter<E> {
 						final Object object = YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
 						final Class<?> returnType = object.getClass();
 						if(object != null && YUtilPersistence.isEntity(returnType)) {
-							final Method getFkMethod = YUtilPersistence.getIdGetMethod(returnType);
+							final Method getFkMethod = YUtilPersistence.getGetIdMethod(returnType);
 							if(getFkMethod != null) {
 								final Long idFk = (Long)YUtilReflection.invokeMethodWithoutParams(getFkMethod, object);
 								final String fkColumnName = YUtilPersistence.buildFkColumnName(returnType, column, getFkMethod);
@@ -632,4 +746,18 @@ public class DefaultDBAdapter<E> {
 		return whereAdded;
 	}
 
+	/**
+	 * 
+	 * @param targetMethods
+	 * @return
+	 */
+	private List<Method> filterMethodsForPersistenceAccess(final Method[] targetMethods) {
+		final List<Method> filteredMethods = new ArrayList<Method>();
+		for(final Method method : targetMethods) {
+			if(method.getAnnotation(Column.class) != null) {
+				filteredMethods.add(method);
+			}
+		}
+		return filteredMethods;
+	}
 }
