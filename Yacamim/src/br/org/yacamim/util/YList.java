@@ -1,7 +1,7 @@
 /**
- * YGetMethodFilter.java
+ * YList.java
  *
- * Copyright 2012 yacamim.org.br
+ * Copyright 2013 yacamim.org.br
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,36 +15,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.org.yacamim.persistence;
+package br.org.yacamim.util;
 
-import java.lang.reflect.Method;
-
-import br.org.yacamim.dex.YMethodFilter;
-import br.org.yacamim.util.YUtilReflection;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
- * 
- * Class YGetMethodFilter TODO
- * 
+ * Classe YList TODO
+ *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class YGetMethodFilter implements YMethodFilter {
-
-	public YGetMethodFilter() {
-		super();
-	}
+public class YList<E> extends ArrayList<E> {
 
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YMethodFilter#accept(java.lang.reflect.Method)
 	 */
-	@Override
-	public boolean accept(final Method method) {
-		return (method.getName().startsWith("get") 
-				&& (YUtilPersistence.isEntity(method.getReturnType())
-						|| YUtilReflection.isList(method.getReturnType())));
-	}
+	private static final long serialVersionUID = 4800566635033691472L;
 
+	@Override
+	public int hashCode() {
+		int hashCode = 1;
+		Iterator<E> iterator = iterator();
+		int count =  modCount > 0 ? modCount : 1;
+		while (iterator.hasNext()) {
+		    hashCode = 31 * hashCode + (count) + iterator.next().toString().hashCode();
+		    count++;
+		}
+		return hashCode;
+	}
+	
 }

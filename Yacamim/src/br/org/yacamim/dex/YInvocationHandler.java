@@ -25,6 +25,7 @@ import java.util.List;
 
 import android.util.Log;
 import br.org.yacamim.YRawData;
+import br.org.yacamim.util.YList;
 import br.org.yacamim.util.YUtilReflection;
 
 import com.google.dexmaker.stock.ProxyBuilder;
@@ -61,26 +62,9 @@ public abstract class YInvocationHandler implements InvocationHandler {
 		if (result == null) {
 			final Class<?> realClass = proxyTargetObject.getClass().getSuperclass();
 			final Class<?> clazzEntity = targetMethod.getReturnType();
+			final Long longId = getTargetObjectId(proxyTargetObject);
 			if(checkTypeConstraint(clazzEntity)) {
-				final Long longId = getTargetObjectId(proxyTargetObject);
 				
-				if(YUtilReflection.isList(clazzEntity)) {
-					result = new ArrayList();
-					final List<YRawData> childListRawData = this.getChildListYRawData(clazzEntity, realClass, longId);
-					if(childListRawData != null) {
-						final Class<?> genericType = YUtilReflection.getGenericType(realClass, targetMethod);
-						@SuppressWarnings("unchecked")
-						final List<Object> resultAsList = (List<Object>)result;
-						
-						for(final YRawData rawData : childListRawData) {
-							final Object child = ProxyBuilder.forClass(genericType)
-									.handler(this)
-									.build();
-							this.fillChild(child, rawData);
-							resultAsList.add(child);
-						}
-					}
-				} else {
 					final YRawData targetObjectRawData= this.getTargetObjectYRawData(realClass, longId, targetMethod);
 					final YRawData childRawData = this.getChildYRawData(clazzEntity, targetObjectRawData, targetMethod, realClass, longId);
 
@@ -89,12 +73,28 @@ public abstract class YInvocationHandler implements InvocationHandler {
 							.build();
 					
 					this.fillChild(result, childRawData);
+				
+			} else if(YUtilReflection.isList(clazzEntity)) {
+				result = new YList();
+				final List<YRawData> childListRawData = this.getChildListYRawData(YUtilReflection.getGenericType(realClass, targetMethod), realClass, longId);
+				if(childListRawData != null) {
+					final Class<?> genericType = YUtilReflection.getGenericType(realClass, targetMethod);
+					@SuppressWarnings("unchecked")
+					final List<Object> resultAsList = (List<Object>)result;
+					
+					for(final YRawData rawData : childListRawData) {
+						final Object child = ProxyBuilder.forClass(genericType)
+								.handler(this)
+								.build();
+						this.fillChild(child, rawData);
+						resultAsList.add(child);
+					}
 				}
-				
-				this.invokeSet(proxyTargetObject, targetMethod, result, clazzEntity);
-				
-				this.handlePosConstruction(proxyTargetObject, targetMethod, args, result);
 			}
+			
+			this.invokeSet(proxyTargetObject, targetMethod, result, clazzEntity);
+			
+			this.handlePosConstruction(proxyTargetObject, targetMethod, args, result);
 		}
 		return result;
 	}

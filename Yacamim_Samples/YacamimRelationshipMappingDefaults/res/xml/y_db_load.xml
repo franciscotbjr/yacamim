@@ -55,6 +55,30 @@
 				    </y-row>
 				</y-insert>
 		    </y-package>
+		    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity">
+				<y-insert y-entity="Department">
+				    <y-row>
+					   (id, name) values (1, 'Department A')
+				    </y-row>
+				    <y-row>
+					   (id, name) values (2, 'Department B')
+				    </y-row>
+				    <y-row>
+					   (id, name) values (3, 'Department C')
+				    </y-row>
+				</y-insert>
+				<y-insert y-entity="Employee">
+				    <y-row>
+					   (id, name, department) values (1, 'Eric Cartman', 1)
+				    </y-row>
+				    <y-row>
+					   (id, name, department) values (2, 'Kenny McCormick', 2)
+				    </y-row>
+				    <y-row>
+					   (id, name, department) values (3, 'Kyle Broflovski', 3)
+				    </y-row>
+				</y-insert>
+		    </y-package>
 		</y-load>
 	</y-db>
 </y-db-script>
