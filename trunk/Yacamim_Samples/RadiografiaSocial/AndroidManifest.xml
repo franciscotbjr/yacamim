@@ -38,10 +38,13 @@
             android:name="br.com.nuceloesperanca.radiografiasocial.ConsultarPacienteActivity"
             android:label="@string/title_consultar_paciente" >
         </activity>
-        <activity android:name=".ListPacientes" 
+        <activity android:name="br.com.nuceloesperanca.radiografiasocial.ListPacientesActivity" 
 			android:label="@string/label_resultado_consulta" 
 			android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="br.com.nuceloesperanca.radiografiasocial.PacienteActivity"
+            android:label="@string/lbl_paciente" >
+        </activity>
     </application>
-
 </manifest>

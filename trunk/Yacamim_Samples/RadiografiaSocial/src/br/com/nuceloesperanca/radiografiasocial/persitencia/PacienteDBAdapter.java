@@ -43,7 +43,7 @@ public class PacienteDBAdapter extends DefaultDBAdapter<Paciente> {
 		String where = "";
 		StringBuilder sql = new StringBuilder();
 		sql.append("select p.Id, p.Nome, p.Nascimento, p.NomeMae, p.NomePai, p.Irmaos, ");
-		sql.append("p.Telefones, p.Endereco, p.Id_Cid, p.Latitude, p.Longitude ");
+		sql.append("p.Telefones, p.Endereco, p.Latitude, p.Longitude ");
 		sql.append("from Paciente p ");
 		sql.append("where ");
 		List<String> selectionArgsList = new ArrayList<String>();

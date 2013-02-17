@@ -1,5 +1,5 @@
 /**
- * ListPacientes.java
+ * ListPacientesActivity.java
  *
  * Copyright 2013 Blessing Informática.
  */
@@ -28,11 +28,11 @@ import br.org.yacamim.util.YUtilListView;
  * @version 1.0
  * @since 1.0
  */
-public class ListPacientes extends YBaseListActivity {
+public class ListPacientesActivity extends YBaseListActivity {
 	/**
 	 * Construtor da classe.
 	 */
-	public ListPacientes() {
+	public ListPacientesActivity() {
 		super();
 	}
 
@@ -99,7 +99,7 @@ public class ListPacientes extends YBaseListActivity {
 
 			return retorno;
 		} catch (Exception _e) {
-			Log.e("ListPacientes.recuperaListaPacientes", _e.getMessage());
+			Log.e("ListPacientesActivity.recuperaListaPacientes", _e.getMessage());
 			return null;
 		} finally {
 			adapter.close();
