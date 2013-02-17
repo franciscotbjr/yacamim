@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import android.util.Log;
 import br.org.yacamim.YRawData;
 import br.org.yacamim.dex.YInvocationHandler;
 import br.org.yacamim.dex.YMethodFilter;
@@ -109,6 +110,44 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 		final Method getIDMethod = YUtilPersistence.getIdGetMethod(proxyTargetObject.getClass().getSuperclass());
 		final Object oLongId = getIDMethod.invoke(proxyTargetObject, new Object[]{});
 		return (Long)oLongId;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	protected void handlePosConstruction(final Object proxyTargetObject, final Method method, final Object[] args, final Object result) {
+		final Class<?> realClass = proxyTargetObject.getClass().getSuperclass();
+		// Bidirectional OneToOne
+		final Method[] typeGetMethods = YUtilReflection.getGetMethodArray(result.getClass().getSuperclass());
+		this.handleBidirectionalOneToOne(proxyTargetObject, method, result, realClass, typeGetMethods);
+	}
+
+	/**
+	 * 
+	 * @param proxyTargetObject
+	 * @param method
+	 * @param result
+	 * @param realClass
+	 * @param typeGetMethods
+	 */
+	private void handleBidirectionalOneToOne(final Object proxyTargetObject,
+			final Method method, final Object result, final Class<?> realClass,
+			final Method[] typeGetMethods) {
+		final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, realClass, method);
+		if(bidirectionalOneToOneReferenceMethod != null) { // It is an Bidirectional Relationship
+			try {
+				final Method setMethod = YUtilReflection.getSetMethod(
+													YUtilReflection.getSetMethodName(
+															YUtilReflection.getPropertyName(bidirectionalOneToOneReferenceMethod)), 
+															result.getClass().getSuperclass(),
+															new Class[]{realClass});
+				YUtilReflection.invokeMethod(setMethod, result, proxyTargetObject);
+			} catch (Exception e) {
+				Log.e("YPersistenceInvocationHandler.handlePosConstruction", e.getMessage());
+			}
+			
+		}
 	}
 
 }

@@ -429,8 +429,7 @@ final class YUtilPersistence {
 	 */
 	static boolean isBidirectionalOneToOneReferenceMethod(final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
 		OneToOne  oneToOneRef = null;
-		return (method.getAnnotation(Column.class) != null
-				&& ((oneToOneRef = method.getAnnotation(OneToOne.class)) != null
+		return (((oneToOneRef = method.getAnnotation(OneToOne.class)) != null
 						&& !YUtilString.isEmptyString(oneToOneRef.mappedBy())
 						&& oneToOneRef.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
 				&& method.getReturnType().equals(ownerType));

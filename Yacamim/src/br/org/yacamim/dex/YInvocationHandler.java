@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import android.util.Log;
 import br.org.yacamim.YRawData;
 import br.org.yacamim.util.YUtilReflection;
 
@@ -72,12 +73,24 @@ public abstract class YInvocationHandler implements InvocationHandler {
 					final Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(method)), proxyTargetObject.getClass(), new Class<?>[]{clazzEntity});
 					YUtilReflection.invokeMethod(setMethod, proxyTargetObject, result);
 				} catch (Exception e) {
-					e.printStackTrace();
+					Log.e("YInvocationHandler.invoke", e.getMessage());
 				}
+				
+				this.handlePosConstruction(proxyTargetObject, method, args, result);
 			}
 		}
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @param proxyTargetObject
+	 * @param method
+	 * @param args
+	 * @param result
+	 * @return
+	 */
+	protected abstract void handlePosConstruction(final Object proxyTargetObject, final Method method, final Object[] args, final Object result);
 
 	/**
 	 * 

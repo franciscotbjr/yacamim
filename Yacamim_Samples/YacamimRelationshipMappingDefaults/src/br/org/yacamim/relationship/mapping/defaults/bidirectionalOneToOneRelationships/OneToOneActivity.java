@@ -103,7 +103,7 @@ public class OneToOneActivity extends YBaseListActivity {
 		final RowConfig rowConfig = new RowConfig()
 			.setResource(R.layout.list_bidirectional_one_to_one)
 			.setResourcesHint(new int[]{})
-			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
+			.addRowConfigItem(new RowConfigItem("assignedCubicle.residentEmployee.name", R.id.txtv_employee_name))
 			.addRowConfigItem(new RowConfigItem("assignedCubicle.name", R.id.txtv_cubicle_name))
 			;
 		
