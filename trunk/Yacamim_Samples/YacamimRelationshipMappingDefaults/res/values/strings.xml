@@ -8,6 +8,7 @@
     <string name="title_activity_bidirectional_many_to_one">Bidirectional >> ManyToOne</string>
     <string name="title_activity_bidirectional_one_to_many">Bidirectional >> OneToMany</string>
     <string name="title_activity_bidirectional_one_to_one">Bidirectional >> OneToOne</string>
+    <string name="title_activity_bidirectional_one_to_one_cubicle">Bidirectional >> OneToOne Cubicle</string>
     <string name="title_activity_unidirectional_many_to_one">Unidirectional >> ManyToOne</string>
     <string name="title_activity_unidirectional_one_to_one">Unidirectional >> OneToOne</string>
     <string name="label_employee">Employee: </string>

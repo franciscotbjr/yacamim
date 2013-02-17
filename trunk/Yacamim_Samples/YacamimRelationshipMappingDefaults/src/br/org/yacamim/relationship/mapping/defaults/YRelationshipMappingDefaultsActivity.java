@@ -81,9 +81,21 @@ public class YRelationshipMappingDefaultsActivity extends YInitBaseActivity {
 	 * 
 	 * @param view
 	 */
-	public void startBidirectionalManyToOneTest(final View view) {
+	public void startBidirectionalOneToOneTest(final View view) {
 		try {
 			startActivity(new Intent(this, br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.OneToOneActivity.class));
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param view
+	 */
+	public void startBidirectionalOneToOneCubicleTest(final View view) {
+		try {
+			startActivity(new Intent(this, br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.OneToOneCubicleActivity.class));
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
