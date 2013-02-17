@@ -35,8 +35,8 @@ public class Paciente extends YBaseEntity {
 	private String telefones;
 	private String endereco;
 	private Cid cid;
-	private long latitude;
-	private long longitude;
+	private double latitude;
+	private double longitude;
 
 	/**
 	 * Construtor da classe.
@@ -209,14 +209,14 @@ public class Paciente extends YBaseEntity {
 	 * @return the latitude
 	 */
 	@Column
-	public long getLatitude() {
+	public double getLatitude() {
 		return this.latitude;
 	}
 
 	/**
 	 * @param latitude the latitude to set
 	 */
-	public void setLatitude(long latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
@@ -224,14 +224,14 @@ public class Paciente extends YBaseEntity {
 	 * @return the longitude
 	 */
 	@Column
-	public long getLongitude() {
+	public double getLongitude() {
 		return this.longitude;
 	}
 
 	/**
 	 * @param longitude the longitude to set
 	 */
-	public void setLongitude(long longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 

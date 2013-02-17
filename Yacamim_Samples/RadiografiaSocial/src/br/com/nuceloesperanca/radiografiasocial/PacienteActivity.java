@@ -185,7 +185,7 @@ public class PacienteActivity extends YBaseActivity {
 			}
 
 			if (YUtilText.getLongFromEditText(this, R.id.txte_latitude) != null) {
-				paciente.setLatitude(YUtilText.getLongFromEditText(this, R.id.txte_latitude));
+				paciente.setLatitude(YUtilText.getDoubleFromEditText(this, R.id.txte_latitude));
 			}
 
 			if (YUtilText.getLongFromEditText(this, R.id.txte_longitude) != null) {
