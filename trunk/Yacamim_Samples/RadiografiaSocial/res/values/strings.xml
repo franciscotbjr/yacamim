@@ -6,6 +6,7 @@
     <string name="menu_settings">Settings</string>
     <string name="label_resultado_consulta">Resultado da Consulta</string>
     <string name="valor_selecione_item">Selecione</string>
+    <string name="valor_definir_data">Definir Data</string>
 
     <!-- Paciente -->
     <string name="title_consultar_paciente">Consultar Paciente</string>
@@ -35,4 +36,7 @@
     <string name="y_MsgNoConnectivityAvailable">Conexão indisponível.</string>
     <string name="y_MsgNoWifiConnectivityAvailable">Conexão Wifi indisponível.</string>
     <string name="y_MsgConstraintDependency">O registro não pode ser excluído.</string>
+
+    <!-- Mensagens -->
+    <string name="msg1">Existe(m) campo(s) obrigatório(s) não preenchido(s):</string>
 </resources>
