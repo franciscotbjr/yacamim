@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="label_resultado_consulta">Resultado da Consulta</string>
+    <string name="valor_selecione_item">Selecione</string>
 
     <!-- Paciente -->
     <string name="title_consultar_paciente">Consultar Paciente</string>

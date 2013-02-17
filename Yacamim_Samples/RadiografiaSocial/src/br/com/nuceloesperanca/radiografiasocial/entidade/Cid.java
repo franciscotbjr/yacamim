@@ -37,6 +37,15 @@ public class Cid extends YBaseEntity {
 	/**
 	 * Construtor da classe.
 	 *
+	 * @param descricao
+	 */
+	public Cid(String descricao) {
+		this.descricao = descricao;
+	}
+
+	/**
+	 * Construtor da classe.
+	 *
 	 * @param parcel
 	 */
 	public Cid(Parcel parcel) {
@@ -99,6 +108,14 @@ public class Cid extends YBaseEntity {
             return new Cid[size];
         }
 	};
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.descricao;
+	}
 
 	/**
 	 * @see java.lang.Object#hashCode()

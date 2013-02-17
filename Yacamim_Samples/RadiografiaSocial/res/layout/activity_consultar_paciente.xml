@@ -21,7 +21,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 			<TextView
-			    android:id="@+id/lblControleOcorrencias" 
+			    android:id="@+id/lblConsultarPacientes" 
 			    android:layout_width="wrap_content" 
 			    android:layout_height="wrap_content" 
 			    android:text="@string/title_consultar_paciente"
@@ -29,7 +29,7 @@
 			    />
 	        <LinearLayout
 	            xmlns:android="http://schemas.android.com/apk/res/android"
-	            android:id="@+id/layout_trocar_lembrar_senha"
+	            android:id="@+id/layout_consultar_pacientes"
 	            android:orientation="vertical"
 	            android:layout_width="fill_parent"
 	            android:layout_height="fill_parent"
@@ -83,13 +83,22 @@
 	            android:paddingTop="30sp" >
 
 				<Button
-				    android:id="@+id/btnEditarTipoOcorrencia"
+				    android:id="@+id/btnConsultarPaciente"
 				    android:layout_width="64sp"
 				    android:layout_height="64sp"
 				    android:textAppearance="?android:attr/textAppearanceSmall"
 				    android:textColor="#000000"
 				    android:background="@drawable/search_64" 
 				    android:onClick="consultarPaciente"
+				    android:gravity="center"/>
+				<Button
+				    android:id="@+id/btnNovoPaciente"
+				    android:layout_width="64sp"
+				    android:layout_height="64sp"
+				    android:textAppearance="?android:attr/textAppearanceSmall"
+				    android:textColor="#000000"
+				    android:background="@drawable/new_64" 
+				    android:onClick="incluirPaciente"
 				    android:gravity="center"/>
 			</LinearLayout>
         </LinearLayout>

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import br.com.nuceloesperanca.radiografiasocial.entidade.Paciente;
 import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilString;
 import br.org.yacamim.util.YUtilText;
 
@@ -52,7 +53,7 @@ public class ConsultarPacienteActivity extends YBaseActivity {
     public void consultarPaciente(final View view) {
     	try {
     		Intent intent = montaParametrosPesquisa();
-    		this.startActivity(intent);
+    		this.startActivityForResult(intent, YConstants.LOGOFF);
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
 		}
@@ -62,7 +63,7 @@ public class ConsultarPacienteActivity extends YBaseActivity {
 	 * Monta o objeto usuário para ser parametro de pesquisa.
 	 */
 	private Intent montaParametrosPesquisa() {
-		final Intent intent = new Intent(this, ListPacientes.class);
+		final Intent intent = new Intent(this, ListPacientesActivity.class);
 		Paciente pacientePesquisa = new Paciente();
 		if (!YUtilString.isEmptyString(YUtilText.getTextFromEditText(this, R.id.txte_prontuario))) {
 			pacientePesquisa.setProntuario(Integer.valueOf(YUtilText.getTextFromEditText(this, R.id.txte_prontuario)));
@@ -73,4 +74,17 @@ public class ConsultarPacienteActivity extends YBaseActivity {
 		intent.putExtra("pacientePesquisa", pacientePesquisa);
 		return intent;
 	}
+
+	/**
+     * Realiza a inclusão de um novo paciente.
+     *  
+     * @param view
+     */
+    public void incluirPaciente(final View view) {
+    	try {
+    		this.startActivityForResult(new Intent(this, PacienteActivity.class), YConstants.LOGOFF);
+		} catch (Exception e) {
+			Log.e(TAG_CLASS, e.getMessage());
+		}
+    }
 }
