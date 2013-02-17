@@ -26,6 +26,7 @@ import br.org.yacamim.YRawData;
 import br.org.yacamim.dex.YInvocationHandler;
 import br.org.yacamim.dex.YMethodFilter;
 import br.org.yacamim.util.YUtilReflection;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * 
@@ -50,8 +51,8 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 * @see br.org.yacamim.dex.YInvocationHandler#checkTypeConstraint(java.lang.Class)
 	 */
 	@Override
-	protected boolean checkTypeConstraint(final Class<?> clazzEntity) {
-		return YUtilPersistence.isEntity(clazzEntity);
+	protected boolean checkTypeConstraint(final Class<?> entityClass) {
+		return YUtilPersistence.isEntity(entityClass);
 	}
 
 	/**
@@ -70,16 +71,31 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YInvocationHandler#getChildYRawData(java.lang.Cla'ss, br.org.yacamim.YRawData, java.lang.reflect.Method)
+	 * @see br.org.yacamim.dex.YInvocationHandler#getChildYRawData(java.lang.Class, br.org.yacamim.YRawData, java.lang.reflect.Method, java.lang.Class, long)
 	 */
 	@Override
-	protected YRawData getChildYRawData(final Class<?> clazzEntity, final YRawData parenrawData, final Method targetGetMethod) {
+	protected YRawData getChildYRawData(final Class<?> entityClass, final YRawData parenrawData, final Method targetGetMethod,
+			final Class<?> parentClass, final long parentId) {
 		final String propertyName = YUtilReflection.getPropertyName(targetGetMethod);
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(clazzEntity);
-		defaultDBAdapter.open();
-		YRawData yRawData = defaultDBAdapter.getRawDataById((Long)parenrawData.get(propertyName), YUtilPersistence.getColumnGetMethodListSortedByNameAsArray(clazzEntity));
-		defaultDBAdapter.close();
+		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(entityClass);
+		YRawData yRawData = null;
+		if(targetGetMethod.getAnnotation(Column.class) != null) {
+			defaultDBAdapter.open();
+			yRawData = defaultDBAdapter.getRawDataById((Long)parenrawData.get(propertyName), YUtilPersistence.getColumnGetMethodListSortedByNameAsArray(entityClass));
+			defaultDBAdapter.close();
+		} else {
+			final OneToOne oneToOne = targetGetMethod.getAnnotation(OneToOne.class);
+			if(oneToOne != null && !YUtilString.isEmptyString(oneToOne.mappedBy())) {
+				defaultDBAdapter.open();
+				@SuppressWarnings("unchecked")
+				final List<YRawData> yRawDataList = defaultDBAdapter.selectRawData(parentClass, parentId);
+				defaultDBAdapter.close();
+				if(yRawDataList != null) {
+					yRawData = yRawDataList.get(0);
+				}
+			}
+		}
 		return yRawData;
 	}
 
@@ -107,7 +123,7 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 */
 	@Override
 	protected Long getTargetObjectId(final Object proxyTargetObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		final Method getIDMethod = YUtilPersistence.getIdGetMethod(proxyTargetObject.getClass().getSuperclass());
+		final Method getIDMethod = YUtilPersistence.getGetIdMethod(proxyTargetObject.getClass().getSuperclass());
 		final Object oLongId = getIDMethod.invoke(proxyTargetObject, new Object[]{});
 		return (Long)oLongId;
 	}
@@ -116,38 +132,120 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 * 
 	 */
 	@Override
-	protected void handlePosConstruction(final Object proxyTargetObject, final Method method, final Object[] args, final Object result) {
+	protected void handlePosConstruction(final Object proxyTargetObject, final Method targetMethod, final Object[] args, final Object result) {
 		final Class<?> realClass = proxyTargetObject.getClass().getSuperclass();
-		// Bidirectional OneToOne
 		final Method[] typeGetMethods = YUtilReflection.getGetMethodArray(result.getClass().getSuperclass());
-		this.handleBidirectionalOneToOne(proxyTargetObject, method, result, realClass, typeGetMethods);
+		// Bidirectional OneToOne      
+		this.handleBidirectionalOneToOne(proxyTargetObject, targetMethod, result, realClass, typeGetMethods);
+		// Bidirectional @OneToMany List
+		this.handleBidirectionalOneToManyList(proxyTargetObject, targetMethod, result, realClass, typeGetMethods);
+		
 	}
 
 	/**
 	 * 
 	 * @param proxyTargetObject
-	 * @param method
+	 * @param targetMethod
 	 * @param result
 	 * @param realClass
 	 * @param typeGetMethods
 	 */
 	private void handleBidirectionalOneToOne(final Object proxyTargetObject,
-			final Method method, final Object result, final Class<?> realClass,
+			final Method targetMethod, final Object result, final Class<?> realClass,
 			final Method[] typeGetMethods) {
-		final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, realClass, method);
+		final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, realClass, targetMethod);
 		if(bidirectionalOneToOneReferenceMethod != null) { // It is an Bidirectional Relationship
-			try {
-				final Method setMethod = YUtilReflection.getSetMethod(
-													YUtilReflection.getSetMethodName(
-															YUtilReflection.getPropertyName(bidirectionalOneToOneReferenceMethod)), 
-															result.getClass().getSuperclass(),
-															new Class[]{realClass});
-				YUtilReflection.invokeMethod(setMethod, result, proxyTargetObject);
-			} catch (Exception e) {
-				Log.e("YPersistenceInvocationHandler.handlePosConstruction", e.getMessage());
+			this.executeSet(
+					YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(bidirectionalOneToOneReferenceMethod)), 
+					result.getClass().getSuperclass(), 
+					realClass, 
+					result, 
+					proxyTargetObject);
+		} else {
+			for(final Method typeGetMethod : typeGetMethods) {
+				if(YUtilPersistence.isInvalidBidirectionalOneToOneOwnerMethod(typeGetMethod)) {
+					final String propertyName = YUtilReflection.getPropertyName(typeGetMethod);
+					final OneToOne oneToOne = targetMethod.getAnnotation(OneToOne.class);
+					if(oneToOne != null 
+							&& !YUtilString.isEmptyString(oneToOne.mappedBy())
+							&& !YUtilString.isEmptyString(propertyName)
+							&& oneToOne.mappedBy().equals(propertyName)) {
+						this.executeSet(
+								YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(typeGetMethod)), 
+								result.getClass().getSuperclass(), 
+								realClass, 
+								result, 
+								proxyTargetObject);
+						break;
+					}
+				}
 			}
-			
 		}
+	}
+	
+	/**
+	 * 
+	 * @param setMethodName
+	 * @param targetClass
+	 * @param paramClass
+	 * @param targetObject
+	 * @param valueObject
+	 */
+	private void executeSet(final String setMethodName, final Class<?> targetClass, final Class<?> paramClass, final Object targetObject, final Object valueObject) {
+		try {
+			final Method setMethod = YUtilReflection.getSetMethod(
+												setMethodName, 
+												targetClass,
+												new Class[]{paramClass}
+												);
+			YUtilReflection.invokeMethod(setMethod, targetObject, valueObject);
+		} catch (Exception e) {
+			Log.e("YPersistenceInvocationHandler.executeSet", e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param proxyTargetObject
+	 * @param targetMethod
+	 * @param result
+	 * @param realClass
+	 * @param typeGetMethods
+	 */
+	private void handleBidirectionalOneToManyList(final Object proxyTargetObject,
+			final Method targetMethod, final Object result, final Class<?> realClass,
+			final Method[] typeGetMethods) {
+		if(YUtilReflection.isList(result.getClass())) {
+			@SuppressWarnings("unchecked")
+			final List<Object> resultAsList = (List<Object>)result;
+			final OneToMany oneToMany = targetMethod.getAnnotation(OneToMany.class);
+			for(final Object oChild : resultAsList) {
+				try {
+					final Method setMethod = YUtilReflection.getSetMethod(
+														YUtilReflection.getSetMethodName(oneToMany.mappedBy()), 
+																oChild.getClass().getSuperclass(),
+																new Class[]{realClass});
+					YUtilReflection.invokeMethod(setMethod, oChild, proxyTargetObject);
+				} catch (Exception e) {
+					Log.e("YPersistenceInvocationHandler.handleBidirectionalOneToManyList", e.getMessage());
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @see br.org.yacamim.dex.YInvocationHandler#getChildListYRawData(java.lang.Class, java.lang.Class, long)
+	 */
+	@Override
+	protected List<YRawData> getChildListYRawData(final Class<?> entityClass, final Class<?> parentClass, final long parenId) {
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(entityClass);
+		defaultDBAdapter.open();
+		@SuppressWarnings("unchecked")
+		final List<YRawData> yRawDataList = defaultDBAdapter.selectRawData(parentClass, parenId);
+		defaultDBAdapter.close();
+		return yRawDataList;
 	}
 
 }

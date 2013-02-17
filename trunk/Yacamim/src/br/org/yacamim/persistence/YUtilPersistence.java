@@ -144,7 +144,7 @@ final class YUtilPersistence {
 	 * @param type
 	 * @return
 	 */
-	static Method getIdGetMethod(final Class<?> type) {
+	static Method getGetIdMethod(final Class<?> type) {
 		Method idMethod = null;
 		try {
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(type);
@@ -258,7 +258,7 @@ final class YUtilPersistence {
 			String nomeColuna = YUtilPersistence.getColumnName(column, getMethod);
 			if(YUtilPersistence.isEntity(getMethod.getReturnType())) {
 				final Class<?> entityType = getMethod.getReturnType();
-				final Method idGetMethod = YUtilPersistence.getIdGetMethod(entityType);
+				final Method idGetMethod = YUtilPersistence.getGetIdMethod(entityType);
 				nomeColuna = YUtilPersistence.getColumnName(idGetMethod.getAnnotation(Column.class), idGetMethod) + "_" + YUtilPersistence.getTableName(entityType);
 			} else {
 				nomeColuna = YUtilPersistence.getColumnName(column, getMethod);
@@ -327,7 +327,7 @@ final class YUtilPersistence {
 		final Column column = targetMethod.getAnnotation(Column.class);
 		String columnName = null;
 		if(YUtilPersistence.isEntity(returnType)) {
-			final Method getFkMethod = YUtilPersistence.getIdGetMethod(returnType);
+			final Method getFkMethod = YUtilPersistence.getGetIdMethod(returnType);
 			if(getFkMethod != null) {
 				columnName = buildFkColumnName(returnType, column, getFkMethod);
 			}
@@ -452,6 +452,17 @@ final class YUtilPersistence {
 	/**
 	 * 
 	 * @param method
+	 * @return
+	 */
+	static boolean isInvalidBidirectionalOneToOneOwnerMethod(final Method method) {
+		OneToOne  oneToOneOwner = null;
+		return (((oneToOneOwner = method.getAnnotation(OneToOne.class)) != null)
+				&& YUtilString.isEmptyString(oneToOneOwner.mappedBy()));
+	}
+
+	/**
+	 * 
+	 * @param method
 	 * @param referencedType
 	 * @param referencedGetMethod
 	 * @return
@@ -471,6 +482,64 @@ final class YUtilPersistence {
 	 */
 	static boolean isOneToOneOwner(final OneToOne  oneToOne) {
 		return (YUtilString.isEmptyString(oneToOne.mappedBy()));
+	}
+	
+
+	/**
+	 * 
+	 * @param classType
+	 * @return
+	 */
+	public static List<Method> getGetColumnMethodList(final Class<?> classType) {
+		try {
+			final List<Method> getMethods = new ArrayList<Method>();
+
+			final Method[] methods = classType.getMethods();
+
+			for(final Method method : methods) {
+				if(method.getName().startsWith(YUtilReflection.PREFIX_GET) 
+						&& !method.getName().equals(YUtilReflection.GET_CLASS_METHOD_NAME)
+						&& (method.getAnnotation(Column.class) != null
+						|| YUtilPersistence.isId(method))) {
+					getMethods.add(method);
+				}
+			}
+			return getMethods;
+		}
+		catch(Exception e) {
+			Log.e("YUtilReflection.getGetColumnMethodList", e.getMessage());
+			return new ArrayList<Method>();
+		}
+	}
+
+	/**
+	 * 
+	 * @param classType
+	 * @param attributes
+	 * @return
+	 */
+	public static List<Method> getGetColumnMethodList(final Class<?> classType, final String[] attributes) {
+		try {
+			final List<Method> getMethods = new ArrayList<Method>();
+			
+			final Method[] methods = classType.getMethods();
+			final List<String> getMethodNames = YUtilReflection.getGetMethodNames(attributes);
+			
+			for(final Method method : methods) {
+				if(method.getName().startsWith(YUtilReflection.PREFIX_GET) 
+						&& !method.getName().equals(YUtilReflection.GET_CLASS_METHOD_NAME)
+						&& getMethodNames.contains(method.getName())
+						&& (method.getAnnotation(Column.class) != null
+								|| YUtilPersistence.isId(method))) {
+					getMethods.add(method);
+				}
+			}
+			return getMethods;
+		}
+		catch(Exception e) {
+			Log.e("YUtilReflection.getGetColumnMethodList", e.getMessage());
+			return new ArrayList<Method>();
+		}
 	}
 
 }

@@ -19,6 +19,7 @@ package br.org.yacamim.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,11 +45,6 @@ public strictfp abstract class YUtilReflection {
 	 *
 	 */
 	private static final String REGEX_POINT_SEPARATOR = "[.]";
-
-	/**
-	 *
-	 */
-	private static final String GET_CLASS_METHOD_NAME = "getClass";
 
 	/**
 	 *
@@ -88,7 +84,12 @@ public strictfp abstract class YUtilReflection {
 	/**
 	 *
 	 */
-	private static final String PREFIX_GET = "get";
+	public static final String GET_CLASS_METHOD_NAME = "getClass";
+	
+	/**
+	 *
+	 */
+	public static final String PREFIX_GET = "get";
 
 	/**
 	 *
@@ -98,12 +99,12 @@ public strictfp abstract class YUtilReflection {
 	/**
 	 *
 	 */
-	private static final Object[] deafultParamArrayObjectReflection = new Object[]{};
+	public static final Object[] DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION = new Object[]{};
 
 	/**
 	 *
 	 */
-	private static final Class<?>[] defaultParamArrayClassReflection = new Class[]{};
+	public static final Class<?>[] DEFAULT_PARAM_ARRAY_CLASS_REFLECTION = new Class[]{};
 
 	/**
 	 *
@@ -220,7 +221,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static List<Method> getSetMethodList(Class<?> classType) {
+	public static List<Method> getSetMethodList(final Class<?> classType) {
 		try {
 			List<Method> setMethods = new ArrayList<Method>();
 
@@ -245,7 +246,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static List<Method> getGetMethodList(Class<?> classType) {
+	public static List<Method> getGetMethodList(final Class<?> classType) {
 		try {
 			List<Method> getMethods = new ArrayList<Method>();
 
@@ -263,6 +264,47 @@ public strictfp abstract class YUtilReflection {
 			Log.e("YUtilReflection.getGetMethodList", e.getMessage());
 			return new ArrayList<Method>();
 		}
+	}
+
+	/**
+	 * 
+	 * @param classType
+	 * @param attributes
+	 * @return
+	 */
+	public static List<Method> getGetMethodList(final Class<?> classType, final String[] attributes) {
+		try {
+			final List<Method> getMethods = new ArrayList<Method>();
+			
+			final Method[] methods = classType.getMethods();
+			final List<String> getMethodNames = getGetMethodNames(attributes);
+			
+			for(final Method method : methods) {
+				if(method.getName().startsWith(PREFIX_GET) 
+						&& !method.getName().equals(GET_CLASS_METHOD_NAME)
+						&& getMethodNames.contains(method.getName())) {
+					getMethods.add(method);
+				}
+			}
+			return getMethods;
+		}
+		catch(Exception e) {
+			Log.e("YUtilReflection.getGetMethodList", e.getMessage());
+			return new ArrayList<Method>();
+		}
+	}
+
+	/**
+	 * 
+	 * @param attributes
+	 * @return
+	 */
+	public static List<String> getGetMethodNames(final String[] attributes) {
+		final List<String> getMethodNames = new ArrayList<String>();
+		for(final String attName : attributes) {
+			getMethodNames.add(YUtilReflection.getGetMethodName(attName));
+		}
+		return getMethodNames;
 	}
 
 	/**
@@ -541,7 +583,7 @@ public strictfp abstract class YUtilReflection {
 	 */
 	public static Method getGetMethod(String getMethodName, Class<?> classType) {
 		try {
-			return classType.getMethod(getMethodName, YUtilReflection.defaultParamArrayClassReflection);
+			return classType.getMethod(getMethodName, YUtilReflection.DEFAULT_PARAM_ARRAY_CLASS_REFLECTION);
 		} catch(Exception e) {
 			Log.e("YUtilReflection.getGetMethod", e.getMessage());
 			return null;
@@ -572,7 +614,7 @@ public strictfp abstract class YUtilReflection {
 	 */
 	public static Method getSetMethod(String setMethodName, Class<?> classType) {
 		try {
-			return classType.getMethod(setMethodName, defaultParamArrayClassReflection);
+			return classType.getMethod(setMethodName, DEFAULT_PARAM_ARRAY_CLASS_REFLECTION);
 		} catch(Exception _e) {
 			Log.e("YUtilReflection.getSetMethod", _e.getMessage());
 			return null;
@@ -737,12 +779,8 @@ public strictfp abstract class YUtilReflection {
 	 * @param collectionType
 	 * @return
 	 */
-	public static boolean isCollection(Class<?> collectionType) {
-		if(collectionType.getName().equals("java.util.List")
-				|| java.util.Set.class.isInstance("java.util.Set")) {
-			return true;
-		}
-		return false;
+	public static boolean isList(Class<?> listClass) {
+		return (listClass.equals(java.util.ArrayList.class));
 	}
 
 	/**
@@ -777,7 +815,7 @@ public strictfp abstract class YUtilReflection {
 	 * @throws Exception
 	 */
 	public static Object invokeMethodWithoutParams(Method method, Object objectTo) throws Exception {
-		return method.invoke(objectTo, deafultParamArrayObjectReflection);
+		return method.invoke(objectTo, DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
 	}
 
 	/**
@@ -788,7 +826,7 @@ public strictfp abstract class YUtilReflection {
 	 */
 	public static Method getGetMethod(Field _field, Class<?> classType) {
 		try {
-			return classType.getMethod(_field.getName(), YUtilReflection.defaultParamArrayClassReflection);
+			return classType.getMethod(_field.getName(), YUtilReflection.DEFAULT_PARAM_ARRAY_CLASS_REFLECTION);
 		} catch(Exception e) {
 			Log.e("YUtilReflection.getGetMethod", e.getMessage());
 			return null;
@@ -920,7 +958,6 @@ public strictfp abstract class YUtilReflection {
 	 */
 	public static Class<?> getGenericSuperclassClass(final Class<?> classType) {
 		try {
-			
 			return (Class<?>) classType.getTypeParameters()[0].getGenericDeclaration();
 //			final ParameterizedType parameterizedType = (ParameterizedType)classType.getGenericSuperclass();
 //
@@ -946,5 +983,33 @@ public strictfp abstract class YUtilReflection {
 		);
 
 	}
+	
+	public static Field getField(final Class<?> declaringClass, final Method targetMethod) {
+		try {
+			return declaringClass.getDeclaredField(YUtilReflection.getPropertyName(targetMethod));
+		} catch (Exception e) {
+			Log.e("YUtilReflection.getField", e.getMessage());
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param declaringClass
+	 * @param targetMethod
+	 * @return
+	 */
+	public static Class<?> getGenericType(final Class<?> declaringClass, final Method targetMethod) {
+		try {
+			final Field targetField = getField(declaringClass, targetMethod);
+			final ParameterizedType fieldListGenericType = (ParameterizedType) targetField.getGenericType();
+			return (Class<?>) fieldListGenericType.getActualTypeArguments()[0];
+		} catch (Exception e) {
+			Log.e("YUtilReflection.getGenericType", e.getMessage());
+			return null;
+		}
+	}
+	
+	
 
 }
