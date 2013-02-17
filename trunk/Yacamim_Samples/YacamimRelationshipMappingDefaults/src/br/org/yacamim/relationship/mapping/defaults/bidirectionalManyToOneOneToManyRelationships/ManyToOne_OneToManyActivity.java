@@ -29,7 +29,7 @@ import br.org.yacamim.relationship.mapping.defaults.R;
  * @version 1.0
  * @since 1.0
  */
-public class ManyToOneActivity extends YBaseActivity {
+public class ManyToOne_OneToManyActivity extends YBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
