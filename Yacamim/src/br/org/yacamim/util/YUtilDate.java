@@ -139,7 +139,9 @@ public strictfp abstract class YUtilDate {
 	public static Date convertDate(String _value) {
 		Date retorno = null;
 		try {
-			retorno = getSimpleDateFormatData().parse(_value);
+			if (!YUtilString.isEmptyString(_value)) {
+				retorno = getSimpleDateFormatData().parse(_value);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -154,7 +156,9 @@ public strictfp abstract class YUtilDate {
 	public static Date convertHoraCurta(String _value) {
 		Date retorno = null;
 		try {
-			retorno = getSimpleDateFormatHorarioCurto().parse(_value);
+			if (!YUtilString.isEmptyString(_value)) {
+				retorno = getSimpleDateFormatHorarioCurto().parse(_value);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -169,7 +173,9 @@ public strictfp abstract class YUtilDate {
 	public static Date convertHora(String _value) {
 		Date retorno = null;
 		try {
-			retorno = getSimpleDateFormatHorario().parse(_value);
+			if (!YUtilString.isEmptyString(_value)) {
+				retorno = getSimpleDateFormatHorario().parse(_value);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
