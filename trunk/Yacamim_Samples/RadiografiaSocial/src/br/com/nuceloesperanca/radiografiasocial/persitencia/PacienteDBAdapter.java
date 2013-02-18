@@ -50,11 +50,11 @@ public class PacienteDBAdapter extends DefaultDBAdapter<Paciente> {
 		Integer indice = 0;
 		if (prontuario != 0) {
 			where += "p.Prontuario like ? and ";
-			selectionArgsList.add(String.valueOf(prontuario));
+			selectionArgsList.add("%" + prontuario + "%");
 		}
 		if (!YUtilString.isEmptyString(nome)) {
 			where += "p.Nome like ? and ";
-			selectionArgsList.add(nome);
+			selectionArgsList.add("%" + nome + "%");
 		}
 		//retira o and do final.
 		where = where.substring(0, where.length() - 4);
