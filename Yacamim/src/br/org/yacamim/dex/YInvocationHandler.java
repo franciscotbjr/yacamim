@@ -20,7 +20,6 @@ package br.org.yacamim.dex;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;

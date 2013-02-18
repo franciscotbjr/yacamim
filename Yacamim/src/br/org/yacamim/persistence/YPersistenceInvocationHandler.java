@@ -137,8 +137,6 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 		final Method[] typeGetMethods = YUtilReflection.getGetMethodArray(result.getClass().getSuperclass());
 		// Bidirectional OneToOne      
 		this.handleBidirectionalOneToOne(proxyTargetObject, targetMethod, result, realClass, typeGetMethods);
-		// Bidirectional @OneToMany List
-		this.handleBidirectionalOneToManyList(proxyTargetObject, targetMethod, result, realClass, typeGetMethods);
 		
 	}
 
@@ -204,35 +202,6 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param proxyTargetObject
-	 * @param targetMethod
-	 * @param result
-	 * @param realClass
-	 * @param typeGetMethods
-	 */
-	private void handleBidirectionalOneToManyList(final Object proxyTargetObject,
-			final Method targetMethod, final Object result, final Class<?> realClass,
-			final Method[] typeGetMethods) {
-		if(YUtilReflection.isList(result.getClass())) {
-			@SuppressWarnings("unchecked")
-			final List<Object> resultAsList = (List<Object>)result;
-			final OneToMany oneToMany = targetMethod.getAnnotation(OneToMany.class);
-			for(final Object oChild : resultAsList) {
-				try {
-					final Method setMethod = YUtilReflection.getSetMethod(
-														YUtilReflection.getSetMethodName(oneToMany.mappedBy()), 
-																oChild.getClass().getSuperclass(),
-																new Class[]{realClass});
-					YUtilReflection.invokeMethod(setMethod, oChild, proxyTargetObject);
-				} catch (Exception e) {
-					Log.e("YPersistenceInvocationHandler.handleBidirectionalOneToManyList", e.getMessage());
-				}
-			}
-		}
-	}
-
 	/**
 	 * 
 	 * @see br.org.yacamim.dex.YInvocationHandler#getChildListYRawData(java.lang.Class, java.lang.Class, long)
