@@ -13,6 +13,7 @@ import br.org.yacamim.entity.YBaseEntity;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.Id;
+import br.org.yacamim.persistence.OneToMany;
 
 /**
  * Entidade que representa a tabela de Visita.
@@ -27,8 +28,8 @@ public class Visita extends YBaseEntity {
 	private long id;
 	private Date data;
 	private String itensLevados;
-	private long latitude;
-	private long longitude;
+	private double latitude;
+	private double longitude;
 	private Paciente paciente;
 
 	/**
@@ -81,7 +82,7 @@ public class Visita extends YBaseEntity {
 	/**
 	 * @return the itensLevados
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getItensLevados() {
 		return this.itensLevados;
 	}
@@ -96,37 +97,37 @@ public class Visita extends YBaseEntity {
 	/**
 	 * @return the latitude
 	 */
-	@Column
-	public long getLatitude() {
+	@Column(nullable = true)
+	public double getLatitude() {
 		return this.latitude;
 	}
 
 	/**
 	 * @param latitude the latitude to set
 	 */
-	public void setLatitude(long latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
 	/**
 	 * @return the longitude
 	 */
-	@Column
-	public long getLongitude() {
+	@Column(nullable = true)
+	public double getLongitude() {
 		return this.longitude;
 	}
 
 	/**
 	 * @param longitude the longitude to set
 	 */
-	public void setLongitude(long longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
 	/**
 	 * @return the paciente
 	 */
-	@Column
+	@OneToMany
 	public Paciente getPaciente() {
 		return this.paciente;
 	}

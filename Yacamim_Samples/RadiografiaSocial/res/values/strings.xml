@@ -7,6 +7,8 @@
     <string name="label_resultado_consulta">Resultado da Consulta</string>
     <string name="valor_selecione_item">Selecione</string>
     <string name="valor_definir_data">Definir Data</string>
+	<string name="label_sim">Sim</string>
+	<string name="label_nao">Não</string>
 
     <!-- Paciente -->
     <string name="title_consultar_paciente">Consultar Paciente</string>
@@ -20,8 +22,15 @@
 	<string name="lbl_telefones">Telefones</string>
 	<string name="lbl_endereco">Endereço</string>
 	<string name="lbl_cid">CID</string>
+	<string name="lbl_em_tratamento">Em Tratamento</string>
+	<string name="lbl_obito">Óbito</string>
 	<string name="lbl_latitude">Latitude</string>
 	<string name="lbl_longitude">Longitude</string>
+
+	<!-- Visita -->
+	<string name="lbl_visita">Paciente</string>
+	<string name="lbl_itens_levados">Itens Levados</string>
+	<string name="lbl_data_visita">Data Visita</string>
 
     <!-- Yacamin -->
     <string name="y_MsgOK">OK</string>

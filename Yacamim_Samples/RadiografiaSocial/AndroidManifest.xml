@@ -46,5 +46,9 @@
             android:name="br.com.nuceloesperanca.radiografiasocial.PacienteActivity"
             android:label="@string/lbl_paciente" >
         </activity>
+        <activity
+            android:name="br.com.nuceloesperanca.radiografiasocial.VisitaActivity"
+            android:label="@string/lbl_visita" >
+        </activity>
     </application>
 </manifest>

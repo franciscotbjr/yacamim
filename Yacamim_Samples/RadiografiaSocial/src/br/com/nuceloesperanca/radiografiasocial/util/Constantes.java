@@ -16,6 +16,9 @@ import br.org.yacamim.util.YConstants;
  * @since 1.0
  */
 public final class Constantes extends YConstants {
+	 public static final String NAO = "N";
+	 public static final String SIM = "S";
+
 	/**
 	 * Construtor da classe.
 	 */

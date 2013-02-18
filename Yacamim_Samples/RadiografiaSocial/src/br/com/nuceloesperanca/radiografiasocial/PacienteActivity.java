@@ -216,11 +216,11 @@ public class PacienteActivity extends YBaseActivity {
 			paciente.setEmTratamento(YUtilText.getBolStringFromRadioButton(this, R.id.radio_sim_em_tratamento));
 			paciente.setObito(YUtilText.getBolStringFromRadioButton(this, R.id.radio_sim_obito));
 
-			if (YUtilText.getLongFromEditText(this, R.id.txte_latitude) != null) {
+			if (YUtilText.getDoubleFromEditText(this, R.id.txte_latitude) != null) {
 				paciente.setLatitude(YUtilText.getDoubleFromEditText(this, R.id.txte_latitude));
 			}
 
-			if (YUtilText.getLongFromEditText(this, R.id.txte_longitude) != null) {
+			if (YUtilText.getDoubleFromEditText(this, R.id.txte_longitude) != null) {
 				paciente.setLongitude(YUtilText.getLongFromEditText(this, R.id.txte_longitude));
 			}
 

@@ -91,7 +91,7 @@ public class RadiografiaSocialActivity extends YInitBaseActivity {
 	 */
 	public void registrarVisita(final View _view) {
 		try {
-			//startActivity(new Intent(this, ConsultarPacienteActivity.class));
+			startActivity(new Intent(this, VisitaActivity.class));
 		} catch (Exception e) {
 			Log.e("RadiografiaSocialActivity.registrarVisita", e.getMessage());
 		}

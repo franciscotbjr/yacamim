@@ -87,7 +87,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the prontuario
 	 */
-	@Column
+	@Column(nullable = true)
 	public int getProntuario() {
 		return this.prontuario;
 	}
@@ -102,7 +102,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the nome
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getNome() {
 		return this.nome;
 	}
@@ -117,7 +117,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the nascimento
 	 */
-	@Column
+	@Column(nullable = true)
 	public Date getNascimento() {
 		return this.nascimento;
 	}
@@ -132,7 +132,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the nomeMae
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getNomeMae() {
 		return this.nomeMae;
 	}
@@ -147,7 +147,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the nomePai
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getNomePai() {
 		return this.nomePai;
 	}
@@ -162,7 +162,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the irmaos
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getIrmaos() {
 		return this.irmaos;
 	}
@@ -177,7 +177,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the telefones
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getTelefones() {
 		return this.telefones;
 	}
@@ -192,7 +192,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the endereco
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getEndereco() {
 		return this.endereco;
 	}
@@ -222,7 +222,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the latitude
 	 */
-	@Column
+	@Column(nullable = true)
 	public double getLatitude() {
 		return this.latitude;
 	}
@@ -237,7 +237,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the longitude
 	 */
-	@Column
+	@Column(nullable = true)
 	public double getLongitude() {
 		return this.longitude;
 	}
@@ -252,7 +252,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the emTratamento
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getEmTratamento() {
 		return this.emTratamento;
 	}
@@ -267,7 +267,7 @@ public class Paciente extends YBaseEntity {
 	/**
 	 * @return the obito
 	 */
-	@Column
+	@Column(nullable = true)
 	public String getObito() {
 		return this.obito;
 	}
@@ -290,6 +290,14 @@ public class Paciente extends YBaseEntity {
             return new Paciente[size];
         }
 	};
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.nome;
+	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
