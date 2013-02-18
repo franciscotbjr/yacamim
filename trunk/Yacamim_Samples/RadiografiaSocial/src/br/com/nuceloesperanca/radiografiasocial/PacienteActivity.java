@@ -32,6 +32,8 @@ import br.org.yacamim.util.YUtilString;
 import br.org.yacamim.util.YUtilText;
 
 /**
+ * Activity de cadastro de pacientes.
+ * 
  * @author manny.
  * Criado em Feb 16, 2013 11:29:22 PM
  * @version 1.0
@@ -92,9 +94,9 @@ public class PacienteActivity extends YBaseActivity {
      */
     private void initCampos() {
     	PacienteDBAdapter pacienteDBAdapter = null;
-    	
+
     	try {
-    		if (this.paciente != null) {
+    		if (this.paciente != null && paciente.getId() != 0) {
     			pacienteDBAdapter = new PacienteDBAdapter(Paciente.class);
     			pacienteDBAdapter.open();
     			this.paciente = pacienteDBAdapter.getByID(this.paciente.getId());
@@ -111,6 +113,8 @@ public class PacienteActivity extends YBaseActivity {
     			YUtilText.setTextToEditText(this, R.id.txte_telefones, this.paciente.getTelefones());
     			YUtilText.setTextToEditText(this, R.id.txte_endereco, this.paciente.getEndereco());
     			UtilCombos.setSelectedObjectToSpinner(this, R.id.cmb_cid, this.paciente.getCid());
+    			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_em_tratamento, R.id.radio_nao_em_tratamento, this.paciente.getEmTratamento());
+    			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_obito, R.id.radio_nao_obito, this.paciente.getObito());
     		}
     		
     		final EditText editTextLatitude = (EditText) this.findViewById(R.id.txte_latitude);
@@ -136,7 +140,7 @@ public class PacienteActivity extends YBaseActivity {
 			final Spinner cmbCID = (Spinner)findViewById(R.id.cmb_cid);
 			adapter.open();
 			List<Cid> cids = adapter.list();
-			UtilCombos.initComboCID(cmbCID, this, cids);
+			UtilCombos.initComboCIDs(cmbCID, this, cids);
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
 		} finally {
@@ -148,8 +152,8 @@ public class PacienteActivity extends YBaseActivity {
      * Inicializa os componentes de data. 
      */
     private void initDatePickers() {
-    	final Button pickDataInstalacao = (Button) findViewById(R.id.btn_nacimento);
-        pickDataInstalacao.setOnClickListener(new View.OnClickListener() {
+    	final Button pickDataNascimento = (Button) findViewById(R.id.btn_nacimento);
+        pickDataNascimento.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_DATA_NASCIMENTO);
             }
@@ -191,11 +195,11 @@ public class PacienteActivity extends YBaseActivity {
 	 * Realiza a gravação dos dados do paciente. 
 	 */
     private void gravarDados() {
-    	PacienteDBAdapter pacienteDBAdapter = null;
+    	PacienteDBAdapter adapter = null;
     	try {
-			pacienteDBAdapter = new PacienteDBAdapter(Paciente.class);
-			pacienteDBAdapter.open();
-			pacienteDBAdapter.beginTransaction();
+			adapter = new PacienteDBAdapter(Paciente.class);
+			adapter.open();
+			adapter.beginTransaction();
 			paciente.setProntuario(YUtilText.getIntegerFromTextView(this, R.id.txte_prontuario));
 			paciente.setNome(YUtilText.getTextFromEditText(this, R.id.txte_nome));
 			paciente.setNascimento((YUtilDate.convertDate(YUtilText.getTextFromTextView(this, R.id.txtv_nascimento))));
@@ -209,6 +213,9 @@ public class PacienteActivity extends YBaseActivity {
 				paciente.setCid((Cid)((Spinner)this.findViewById(R.id.cmb_cid)).getSelectedItem());
 			}
 
+			paciente.setEmTratamento(YUtilText.getBolStringFromRadioButton(this, R.id.radio_sim_em_tratamento));
+			paciente.setObito(YUtilText.getBolStringFromRadioButton(this, R.id.radio_sim_obito));
+
 			if (YUtilText.getLongFromEditText(this, R.id.txte_latitude) != null) {
 				paciente.setLatitude(YUtilText.getDoubleFromEditText(this, R.id.txte_latitude));
 			}
@@ -218,22 +225,22 @@ public class PacienteActivity extends YBaseActivity {
 			}
 
 			if (inclusao) {
-				pacienteDBAdapter.insert(paciente);
+				adapter.insert(paciente);
 				showDialog(Constantes.INFO_DATA_SUCCESFULLY_INSERTED);
 			} else {
-				pacienteDBAdapter.update(paciente);
+				adapter.update(paciente);
 				showDialog(Constantes.INFO_DATA_SUCCESFULLY_UPDATED);
 			}
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
-			if (pacienteDBAdapter != null) {
-				pacienteDBAdapter.endTransaction(false);
-				pacienteDBAdapter.close();
+			if (adapter != null) {
+				adapter.endTransaction(false);
+				adapter.close();
 			}
 		} finally {
-			if (pacienteDBAdapter != null) {
-				pacienteDBAdapter.endTransaction(true);
-				pacienteDBAdapter.close();
+			if (adapter != null) {
+				adapter.endTransaction(true);
+				adapter.close();
 			}
 		}
     }

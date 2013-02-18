@@ -9,6 +9,7 @@ import java.util.Date;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import br.com.nuceloesperanca.radiografiasocial.util.Constantes;
 import br.org.yacamim.entity.YBaseEntity;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
@@ -37,13 +38,16 @@ public class Paciente extends YBaseEntity {
 	private Cid cid;
 	private double latitude;
 	private double longitude;
+	private String emTratamento;
+	private String obito;
 
 	/**
 	 * Construtor da classe.
-	 *
 	 */
 	public Paciente() {
 		super();
+		setEmTratamento(Constantes.SIM);
+		setObito(Constantes.NAO);
 	}
 
 	/**
@@ -53,6 +57,16 @@ public class Paciente extends YBaseEntity {
 	 */
 	public Paciente(Parcel parcel) {
 		super(parcel);
+	}
+
+	/**
+	 * Construtor da classe.
+	 *
+	 * @param nome
+	 */
+	public Paciente(String nome) {
+		super();
+		this.nome = nome;
 	}
 
 	/**
@@ -233,6 +247,36 @@ public class Paciente extends YBaseEntity {
 	 */
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+
+	/**
+	 * @return the emTratamento
+	 */
+	@Column
+	public String getEmTratamento() {
+		return this.emTratamento;
+	}
+
+	/**
+	 * @param emTratamento the emTratamento to set
+	 */
+	public void setEmTratamento(String emTratamento) {
+		this.emTratamento = emTratamento;
+	}
+
+	/**
+	 * @return the obito
+	 */
+	@Column
+	public String getObito() {
+		return this.obito;
+	}
+
+	/**
+	 * @param obito the obito to set
+	 */
+	public void setObito(String obito) {
+		this.obito = obito;
 	}
 
 	/**

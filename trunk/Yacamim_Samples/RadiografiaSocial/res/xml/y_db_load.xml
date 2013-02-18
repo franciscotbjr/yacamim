@@ -1563,9 +1563,9 @@
                 <!--
                 <y-insert y-entity="Paciente" >
                     <y-row>
-					    (id, nome, nomeMae, Id_Cid) values (1, 'Paciente 1', 'Mãe 1', 28)                    </y-row>
+					    (id, nome, nomeMae, Id_Cid, emTratamento, obito) values (1, 'Paciente 1', 'Mãe 1', 28, 'S', 'N')                    </y-row>
                     <y-row>
-					    (id, nome, nomeMae, Id_Cid) values (2, 'Paciente 2', 'Mãe 2', 29)                    </y-row>
+					    (id, nome, nomeMae, Id_Cid, emTratamento, obito) values (2, 'Paciente 2', 'Mãe 2', 29, 'S', 'N')                    </y-row>
                 </y-insert>
                 -->
             </y-package>

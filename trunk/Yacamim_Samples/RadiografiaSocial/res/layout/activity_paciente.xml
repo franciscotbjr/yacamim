@@ -22,7 +22,7 @@
             android:layout_height="fill_parent">
 	        <LinearLayout
 	            xmlns:android="http://schemas.android.com/apk/res/android"
-	            android:id="@+id/layout_consultar_pacientes"
+	            android:id="@+id/layout_manter_paciente"
 	            android:orientation="vertical"
 	            android:layout_width="fill_parent"
 	            android:layout_height="fill_parent"
@@ -193,6 +193,74 @@
 	                android:inputType="textMultiLine"
 	                style="@style/EditText">
 	            </EditText>
+
+	            <!-- Em Tratamento -->
+	            <TextView
+	                android:id="@+id/txtv_em_tratamento"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/lbl_em_tratamento"
+	                style="@style/fonte_label"
+	                android:paddingTop="10sp">
+	            </TextView>
+	            <RadioGroup 
+					android:id="@+id/RadioGroup_em_tratamento" 
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" 
+					android:orientation="horizontal"
+					android:textSize="@dimen/deafult_text_size"
+	              	style="@style/fonte_label">
+					<RadioButton 
+						android:id="@+id/radio_sim_em_tratamento" 
+						android:text="@string/label_sim"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="@dimen/deafult_text_size"
+	               		style="@style/fonte_label"
+	               		android:background="@color/custom_theme_color"/>
+					<RadioButton 
+						android:id="@+id/radio_nao_em_tratamento" 
+						android:text="@string/label_nao"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="@dimen/deafult_text_size"
+	               		style="@style/fonte_label"
+	               		android:background="@color/custom_theme_color"/>
+				</RadioGroup>
+
+	            <!-- Óbito -->
+	            <TextView
+	                android:id="@+id/txtv_obito"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/lbl_obito"
+	                style="@style/fonte_label"
+	                android:paddingTop="10sp">
+	            </TextView>
+	            <RadioGroup 
+					android:id="@+id/RadioGroup_obito" 
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" 
+					android:orientation="horizontal"
+					android:textSize="@dimen/deafult_text_size"
+	              	style="@style/fonte_label">
+					<RadioButton 
+						android:id="@+id/radio_sim_obito" 
+						android:text="@string/label_sim"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="@dimen/deafult_text_size"
+	               		style="@style/fonte_label"
+	               		android:background="@color/custom_theme_color"/>
+					<RadioButton 
+						android:id="@+id/radio_nao_obito" 
+						android:text="@string/label_nao"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="@dimen/deafult_text_size"
+	               		style="@style/fonte_label"
+	               		android:background="@color/custom_theme_color"/>
+				</RadioGroup>
 
 	            <!-- Latitude -->
 	            <TextView
