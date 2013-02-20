@@ -52,7 +52,6 @@ public class ManyToOne_OneToManyActivity extends YBaseListActivity {
 		this.init();
 	}
 	
-
 	/**
 	 * 
 	 */
