@@ -20,11 +20,11 @@ package br.org.yacamim.dex;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
 import br.org.yacamim.YRawData;
-import br.org.yacamim.util.YList;
 import br.org.yacamim.util.YUtilReflection;
 
 import com.google.dexmaker.stock.ProxyBuilder;
@@ -74,7 +74,7 @@ public abstract class YInvocationHandler implements InvocationHandler {
 					this.fillChild(result, childRawData);
 				
 			} else if(YUtilReflection.isList(clazzEntity)) {
-				result = new YList();
+				result = new ArrayList();
 				final List<YRawData> childListRawData = this.getChildListYRawData(YUtilReflection.getGenericType(realClass, targetMethod), realClass, longId);
 				if(childListRawData != null) {
 					final Class<?> genericType = YUtilReflection.getGenericType(realClass, targetMethod);
