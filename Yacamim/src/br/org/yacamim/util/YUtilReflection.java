@@ -781,7 +781,7 @@ public strictfp abstract class YUtilReflection {
 	 */
 	public static boolean isList(Class<?> listClass) {
 		return (listClass.equals(java.util.List.class)
-				|| listClass.equals(br.org.yacamim.util.YList.class));
+				|| listClass.equals(java.util.ArrayList.class));
 	}
 
 	/**
