@@ -10,21 +10,22 @@
     <string name="title_activity_bidirectional_one_to_one_cubicle">Bidirectional >> OneToOne Cubicle</string>
     <string name="title_activity_unidirectional_many_to_one">Unidirectional >> ManyToOne</string>
     <string name="title_activity_unidirectional_one_to_one">Unidirectional >> OneToOne</string>
+    <string name="title_activity_unidirectional_multi_valued_one_to_many">Unidirectional Multi-Valued >> OneToMany</string>
+    <string name="title_activity_unidirectional_multi_valued_many_to_many">Unidirectional Multi-Valued >> ManyToMany</string>
     <string name="label_employee">Employee: </string>
     <string name="label_travel_profile">Travel Profile: </string>
     <string name="label_city">City: </string>
-    
-    <string name="y_MsgOK">OK</string> 
-	<string name="y_MsgSuccesfullyInserted">Registro inserido com sucesso.</string>
-	<string name="y_MsgSuccesfullyUpdated">Regsitro atuaizado com sucesso.</string>
-	<string name="y_MsgInvalidData">Dados inválidos.</string>
-	<string name="y_MsgSelectAnItem">Selecione um Item.</string>
-	<string name="y_MsgWait">Aguarde...</string>
-	<string name="y_MsgNoInformationFound">Nenhuma informação encontrada.</string>
-	<string name="y_MsgNoRecordsFoundForParameters">Nenhum regsitro encontrado.</string>
-	<string name="y_MsgNoRecordSelected">Nenhum registro seleiconado.</string>
-	<string name="y_MsgNoConnectivityAvailable">Conexão indisponível.</string>
-	<string name="y_MsgNoWifiConnectivityAvailable">Conexão Wifi indisponível.</string>
-	<string name="y_MsgConstraintDependency">O registro não pode ser excluído.</string>
+    <string name="y_MsgOK">OK</string>
+    <string name="y_MsgSuccesfullyInserted">Registro inserido com sucesso.</string>
+    <string name="y_MsgSuccesfullyUpdated">Regsitro atuaizado com sucesso.</string>
+    <string name="y_MsgInvalidData">Dados inválidos.</string>
+    <string name="y_MsgSelectAnItem">Selecione um Item.</string>
+    <string name="y_MsgWait">Aguarde...</string>
+    <string name="y_MsgNoInformationFound">Nenhuma informação encontrada.</string>
+    <string name="y_MsgNoRecordsFoundForParameters">Nenhum regsitro encontrado.</string>
+    <string name="y_MsgNoRecordSelected">Nenhum registro seleiconado.</string>
+    <string name="y_MsgNoConnectivityAvailable">Conexão indisponível.</string>
+    <string name="y_MsgNoWifiConnectivityAvailable">Conexão Wifi indisponível.</string>
+    <string name="y_MsgConstraintDependency">O registro não pode ser excluído.</string>
 
 </resources>
