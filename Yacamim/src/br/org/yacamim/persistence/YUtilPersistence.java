@@ -484,6 +484,15 @@ final class YUtilPersistence {
 		return (YUtilString.isEmptyString(oneToOne.mappedBy()));
 	}
 	
+	/**
+	 * 
+	 * @param manyToMany
+	 * @return
+	 */
+	static boolean isManyToManyOwner(final ManyToMany  manyToMany) {
+		return (YUtilString.isEmptyString(manyToMany.mappedBy()));
+	}
+	
 
 	/**
 	 * 
