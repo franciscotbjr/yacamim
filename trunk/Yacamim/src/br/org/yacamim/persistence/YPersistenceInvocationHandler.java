@@ -151,7 +151,7 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	private void handleBidirectionalOneToOne(final Object proxyTargetObject,
 			final Method targetMethod, final Object result, final Class<?> realClass,
 			final Method[] typeGetMethods) {
-		final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, realClass, targetMethod);
+		final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneOwnedMethod(typeGetMethods, realClass, targetMethod);
 		if(bidirectionalOneToOneReferenceMethod != null) { // It is an Bidirectional Relationship
 			this.executeSet(
 					YUtilReflection.getSetMethodName(YUtilReflection.getPropertyName(bidirectionalOneToOneReferenceMethod)), 
