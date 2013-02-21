@@ -59,7 +59,7 @@ public class DefaultDBHelper extends SQLiteOpenHelper {
 			if(YacamimConfig.getInstance().usesDBScript()) {
 				handleDBScript(database);
 			} else if (YacamimConfig.getInstance().isConfigItemsLoaded()) {
-				YSQLBuilder ysqlBuilder = new YSQLBuilder();
+				YDataBaseBuilder ysqlBuilder = new YDataBaseBuilder();
 				List<StringBuilder> createScripts = ysqlBuilder.buildCreateScript(YacamimConfig.getInstance().getEntities());
 				if(createScripts != null) {
 					for(final StringBuilder createScript : createScripts) {

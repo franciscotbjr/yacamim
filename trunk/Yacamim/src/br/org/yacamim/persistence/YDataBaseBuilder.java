@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.util.Log;
 import br.org.yacamim.util.YUtilReflection;
@@ -37,7 +38,7 @@ import br.org.yacamim.util.YUtilString;
  * @version 1.0
  * @since 1.0
  */
-class YSQLBuilder {
+class YDataBaseBuilder {
 	
 	private static final Map<Class<?>, String> sqlTypeMap = new HashMap<Class<?>,String>();
 	
@@ -79,7 +80,7 @@ class YSQLBuilder {
 	/**
 	 * 
 	 */
-	public YSQLBuilder() {
+	public YDataBaseBuilder() {
 		super();
 	}
 	
@@ -98,9 +99,19 @@ class YSQLBuilder {
 			List<Class<?>> orderedList = yDependencyOrderer.order(classes);
 			
 			for(Class<?> clazz : orderedList) {
-				final StringBuilder sqlScript = this.montaSQL(clazz);
-				if(!YUtilString.isEmptyString(sqlScript)) {
-					createScript.add(sqlScript);
+				final Map<StringBuilder, Boolean> scriptMap = this.buildCreateSQL(clazz);
+				final Set<StringBuilder> sqlScripts = scriptMap.keySet();
+				for(final StringBuilder sqlScript : sqlScripts) { // Adds only regular tables
+					if(!YUtilString.isEmptyString(sqlScript) 
+							&& !scriptMap.get(sqlScript)) {
+						createScript.add(sqlScript);
+					}
+				}
+				for(final StringBuilder sqlScript : sqlScripts) { // Adds only join tables at the end of the list
+					if(!YUtilString.isEmptyString(sqlScript) 
+							&& scriptMap.get(sqlScript)) {
+						createScript.add(sqlScript);
+					}
 				}
 			}
 			
@@ -151,7 +162,8 @@ class YSQLBuilder {
 	 * @return
 	 * @throws BidirectionalOneToOneException 
 	 */
-	private StringBuilder montaSQL(final Class<?> clazz) throws BidirectionalOneToOneException {
+	private Map<StringBuilder, Boolean> buildCreateSQL(final Class<?> clazz) throws BidirectionalOneToOneException {
+		final Map<StringBuilder, Boolean> scriptMap = new HashMap<StringBuilder, Boolean>();
 		final StringBuilder sqlCreate = new StringBuilder();
 		final YProcessedEntity processedEntity = this.getYProcessedEntity(clazz);
 		if(YUtilPersistence.isEntity(clazz) && processedEntity != null) { 
@@ -197,6 +209,7 @@ class YSQLBuilder {
 								sqlCol.append(YUtilPersistence.SQL_WORD_UNIQUE);
 							}
 						}
+						
 					} else {
 						// Não há anotação @Column
 						if(YUtilPersistence.isId(currentGetMethod)) {
@@ -264,6 +277,19 @@ class YSQLBuilder {
 								sqlFKConstarint.append(YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + fkName+ ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntityFK.getTableName() + "(" + processedEntityFK.getIdColumn() + ")");
 							}
 						}
+					} else if (YUtilReflection.isList(currentReturnedType) && column != null) {
+						final ManyToMany manyToMany = currentGetMethod.getAnnotation(ManyToMany.class);
+						
+						if(manyToMany != null) {
+							if(YUtilPersistence.isManyToManyOwner(manyToMany)) { 
+								final StringBuilder sqlCreateJoinTable = new StringBuilder();
+								
+								
+								// Generate a join table that is named
+								
+								scriptMap.put(sqlCreateJoinTable, true);
+							}
+						}
 					}
 				}
 				//---
@@ -293,7 +319,8 @@ class YSQLBuilder {
 			}
 			sqlCreate.append(" ); ");
 		}
-		return sqlCreate;
+		scriptMap.put(sqlCreate, false);
+		return scriptMap;
 	}
 
 	/**
