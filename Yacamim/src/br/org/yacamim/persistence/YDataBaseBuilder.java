@@ -158,17 +158,17 @@ class YDataBaseBuilder {
 	
 	/**
 	 * 
-	 * @param clazz
+	 * @param sourceClassOfTableScript
 	 * @return
 	 * @throws BidirectionalOneToOneException 
 	 */
-	private Map<StringBuilder, Boolean> buildCreateSQL(final Class<?> clazz) throws BidirectionalOneToOneException {
+	private Map<StringBuilder, Boolean> buildCreateSQL(final Class<?> sourceClassOfTableScript) throws BidirectionalOneToOneException {
 		final Map<StringBuilder, Boolean> scriptMap = new HashMap<StringBuilder, Boolean>();
 		final StringBuilder sqlCreate = new StringBuilder();
-		final YProcessedEntity processedEntity = this.getYProcessedEntity(clazz);
-		if(YUtilPersistence.isEntity(clazz) && processedEntity != null) { 
+		final YProcessedEntity processedEntity = this.getYProcessedEntity(sourceClassOfTableScript);
+		if(YUtilPersistence.isEntity(sourceClassOfTableScript) && processedEntity != null) { 
 			
-			final List<Method> getMethods = this.initMethodsGet(clazz);
+			final List<Method> getMethods = this.initMethodsGet(sourceClassOfTableScript);
 			
 			final StringBuilder idBuilder = new StringBuilder();
 			final List<StringBuilder> cols = new ArrayList<StringBuilder>();
@@ -183,18 +183,19 @@ class YDataBaseBuilder {
 				
 				if(sqlType != null) {
 					
-					final Column column = currentGetMethod.getAnnotation(Column.class);
-					
-					if(column != null) {
-						if(YUtilPersistence.isId(currentGetMethod)) {
-							defineColNameAndType(idBuilder, currentGetMethod, sqlType, column);
-							
-							idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
-							if(YUtilPersistence.isAutoincrement(currentGetMethod)) {
-								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
-							}
-							idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
-						} else {
+					if(YUtilPersistence.isId(currentGetMethod)) {
+						idBuilder.append(processedEntity.getIdColumn());
+						idBuilder.append(" " + sqlType);
+						
+						idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
+						if(YUtilPersistence.isAutoincrement(currentGetMethod)) {
+							idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
+						}
+						idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
+					} else {
+						final Column column = currentGetMethod.getAnnotation(Column.class);
+						
+						if(column != null) {
 							defineColNameAndType(sqlCol, currentGetMethod, sqlType, column);
 							
 							if(YUtilPersistence.isText(sqlType) && column != null) {
@@ -209,19 +210,8 @@ class YDataBaseBuilder {
 								sqlCol.append(YUtilPersistence.SQL_WORD_UNIQUE);
 							}
 						}
-						
-					} else {
-						// Não há anotação @Column
-						if(YUtilPersistence.isId(currentGetMethod)) {
-							defineColNameAndType(idBuilder, currentGetMethod, sqlType, column);
-							
-							idBuilder.append(YUtilPersistence.SQL_WORD_PRIMARY_KEY);
-							if(YUtilPersistence.isAutoincrement(currentGetMethod)) {
-								idBuilder.append(YUtilPersistence.SQL_WORD_AUTOINCREMENT);
-							}
-							idBuilder.append(YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL);
-						}
 					}
+
 				} else {
 					final Column column = currentGetMethod.getAnnotation(Column.class);
 					if(YUtilPersistence.isEntity(currentReturnedType) && column != null) {
@@ -251,10 +241,10 @@ class YDataBaseBuilder {
 								final ManyToOne manyToOne = currentGetMethod.getAnnotation(ManyToOne.class);
 								if(oneToOne != null) {
 									// Checks if this is an Bidirectional Relationships
-									if(YUtilPersistence.hashBidirectionalOneToOneItem(typeGetMethods, clazz, currentGetMethod)) { // It is an Bidirectional Relationship
-										final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneReferenceMethod(typeGetMethods, clazz, currentGetMethod);
+									if(YUtilPersistence.hashBidirectionalOneToOneItem(typeGetMethods, sourceClassOfTableScript, currentGetMethod)) { // It is an Bidirectional Relationship
+										final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneOwnedMethod(typeGetMethods, sourceClassOfTableScript, currentGetMethod);
 										if(bidirectionalOneToOneReferenceMethod == null) {
-											final Method invalidBidirectionalOneToOneReferenceMethod = YUtilPersistence.getInvalidBidirectionalOneToOneReferenceMethod(typeGetMethods, clazz, currentGetMethod);
+											final Method invalidBidirectionalOneToOneReferenceMethod = YUtilPersistence.getInvalidBidirectionalOneToOneOwnedMethod(typeGetMethods, sourceClassOfTableScript, currentGetMethod);
 											if(invalidBidirectionalOneToOneReferenceMethod != null) {
 												final OneToOne invalidOneToOne = invalidBidirectionalOneToOneReferenceMethod.getAnnotation(OneToOne.class);
 												throw new BidirectionalOneToOneException("Invalid Bidirectional OneToOne relationship: mappedBy=" + invalidOneToOne.mappedBy());
@@ -282,12 +272,45 @@ class YDataBaseBuilder {
 						
 						if(manyToMany != null) {
 							if(YUtilPersistence.isManyToManyOwner(manyToMany)) { 
-								final StringBuilder sqlCreateJoinTable = new StringBuilder();
-								
-								
-								// Generate a join table that is named
-								
-								scriptMap.put(sqlCreateJoinTable, true);
+								// Finds the owned of relationship
+								final Class<?> ownedType = YUtilReflection.getGenericType(sourceClassOfTableScript, currentGetMethod);
+								if(ownedType != null) {
+									final Method ownedMethod = YUtilPersistence.getBidirectionalManyToManyOwnedMethod(YUtilReflection.getGetMethodArray(ownedType), sourceClassOfTableScript, currentGetMethod);
+									if(ownedMethod != null) {
+										final YProcessedEntity processedOwnedEntity =  this.getYProcessedEntity(ownedType);
+										final StringBuilder sqlCreateJoinTable = new StringBuilder();
+										// Generate a join table that is named
+										sqlCreateJoinTable.append(YUtilPersistence.SQL_WORD_CREATE + YUtilPersistence.SQL_WORD_TABLE);
+										sqlCreateJoinTable.append(" " + processedEntity.getTableName() + "_" + processedOwnedEntity.getTableName() +  " (");
+										
+										final String ownerFKName = processedEntity.getTableName() + "_" + processedEntity.getIdColumn();
+										final String ownedFKName = processedOwnedEntity.getTableName() + "_" + processedOwnedEntity.getIdColumn();
+										
+										// Columns
+										sqlCreateJoinTable.append(
+												ownerFKName + " " + this.getSqlType(YUtilPersistence.getGetIdMethod(sourceClassOfTableScript).getReturnType()) + YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL + ", "
+												);
+										sqlCreateJoinTable.append(
+												ownedFKName + " " + this.getSqlType(YUtilPersistence.getGetIdMethod(ownedType).getReturnType()) + YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL + ", "
+												);
+										// FK Constraints
+										sqlCreateJoinTable.append(
+												sqlCreateJoinTable.append(YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownerFKName  + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntity.getTableName() + "(" + processedEntity.getIdColumn() + "),")
+												); // FK A
+										sqlCreateJoinTable.append(
+												sqlCreateJoinTable.append(YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownedFKName + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedOwnedEntity.getTableName() + "(" + processedOwnedEntity.getIdColumn() + ")")
+												); // FK B
+										
+										sqlCreateJoinTable.append(" ); ");
+										
+										
+										scriptMap.put(sqlCreateJoinTable, true);
+									} else {
+										throw new BidirectionalOneToOneException("Invalid Bidirectional ManyToMany relationship: ownedMethod=" + ownedMethod);
+									}
+								} else {
+									throw new BidirectionalOneToOneException("Invalid Bidirectional ManyToMany relationship: ownedType=" + ownedType);
+								}
 							}
 						}
 					}

@@ -365,41 +365,59 @@ final class YUtilPersistence {
 		}
 		return methodReferenceToWoner;
 	}
-
+	
 	/**
 	 * 
-	 * @param referencedTypeGetMethods
+	 * @param ownedTypeGetMethods
 	 * @param ownerType
 	 * @param ownerGetMethod
 	 * @return
 	 */
-	static Method getBidirectionalOneToOneReferenceMethod(final Method[] referencedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
-		Method methodReferenceToWoner = null;
-		for(final Method candidateMethodReferenceToWoner : referencedTypeGetMethods) {
-			if(YUtilPersistence.isBidirectionalOneToOneReferenceMethod(candidateMethodReferenceToWoner, ownerType, ownerGetMethod)) {
-				methodReferenceToWoner = candidateMethodReferenceToWoner;
+	static Method getBidirectionalManyToManyOwnedMethod(final Method[] ownedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
+		Method ownedMethod = null;
+		for(final Method candidateOwnedMethod : ownedTypeGetMethods) {
+			if(YUtilPersistence.isBidirectionalManyToManyOwnedMethod(candidateOwnedMethod, ownerType, ownerGetMethod)) {
+				ownedMethod = candidateOwnedMethod;
 				break;
 			}
 		}
-		return methodReferenceToWoner;
+		return ownedMethod;
 	}
 
 	/**
 	 * 
-	 * @param referencedTypeGetMethods
+	 * @param ownedTypeGetMethods
 	 * @param ownerType
 	 * @param ownerGetMethod
 	 * @return
 	 */
-	static Method getInvalidBidirectionalOneToOneReferenceMethod(final Method[] referencedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
-		Method methodReferenceToWoner = null;
-		for(final Method candidateMethodReferenceToWoner : referencedTypeGetMethods) {
-			if(YUtilPersistence.isInvalidBidirectionalOneToOneReferenceMethod(candidateMethodReferenceToWoner, ownerType, ownerGetMethod)) {
-				methodReferenceToWoner = candidateMethodReferenceToWoner;
+	static Method getBidirectionalOneToOneOwnedMethod(final Method[] ownedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
+		Method ownedMethod = null;
+		for(final Method candidateOwnedMethod : ownedTypeGetMethods) {
+			if(YUtilPersistence.isBidirectionalOneToOneOwnedMethod(candidateOwnedMethod, ownerType, ownerGetMethod)) {
+				ownedMethod = candidateOwnedMethod;
 				break;
 			}
 		}
-		return methodReferenceToWoner;
+		return ownedMethod;
+	}
+
+	/**
+	 * 
+	 * @param ownedTypeGetMethods
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static Method getInvalidBidirectionalOneToOneOwnedMethod(final Method[] ownedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
+		Method ownedMethod = null;
+		for(final Method candidateOwnedMethod : ownedTypeGetMethods) {
+			if(YUtilPersistence.isInvalidBidirectionalOneToOneReferenceMethod(candidateOwnedMethod, ownerType, ownerGetMethod)) {
+				ownedMethod = candidateOwnedMethod;
+				break;
+			}
+		}
+		return ownedMethod;
 	}
 
 	/**
@@ -427,11 +445,26 @@ final class YUtilPersistence {
 	 * @param ownerGetMethod
 	 * @return
 	 */
-	static boolean isBidirectionalOneToOneReferenceMethod(final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
-		OneToOne  oneToOneRef = null;
-		return (((oneToOneRef = method.getAnnotation(OneToOne.class)) != null
-						&& !YUtilString.isEmptyString(oneToOneRef.mappedBy())
-						&& oneToOneRef.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
+	static boolean isBidirectionalOneToOneOwnedMethod(final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
+		OneToOne  oneToOne = null;
+		return (((oneToOne = method.getAnnotation(OneToOne.class)) != null
+						&& !YUtilString.isEmptyString(oneToOne.mappedBy())
+						&& oneToOne.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
+				&& method.getReturnType().equals(ownerType));
+	}
+
+	/**
+	 * 
+	 * @param method
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static boolean isBidirectionalManyToManyOwnedMethod(final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
+		ManyToMany  manyToMany = null;
+		return (((manyToMany = method.getAnnotation(ManyToMany.class)) != null
+				&& !YUtilString.isEmptyString(manyToMany.mappedBy())
+				&& manyToMany.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
 				&& method.getReturnType().equals(ownerType));
 	}
 
