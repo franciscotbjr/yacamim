@@ -94,6 +94,7 @@ public class Project extends YBaseEntity {
 	 * @return
 	 */
 	@ManyToMany
+	@Column
 	public List<Employee> getEmployees() {
 		return employees;
 	}
