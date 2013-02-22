@@ -27,6 +27,7 @@ import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
 import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity.Employee;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity.Project;
 import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
 import br.org.yacamim.ui.components.AdapterConfig;
 import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
@@ -57,18 +58,18 @@ public class ManyToManyActivity extends YBaseListActivity {
 	 */
 	protected void init() {
 		try {
-			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
+			final DefaultDBAdapter<Project> defaultDBAdapter = new DefaultDBAdapter<Project>(Project.class);
 			defaultDBAdapter.open();
-			List<Employee> employees = defaultDBAdapter.list();
+//			List<Project> projects = defaultDBAdapter.list();
 			defaultDBAdapter.close();
 			
-			if(employees != null) {
-				for(final Employee employee : employees) {
-					Log.i(TAG, employee.getName() + " : " + employee.getName());
-				}
-			}
-			
-			this.initList(employees);
+//			if(projects != null) {
+//				for(final Project project : projects) {
+//					Log.i(TAG, project.getName());
+//				}
+//			}
+//			
+//			this.initList(projects);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
@@ -77,11 +78,11 @@ public class ManyToManyActivity extends YBaseListActivity {
 	
 	/**
 	 * 
-	 * @param employees
+	 * @param projects
 	 */
-    private void initList(final List<Employee> employees) {
+    private void initList(final List<Project> projects) {
     	try {
-			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(employees);
+			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(projects);
 			
 			final AdapterConfig adapterConfig = this.buildAdapterConfig();
 			
@@ -101,7 +102,7 @@ public class ManyToManyActivity extends YBaseListActivity {
 	protected AdapterConfig buildAdapterConfig() {
 		
 		final RowConfig rowConfig = new RowConfig()
-			.setResource(R.layout.list_bidirectional_many_to_one_one_to_many)
+			.setResource(R.layout.list_bidirectional_many_to_many)
 			.setResourcesHint(new int[]{})
 			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
 			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))

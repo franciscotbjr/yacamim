@@ -112,5 +112,17 @@ public class YRelationshipMappingDefaultsActivity extends YInitBaseActivity {
 			Log.e(TAG, e.getMessage());
 		}
 	}
+	
+	/**
+	 * 
+	 * @param view
+	 */
+	public void startBidirectionalManyToManyTest(final View view) {
+		try {
+			startActivity(new Intent(this, br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.ManyToManyActivity.class));
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
 
 }
