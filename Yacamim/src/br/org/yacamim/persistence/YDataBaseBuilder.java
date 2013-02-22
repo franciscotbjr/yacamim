@@ -242,14 +242,7 @@ class YDataBaseBuilder {
 								if(oneToOne != null) {
 									// Checks if this is an Bidirectional Relationships
 									if(YUtilPersistence.hashBidirectionalOneToOneItem(typeGetMethods, sourceClassOfTableScript, currentGetMethod)) { // It is an Bidirectional Relationship
-										final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneOwnedMethod(typeGetMethods, sourceClassOfTableScript, currentGetMethod);
-										if(bidirectionalOneToOneReferenceMethod == null) {
-											final Method invalidBidirectionalOneToOneReferenceMethod = YUtilPersistence.getInvalidBidirectionalOneToOneOwnedMethod(typeGetMethods, sourceClassOfTableScript, currentGetMethod);
-											if(invalidBidirectionalOneToOneReferenceMethod != null) {
-												final OneToOne invalidOneToOne = invalidBidirectionalOneToOneReferenceMethod.getAnnotation(OneToOne.class);
-												throw new BidirectionalOneToOneException("Invalid Bidirectional OneToOne relationship: mappedBy=" + invalidOneToOne.mappedBy());
-											}
-										}
+										this.handleBidirectionalOneToOne(sourceClassOfTableScript, currentGetMethod, typeGetMethods);
 									} else {
 										if(YUtilPersistence.isOneToOneOwner(oneToOne)) {
 											sqlFK.append(YUtilPersistence.SQL_WORD_UNIQUE);
@@ -269,49 +262,8 @@ class YDataBaseBuilder {
 						}
 					} else if (YUtilReflection.isList(currentReturnedType) && column != null) {
 						final ManyToMany manyToMany = currentGetMethod.getAnnotation(ManyToMany.class);
-						
 						if(manyToMany != null) {
-							if(YUtilPersistence.isManyToManyOwner(manyToMany)) { 
-								// Finds the owned of relationship
-								final Class<?> ownedType = YUtilReflection.getGenericType(sourceClassOfTableScript, currentGetMethod);
-								if(ownedType != null) {
-									final Method ownedMethod = YUtilPersistence.getBidirectionalManyToManyOwnedMethod(ownedType, sourceClassOfTableScript, currentGetMethod);
-									if(ownedMethod != null) {
-										final YProcessedEntity processedOwnedEntity =  this.getYProcessedEntity(ownedType);
-										final StringBuilder sqlCreateJoinTable = new StringBuilder();
-										// Generate a join table that is named
-										sqlCreateJoinTable.append(YUtilPersistence.SQL_WORD_CREATE + YUtilPersistence.SQL_WORD_TABLE);
-										sqlCreateJoinTable.append(" " + processedEntity.getTableName() + "_" + processedOwnedEntity.getTableName() +  " (");
-										
-										final String ownerFKName = processedEntity.getTableName() + "_" + processedEntity.getIdColumn();
-										final String ownedFKName = processedOwnedEntity.getTableName() + "_" + processedOwnedEntity.getIdColumn();
-										
-										// Columns
-										sqlCreateJoinTable.append(
-												ownerFKName + " " + this.getSqlType(YUtilPersistence.getGetIdMethod(sourceClassOfTableScript).getReturnType()) + YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL + ", "
-												);
-										sqlCreateJoinTable.append(
-												ownedFKName + " " + this.getSqlType(YUtilPersistence.getGetIdMethod(ownedType).getReturnType()) + YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL + ", "
-												);
-										// FK Constraints
-										sqlCreateJoinTable.append(
-												YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownerFKName  + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntity.getTableName() + "(" + processedEntity.getIdColumn() + "),"
-												); // FK A
-										sqlCreateJoinTable.append(
-												YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownedFKName + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedOwnedEntity.getTableName() + "(" + processedOwnedEntity.getIdColumn() + ")"
-												); // FK B
-										
-										sqlCreateJoinTable.append(" ); ");
-										
-										
-										scriptMap.put(sqlCreateJoinTable, true);
-									} else {
-										throw new BidirectionalOneToOneException("Invalid Bidirectional ManyToMany relationship: ownedMethod=" + ownedMethod);
-									}
-								} else {
-									throw new BidirectionalOneToOneException("Invalid Bidirectional ManyToMany relationship: ownedType=" + ownedType);
-								}
-							}
+							this.handleManyToMany(sourceClassOfTableScript, scriptMap, processedEntity, currentGetMethod, manyToMany);
 						}
 					}
 				}
@@ -344,6 +296,77 @@ class YDataBaseBuilder {
 		}
 		scriptMap.put(sqlCreate, false);
 		return scriptMap;
+	}
+
+	private void handleBidirectionalOneToOne(
+			final Class<?> sourceClassOfTableScript,
+			final Method currentGetMethod, final Method[] typeGetMethods)
+			throws BidirectionalOneToOneException {
+		final Method bidirectionalOneToOneReferenceMethod = YUtilPersistence.getBidirectionalOneToOneOwnedMethod(typeGetMethods, sourceClassOfTableScript, currentGetMethod);
+		if(bidirectionalOneToOneReferenceMethod == null) {
+			final Method invalidBidirectionalOneToOneReferenceMethod = YUtilPersistence.getInvalidBidirectionalOneToOneOwnedMethod(typeGetMethods, sourceClassOfTableScript, currentGetMethod);
+			if(invalidBidirectionalOneToOneReferenceMethod != null) {
+				final OneToOne invalidOneToOne = invalidBidirectionalOneToOneReferenceMethod.getAnnotation(OneToOne.class);
+				throw new BidirectionalOneToOneException("Invalid Bidirectional OneToOne relationship: mappedBy=" + invalidOneToOne.mappedBy());
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param sourceClassOfTableScript
+	 * @param scriptMap
+	 * @param processedEntity
+	 * @param currentGetMethod
+	 * @param manyToMany
+	 * @throws BidirectionalOneToOneException
+	 */
+	private void handleManyToMany(final Class<?> sourceClassOfTableScript,
+			final Map<StringBuilder, Boolean> scriptMap,
+			final YProcessedEntity processedEntity,
+			final Method currentGetMethod, final ManyToMany manyToMany)
+			throws BidirectionalOneToOneException {
+		if(YUtilPersistence.isManyToManyOwner(manyToMany)) { 
+			// Finds the owned of relationship
+			final Class<?> ownedType = YUtilReflection.getGenericType(sourceClassOfTableScript, currentGetMethod);
+			if(ownedType != null) {
+				final Method ownedMethod = YUtilPersistence.getBidirectionalManyToManyOwnedMethod(ownedType, sourceClassOfTableScript, currentGetMethod);
+				if(ownedMethod != null) {
+					final YProcessedEntity processedOwnedEntity =  this.getYProcessedEntity(ownedType);
+					final StringBuilder sqlCreateJoinTable = new StringBuilder();
+					// Generate a join table that is named
+					sqlCreateJoinTable.append(YUtilPersistence.SQL_WORD_CREATE + YUtilPersistence.SQL_WORD_TABLE);
+					sqlCreateJoinTable.append(" " + processedEntity.getTableName() + "_" + processedOwnedEntity.getTableName() +  " (");
+					
+					final String ownerFKName = processedEntity.getTableName() + "_" + processedEntity.getIdColumn();
+					final String ownedFKName = processedOwnedEntity.getTableName() + "_" + processedOwnedEntity.getIdColumn();
+					
+					// Columns
+					sqlCreateJoinTable.append(
+							ownerFKName + " " + this.getSqlType(YUtilPersistence.getGetIdMethod(sourceClassOfTableScript).getReturnType()) + YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL + ", "
+							);
+					sqlCreateJoinTable.append(
+							ownedFKName + " " + this.getSqlType(YUtilPersistence.getGetIdMethod(ownedType).getReturnType()) + YUtilPersistence.SQL_WORD_NOT + YUtilPersistence.SQL_WORD_NULL + ", "
+							);
+					// FK Constraints
+					sqlCreateJoinTable.append(
+							YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownerFKName  + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntity.getTableName() + "(" + processedEntity.getIdColumn() + "),"
+							); // FK A
+					sqlCreateJoinTable.append(
+							YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownedFKName + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedOwnedEntity.getTableName() + "(" + processedOwnedEntity.getIdColumn() + ")"
+							); // FK B
+					
+					sqlCreateJoinTable.append(" ); ");
+					
+					
+					scriptMap.put(sqlCreateJoinTable, true);
+				} else {
+					throw new BidirectionalOneToOneException("Invalid Bidirectional ManyToMany relationship: ownedMethod=" + ownedMethod);
+				}
+			} else {
+				throw new BidirectionalOneToOneException("Invalid Bidirectional ManyToMany relationship: ownedType=" + ownedType);
+			}
+		}
 	}
 
 	/**
