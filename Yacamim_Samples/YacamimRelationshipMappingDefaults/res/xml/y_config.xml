@@ -11,9 +11,10 @@
     <y-config-item name="YACAMIM_SQLITE_BOOLEAN_FALSE" value="N"/> <!-- A Character representing Data Base "False" -->
     
     <y-entity-mapping>
-	    <!--y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity">
-	        <y-entity name="TODO"/>
-	    </y-package-->
+	    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity">
+	        <y-entity name="Employee"/>
+	        <y-entity name="Project"/>
+	    </y-package>
 	    <y-package name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity">
 	        <y-entity name="Employee"/>
 	        <y-entity name="Department"/>

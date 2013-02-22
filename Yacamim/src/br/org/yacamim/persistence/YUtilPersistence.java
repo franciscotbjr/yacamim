@@ -373,12 +373,15 @@ final class YUtilPersistence {
 	 * @param ownerGetMethod
 	 * @return
 	 */
-	static Method getBidirectionalManyToManyOwnedMethod(final Method[] ownedTypeGetMethods, final Class<?> ownerType, final Method ownerGetMethod) {
+	static Method getBidirectionalManyToManyOwnedMethod(final Class<?> ownedType, final Class<?> ownerType, final Method ownerGetMethod) {
 		Method ownedMethod = null;
-		for(final Method candidateOwnedMethod : ownedTypeGetMethods) {
-			if(YUtilPersistence.isBidirectionalManyToManyOwnedMethod(candidateOwnedMethod, ownerType, ownerGetMethod)) {
-				ownedMethod = candidateOwnedMethod;
-				break;
+		final Method[] ownedTypeGetMethods = YUtilReflection.getGetMethodArray(ownedType);
+		if(ownedTypeGetMethods != null) {
+			for(final Method candidateOwnedMethod : ownedTypeGetMethods) {
+				if(YUtilPersistence.isBidirectionalManyToManyOwnedMethod(ownedType, candidateOwnedMethod, ownerType, ownerGetMethod)) {
+					ownedMethod = candidateOwnedMethod;
+					break;
+				}
 			}
 		}
 		return ownedMethod;
@@ -455,17 +458,18 @@ final class YUtilPersistence {
 
 	/**
 	 * 
+	 * @param ownedType
 	 * @param method
 	 * @param ownerType
 	 * @param ownerGetMethod
 	 * @return
 	 */
-	static boolean isBidirectionalManyToManyOwnedMethod(final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
+	static boolean isBidirectionalManyToManyOwnedMethod(final Class<?> ownedType, final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
 		ManyToMany  manyToMany = null;
 		return (((manyToMany = method.getAnnotation(ManyToMany.class)) != null
 				&& !YUtilString.isEmptyString(manyToMany.mappedBy())
 				&& manyToMany.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
-				&& method.getReturnType().equals(ownerType));
+				&& YUtilReflection.getGenericType(ownedType, method).equals(ownerType));
 	}
 
 	/**

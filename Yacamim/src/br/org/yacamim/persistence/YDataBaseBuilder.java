@@ -275,7 +275,7 @@ class YDataBaseBuilder {
 								// Finds the owned of relationship
 								final Class<?> ownedType = YUtilReflection.getGenericType(sourceClassOfTableScript, currentGetMethod);
 								if(ownedType != null) {
-									final Method ownedMethod = YUtilPersistence.getBidirectionalManyToManyOwnedMethod(YUtilReflection.getGetMethodArray(ownedType), sourceClassOfTableScript, currentGetMethod);
+									final Method ownedMethod = YUtilPersistence.getBidirectionalManyToManyOwnedMethod(ownedType, sourceClassOfTableScript, currentGetMethod);
 									if(ownedMethod != null) {
 										final YProcessedEntity processedOwnedEntity =  this.getYProcessedEntity(ownedType);
 										final StringBuilder sqlCreateJoinTable = new StringBuilder();
@@ -295,10 +295,10 @@ class YDataBaseBuilder {
 												);
 										// FK Constraints
 										sqlCreateJoinTable.append(
-												sqlCreateJoinTable.append(YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownerFKName  + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntity.getTableName() + "(" + processedEntity.getIdColumn() + "),")
+												YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownerFKName  + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedEntity.getTableName() + "(" + processedEntity.getIdColumn() + "),"
 												); // FK A
 										sqlCreateJoinTable.append(
-												sqlCreateJoinTable.append(YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownedFKName + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedOwnedEntity.getTableName() + "(" + processedOwnedEntity.getIdColumn() + ")")
+												YUtilPersistence.SQL_WORD_FOREIGN_KEY + "(" + ownedFKName + ") " + YUtilPersistence.SQL_WORD_REFERENCES + processedOwnedEntity.getTableName() + "(" + processedOwnedEntity.getIdColumn() + ")"
 												); // FK B
 										
 										sqlCreateJoinTable.append(" ); ");
