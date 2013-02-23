@@ -169,6 +169,8 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
+			this.beginTransaction();
+			
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
 			
 			this.handlesManyToOneRelationships(entity, getMethods);
@@ -179,8 +181,15 @@ public class DefaultDBAdapter<E> {
 
 			this.setId(entity, newId);
 
-			return newId > -1;
+			this.handlesOneToManyMappedByRelationships(entity, getMethods);
+			
+			boolean success = newId > 0;
+			
+			this.endTransaction(true);
+			
+			return success;
 		} catch (Exception e) {
+			this.endTransaction(false);
 			Log.e("DefaultDBAdapter.insert", e.getMessage());
 			return false;
 		}
@@ -637,16 +646,33 @@ public class DefaultDBAdapter<E> {
 						values.put(columnName, date.getTime());
 					}
 				} else {
-					final Object object = YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
-					final Class<?> returnType = object.getClass();
-					if(object != null && YUtilPersistence.isEntity(returnType)) {
-						final Method getFkMethod = YUtilPersistence.getGetIdMethod(returnType);
-						if(getFkMethod != null) {
-							final Long idFk = (Long)YUtilReflection.invokeMethodWithoutParams(getFkMethod, object);
-							final String fkColumnName = YUtilPersistence.buildFkColumnName(returnType, column, getFkMethod);
-							values.put(fkColumnName, idFk);
-						}
-					}
+					this.createContentValues(entidade, values, getMethod, column);
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param entidade
+	 * @param values
+	 * @param getMethod
+	 * @param column
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	private void createContentValues(final E entidade, final ContentValues values, 
+			final Method getMethod, final Column column) throws IllegalAccessException,
+			InvocationTargetException {
+		final Object object = YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+		if(object != null) {
+			final Class<?> returnType = getMethod.getReturnType();
+			if(YUtilPersistence.isEntity(returnType)) {
+				final Method getFkMethod = YUtilPersistence.getGetIdMethod(returnType);
+				if(getFkMethod != null) {
+					final Long idFk = (Long)YUtilReflection.invokeMethodWithoutParams(getFkMethod, object);
+					final String fkColumnName = YUtilPersistence.buildFkColumnName(returnType, column, getFkMethod);
+					values.put(fkColumnName, idFk);
 				}
 			}
 		}
@@ -726,14 +752,14 @@ public class DefaultDBAdapter<E> {
 	 * @param entity
 	 * @param getMethods
 	 * @throws Exception
-	 * @throws CloneNotSupportedException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void handlesManyToOneRelationships(final E entity, final List<Method> getMethods) 
-			throws Exception, CloneNotSupportedException {
+			throws Exception {
 		final List<Method> manyToOneMethods = YUtilPersistence.filterManyToOneMethods(getMethods);
-		if(manyToOneMethods != null && !manyToOneMethods.isEmpty()) {
+		if(manyToOneMethods != null && !manyToOneMethods.isEmpty()) { // There are ManyToOne (with mappedBy) relationships
 			for(final Method manyToOneMethod : manyToOneMethods) {
+				// Gets the returned objeto
 				final Object object = YUtilReflection.invokeMethod(manyToOneMethod, entity, 
 						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
 				if(object != null && YUtilPersistence.isEntity(object.getClass())) {
@@ -746,6 +772,49 @@ public class DefaultDBAdapter<E> {
 							defaultDBAdapter.open();
 							defaultDBAdapter.insert(object);
 							defaultDBAdapter.close();
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @throws Exception
+	 * @throws CloneNotSupportedException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void handlesOneToManyMappedByRelationships(final E entity, final List<Method> getMethods) 
+			throws Exception, CloneNotSupportedException {
+		final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMappedByMethods(getMethods);
+		if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) { // There are OneToMany (with mappedBy) relationships
+			for(final Method oneToManyMethod : oneToManyMethods) {
+				// Gets the returned objeto
+				final Object object = YUtilReflection.invokeMethod(oneToManyMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				// Check if it is a List
+				if(object != null && YUtilReflection.isList(object.getClass())) {
+					final List targetList = (List)object;
+					// Check if the list item type
+					final Class<?> targetClass = YUtilReflection.getGenericType(entity.getClass(), oneToManyMethod);
+					if(targetClass != null) {
+						// Checks its ID
+						final Method idMethod = YUtilPersistence.getGetIdMethod(targetClass);
+						if(idMethod != null) {
+							for(Object targetObject : targetList) {
+								final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, targetObject, 
+										YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+								// Checks the ID
+								if(longId != null && longId < 1) {
+									DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(targetClass);
+									defaultDBAdapter.open();
+									defaultDBAdapter.insert(targetObject);
+									defaultDBAdapter.close();
+								}
+							}
 						}
 					}
 				}

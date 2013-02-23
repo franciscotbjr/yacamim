@@ -50,9 +50,17 @@ public class Home_ManyToOne_OneToManyActivity extends YBaseActivity {
 		}
 	}
 	
-	public void startInsert(final View view) {
+	public void startInsertEmployee(final View view) {
 		try {
 			startActivity(new Intent(this, InsertEmployeeActivity.class));
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+	
+	public void startInsertDepartment(final View view) {
+		try {
+			startActivity(new Intent(this, InsertDepartmentActivity.class));
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}

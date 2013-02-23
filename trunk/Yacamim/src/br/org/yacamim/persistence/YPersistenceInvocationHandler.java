@@ -207,18 +207,33 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 * @see br.org.yacamim.dex.YInvocationHandler#getChildListYRawData(java.lang.reflect.Method, java.lang.Class, java.lang.Class, long)
 	 */
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-
 	protected List<YRawData> getChildListYRawData(final Method targetMethod, final Class<?> desiredEntityClass, final Class<?> parentClass, final long parenId) {
 		List<YRawData> yRawDataList = null;
 		if(YUtilReflection.isList(targetMethod.getReturnType())) {
-			yRawDataList = this.handlesManyToMany(targetMethod, desiredEntityClass, parentClass, parenId);
-		} else {
-			final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(desiredEntityClass);
-			yInnerRawDBAdapter.open();
-			yRawDataList = yInnerRawDBAdapter.selectRawData(parentClass, parenId);
-			yInnerRawDBAdapter.close();
+			if(targetMethod.getAnnotation(ManyToMany.class) != null) {
+				yRawDataList = this.handlesManyToMany(targetMethod, desiredEntityClass, parentClass, parenId);
+			} else if (targetMethod.getAnnotation(OneToMany.class) != null) {
+				yRawDataList = handlesOneToMany(desiredEntityClass, parentClass, parenId);
+			}
 		}
+		return yRawDataList;
+	}
+
+	/**
+	 * 
+	 * @param desiredEntityClass
+	 * @param parentClass
+	 * @param parenId
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<YRawData> handlesOneToMany(final Class<?> desiredEntityClass,
+			final Class<?> parentClass, final long parenId) {
+		List<YRawData> yRawDataList;
+		final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(desiredEntityClass);
+		yInnerRawDBAdapter.open();
+		yRawDataList = yInnerRawDBAdapter.selectRawData(parentClass, parenId);
+		yInnerRawDBAdapter.close();
 		return yRawDataList;
 	}
 

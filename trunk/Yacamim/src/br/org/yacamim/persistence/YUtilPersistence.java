@@ -628,5 +628,22 @@ final class YUtilPersistence {
 		}
 		return manyToOnemethods;
 	}
+	
+	/**
+	 * 
+	 * @param getMethods
+	 * @return
+	 */
+	public static List<Method> filterOneToManyMappedByMethods(final List<Method> getMethods) {
+		final List<Method> manyToOnemethods = new ArrayList<Method>();
+		if(getMethods != null) {
+			for(final Method method : getMethods) {
+				if(method.getAnnotation(OneToMany.class) != null) {
+					manyToOnemethods.add(method);
+				}
+			}
+		}
+		return manyToOnemethods;
+	}
 
 }
