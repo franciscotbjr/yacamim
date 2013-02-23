@@ -36,7 +36,7 @@ public final class YacamimConfig {
 	
 	private static final YacamimConfig singleton = new YacamimConfig();
 
-	private Map<String, String> configItems = new HashMap<String, String>();
+	private Map<String, String> mConfigItems = new HashMap<String, String>();
 	
 	private List<Class<?>> entities = new ArrayList<Class<?>>();
 	
@@ -64,7 +64,7 @@ public final class YacamimConfig {
 	 */
 	public Map<String, String> getConfigItems() {
 		// Returns a clone
-		return new HashMap<String, String>(this.configItems);
+		return new HashMap<String, String>(this.mConfigItems);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public final class YacamimConfig {
 	 */
 	public void add(final String key, final String value) {
 		if(!this.isConfigItemsLoaded()) {
-			this.configItems.put(key, value);
+			this.mConfigItems.put(key, value);
 		}
 	}
 	

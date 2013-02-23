@@ -41,27 +41,27 @@ public class ThreadResponseHandler extends Handler {
 
 	/**
 	 * 
-	 * @param _callback
+	 * @param callback
 	 */
-	public ThreadResponseHandler(final Callback _callback) {
-		super(_callback);
+	public ThreadResponseHandler(final Callback callback) {
+		super(callback);
 	}
 
 	/**
 	 * 
-	 * @param _looper
-	 * @param _callback
+	 * @param looper
+	 * @param callback
 	 */
-	public ThreadResponseHandler(final Looper _looper, final Callback _callback) {
-		super(_looper, _callback);
+	public ThreadResponseHandler(final Looper looper, final Callback callback) {
+		super(looper, callback);
 	}
 
 	/**
 	 * 
-	 * @param _looper
+	 * @param looper
 	 */
-	public ThreadResponseHandler(final Looper _looper) {
-		super(_looper);
+	public ThreadResponseHandler(final Looper looper) {
+		super(looper);
 	}
 
 	/**
@@ -74,10 +74,10 @@ public class ThreadResponseHandler extends Handler {
 
 	/**
 	 * 
-	 * @param _data
+	 * @param data
 	 */
-	public void setData(final Object _data) {
-		this.data = _data;
+	public void setData(final Object data) {
+		this.data = data;
 	}
 
 }

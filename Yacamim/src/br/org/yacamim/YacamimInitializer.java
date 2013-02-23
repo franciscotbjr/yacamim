@@ -66,10 +66,10 @@ public final class YacamimInitializer {
 	/**
 	 * 
 	 */
-	void initialize(final YBaseActivity yBaseActivity) {
+	void initialize(final YApplication yApplication) {
 		if(!this.isInitialized()) {
 			
-			this.loadConfigs(yBaseActivity);
+			this.loadConfigs(yApplication);
 
 			// TODO - Revisar
 //			this.loadServiceURLs(yBaseActivity);
@@ -79,7 +79,7 @@ public final class YacamimInitializer {
 			this.setInitialized(true);
 			
 			if(YacamimConfig.getInstance().usesDBLoad()) {
-				this.loadDBLoad(yBaseActivity);
+				this.loadDBLoad(yApplication);
 			}
 		}
 	}
@@ -112,12 +112,12 @@ public final class YacamimInitializer {
 	
 	/**
 	 * 
-	 * @param yBaseActivity
+	 * @param yApplication
 	 */
-	private void loadConfigs(final YBaseActivity yBaseActivity) {
+	private void loadConfigs(final YApplication yApplication) {
 		try {
 			if(!YacamimInitializer.getInstance().isInitialized()) {
-				YLoader.loadConfigs(yBaseActivity);
+				YLoader.loadConfigs(yApplication);
 			}
 		} catch (Exception e) {
 			YacamimConfig.getInstance().clearEntities();
@@ -127,12 +127,12 @@ public final class YacamimInitializer {
 
 	/**
 	 * 
-	 * @param yBaseActivity
+	 * @param yApplication
 	 */
-	private void loadDBLoad(final YBaseActivity yBaseActivity) {
+	private void loadDBLoad(final YApplication yApplication) {
 		try {
 			if(YacamimInitializer.getInstance().isInitialized()) {
-				YLoader.loadDBLoad(yBaseActivity);
+				YLoader.loadDBLoad(yApplication);
 			}
 		} catch (Exception e) {
 			YacamimConfig.getInstance().clearEntities();
@@ -142,12 +142,12 @@ public final class YacamimInitializer {
 
 	/**
 	 * 
-	 * @param yBaseActivity
+	 * @param yApplication
 	 */
-	private void loadServiceURLs(final YBaseActivity yBaseActivity) {
+	private void loadServiceURLs(final YApplication yApplication) {
 		try {
 			if(!YacamimState.getInstance().isServiceUrlsLoaded()) {
-				YLoader.loadServiceURLs(yBaseActivity);
+				YLoader.loadServiceURLs(yApplication);
 			}
 		} catch (Exception e) {
 			Log.e("YacamimInitializer.loadServiceURLs", e.getMessage());
@@ -156,12 +156,12 @@ public final class YacamimInitializer {
 	
 	/**
 	 * 
-	 * @param yBaseActivity
+	 * @param yApplication
 	 */
-	private void loadClassMapping(final YBaseActivity yBaseActivity) {
+	private void loadClassMapping(final YApplication yApplication) {
 		try {
 			if(!YacamimState.getInstance().isClassMappingLoaded()) {
-				YLoader.loadClassMapping(yBaseActivity, this.yacamimClassMapping);
+				YLoader.loadClassMapping(yApplication, this.yacamimClassMapping);
 			}
 		} catch (Exception e) {
 			Log.e("YacamimInitializer.loadClassMapping", e.getMessage());
@@ -170,12 +170,12 @@ public final class YacamimInitializer {
 	
 	/**
 	 * 
-	 * @param yBaseActivity
+	 * @param yApplication
 	 */
-	private void loadParams(final YBaseActivity yBaseActivity) {
+	private void loadParams(final YApplication yApplication) {
 		try {
 			if(!YacamimState.getInstance().isParamsLoaded()) {
-				YLoader.loadParams(yBaseActivity);
+				YLoader.loadParams(yApplication);
 			}
 		} catch (Exception e) {
 			Log.e("YacamimInitializer.loadParams", e.getMessage());
