@@ -1,6 +1,6 @@
 /**
- * YInitBaseActivity.java
- * 
+ * YApplication.java
+ *
  * Copyright 2013 yacamim.org.br
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,36 +17,34 @@
  */
 package br.org.yacamim;
 
-import android.os.Bundle;
+import android.app.Application;
 
 /**
  * 
- * Class YInitBaseActivity TODO
+ * Class YApplication TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public abstract class YInitBaseActivity extends YBaseActivity {
-	
+public abstract class YApplication extends Application {
+
 	/**
 	 * 
 	 */
-	public YInitBaseActivity() {
+	public YApplication() {
 		super();
-		YacamimState.getInstance().setCurrentActivity(this);
 	}
 	
-	/**
-	 *
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		super.onCreate();
+		
 		YacamimInitializer.getInstance().initialize(this);
 		initApp();
 	}
+	
 
 	/**
 	 * 
