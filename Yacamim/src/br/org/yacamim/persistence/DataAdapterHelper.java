@@ -56,51 +56,53 @@ public final class DataAdapterHelper {
 	public static boolean treatRawData(final Cursor cursor, final Object object, final Method getMethod, final String columnName) throws ParseException {
 		boolean rawData = false;
 		final Class<?> returnType = getMethod.getReturnType();
-		if(returnType.equals(String.class)) {
-			rawData = true;
-			YUtilReflection.setValueToProperty(
-					YUtilReflection.getPropertyName(getMethod),
-					cursor.getString(cursor.getColumnIndex(columnName)),
-					object);
-		} else if ((returnType.equals(Byte.class) || returnType.equals(byte.class))
-				|| (returnType.equals(Short.class) || returnType.equals(short.class))) {
-			rawData = true;
-			YUtilReflection.setValueToProperty(
-					YUtilReflection.getPropertyName(getMethod),
-					cursor.getShort(cursor.getColumnIndex(columnName)),
-					object);
-		} else if (returnType.equals(Integer.class) || returnType.equals(int.class)) {
-			rawData = true;
-			YUtilReflection.setValueToProperty(
-					YUtilReflection.getPropertyName(getMethod),
-					cursor.getInt(cursor.getColumnIndex(columnName)),
-					object);
-		} else if (returnType.equals(Long.class) || returnType.equals(long.class)) {
-			rawData = true;
-			YUtilReflection.setValueToProperty(
-					YUtilReflection.getPropertyName(getMethod),
-					cursor.getLong(cursor.getColumnIndex(columnName)),
-					object);
-		} else if (returnType.equals(Float.class) || returnType.equals(float.class)) {
-			rawData = true;
-			YUtilReflection.setValueToProperty(
-					YUtilReflection.getPropertyName(getMethod),
-					cursor.getFloat(cursor.getColumnIndex(columnName)),
-					object);
-		} else if (returnType.equals(Double.class) || returnType.equals(double.class)) {
-			rawData = true;
-			YUtilReflection.setValueToProperty(
-					YUtilReflection.getPropertyName(getMethod),
-					cursor.getDouble(cursor.getColumnIndex(columnName)),
-					object);
-		} else if (returnType.equals(Date.class)) {
-			final long time = cursor.getLong(cursor.getColumnIndex(columnName));
-			rawData = true;
-			if(time > 0) {
+		if (cursor.getColumnIndex(columnName) >= 0) {
+			if(returnType.equals(String.class)) {
+				rawData = true;
 				YUtilReflection.setValueToProperty(
 						YUtilReflection.getPropertyName(getMethod),
-						new Date(time),
+						cursor.getString(cursor.getColumnIndex(columnName)),
 						object);
+			} else if ((returnType.equals(Byte.class) || returnType.equals(byte.class))
+					|| (returnType.equals(Short.class) || returnType.equals(short.class))) {
+				rawData = true;
+				YUtilReflection.setValueToProperty(
+						YUtilReflection.getPropertyName(getMethod),
+						cursor.getShort(cursor.getColumnIndex(columnName)),
+						object);
+			} else if (returnType.equals(Integer.class) || returnType.equals(int.class)) {
+				rawData = true;
+				YUtilReflection.setValueToProperty(
+						YUtilReflection.getPropertyName(getMethod),
+						cursor.getInt(cursor.getColumnIndex(columnName)),
+						object);
+			} else if (returnType.equals(Long.class) || returnType.equals(long.class)) {
+				rawData = true;
+				YUtilReflection.setValueToProperty(
+						YUtilReflection.getPropertyName(getMethod),
+						cursor.getLong(cursor.getColumnIndex(columnName)),
+						object);
+			} else if (returnType.equals(Float.class) || returnType.equals(float.class)) {
+				rawData = true;
+				YUtilReflection.setValueToProperty(
+						YUtilReflection.getPropertyName(getMethod),
+						cursor.getFloat(cursor.getColumnIndex(columnName)),
+						object);
+			} else if (returnType.equals(Double.class) || returnType.equals(double.class)) {
+				rawData = true;
+				YUtilReflection.setValueToProperty(
+						YUtilReflection.getPropertyName(getMethod),
+						cursor.getDouble(cursor.getColumnIndex(columnName)),
+						object);
+			} else if (returnType.equals(Date.class)) {
+				final long time = cursor.getLong(cursor.getColumnIndex(columnName));
+				rawData = true;
+				if(time > 0) {
+					YUtilReflection.setValueToProperty(
+							YUtilReflection.getPropertyName(getMethod),
+							new Date(time),
+							object);
+				}
 			}
 		}
 		return rawData;
