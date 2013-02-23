@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.Home_ManyToOne_OneToManyActivity;
 import br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.ManyToOneActivity;
 import br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.OneToOneActivity;
 
@@ -80,7 +81,7 @@ public class YRelationshipMappingDefaultsActivity extends YBaseActivity {
 	 */
 	public void startBidirectionalManyToOneOneToManyTest(final View view) {
 		try {
-			startActivity(new Intent(this, br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.ManyToOne_OneToManyActivity.class));
+			startActivity(new Intent(this, Home_ManyToOne_OneToManyActivity.class));
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}

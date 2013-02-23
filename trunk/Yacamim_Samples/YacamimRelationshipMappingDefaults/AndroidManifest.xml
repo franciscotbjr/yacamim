@@ -30,6 +30,14 @@
         </activity>
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.ManyToOne_OneToManyActivity"
+            android:label="@string/teste_list" >
+        </activity>
+        <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.InsertEmployeeActivity"
+            android:label="@string/teste_insert" >
+        </activity>
+        <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.Home_ManyToOne_OneToManyActivity"
             android:label="@string/title_activity_bidirectional_many_to_one_one_to_many" >
         </activity>
         <activity
