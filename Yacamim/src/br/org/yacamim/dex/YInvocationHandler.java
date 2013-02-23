@@ -75,9 +75,9 @@ public abstract class YInvocationHandler implements InvocationHandler {
 				
 			} else if(YUtilReflection.isList(clazzEntity)) {
 				result = new ArrayList();
-				final List<YRawData> childListRawData = this.getChildListYRawData(YUtilReflection.getGenericType(realClass, targetMethod), realClass, longId);
+				final Class<?> genericType = YUtilReflection.getGenericType(realClass, targetMethod);
+				final List<YRawData> childListRawData = this.getChildListYRawData(targetMethod, genericType, realClass, longId);
 				if(childListRawData != null) {
-					final Class<?> genericType = YUtilReflection.getGenericType(realClass, targetMethod);
 					@SuppressWarnings("unchecked")
 					final List<Object> resultAsList = (List<Object>)result;
 					
@@ -150,13 +150,13 @@ public abstract class YInvocationHandler implements InvocationHandler {
 	
 	/**
 	 * 
-	 * @param entityClass
+	 * @param targetMethod
+	 * @param desiredEntityClass
 	 * @param parentClass
 	 * @param parenrawId
-	 * @param targetGetMethod
 	 * @return
 	 */
-	protected abstract List<YRawData> getChildListYRawData(final Class<?> entityClass, final Class<?> parentClass, final long parenrawId);
+	protected abstract List<YRawData> getChildListYRawData(final Method targetMethod, final Class<?> desiredEntityClass, final Class<?> parentClass, final long parenrawId);
 	
 	/**
 	 * 

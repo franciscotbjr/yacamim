@@ -64,6 +64,13 @@ final class YUtilPersistence {
 	static final String SQL_WORD_UNIQUE = " UNIQUE ";
 	static final String SQL_WORD_AUTOINCREMENT = " AUTOINCREMENT ";
 	static final String SQL_WORD_PRIMARY_KEY = " PRIMARY KEY ";
+	static final String SQL_WORD_SELECT = " SELECT ";
+	static final String SQL_WORD_DISTINCT = " DISTINCT ";
+	static final String SQL_WORD_FROM = " FROM ";
+	static final String SQL_WORD_WHERE = " WHERE ";
+	static final String SQL_WORD_AND = " AND ";
+	static final String SQL_WORD_OR = " OR ";
+	static final String SQL_WORD_MAX = " MAX ";
 
 	/**
 	 * 
@@ -187,6 +194,24 @@ final class YUtilPersistence {
 	static String getGetIdColumnName(final Method idMethod) {
 		final Column column = idMethod.getAnnotation(Column.class);
 		return getColumnName(column, idMethod);
+	}
+	
+
+	/**
+	 *
+	 * @param classType
+	 * @return
+	 */
+	static String getIdColumnName(final Class<?> classType) {
+		String idColumnName = null;
+		try {
+			final Method getMethod = YUtilPersistence.getGetIdMethod(classType);
+			
+			idColumnName = YUtilPersistence.getColumnName(getMethod.getAnnotation(Column.class), getMethod);
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getIdColumnName", e.getMessage());
+		}
+		return idColumnName;
 	}
 	
 	/**
