@@ -32,4 +32,6 @@
     <string name="teste_insert">Teste Insert</string>
     <string name="list">List</string>
     <string name="insert">Insert</string>
+    <string name="insert_employee">Insert Employee</string>
+    <string name="insert_department">Insert Department</string>
 </resources>
