@@ -62,10 +62,10 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	@Override
 	protected YRawData getTargetObjectYRawData(final Class<?> realClass, final Long id, final Method targetGetMethod) {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(realClass);
-		defaultDBAdapter.open();
-		final YRawData yRawData = defaultDBAdapter.getRawDataById(id, new Method[]{targetGetMethod});
-		defaultDBAdapter.close();
+		final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(realClass);
+		yInnerRawDBAdapter.open();
+		final YRawData yRawData = yInnerRawDBAdapter.getRawDataById(id, new Method[]{targetGetMethod});
+		yInnerRawDBAdapter.close();
 		return yRawData;
 	}
 
@@ -78,19 +78,19 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 			final Class<?> parentClass, final long parentId) {
 		final String propertyName = YUtilReflection.getPropertyName(targetGetMethod);
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(entityClass);
+		final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(entityClass);
 		YRawData yRawData = null;
 		if(targetGetMethod.getAnnotation(Column.class) != null) {
-			defaultDBAdapter.open();
-			yRawData = defaultDBAdapter.getRawDataById((Long)parenrawData.get(propertyName), YUtilPersistence.getColumnGetMethodListSortedByNameAsArray(entityClass));
-			defaultDBAdapter.close();
+			yInnerRawDBAdapter.open();
+			yRawData = yInnerRawDBAdapter.getRawDataById((Long)parenrawData.get(propertyName), YUtilPersistence.getColumnGetMethodListSortedByNameAsArray(entityClass));
+			yInnerRawDBAdapter.close();
 		} else {
 			final OneToOne oneToOne = targetGetMethod.getAnnotation(OneToOne.class);
 			if(oneToOne != null && !YUtilString.isEmptyString(oneToOne.mappedBy())) {
-				defaultDBAdapter.open();
+				yInnerRawDBAdapter.open();
 				@SuppressWarnings("unchecked")
-				final List<YRawData> yRawDataList = defaultDBAdapter.selectRawData(parentClass, parentId);
-				defaultDBAdapter.close();
+				final List<YRawData> yRawDataList = yInnerRawDBAdapter.selectRawData(parentClass, parentId);
+				yInnerRawDBAdapter.close();
 				if(yRawDataList != null) {
 					yRawData = yRawDataList.get(0);
 				}
@@ -204,16 +204,49 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	
 	/**
 	 * 
-	 * @see br.org.yacamim.dex.YInvocationHandler#getChildListYRawData(java.lang.Class, java.lang.Class, long)
+	 * @see br.org.yacamim.dex.YInvocationHandler#getChildListYRawData(java.lang.reflect.Method, java.lang.Class, java.lang.Class, long)
 	 */
 	@Override
-	protected List<YRawData> getChildListYRawData(final Class<?> entityClass, final Class<?> parentClass, final long parenId) {
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		final DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(entityClass);
-		defaultDBAdapter.open();
-		@SuppressWarnings("unchecked")
-		final List<YRawData> yRawDataList = defaultDBAdapter.selectRawData(parentClass, parenId);
-		defaultDBAdapter.close();
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+
+	protected List<YRawData> getChildListYRawData(final Method targetMethod, final Class<?> desiredEntityClass, final Class<?> parentClass, final long parenId) {
+		List<YRawData> yRawDataList = null;
+		if(YUtilReflection.isList(targetMethod.getReturnType())) {
+			yRawDataList = this.handlesManyToMany(targetMethod, desiredEntityClass, parentClass, parenId);
+		} else {
+			final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(desiredEntityClass);
+			yInnerRawDBAdapter.open();
+			yRawDataList = yInnerRawDBAdapter.selectRawData(parentClass, parenId);
+			yInnerRawDBAdapter.close();
+		}
+		return yRawDataList;
+	}
+
+	/**
+	 * 
+	 * @param targetMethod
+	 * @param desiredEntityClass
+	 * @param parentClass
+	 * @param parenId
+	 * @param yRawDataList
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<YRawData> handlesManyToMany(final Method targetMethod,
+			final Class<?> desiredEntityClass, final Class<?> parentClass,
+			final long parenId) {
+		List<YRawData> yRawDataList = null;
+		final ManyToMany manyToMany;
+		if((manyToMany = targetMethod.getReturnType().getAnnotation(ManyToMany.class)) != null) {
+			final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(desiredEntityClass);
+			yInnerRawDBAdapter.open();
+			if(YUtilPersistence.isManyToManyOwner(manyToMany)) { 
+				yRawDataList = yInnerRawDBAdapter.selectRawDataWithJoinTable(parentClass, desiredEntityClass, parenId, 0);
+			} else {
+				yRawDataList = yInnerRawDBAdapter.selectRawDataWithJoinTable(desiredEntityClass, parentClass, 0, parenId);
+			}
+			yInnerRawDBAdapter.close();
+		}
 		return yRawDataList;
 	}
 

@@ -1,5 +1,5 @@
 /**
- * YSQLBuilder.java
+ * YDataBaseBuilder.java
  *
  * Copyright 2012 yacamim.org.br
  *
@@ -32,7 +32,7 @@ import br.org.yacamim.util.YUtilString;
 
 /**
  * 
- * Class YSQLBuilder TODO
+ * Class YDataBaseBuilder TODO
  * 
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
@@ -263,7 +263,7 @@ class YDataBaseBuilder {
 					} else if (YUtilReflection.isList(currentReturnedType) && column != null) {
 						final ManyToMany manyToMany = currentGetMethod.getAnnotation(ManyToMany.class);
 						if(manyToMany != null) {
-							this.handleManyToMany(sourceClassOfTableScript, scriptMap, processedEntity, currentGetMethod, manyToMany);
+							this.handlesManyToMany(sourceClassOfTableScript, scriptMap, processedEntity, currentGetMethod, manyToMany);
 						}
 					}
 				}
@@ -321,7 +321,7 @@ class YDataBaseBuilder {
 	 * @param manyToMany
 	 * @throws BidirectionalOneToOneException
 	 */
-	private void handleManyToMany(final Class<?> sourceClassOfTableScript,
+	private void handlesManyToMany(final Class<?> sourceClassOfTableScript,
 			final Map<StringBuilder, Boolean> scriptMap,
 			final YProcessedEntity processedEntity,
 			final Method currentGetMethod, final ManyToMany manyToMany)

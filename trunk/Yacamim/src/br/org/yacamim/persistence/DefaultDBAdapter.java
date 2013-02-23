@@ -28,7 +28,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import br.org.yacamim.YRawData;
 import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.dex.YInvocationHandlerProxy;
@@ -193,8 +192,9 @@ public class DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			final ContentValues updateValues = createContentValues(entity);
-			updateValues.remove(getIdColumnName());
-			return this.getDatabase().update(this.getTableName(), updateValues, this.getIdColumnName() + "=" + this.getId(entity), null) > 0;
+			final String idColumnName = YUtilPersistence.getIdColumnName(this.getGenericClass());
+			updateValues.remove(idColumnName);
+			return this.getDatabase().update(this.getTableName(), updateValues, idColumnName + " = " + this.getId(entity), null) > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -211,7 +211,7 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			return this.getDatabase().delete(this.getTableName(), this.getIdColumnName() + "=" + this.getId(entity), null) > 0;
+			return this.getDatabase().delete(this.getTableName(), YUtilPersistence.getIdColumnName(this.getGenericClass()) + "=" + this.getId(entity), null) > 0;
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.delete", e.getMessage());
 			return false;
@@ -252,7 +252,7 @@ public class DefaultDBAdapter<E> {
 				final Cursor cursor = this.getDatabase().query(
 						this.getTableName(), 
 						columns, 
-						this.getIdColumnName() + " = ?", 
+						YUtilPersistence.getIdColumnName(this.getGenericClass()) + " = ?", 
 						new String[]{String.valueOf(id)}, 
 						null, null, null);
 				if (cursor != null && cursor.moveToFirst()) {
@@ -304,94 +304,10 @@ public class DefaultDBAdapter<E> {
 	
 	/**
 	 * 
-	 * @param id
-	 * @param targetMethods
-	 * @return
-	 */
-	YRawData getRawDataById(final Long id, final Method[] targetMethods) {
-		YRawData yRawData = null;
-		try {
-			if(!this.isEntity()) {
-				throw new NotAnEntityException();
-			}
-			final List<Method> filteredMethods = this.filterMethodsForPersistenceAccess(targetMethods);
-			String[] columns = new String[filteredMethods.size()];
-			for(int i = 0; i < filteredMethods.size(); i++) {
-				final String columnName = YUtilPersistence.builColumnName(filteredMethods.get(i));
-				if(columnName != null) {
-					columns[i] = columnName;
-				}
-			}
-			if(columns != null && columns.length > 0) {
-				final Cursor cursor = this.getDatabase().query(
-						this.getTableName(), 
-						columns, 
-						this.getIdColumnName() + " = ?", 
-						new String[]{String.valueOf(id)}, 
-						null, null, null);
-				if (cursor != null && cursor.moveToFirst()) {
-					for(int i = 0; i < targetMethods.length; i++) {
-						yRawData = DataAdapterHelper.getYRawData(cursor, targetMethods[i], columns[i], yRawData);
-					}
-				}
-			}
-		} catch (Exception e) {
-			Log.e("DefaultDBAdapter.getRawDataById", e.getMessage());
-		}
-		return yRawData;
-	}
-	
-	/**
-	 * 
-	 * @param parentClass
-	 * @param parenId
-	 * @return
-	 * @throws SQLException
-	 */
-	List<YRawData> selectRawData(final Class<?> parentClass, final long parenId) throws SQLException {
-		final List<YRawData> entities = new ArrayList<YRawData>();
-		try {
-			if(!this.isEntity()) {
-				throw new NotAnEntityException();
-			}
-			final List<Method> attColumnGetMethods = YUtilPersistence.getGetColumnMethodList(this.getGenericClass());
-			final String[] columns = this.getColumnNamesAsArray();
-			final Method parentGetIdMethod = YUtilPersistence.getGetIdMethod(parentClass);
-			if(columns != null && columns.length > 0) {
-				final Cursor cursor = this.getDatabase().query(
-						this.getTableName(), 
-						columns, 
-						YUtilPersistence.buildFkColumnName(parentClass, parentGetIdMethod.getAnnotation(Column.class), parentGetIdMethod) + " = ? ", 
-						new String[]{parenId+""}, 
-						null, null, null);
-				if (cursor != null && cursor.moveToFirst()) {
-					YRawData yRawData = new YRawDataPersistenceImpl();
-					for(int i = 0; i < attColumnGetMethods.size(); i++) {
-						yRawData = DataAdapterHelper.getYRawData(cursor, attColumnGetMethods.get(i), columns[i], yRawData);
-					}
-					entities.add(yRawData);
-					while(cursor.moveToNext()) {
-						yRawData = new YRawDataPersistenceImpl();
-						for(int i = 0; i < attColumnGetMethods.size(); i++) {
-							yRawData = DataAdapterHelper.getYRawData(cursor, attColumnGetMethods.get(i), columns[i], yRawData);
-						}
-						entities.add(yRawData);
-					}
-				}
-				cursor.close();
-			}
-		} catch (Exception e) {
-			Log.e("DefaultDBAdapter.selectRawData", e.getMessage());
-		}
-		return entities;
-	}
-	
-	/**
-	 * 
 	 * @param attColumnGetMethods
 	 * @return
 	 */
-	private String buildSelecion(final List<Method> attColumnGetMethods) {
+	String buildSelecion(final List<Method> attColumnGetMethods) {
 		final StringBuilder builder = new StringBuilder();
 		
 		int count = 0;
@@ -412,7 +328,7 @@ public class DefaultDBAdapter<E> {
 	 * @param entity
 	 * @return
 	 */
-	private String[] buildSelecionArgs(final List<Method> attColumnGetMethods, final E entity) {
+	String[] buildSelecionArgs(final List<Method> attColumnGetMethods, final E entity) {
 		final String[] selecionArgs = new String[attColumnGetMethods.size()];
 		for(int i = 0; i < attColumnGetMethods.size(); i++) {
 			selecionArgs[i] = YUtilReflection.invokeMethodToString(attColumnGetMethods.get(i), entity, YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
@@ -432,8 +348,11 @@ public class DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			StringBuilder sql = new StringBuilder();
-			sql.append("select max(" + this.getIdColumnName() + ") ");
-			sql.append("from " + this.getTableName());
+			sql.append(YUtilPersistence.SQL_WORD_SELECT);
+			sql.append(YUtilPersistence.SQL_WORD_MAX);
+			sql.append("(" + YUtilPersistence.getIdColumnName(this.getGenericClass()) + ") ");
+			sql.append(YUtilPersistence.SQL_WORD_FROM);
+			sql.append(this.getTableName());
 
 			final Cursor cursor = getDatabase().rawQuery(sql.toString(), null);
 			if (cursor != null && cursor.moveToFirst()) {
@@ -460,23 +379,6 @@ public class DefaultDBAdapter<E> {
 			Log.e("DefaultDBAdapter.getTableName", e.getMessage());
 		}
 		return null;
-	}
-
-	/**
-	 *
-	 * @param type
-	 * @return
-	 */
-	protected String getIdColumnName() {
-		String idColumnName = null;
-		try {
-			final Method getMethod = YUtilPersistence.getGetIdMethod(this.getGenericClass());
-			
-			idColumnName = YUtilPersistence.getColumnName(getMethod.getAnnotation(Column.class), getMethod);
-		} catch (Exception e) {
-			Log.e("DefaultDBAdapter.getIdColumnName", e.getMessage());
-		}
-		return idColumnName;
 	}
 
 	/**
@@ -723,10 +625,10 @@ public class DefaultDBAdapter<E> {
 	 */
 	protected boolean configWhereOrAnd(boolean whereAdded, final StringBuilder sql) {
 		if(!whereAdded) {
-			sql.append(" where ");
+			sql.append(YUtilPersistence.SQL_WORD_WHERE);
 			whereAdded = true;
 		} else {
-			sql.append(" and ");
+			sql.append(YUtilPersistence.SQL_WORD_AND);
 		}
 		return whereAdded;
 	}
@@ -741,7 +643,7 @@ public class DefaultDBAdapter<E> {
 		if(!whereAdded) {
 			whereAdded = true;
 		} else {
-			sql.append(" and ");
+			sql.append(YUtilPersistence.SQL_WORD_AND);
 		}
 		return whereAdded;
 	}
@@ -751,7 +653,7 @@ public class DefaultDBAdapter<E> {
 	 * @param targetMethods
 	 * @return
 	 */
-	private List<Method> filterMethodsForPersistenceAccess(final Method[] targetMethods) {
+	List<Method> filterMethodsForPersistenceAccess(final Method[] targetMethods) {
 		final List<Method> filteredMethods = new ArrayList<Method>();
 		for(final Method method : targetMethods) {
 			if(method.getAnnotation(Column.class) != null
@@ -760,5 +662,26 @@ public class DefaultDBAdapter<E> {
 			}
 		}
 		return filteredMethods;
+	}
+	
+	/**
+	 * 
+	 * @param tableName
+	 * @param columns
+	 * @return
+	 */
+	protected String buildColumnsSelecString(final String tableName, final String[] columns) {
+		if(columns == null || columns.length == 0) {
+			return "";
+		}
+		final StringBuilder stringBuilder = new StringBuilder();
+		for(int i = 0; i < columns.length; i++) {
+			stringBuilder.append(tableName+ "." +columns[i]);
+			if((i + 1) < columns.length) {
+				stringBuilder.append(", ");
+			}
+		}
+		
+		return stringBuilder.toString();
 	}
 }
