@@ -18,6 +18,7 @@
 package br.org.yacamim.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -813,9 +814,13 @@ public strictfp abstract class YUtilReflection {
 	 * @param method
 	 * @param objectTo
 	 * @return
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 * @throws Exception
 	 */
-	public static Object invokeMethodWithoutParams(Method method, Object objectTo) throws Exception {
+	public static Object invokeMethodWithoutParams(Method method, Object objectTo) 
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException  {
 		return method.invoke(objectTo, DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
 	}
 

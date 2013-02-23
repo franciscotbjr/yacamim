@@ -554,7 +554,6 @@ final class YUtilPersistence {
 	static boolean isManyToManyOwner(final ManyToMany  manyToMany) {
 		return (YUtilString.isEmptyString(manyToMany.mappedBy()));
 	}
-	
 
 	/**
 	 * 
@@ -611,6 +610,23 @@ final class YUtilPersistence {
 			Log.e("YUtilReflection.getGetColumnMethodList", e.getMessage());
 			return new ArrayList<Method>();
 		}
+	}
+	
+	/**
+	 * 
+	 * @param getMethods
+	 * @return
+	 */
+	public static List<Method> filterManyToOneMethods(final List<Method> getMethods) {
+		final List<Method> manyToOnemethods = new ArrayList<Method>();
+		if(getMethods != null) {
+			for(final Method method : getMethods) {
+				if(method.getAnnotation(ManyToOne.class) != null) {
+					manyToOnemethods.add(method);
+				}
+			}
+		}
+		return manyToOnemethods;
 	}
 
 }

@@ -28,4 +28,8 @@
     <string name="y_MsgNoWifiConnectivityAvailable">Conexão Wifi indisponível.</string>
     <string name="y_MsgConstraintDependency">O registro não pode ser excluído.</string>
 
+    <string name="teste_list">Teste List</string>
+    <string name="teste_insert">Teste Insert</string>
+    <string name="list">List</string>
+    <string name="insert">Insert</string>
 </resources>

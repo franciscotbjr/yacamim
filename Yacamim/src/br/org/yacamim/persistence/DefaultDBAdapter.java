@@ -18,6 +18,7 @@
 package br.org.yacamim.persistence;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -168,7 +169,11 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			final ContentValues initialValues = createContentValues(entity);
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
+			
+			this.handlesManyToOneRelationships(entity, getMethods);
+			
+			final ContentValues initialValues = createContentValues(entity, getMethods);
 
 			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
 
@@ -196,7 +201,7 @@ public class DefaultDBAdapter<E> {
 			updateValues.remove(idColumnName);
 			return this.getDatabase().update(this.getTableName(), updateValues, idColumnName + " = " + this.getId(entity), null) > 0;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("DefaultDBAdapter.update", e.getMessage());
 			return false;
 		}
 	}
@@ -565,56 +570,86 @@ public class DefaultDBAdapter<E> {
 		try {
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
 
-			for(final Method getMethod : getMethods) {
-				final Column column = getMethod.getAnnotation(Column.class);
-				if(column != null
-						|| YUtilPersistence.isId(getMethod)) {
-					final String columnName = YUtilPersistence.getColumnName(column, getMethod);
-					if(getMethod.getReturnType().equals(String.class)) {
-						values.put(columnName, (String)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
-					} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
-						values.put(columnName, (Byte)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
-					} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
-						values.put(columnName, (Short)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
-					} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
-						values.put(columnName, (Integer)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
-					} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
-						values.put(columnName, (Float)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
-					} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
-						values.put(columnName, (Double)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
-					} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
-						Long valueLong = (Long)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
-						// When a column is @Id, then it will only be added if its value is greater than zero
-						if (YUtilPersistence.isId(getMethod)) {
-							if(valueLong > 0) {
-								values.put(columnName, valueLong);
-							}
-						} else {
-							values.put(columnName, valueLong);
-						}
-					} else if (getMethod.getReturnType().equals(Date.class)) {
-						final Date date = (Date)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
-						if(date != null) {
-							values.put(columnName, date.getTime());
-						}
-					} else {
-						final Object object = YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
-						final Class<?> returnType = object.getClass();
-						if(object != null && YUtilPersistence.isEntity(returnType)) {
-							final Method getFkMethod = YUtilPersistence.getGetIdMethod(returnType);
-							if(getFkMethod != null) {
-								final Long idFk = (Long)YUtilReflection.invokeMethodWithoutParams(getFkMethod, object);
-								final String fkColumnName = YUtilPersistence.buildFkColumnName(returnType, column, getFkMethod);
-								values.put(fkColumnName, idFk);
-							}
-						}
-					}
-				}
-			}
+			this.createContentValues(entidade, values, getMethods);
+			
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.createContentValues", e.getMessage());
 		}
 		return values;
+	}
+
+	/**
+	 *
+	 * @param entidade
+	 * @return
+	 */
+	protected ContentValues createContentValues(final E entidade, final List<Method> getMethods) {
+		final ContentValues values = new ContentValues();
+		try {
+			this.createContentValues(entidade, values, getMethods);
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.createContentValues", e.getMessage());
+		}
+		return values;
+	}
+
+	/**
+	 * 
+	 * @param entidade
+	 * @param values
+	 * @param getMethods
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	private void createContentValues(final E entidade, final ContentValues values, final List<Method> getMethods) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException 
+			 {
+		for(final Method getMethod : getMethods) {
+			final Column column = getMethod.getAnnotation(Column.class);
+			if(column != null
+					|| YUtilPersistence.isId(getMethod)) {
+				final String columnName = YUtilPersistence.getColumnName(column, getMethod);
+				if(getMethod.getReturnType().equals(String.class)) {
+					values.put(columnName, (String)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+				} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
+					values.put(columnName, (Byte)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+				} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
+					values.put(columnName, (Short)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+				} else if (getMethod.getReturnType().equals(Integer.class) || getMethod.getReturnType().equals(int.class)) {
+					values.put(columnName, (Integer)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+				} else if (getMethod.getReturnType().equals(Float.class) || getMethod.getReturnType().equals(float.class)) {
+					values.put(columnName, (Float)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+				} else if (getMethod.getReturnType().equals(Double.class) || getMethod.getReturnType().equals(double.class)) {
+					values.put(columnName, (Double)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+				} else if (getMethod.getReturnType().equals(Long.class) || getMethod.getReturnType().equals(long.class)) {
+					Long valueLong = (Long)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+					// When a column is @Id, then it will only be added if its value is greater than zero
+					if (YUtilPersistence.isId(getMethod)) {
+						if(valueLong > 0) {
+							values.put(columnName, valueLong);
+						}
+					} else {
+						values.put(columnName, valueLong);
+					}
+				} else if (getMethod.getReturnType().equals(Date.class)) {
+					final Date date = (Date)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+					if(date != null) {
+						values.put(columnName, date.getTime());
+					}
+				} else {
+					final Object object = YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+					final Class<?> returnType = object.getClass();
+					if(object != null && YUtilPersistence.isEntity(returnType)) {
+						final Method getFkMethod = YUtilPersistence.getGetIdMethod(returnType);
+						if(getFkMethod != null) {
+							final Long idFk = (Long)YUtilReflection.invokeMethodWithoutParams(getFkMethod, object);
+							final String fkColumnName = YUtilPersistence.buildFkColumnName(returnType, column, getFkMethod);
+							values.put(fkColumnName, idFk);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -684,4 +719,38 @@ public class DefaultDBAdapter<E> {
 		
 		return stringBuilder.toString();
 	}
+	
+
+	/**
+	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @throws Exception
+	 * @throws CloneNotSupportedException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void handlesManyToOneRelationships(final E entity, final List<Method> getMethods) 
+			throws Exception, CloneNotSupportedException {
+		final List<Method> manyToOneMethods = YUtilPersistence.filterManyToOneMethods(getMethods);
+		if(manyToOneMethods != null && !manyToOneMethods.isEmpty()) {
+			for(final Method manyToOneMethod : manyToOneMethods) {
+				final Object object = YUtilReflection.invokeMethod(manyToOneMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				if(object != null && YUtilPersistence.isEntity(object.getClass())) {
+					final Method idMethod = YUtilPersistence.getGetIdMethod(object.getClass());
+					if(idMethod != null) {
+						final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, object, 
+								YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+						if(longId != null && longId < 1) {
+							DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
+							defaultDBAdapter.open();
+							defaultDBAdapter.insert(object);
+							defaultDBAdapter.close();
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }

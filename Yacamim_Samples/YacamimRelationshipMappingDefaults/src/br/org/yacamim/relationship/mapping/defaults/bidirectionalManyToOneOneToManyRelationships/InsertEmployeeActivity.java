@@ -1,5 +1,5 @@
 /**
- * ManyToOne_OneToManyActivity.java
+ * InsertEmployeeActivity.java
  *
  * Copyright 2013 yacamim.org.br
  *
@@ -17,6 +17,7 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import android.view.Menu;
 import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity.Department;
 import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity.Employee;
 import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
 import br.org.yacamim.ui.components.AdapterConfig;
@@ -35,15 +37,15 @@ import br.org.yacamim.ui.components.RowConfigItem;
 import br.org.yacamim.util.YUtilListView;
 
 /**
- * Classe ManyToOne_OneToManyActivity TODO
+ * Classe InsertEmployeeActivity TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class ManyToOne_OneToManyActivity extends YBaseListActivity {
+public class InsertEmployeeActivity extends YBaseListActivity {
 	
-	private static final String TAG = ManyToOne_OneToManyActivity.class.getSimpleName();
+	private static final String TAG = InsertEmployeeActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,21 @@ public class ManyToOne_OneToManyActivity extends YBaseListActivity {
 	 */
 	protected void init() {
 		try {
+			Employee newEmployee = new Employee();
+			newEmployee.setName("Francisco " + System.currentTimeMillis());
+			List<Employee> newEmployees = new ArrayList<Employee>();
+			newEmployees.add(newEmployee);
+			
+			Department newDepartment = new Department();
+			newDepartment.setName("Department " + System.currentTimeMillis());
+			newDepartment.setEmployees(newEmployees);
+			newEmployee.setDepartment(newDepartment);
+			
+			
 			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
 			defaultDBAdapter.open();
+			defaultDBAdapter.insert(newEmployee);
+			
 			List<Employee> employees = defaultDBAdapter.list();
 			defaultDBAdapter.close();
 			
@@ -66,9 +81,9 @@ public class ManyToOne_OneToManyActivity extends YBaseListActivity {
 				for(final Employee employee : employees) {
 					Log.i(TAG, employee.getName() + " : " + employee.getDepartment().getName());
 				}
-				for(final Employee employee : employees) {
-					Log.i(TAG, "Employees : " + employee.getDepartment().getEmployees());
-				}
+//				for(final Employee employee : employees) {
+//					Log.i(TAG, "Employees : " + employee.getDepartment().getEmployees());
+//				}
 			}
 			
 			this.initList(employees);
