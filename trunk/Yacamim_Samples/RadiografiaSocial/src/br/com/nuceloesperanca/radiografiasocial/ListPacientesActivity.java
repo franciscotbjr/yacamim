@@ -19,6 +19,7 @@ import android.widget.Button;
 import br.com.nuceloesperanca.radiografiasocial.entidade.Paciente;
 import br.com.nuceloesperanca.radiografiasocial.persitencia.PacienteDBAdapter;
 import br.com.nuceloesperanca.radiografiasocial.util.ConditionFactory;
+import br.com.nuceloesperanca.radiografiasocial.util.Constantes;
 import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.ui.components.AdapterConfig;
 import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
@@ -171,10 +172,12 @@ public class ListPacientesActivity extends YBaseListActivity {
 		try {
 			adapter.open();
 			adapter.delete(pacienteSelecionado);
+			super.setResult(Constantes.EXCLUSAO_REALIZADA_COM_SUCESSO);
 			finish();
 		} catch (Exception e) {
-			adapter.close();
 			Log.e(TAG_CLASS, e.getMessage());
+		} finally {
+			adapter.close();
 		}
 	}
 
