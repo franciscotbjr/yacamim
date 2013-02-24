@@ -181,7 +181,9 @@ public class DefaultDBAdapter<E> {
 
 			this.setId(entity, newId);
 			
-			this.handlesManyToManyRelationships(entity, getMethods);
+			this.handlesManyToManyJoin(entity, 
+					this.handlesManyToManyRelationships(entity, getMethods)
+					);
 
 			this.handlesOneToManyMappedByRelationships(entity, getMethods);
 			
@@ -831,7 +833,9 @@ public class DefaultDBAdapter<E> {
 	 * @param getMethods
 	 * @throws Exception 
 	 */
-	private void handlesManyToManyRelationships(final E entity, final List<Method> getMethods) throws Exception {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<ManyToManyResult> handlesManyToManyRelationships(final E entity, final List<Method> getMethods) throws Exception {
+		final List<ManyToManyResult> handledManyToManyResults = new ArrayList<ManyToManyResult>();
 		final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
 		if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) { // There are ManyToMany (with mappedBy) relationships
 			for(final Method manyToManyMethod : manyToManyMethods) {
@@ -851,12 +855,37 @@ public class DefaultDBAdapter<E> {
 										YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
 								// Checks the ID
 								if(longId != null && longId < 1) {
+									DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(targetClass);
+									defaultDBAdapter.open();
+									defaultDBAdapter.insert(targetObject);
+									defaultDBAdapter.close();
 									
+									ManyToManyResult manyToManyResult = new ManyToManyResult();
+									manyToManyResult.setTargetClass(targetClass);
+									manyToManyResult.setTargetMethod(manyToManyMethod);
+									manyToManyResult.setTargetObject(targetObject);
+									manyToManyResult.setIdMethod(idMethod);
+									handledManyToManyResults.add(manyToManyResult);
 								}
 							}
 						}
 					}
 				}
+			}
+		}
+		return handledManyToManyResults;
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param manyToManyMethods
+	 * @throws Exception 
+	 */
+	private void handlesManyToManyJoin(final E entity, final List<ManyToManyResult> manyToManyResults) throws Exception {
+		if(manyToManyResults != null && !manyToManyResults.isEmpty()) { // There are ManyToMany (with mappedBy) relationships
+			for(final ManyToManyResult manyToManyResult : manyToManyResults) {
+				// TODO 
 			}
 		}
 	}
