@@ -93,7 +93,7 @@ public class YRelationshipMappingDefaultsActivity extends YBaseActivity {
 	 */
 	public void startBidirectionalManyToManyTest(final View view) {
 		try {
-			startActivity(new Intent(this, br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.ManyToManyActivity.class));
+			startActivity(new Intent(this, br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.Home_ManyToManyActivity.class));
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
