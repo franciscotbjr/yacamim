@@ -42,7 +42,7 @@ public class PacienteDBAdapter extends DefaultDBAdapter<Paciente> {
 		List<Paciente> retorno = null;
 		String where = "";
 		StringBuilder sql = new StringBuilder();
-		sql.append("select p.Id, p.Nome, p.NomeMae ");
+		sql.append("select p.Id, p.prontuario, p.Nome, p.NomeMae ");
 		sql.append("from Paciente p ");
 		sql.append("where ");
 		List<String> selectionArgsList = new ArrayList<String>();

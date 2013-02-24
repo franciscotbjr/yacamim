@@ -50,7 +50,7 @@ public class RadiografiaSocialActivity extends YBaseActivity {
 		try {
 			startActivity(new Intent(this, ConsultarPacienteActivity.class));
 		} catch (Exception e) {
-			Log.e("RadiografiaSocialActivity.manterPaciente", e.getMessage());
+			Log.e(TAG_CLASS, e.getMessage());
 		}
 	}
 
@@ -63,7 +63,7 @@ public class RadiografiaSocialActivity extends YBaseActivity {
 		try {
 			startActivity(new Intent(this, VisitaActivity.class));
 		} catch (Exception e) {
-			Log.e("RadiografiaSocialActivity.registrarVisita", e.getMessage());
+			Log.e(TAG_CLASS, e.getMessage());
 		}
 	}
 }

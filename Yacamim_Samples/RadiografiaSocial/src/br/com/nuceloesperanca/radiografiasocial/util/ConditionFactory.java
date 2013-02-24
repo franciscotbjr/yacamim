@@ -1,5 +1,7 @@
 package br.com.nuceloesperanca.radiografiasocial.util;
 
+import android.view.View;
+import br.org.yacamim.ui.components.Condition;
 import br.org.yacamim.ui.components.RowCondition;
 import br.org.yacamim.ui.components.RowConfig;
 
@@ -19,7 +21,24 @@ public final class ConditionFactory {
 	private ConditionFactory() {
 		super();
 	}
-	
+
+	/**
+	 * @return
+	 */
+	public static Condition getConditionPaciente() {
+		return new Condition() {
+			@Override
+			public boolean checkToVisibility(final Object dado) {
+				return true;
+			}
+
+			@Override
+			public void handle(final Object dado, final View view) {
+				// Não implementado neste exemplo
+			}
+		};
+	}
+
 	/** 
 	 * @return
 	 */
