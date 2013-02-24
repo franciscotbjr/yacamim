@@ -115,6 +115,9 @@ public class PacienteActivity extends YBaseActivity {
     			UtilCombos.setSelectedObjectToSpinner(this, R.id.cmb_cid, this.paciente.getCid());
     			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_em_tratamento, R.id.radio_nao_em_tratamento, this.paciente.getEmTratamento());
     			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_obito, R.id.radio_nao_obito, this.paciente.getObito());
+    		} else {
+    			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_em_tratamento, R.id.radio_nao_em_tratamento, Constantes.SIM);
+    			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_obito, R.id.radio_nao_obito, Constantes.NAO);
     		}
     		
     		final EditText editTextLatitude = (EditText) this.findViewById(R.id.txte_latitude);

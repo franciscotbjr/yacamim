@@ -5,13 +5,18 @@
  */
 package br.com.nuceloesperanca.radiografiasocial;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import br.com.nuceloesperanca.radiografiasocial.entidade.Paciente;
+import br.com.nuceloesperanca.radiografiasocial.util.Constantes;
 import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
 import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilString;
 import br.org.yacamim.util.YUtilText;
@@ -85,6 +90,42 @@ public class ConsultarPacienteActivity extends YBaseActivity {
     		this.startActivityForResult(new Intent(this, PacienteActivity.class), YConstants.LOGOFF);
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
+		}
+    }
+
+    /**
+     * @see br.org.yacamim.YBaseActivity#onActivityResult(int, int, android.content.Intent)
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+		try {
+			if(resultCode == Constantes.EXCLUSAO_REALIZADA_COM_SUCESSO) {
+				this.showDialog(Constantes.EXCLUSAO_REALIZADA_COM_SUCESSO);
+			}
+		} catch (Exception e) {
+			Log.e(TAG_CLASS, e.getMessage());
+		}
+    }
+
+    /**
+     * @see br.org.yacamim.YBaseActivity#onCreateDialog(int)
+     */
+    @Override
+    protected Dialog onCreateDialog(int idDialog) {
+		String msg = null;
+		switch(idDialog) {
+			case Constantes.EXCLUSAO_REALIZADA_COM_SUCESSO:
+				msg = this.getText(R.string.msg3).toString();
+				AlertDialog.Builder builderExclusaoSucesso = new DefaultAlertDialogBuilder(this, msg, false);
+	        	builderExclusaoSucesso.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			dialog.cancel();
+	        		}
+	        	});
+	        	return builderExclusaoSucesso.show();
+			default:
+				return super.onCreateDialog(idDialog);
 		}
     }
 }

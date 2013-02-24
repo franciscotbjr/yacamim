@@ -49,4 +49,5 @@
     <!-- Mensagens -->
     <string name="msg1">Existe(m) campo(s) obrigatório(s) não preenchido(s):</string>
     <string name="msg2">O paciente {0} será excluído. Confirma a operação?</string>
+    <string name="msg3">Informação apagada com sucesso.</string>
 </resources>
