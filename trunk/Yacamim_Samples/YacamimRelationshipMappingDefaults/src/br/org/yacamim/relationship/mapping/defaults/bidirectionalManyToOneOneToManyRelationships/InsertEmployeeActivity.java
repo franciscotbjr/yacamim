@@ -81,9 +81,6 @@ public class InsertEmployeeActivity extends YBaseListActivity {
 				for(final Employee employee : employees) {
 					Log.i(TAG, employee.getName() + " : " + employee.getDepartment().getName());
 				}
-//				for(final Employee employee : employees) {
-//					Log.i(TAG, "Employees : " + employee.getDepartment().getEmployees());
-//				}
 			}
 			
 			this.initList(employees);

@@ -17,6 +17,7 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import android.view.Menu;
 import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity.Employee;
 import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity.Project;
 import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
 import br.org.yacamim.ui.components.AdapterConfig;
@@ -57,18 +59,50 @@ public class InsertEmployeeActivity extends YBaseListActivity {
 	 */
 	protected void init() {
 		try {
-			final DefaultDBAdapter<Project> defaultDBAdapter = new DefaultDBAdapter<Project>(Project.class);
+			Employee employee1 = new Employee();
+			employee1.setName("Employee 1");
+
+			Employee employee2 = new Employee();
+			employee2.setName("Francisco 2");
+			
+			Project project1 = new Project();
+			project1.setName("Project 1 ");
+			
+			Project project2 = new Project();
+			project2.setName("Project 1 ");
+			
+			List<Employee> employees = new ArrayList<Employee>();
+			employees.add(employee1);
+			employees.add(employee2);
+			
+			List<Project> projects = new ArrayList<Project>();
+			projects.add(project1);
+			projects.add(project2);
+			
+			employee1.setProjects(projects);
+			employee1.setProjects(projects);
+			
+			project1.setEmployees(employees);
+			project1.setEmployees(employees);
+			
+			
+			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
 			defaultDBAdapter.open();
-			List<Project> projects = defaultDBAdapter.list();
+			
+			defaultDBAdapter.insert(employee1);
+			
+			defaultDBAdapter.insert(employee2);
+			
+			List<Employee> employeesRec = defaultDBAdapter.list();
 			defaultDBAdapter.close();
 			
-			if(projects != null) {
-				for(final Project project : projects) {
-					Log.i(TAG, project.getName());
+			if(employeesRec != null) {
+				for(final Employee employee : employeesRec) {
+					Log.i(TAG, employee.getName());
 				}
 			}
 			
-			this.initList(projects);
+			this.initList(employeesRec);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
@@ -77,11 +111,11 @@ public class InsertEmployeeActivity extends YBaseListActivity {
 	
 	/**
 	 * 
-	 * @param projects
+	 * @param employees
 	 */
-    private void initList(final List<Project> projects) {
+    private void initList(final List<Employee> employees) {
     	try {
-			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(projects);
+			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(employees);
 			
 			final AdapterConfig adapterConfig = this.buildAdapterConfig();
 			
@@ -104,7 +138,7 @@ public class InsertEmployeeActivity extends YBaseListActivity {
 			.setResource(R.layout.list_bidirectional_many_to_many)
 			.setResourcesHint(new int[]{})
 			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
-			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))
+//			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))
 			;
 		
 		final RowConfig[] rowConfigs = {rowConfig} ;

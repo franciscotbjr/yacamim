@@ -180,6 +180,8 @@ public class DefaultDBAdapter<E> {
 			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
 
 			this.setId(entity, newId);
+			
+			this.handlesManyToManyRelationships(entity, getMethods);
 
 			this.handlesOneToManyMappedByRelationships(entity, getMethods);
 			
@@ -788,8 +790,8 @@ public class DefaultDBAdapter<E> {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void handlesOneToManyMappedByRelationships(final E entity, final List<Method> getMethods) 
-			throws Exception, CloneNotSupportedException {
-		final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMappedByMethods(getMethods);
+			throws Exception {
+		final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMappedByMethods(entity, getMethods);
 		if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) { // There are OneToMany (with mappedBy) relationships
 			for(final Method oneToManyMethod : oneToManyMethods) {
 				// Gets the returned objeto
@@ -798,9 +800,10 @@ public class DefaultDBAdapter<E> {
 				// Check if it is a List
 				if(object != null && YUtilReflection.isList(object.getClass())) {
 					final List targetList = (List)object;
-					// Check if the list item type
+					// Check the list item type
 					final Class<?> targetClass = YUtilReflection.getGenericType(entity.getClass(), oneToManyMethod);
 					if(targetClass != null) {
+						
 						// Checks its ID
 						final Method idMethod = YUtilPersistence.getGetIdMethod(targetClass);
 						if(idMethod != null) {
@@ -813,6 +816,42 @@ public class DefaultDBAdapter<E> {
 									defaultDBAdapter.open();
 									defaultDBAdapter.insert(targetObject);
 									defaultDBAdapter.close();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @throws Exception 
+	 */
+	private void handlesManyToManyRelationships(final E entity, final List<Method> getMethods) throws Exception {
+		final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
+		if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) { // There are ManyToMany (with mappedBy) relationships
+			for(final Method manyToManyMethod : manyToManyMethods) {
+				final Object object = YUtilReflection.invokeMethod(manyToManyMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				// Check if it is a List
+				if(object != null && YUtilReflection.isList(object.getClass())) {
+					final List targetList = (List)object;
+					// Check the list item type
+					final Class<?> targetClass = YUtilReflection.getGenericType(entity.getClass(), manyToManyMethod);
+					if(targetClass != null) {
+						// Checks its ID
+						final Method idMethod = YUtilPersistence.getGetIdMethod(targetClass);
+						if(idMethod != null) {
+							for(Object targetObject : targetList) {
+								final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, targetObject, 
+										YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+								// Checks the ID
+								if(longId != null && longId < 1) {
+									
 								}
 							}
 						}
