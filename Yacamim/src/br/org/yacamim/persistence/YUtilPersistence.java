@@ -634,16 +634,54 @@ final class YUtilPersistence {
 	 * @param getMethods
 	 * @return
 	 */
-	public static List<Method> filterOneToManyMappedByMethods(final List<Method> getMethods) {
+	public static List<Method> filterOneToManyMappedByMethods(final Object entity, final List<Method> getMethods) throws NoSuchMethodException {
 		final List<Method> manyToOnemethods = new ArrayList<Method>();
 		if(getMethods != null) {
 			for(final Method method : getMethods) {
-				if(method.getAnnotation(OneToMany.class) != null) {
+				final OneToMany oneToMany;
+				if((oneToMany = method.getAnnotation(OneToMany.class)) != null
+						&& !YUtilString.isEmptyString(oneToMany.mappedBy())
+						&& checkOneToManyMappedByMehtod(entity.getClass(), oneToMany, method)) {
 					manyToOnemethods.add(method);
 				}
 			}
 		}
 		return manyToOnemethods;
+	}
+	
+	/**
+	 * 
+	 * @param declaringClass
+	 * @param oneToMany
+	 * @param targetMethod
+	 * @return
+	 * @throws NoSuchMethodException
+	 */
+	public static boolean checkOneToManyMappedByMehtod(final Class<?> declaringClass, final OneToMany oneToMany, final Method targetMethod) 
+			throws NoSuchMethodException {
+		boolean result = false;
+		if(oneToMany != null && YUtilReflection.isList(targetMethod.getReturnType())) {
+			result = YUtilReflection.getGetMethod(
+					YUtilReflection.getGetMethodName(oneToMany.mappedBy()), YUtilReflection.getGenericType(declaringClass, targetMethod)) != null;
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param getMethods
+	 * @return
+	 */
+	public static List<Method> filterManyToManyMethods(final List<Method> getMethods) {
+		final List<Method> manyToOneMethods = new ArrayList<Method>();
+		if(getMethods != null) {
+			for(final Method method : getMethods) {
+				if(method.getAnnotation(ManyToMany.class) != null) {
+					manyToOneMethods.add(method);
+				}
+			}
+		}
+		return manyToOneMethods;
 	}
 
 }
