@@ -1,5 +1,5 @@
 /**
- * ManyToManyActivity.java
+ * InsertEmployeeActivity.java
  *
  * Copyright 2013 yacamim.org.br
  *
@@ -35,15 +35,15 @@ import br.org.yacamim.ui.components.RowConfigItem;
 import br.org.yacamim.util.YUtilListView;
 
 /**
- * Classe ManyToManyActivity TODO
+ * Classe InsertEmployeeActivity TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
-public class ManyToManyActivity extends YBaseListActivity {
+public class InsertEmployeeActivity extends YBaseListActivity {
 	
-	private static final String TAG = ManyToManyActivity.class.getSimpleName();
+	private static final String TAG = InsertEmployeeActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
