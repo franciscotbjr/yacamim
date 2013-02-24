@@ -221,7 +221,7 @@ public class PacienteActivity extends YBaseActivity {
 			}
 
 			if (YUtilText.getDoubleFromEditText(this, R.id.txte_longitude) != null) {
-				paciente.setLongitude(YUtilText.getLongFromEditText(this, R.id.txte_longitude));
+				paciente.setLongitude(YUtilText.getDoubleFromEditText(this, R.id.txte_longitude));
 			}
 
 			if (inclusao) {
