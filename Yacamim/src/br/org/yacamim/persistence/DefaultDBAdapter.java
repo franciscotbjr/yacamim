@@ -33,6 +33,7 @@ import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.dex.YInvocationHandlerProxy;
 import br.org.yacamim.util.YUtilReflection;
+import br.org.yacamim.util.YUtilString;
 
 import com.google.dexmaker.stock.ProxyBuilder;
 
@@ -181,9 +182,10 @@ public class DefaultDBAdapter<E> {
 
 			this.setId(entity, newId);
 			
-			this.handlesManyToManyJoin(entity, 
-					this.handlesManyToManyRelationships(entity, getMethods)
-					);
+			final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
+			if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) {
+				this.insertManyToMany(entity, manyToManyMethods);
+			}
 
 			this.handlesOneToManyMappedByRelationships(entity, getMethods);
 			
@@ -197,6 +199,11 @@ public class DefaultDBAdapter<E> {
 			Log.e("DefaultDBAdapter.insert", e.getMessage());
 			return false;
 		}
+	}
+	
+	private boolean insertManyToMany(final E entity, final List<Method> manyToManyMethods) throws Exception {
+		final List<ManyToManyResult>  manyToManyResults = this.handlesManyToManyRelationships(entity, manyToManyMethods);
+		return this.handlesManyToManyJoin(entity, manyToManyResults);
 	}
 
 	/**
@@ -449,7 +456,8 @@ public class DefaultDBAdapter<E> {
 			for(final Method getMethod : getMethods) {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(getMethod.equals(getIDMethod)
-						|| column == null) {
+						|| column == null
+						|| getMethod.getAnnotation(ManyToMany.class) != null) {
 					continue;
 				}
 				
@@ -750,6 +758,37 @@ public class DefaultDBAdapter<E> {
 		return stringBuilder.toString();
 	}
 	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	private boolean simpleInsert(final E entity) {
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			this.beginTransaction();
+			
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
+			
+			final ContentValues initialValues = createContentValues(entity, getMethods);
+
+			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
+
+			this.setId(entity, newId);
+			
+			boolean success = newId > 0;
+			
+			this.endTransaction(true);
+			
+			return success;
+		} catch (Exception e) {
+			this.endTransaction(false);
+			Log.e("DefaultDBAdapter.simpleInsert", e.getMessage());
+			return false;
+		}
+	}
 
 	/**
 	 * 
@@ -830,13 +869,13 @@ public class DefaultDBAdapter<E> {
 	/**
 	 * 
 	 * @param entity
-	 * @param getMethods
-	 * @throws Exception 
+	 * @param manyToManyMethods
+	 * @return
+	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private List<ManyToManyResult> handlesManyToManyRelationships(final E entity, final List<Method> getMethods) throws Exception {
+	private List<ManyToManyResult> handlesManyToManyRelationships(final E entity, final List<Method> manyToManyMethods) throws Exception {
 		final List<ManyToManyResult> handledManyToManyResults = new ArrayList<ManyToManyResult>();
-		final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
 		if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) { // There are ManyToMany (with mappedBy) relationships
 			for(final Method manyToManyMethod : manyToManyMethods) {
 				final Object object = YUtilReflection.invokeMethod(manyToManyMethod, entity, 
@@ -857,7 +896,7 @@ public class DefaultDBAdapter<E> {
 								if(longId != null && longId < 1) {
 									DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(targetClass);
 									defaultDBAdapter.open();
-									defaultDBAdapter.insert(targetObject);
+									defaultDBAdapter.simpleInsert(targetObject);
 									defaultDBAdapter.close();
 									
 									ManyToManyResult manyToManyResult = new ManyToManyResult();
@@ -882,12 +921,46 @@ public class DefaultDBAdapter<E> {
 	 * @param manyToManyMethods
 	 * @throws Exception 
 	 */
-	private void handlesManyToManyJoin(final E entity, final List<ManyToManyResult> manyToManyResults) throws Exception {
-		if(manyToManyResults != null && !manyToManyResults.isEmpty()) { // There are ManyToMany (with mappedBy) relationships
+	private boolean handlesManyToManyJoin(final E entity, final List<ManyToManyResult> manyToManyResults) throws Exception {
+		boolean result = false;
+		if(manyToManyResults != null && !manyToManyResults.isEmpty()) { // There are ManyToMany relationships
 			for(final ManyToManyResult manyToManyResult : manyToManyResults) {
-				// TODO 
+				final ManyToMany manyToMany = manyToManyResult.getTargetMethod().getAnnotation(ManyToMany.class); 
+				final Class<?> ownerClass;
+				final Class<?> ownedClass;
+				if(YUtilString.isEmptyString(manyToMany.mappedBy())) {
+					ownerClass = entity.getClass();
+					ownedClass = manyToManyResult.getTargetClass();
+				} else {
+					ownerClass = manyToManyResult.getTargetClass();
+					ownedClass = entity.getClass();
+				}
+				
+				final String ownerTableName = YUtilPersistence.getTableName(ownerClass);
+				final String ownedTableName = YUtilPersistence.getTableName(ownedClass);
+
+				final String ownerIdColumnName = ownerTableName + "_" + YUtilPersistence.getIdColumnName(ownerClass);
+				final String ownedIdColumnName = ownedTableName + "_" + YUtilPersistence.getIdColumnName(ownedClass);
+				final String joinTableName = ownerTableName + "_" + ownedTableName;
+				
+				final Method ownerGetIdMethod = YUtilPersistence.getGetIdMethod(ownerClass);
+				final Method ownedGetIdMethod = YUtilPersistence.getGetIdMethod(ownedClass);
+				if(ownerGetIdMethod != null && ownedGetIdMethod != null) {
+					final ContentValues values = new ContentValues();
+					if(YUtilString.isEmptyString(manyToMany.mappedBy())) {
+						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, entity));
+						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, manyToManyResult.getTargetObject()));
+					} else {
+						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, manyToManyResult.getTargetObject()));
+						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, entity));
+					}
+					
+					result = this.getDatabase().insert(joinTableName, null, values) > 0;
+				}
+				
 			}
 		}
+		return result;
 	}
 	
 }
