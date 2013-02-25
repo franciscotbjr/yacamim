@@ -17,6 +17,7 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import android.view.Menu;
 import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity.Employee;
 import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.entity.Project;
 import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
 import br.org.yacamim.ui.components.AdapterConfig;
@@ -57,18 +59,41 @@ public class InsertProjectActivity extends YBaseListActivity {
 	 */
 	protected void init() {
 		try {
+			final Project project1 = new Project();
+			project1.setName("Project 3 ");
+			
+			final Employee employee1 = new Employee();
+			employee1.setName("Employee 2");
+			
+			final Employee employee2 = new Employee();
+			employee2.setName("Employee 3");
+			
+			final List<Employee> employees = new ArrayList<Employee>();
+			employees.add(employee1);
+			employees.add(employee2);
+			
+			final List<Project> projects = new ArrayList<Project>();
+			projects.add(project1);
+			
+			project1.setEmployees(employees);
+			
+			employee1.setProjects(projects);
+			employee2.setProjects(projects);
+			
+			
 			final DefaultDBAdapter<Project> defaultDBAdapter = new DefaultDBAdapter<Project>(Project.class);
 			defaultDBAdapter.open();
-			List<Project> projects = defaultDBAdapter.list();
+			defaultDBAdapter.insert(project1);
+			List<Project> projectsRec = defaultDBAdapter.list();
 			defaultDBAdapter.close();
 			
-			if(projects != null) {
+			if(projectsRec != null) {
 				for(final Project project : projects) {
 					Log.i(TAG, project.getName());
 				}
 			}
 			
-			this.initList(projects);
+			this.initList(projectsRec);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
@@ -104,7 +129,7 @@ public class InsertProjectActivity extends YBaseListActivity {
 			.setResource(R.layout.list_bidirectional_many_to_many)
 			.setResourcesHint(new int[]{})
 			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
-			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))
+//			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))
 			;
 		
 		final RowConfig[] rowConfigs = {rowConfig} ;
