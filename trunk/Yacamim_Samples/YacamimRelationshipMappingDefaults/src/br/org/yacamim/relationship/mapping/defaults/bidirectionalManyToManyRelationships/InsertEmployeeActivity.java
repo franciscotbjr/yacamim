@@ -136,8 +136,7 @@ public class InsertEmployeeActivity extends YBaseListActivity {
 		final RowConfig rowConfig = new RowConfig()
 			.setResource(R.layout.list_bidirectional_many_to_many)
 			.setResourcesHint(new int[]{})
-			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
-//			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))
+			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_name))
 			;
 		
 		final RowConfig[] rowConfigs = {rowConfig} ;
