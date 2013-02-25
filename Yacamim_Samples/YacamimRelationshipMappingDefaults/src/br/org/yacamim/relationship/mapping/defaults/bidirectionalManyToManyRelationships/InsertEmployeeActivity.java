@@ -62,36 +62,35 @@ public class InsertEmployeeActivity extends YBaseListActivity {
 			Employee employee1 = new Employee();
 			employee1.setName("Employee 1");
 
-//			Employee employee2 = new Employee();
-//			employee2.setName("Francisco 2");
+			Employee employee2 = new Employee();
+			employee2.setName("Employee 2");
 			
 			Project project1 = new Project();
-			project1.setName("Project 1 ");
+			project1.setName("Project 1");
 			
 			Project project2 = new Project();
-			project2.setName("Project 2 ");
+			project2.setName("Project 2");
 			
 			List<Employee> employees = new ArrayList<Employee>();
 			employees.add(employee1);
-//			employees.add(employee2);
+			employees.add(employee2);
 			
 			List<Project> projects = new ArrayList<Project>();
 			projects.add(project1);
 			projects.add(project2);
 			
 			employee1.setProjects(projects);
-//			employee2.setProjects(projects);
+			employee2.setProjects(projects);
 			
 			project1.setEmployees(employees);
-//			project2.setEmployees(employees);
-			
+			project2.setEmployees(employees);
 			
 			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
 			defaultDBAdapter.open();
 			
 			defaultDBAdapter.insert(employee1);
 			
-//			defaultDBAdapter.insert(employee2);
+			defaultDBAdapter.insert(employee2);
 			
 			List<Employee> employeesRec = defaultDBAdapter.list();
 			defaultDBAdapter.close();

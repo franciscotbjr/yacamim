@@ -898,14 +898,13 @@ public class DefaultDBAdapter<E> {
 									defaultDBAdapter.open();
 									defaultDBAdapter.simpleInsert(targetObject);
 									defaultDBAdapter.close();
-									
-									ManyToManyResult manyToManyResult = new ManyToManyResult();
-									manyToManyResult.setTargetClass(targetClass);
-									manyToManyResult.setTargetMethod(manyToManyMethod);
-									manyToManyResult.setTargetObject(targetObject);
-									manyToManyResult.setIdMethod(idMethod);
-									handledManyToManyResults.add(manyToManyResult);
 								}
+								ManyToManyResult manyToManyResult = new ManyToManyResult();
+								manyToManyResult.setTargetClass(targetClass);
+								manyToManyResult.setTargetMethod(manyToManyMethod);
+								manyToManyResult.setTargetObject(targetObject);
+								manyToManyResult.setIdMethod(idMethod);
+								handledManyToManyResults.add(manyToManyResult);
 							}
 						}
 					}
