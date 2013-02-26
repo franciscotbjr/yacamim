@@ -634,6 +634,25 @@ final class YUtilPersistence {
 	 * @param getMethods
 	 * @return
 	 */
+	public static List<Method> filterOneToOneOwnerMethods(final List<Method> getMethods) {
+		final List<Method> oneToOnemethods = new ArrayList<Method>();
+		if(getMethods != null) {
+			for(final Method method : getMethods) {
+				final OneToOne oneToOne;
+				if((oneToOne = method.getAnnotation(OneToOne.class)) != null
+						&& YUtilString.isEmptyString(oneToOne.mappedBy())) {
+					oneToOnemethods.add(method);
+				}
+			}
+		}
+		return oneToOnemethods;
+	}
+	
+	/**
+	 * 
+	 * @param getMethods
+	 * @return
+	 */
 	public static List<Method> filterOneToManyMappedByMethods(final Object entity, final List<Method> getMethods) throws NoSuchMethodException {
 		final List<Method> manyToOnemethods = new ArrayList<Method>();
 		if(getMethods != null) {
@@ -641,7 +660,7 @@ final class YUtilPersistence {
 				final OneToMany oneToMany;
 				if((oneToMany = method.getAnnotation(OneToMany.class)) != null
 						&& !YUtilString.isEmptyString(oneToMany.mappedBy())
-						&& checkOneToManyMappedByMehtod(entity.getClass(), oneToMany, method)) {
+						&& checkOneToManyMappedByMehtod(entity.getClass(), oneToMany.mappedBy(), method)) {
 					manyToOnemethods.add(method);
 				}
 			}
@@ -652,21 +671,21 @@ final class YUtilPersistence {
 	/**
 	 * 
 	 * @param declaringClass
-	 * @param oneToMany
+	 * @param mappedBy
 	 * @param targetMethod
 	 * @return
 	 * @throws NoSuchMethodException
 	 */
-	public static boolean checkOneToManyMappedByMehtod(final Class<?> declaringClass, final OneToMany oneToMany, final Method targetMethod) 
+	public static boolean checkOneToManyMappedByMehtod(final Class<?> declaringClass, final String mappedBy, final Method targetMethod) 
 			throws NoSuchMethodException {
 		boolean result = false;
-		if(oneToMany != null && YUtilReflection.isList(targetMethod.getReturnType())) {
+		if(!YUtilString.isEmptyString(mappedBy) && YUtilReflection.isList(targetMethod.getReturnType())) {
 			result = YUtilReflection.getGetMethod(
-					YUtilReflection.getGetMethodName(oneToMany.mappedBy()), YUtilReflection.getGenericType(declaringClass, targetMethod)) != null;
+					YUtilReflection.getGetMethodName(mappedBy), YUtilReflection.getGenericType(declaringClass, targetMethod)) != null;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @param getMethods
