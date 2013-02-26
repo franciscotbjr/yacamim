@@ -175,6 +175,7 @@ public class DefaultDBAdapter<E> {
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
 			
 			this.handlesManyToOneRelationships(entity, getMethods);
+			this.handlesOneToOneOwnerRelationships(entity, getMethods);
 			
 			final ContentValues initialValues = createContentValues(entity, getMethods);
 
@@ -199,11 +200,6 @@ public class DefaultDBAdapter<E> {
 			Log.e("DefaultDBAdapter.insert", e.getMessage());
 			return false;
 		}
-	}
-	
-	private boolean insertManyToMany(final E entity, final List<Method> manyToManyMethods) throws Exception {
-		final List<ManyToManyResult>  manyToManyResults = this.handlesManyToManyRelationships(entity, manyToManyMethods);
-		return this.handlesManyToManyJoin(entity, manyToManyResults);
 	}
 
 	/**
@@ -764,30 +760,27 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	private boolean simpleInsert(final E entity) {
+		boolean success = false;
 		try {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			this.beginTransaction();
-			
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
-			
-			final ContentValues initialValues = createContentValues(entity, getMethods);
-
-			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
-
-			this.setId(entity, newId);
-			
-			boolean success = newId > 0;
-			
-			this.endTransaction(true);
-			
-			return success;
+			if(this.getDatabase() != null && this.getDatabase().isOpen() && this.getDatabase().inTransaction()) {
+				final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
+				
+				final ContentValues initialValues = createContentValues(entity, getMethods);
+				
+				long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
+				
+				this.setId(entity, newId);
+				
+				success = newId > 0;
+			}
 		} catch (Exception e) {
 			this.endTransaction(false);
 			Log.e("DefaultDBAdapter.simpleInsert", e.getMessage());
-			return false;
 		}
+		return success;
 	}
 
 	/**
@@ -814,6 +807,39 @@ public class DefaultDBAdapter<E> {
 							DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
 							defaultDBAdapter.open();
 							defaultDBAdapter.insert(object);
+							defaultDBAdapter.close();
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @throws Exception 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void handlesOneToOneOwnerRelationships(final E entity, final List<Method> getMethods) 
+			throws Exception {
+		final List<Method> oneToOneMethods = YUtilPersistence.filterOneToOneOwnerMethods(getMethods);
+		if(oneToOneMethods != null && !oneToOneMethods.isEmpty()) { // There are OneToOne relationships
+			for(final Method oneToOneMethod : oneToOneMethods) {
+				// Gets the returned objeto
+				final Object object = YUtilReflection.invokeMethod(oneToOneMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				if(object != null && YUtilPersistence.isEntity(object.getClass())) {
+					final Method idMethod = YUtilPersistence.getGetIdMethod(object.getClass());
+					if(idMethod != null) {
+						final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, object, 
+								YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+						if(longId != null && longId < 1) {
+							DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
+							defaultDBAdapter.open();
+							defaultDBAdapter.simpleInsert(object);
 							defaultDBAdapter.close();
 						}
 					}
@@ -954,12 +980,27 @@ public class DefaultDBAdapter<E> {
 						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, entity));
 					}
 					
-					result = this.getDatabase().insert(joinTableName, null, values) > 0;
+					if(this.getDatabase() != null && this.getDatabase().isOpen() && this.getDatabase().inTransaction()) {
+						result = this.getDatabase().insert(joinTableName, null, values) > 0;
+					}
 				}
 				
 			}
 		}
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param manyToManyMethods
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean insertManyToMany(final E entity, final List<Method> manyToManyMethods) throws Exception {
+		final List<ManyToManyResult>  manyToManyResults = this.handlesManyToManyRelationships(entity, manyToManyMethods);
+		return this.handlesManyToManyJoin(entity, manyToManyResults);
+	}
+
 	
 }

@@ -58,11 +58,23 @@
         </activity>
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.OneToOneActivity"
+            android:label="@string/list_employee" >
+        </activity>
+        <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.InsertEmployeeActivity"
+            android:label="@string/insert_employee" >
+        </activity>
+        <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.InsertCubicleActivity"
+            android:label="@string/insert_cubicle" >
+        </activity>
+        <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.Home_OneToOneActivity"
             android:label="@string/title_activity_bidirectional_one_to_one" >
         </activity>
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.OneToOneCubicleActivity"
-            android:label="@string/title_activity_bidirectional_one_to_one" >
+            android:label="@string/insert_cubicle" >
         </activity>
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.ManyToOneActivity"
