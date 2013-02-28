@@ -70,6 +70,14 @@ public class DefaultDBAdapter<E> {
 		this.database = FactoryDatabase.getInstance().getDatabase(getDbHelper());
 		return this;
 	}
+	
+	/**
+	 * 
+	 * @param sqLiteDatabase
+	 */
+	private final void setDatabase(SQLiteDatabase sqLiteDatabase) {
+		this.database = sqLiteDatabase;
+	}
 
 	/**
 	 *
@@ -172,25 +180,7 @@ public class DefaultDBAdapter<E> {
 			}
 			this.beginTransaction();
 			
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
-			
-			this.handlesManyToOneRelationships(entity, getMethods);
-			this.handlesOneToOneOwnerRelationships(entity, getMethods);
-			
-			final ContentValues initialValues = createContentValues(entity, getMethods);
-
-			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
-
-			this.setId(entity, newId);
-			
-			final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
-			if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) {
-				this.insertManyToMany(entity, manyToManyMethods);
-			}
-
-			this.handlesOneToManyMappedByRelationships(entity, getMethods);
-			
-			boolean success = newId > 0;
+			boolean success = this.localInsert(entity);
 			
 			this.endTransaction(true);
 			
@@ -479,7 +469,7 @@ public class DefaultDBAdapter<E> {
 	 * @return
 	 */
 	protected boolean isEntity() {
-		return this.getGenericClass().getAnnotation(Entity.class) != null;
+		return YUtilPersistence.isEntity(this.getGenericClass());
 	}
 
 	/**
@@ -757,28 +747,58 @@ public class DefaultDBAdapter<E> {
 	/**
 	 * 
 	 * @param entity
+	 * @param database
 	 * @return
+	 * @throws Exception
 	 */
-	private boolean simpleInsert(final E entity) {
-		boolean success = false;
-		try {
+	private final boolean localInsert(final E entity) throws Exception {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			if(this.getDatabase() != null && this.getDatabase().isOpen() && this.getDatabase().inTransaction()) {
-				final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
-				
+			
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
+			
+			this.handlesManyToOneRelationships(entity, getMethods);
+			this.handlesOneToOneOwnerRelationships(entity, getMethods);
+			
+			long newId = 0;
+			if((newId = YUtilPersistence.getCurrentId(entity)) < 1) {
 				final ContentValues initialValues = createContentValues(entity, getMethods);
-				
-				long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
-				
+				newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
 				this.setId(entity, newId);
 				
-				success = newId > 0;
+				final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
+				if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) {
+					this.insertManyToMany(entity, manyToManyMethods);
+				}
+				
+				this.handlesOneToManyMappedByRelationships(entity, getMethods);
 			}
-		} catch (Exception e) {
-			this.endTransaction(false);
-			Log.e("DefaultDBAdapter.simpleInsert", e.getMessage());
+			
+			return newId > 0;
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 * @throws NotAnEntityException 
+	 */
+	private final boolean simpleInsert(final E entity) throws NotAnEntityException {
+		boolean success = false;
+		if(!this.isEntity()) {
+			throw new NotAnEntityException();
+		}
+		if(database != null && database.isOpen() && database.inTransaction()) {
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
+			
+			final ContentValues initialValues = createContentValues(entity, getMethods);
+			
+			long newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
+			
+			this.setId(entity, newId);
+			
+			success = newId > 0;
 		}
 		return success;
 	}
@@ -799,16 +819,10 @@ public class DefaultDBAdapter<E> {
 				final Object object = YUtilReflection.invokeMethod(manyToOneMethod, entity, 
 						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
 				if(object != null && YUtilPersistence.isEntity(object.getClass())) {
-					final Method idMethod = YUtilPersistence.getGetIdMethod(object.getClass());
-					if(idMethod != null) {
-						final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, object, 
-								YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
-						if(longId != null && longId < 1) {
-							DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
-							defaultDBAdapter.open();
-							defaultDBAdapter.insert(object);
-							defaultDBAdapter.close();
-						}
+					if(YUtilPersistence.getCurrentId(object) < 1) {
+						DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
+						defaultDBAdapter.setDatabase(this.getDatabase());
+						defaultDBAdapter.localInsert(object);
 					}
 				}
 			}
@@ -832,16 +846,10 @@ public class DefaultDBAdapter<E> {
 				final Object object = YUtilReflection.invokeMethod(oneToOneMethod, entity, 
 						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
 				if(object != null && YUtilPersistence.isEntity(object.getClass())) {
-					final Method idMethod = YUtilPersistence.getGetIdMethod(object.getClass());
-					if(idMethod != null) {
-						final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, object, 
-								YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
-						if(longId != null && longId < 1) {
-							DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
-							defaultDBAdapter.open();
-							defaultDBAdapter.simpleInsert(object);
-							defaultDBAdapter.close();
-						}
+					if(YUtilPersistence.getCurrentId(object) < 1) {
+						DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
+						defaultDBAdapter.setDatabase(this.getDatabase());
+						defaultDBAdapter.simpleInsert(object);
 					}
 				}
 			}
@@ -880,9 +888,8 @@ public class DefaultDBAdapter<E> {
 								// Checks the ID
 								if(longId != null && longId < 1) {
 									DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(targetClass);
-									defaultDBAdapter.open();
-									defaultDBAdapter.insert(targetObject);
-									defaultDBAdapter.close();
+									defaultDBAdapter.setDatabase(this.getDatabase());
+									defaultDBAdapter.localInsert(targetObject);
 								}
 							}
 						}
@@ -921,9 +928,8 @@ public class DefaultDBAdapter<E> {
 								// Checks the ID
 								if(longId != null && longId < 1) {
 									DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(targetClass);
-									defaultDBAdapter.open();
+									defaultDBAdapter.setDatabase(this.getDatabase());
 									defaultDBAdapter.simpleInsert(targetObject);
-									defaultDBAdapter.close();
 								}
 								ManyToManyResult manyToManyResult = new ManyToManyResult();
 								manyToManyResult.setTargetClass(targetClass);
