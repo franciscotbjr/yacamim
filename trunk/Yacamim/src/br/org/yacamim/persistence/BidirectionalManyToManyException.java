@@ -1,5 +1,5 @@
 /**
- * BidirectionalOneToOneException.java
+ * BidirectionalManyToManyException.java
  *
  * Copyright 2013 yacamim.org.br
  *
@@ -19,24 +19,24 @@ package br.org.yacamim.persistence;
 
 /**
 *
-* Class BidirectionalOneToOneException TODO
+* Class BidirectionalManyToManyException TODO
 *
 * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
 * @version 1.0
 * @since 1.0
 */
-public class BidirectionalOneToOneException extends Exception {
+public class BidirectionalManyToManyException extends Exception {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4965751490712508559L;
+	private static final long serialVersionUID = -8700763370663227182L;
 
 	/**
 	 * 
 	 * @param message
 	 */
-	public BidirectionalOneToOneException(String message) {
+	public BidirectionalManyToManyException(String message) {
 		super(message);
 	}
 
@@ -44,7 +44,7 @@ public class BidirectionalOneToOneException extends Exception {
 	 * 
 	 * @param cause
 	 */
-	public BidirectionalOneToOneException(Throwable cause) {
+	public BidirectionalManyToManyException(Throwable cause) {
 		super(cause);
 	}
 
@@ -53,7 +53,7 @@ public class BidirectionalOneToOneException extends Exception {
 	 * @param message
 	 * @param cause
 	 */
-	public BidirectionalOneToOneException(String message,
+	public BidirectionalManyToManyException(String message,
 			Throwable cause) {
 		super(message, cause);
 	}

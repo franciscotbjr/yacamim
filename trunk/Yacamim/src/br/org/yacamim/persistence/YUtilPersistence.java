@@ -543,6 +543,9 @@ final class YUtilPersistence {
 	 * @return
 	 */
 	static boolean isOneToOneOwner(final OneToOne  oneToOne) {
+		if(oneToOne == null) {
+			return false;
+		}
 		return (YUtilString.isEmptyString(oneToOne.mappedBy()));
 	}
 	
@@ -552,7 +555,22 @@ final class YUtilPersistence {
 	 * @return
 	 */
 	static boolean isManyToManyOwner(final ManyToMany  manyToMany) {
+		if(manyToMany == null) {
+			return false;
+		}
 		return (YUtilString.isEmptyString(manyToMany.mappedBy()));
+	}
+	
+	/**
+	 * 
+	 * @param oneToMany
+	 * @return
+	 */
+	static boolean isOneToManyOwner(final OneToMany  oneToMany) {
+		if(oneToMany == null) {
+			return false;
+		}
+		return (YUtilString.isEmptyString(oneToMany.mappedBy()));
 	}
 
 	/**
