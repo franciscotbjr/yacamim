@@ -17,10 +17,22 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.unidirectionalMultiValuedRelationships;
 
-import android.app.Activity;
+import java.util.HashMap;
+import java.util.List;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import br.org.yacamim.YBaseListActivity;
+import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
+import br.org.yacamim.relationship.mapping.defaults.unidirectionalMultiValuedRelationships.entity.Employee;
+import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
+import br.org.yacamim.ui.components.AdapterConfig;
+import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
+import br.org.yacamim.ui.components.RowConfig;
+import br.org.yacamim.ui.components.RowConfigItem;
+import br.org.yacamim.util.YUtilListView;
 
 /**
  * Classe OneToManyActivity TODO
@@ -29,12 +41,69 @@ import br.org.yacamim.relationship.mapping.defaults.R;
  * @version 1.0
  * @since 1.0
  */
-public class OneToManyActivity extends Activity {
+public class OneToManyActivity extends YBaseListActivity {
+	
+	private static final String TAG = OneToManyActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_unidirectional_one_to_many);
+		this.init();
+	}
+	
+
+	/**
+	 * 
+	 */
+	protected void init() {
+		try {
+			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
+			defaultDBAdapter.open();
+			List<Employee> employees = defaultDBAdapter.list();
+			defaultDBAdapter.close();
+			
+			this.initList(employees);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param employees
+	 */
+    private void initList(final List<Employee> employees) {
+    	try {
+			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(employees);
+			
+			final AdapterConfig adapterConfig = this.buildAdapterConfig();
+			
+			final ComplexListSimpleAdapter complexListSimpleAdapter = new ComplexListSimpleAdapter(
+					this, 
+					listOfMappedData, 
+					adapterConfig);
+			setListAdapter(complexListSimpleAdapter);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+    }
+
+	/**
+	 * @return
+	 */
+	protected AdapterConfig buildAdapterConfig() {
+		final RowConfig rowConfig = new RowConfig()
+			.setResource(R.layout.list_unidirectional_one_to_many)
+			.setResourcesHint(new int[]{})
+			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
+			;
+		
+		final RowConfig[] rowConfigs = {rowConfig};
+		
+		final AdapterConfig adapterConfig = new AdapterConfig(rowConfigs , ConditionFactory.getSimpleRowCondition(), null);
+		return adapterConfig;
 	}
 
 	@Override
