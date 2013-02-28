@@ -42,4 +42,13 @@
         android:onClick="startBidirectionalManyToManyTest"
         android:text="@string/title_activity_bidirectional_many_to_many" />
 
+    <Button
+        android:id="@+id/Button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button6"
+        android:layout_below="@+id/button6"
+        android:onClick="startUnidirectionalMultiValuedActivityTest"
+        android:text="@string/title_activity_unidirectional_multi_valued" />
+
 </RelativeLayout>

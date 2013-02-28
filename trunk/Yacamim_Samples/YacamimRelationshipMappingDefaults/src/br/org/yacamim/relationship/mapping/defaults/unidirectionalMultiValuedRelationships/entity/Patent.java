@@ -1,5 +1,5 @@
 /**
- * Employee.java
+ * Patent.java
  *
  * Copyright 2013 yacamim.org.br
  *
@@ -17,46 +17,39 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.unidirectionalMultiValuedRelationships.entity;
 
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import br.org.yacamim.entity.YBaseEntity;
 import br.org.yacamim.persistence.Column;
 import br.org.yacamim.persistence.Entity;
 import br.org.yacamim.persistence.Id;
-import br.org.yacamim.persistence.ManyToMany;
-import br.org.yacamim.persistence.OneToMany;
 import br.org.yacamim.persistence.Table;
 
 /**
- * Classe Employee TODO
+ * Classe Patent TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
  * @since 1.0
  */
 @Entity
-@Table(name="Employee_umvr")
-public class Employee extends YBaseEntity {
+@Table(name="Patent_umvr")
+public class Patent extends YBaseEntity {
 	
 	private long id;
-	private String name;
-	private List<AnnualReview> annualReviews;
-	private List<Patent> patents;
+	private String description;
 
 	/**
 	 * 
 	 */
-	public Employee() {
+	public Patent() {
 		super();
 	}
 
 	/**
-	 * 
 	 * @param parcel
 	 */
-	public Employee(final Parcel parcel) {
+	public Patent(final Parcel parcel) {
 		super(parcel);
 	}
 
@@ -74,69 +67,73 @@ public class Employee extends YBaseEntity {
 	public void setId(long id) {
 		this.id = id;
 	}
-
+	
 	/**
 	 * 
 	 * @return
 	 */
 	@Column
-	public String getName() {
-		return name;
+	public String getDescription() {
+		return description;
 	}
 
 	/**
 	 * 
-	 * @param name
+	 * @param description
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	@OneToMany
-	@Column
-	public List<AnnualReview> getAnnualReviews() {
-		return annualReviews;
-	}
 
 	/**
 	 * 
 	 */
-	public void setAnnualReviews(List<AnnualReview> annualReviews) {
-		this.annualReviews = annualReviews;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	@ManyToMany
-	@Column
-	public List<Patent> getPatents() {
-		return patents;
-	}
-
-	/**
-	 * 
-	 * @param patents
-	 */
-	public void setPatents(List<Patent> patents) {
-		this.patents = patents;
-	}
-
-	/**
-	 * 
-	 */
-	public static final Parcelable.Creator<Employee> CREATOR = new Parcelable.Creator<Employee>() {
-        public Employee createFromParcel(Parcel pc) {
-            return new Employee(pc);
+	public static final Parcelable.Creator<Patent> CREATOR = new Parcelable.Creator<Patent>() {
+        public Patent createFromParcel(Parcel pc) {
+            return new Patent(pc);
         }
-        public Employee[] newArray(int size) {
-            return new Employee[size];
+        public Patent[] newArray(int size) {
+            return new Patent[size];
         }
 	};
+
+	/**
+	 * 
+	 * @see br.org.yacamim.entity.YBaseEntity#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	/**
+	 * 
+	 * @see br.org.yacamim.entity.YBaseEntity#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Patent other = (Patent) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
 
 }

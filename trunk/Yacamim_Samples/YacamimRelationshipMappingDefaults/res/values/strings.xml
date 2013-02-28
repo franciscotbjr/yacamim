@@ -10,8 +10,9 @@
     <string name="title_activity_bidirectional_one_to_one_cubicle">Bidirectional >> OneToOne Cubicle</string>
     <string name="title_activity_unidirectional_many_to_one">Unidirectional >> ManyToOne</string>
     <string name="title_activity_unidirectional_one_to_one">Unidirectional >> OneToOne</string>
-    <string name="title_activity_unidirectional_multi_valued_one_to_many">Unidirectional Multi-Valued >> OneToMany</string>
-    <string name="title_activity_unidirectional_multi_valued_many_to_many">Unidirectional Multi-Valued >> ManyToMany</string>
+    <string name="title_activity_unidirectional_multi_valued_one_to_many">OneToMany</string>
+    <string name="title_activity_unidirectional_multi_valued_many_to_many">ManyToMany</string>
+    <string name="title_activity_unidirectional_multi_valued">Unidirectional Multi-Valued</string>
     <string name="label_employee">Employee: </string>
     <string name="label_travel_profile">Travel Profile: </string>
     <string name="label_city">City: </string>

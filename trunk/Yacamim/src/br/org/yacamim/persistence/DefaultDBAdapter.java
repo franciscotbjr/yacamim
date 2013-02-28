@@ -443,7 +443,9 @@ public class DefaultDBAdapter<E> {
 				final Column column = getMethod.getAnnotation(Column.class);
 				if(getMethod.equals(getIDMethod)
 						|| column == null
-						|| getMethod.getAnnotation(ManyToMany.class) != null) {
+						|| YUtilReflection.isList(getIDMethod.getReturnType())
+						|| getMethod.getAnnotation(ManyToMany.class) != null
+						|| getMethod.getAnnotation(OneToMany.class) != null) {
 					continue;
 				}
 				

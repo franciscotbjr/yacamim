@@ -30,6 +30,7 @@
 	    </y-package>
 	    <y-package name="br.org.yacamim.relationship.mapping.defaults.unidirectionalMultiValuedRelationships.entity">
 	        <y-entity name="AnnualReview"/>
+	        <y-entity name="Patent"/>
 	        <y-entity name="Employee"/>
 	    </y-package>
     </y-entity-mapping>
