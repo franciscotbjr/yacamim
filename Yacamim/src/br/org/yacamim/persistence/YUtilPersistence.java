@@ -702,5 +702,24 @@ final class YUtilPersistence {
 		}
 		return manyToOneMethods;
 	}
+	
+	/**
+	 * 
+	 * @param object
+	 * @return
+	 * @throws Exception
+	 */
+	public static long getCurrentId(final Object object) throws Exception {
+		long currentId = 0;
+		final Method idMethod = YUtilPersistence.getGetIdMethod(object.getClass());
+		if(idMethod != null) {
+			final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, object, 
+					YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+			if(longId != null) {
+				currentId = longId;
+			}
+		}
+		return currentId;
+	}
 
 }
