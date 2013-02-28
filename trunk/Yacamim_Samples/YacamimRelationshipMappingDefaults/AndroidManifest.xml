@@ -89,7 +89,7 @@
             android:label="@string/insert_employee" >
         </activity>
         <activity
-            android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.Home_UnidirectionalSingleValue"
+            android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.Home_UnidirectionalSingleValueActivity"
             android:label="@string/title_activity_unidirectional_one_to_one" >
         </activity>
         <activity
