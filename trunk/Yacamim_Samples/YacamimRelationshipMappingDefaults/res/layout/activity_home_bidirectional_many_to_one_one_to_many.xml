@@ -33,4 +33,13 @@
         android:onClick="startInsertDepartment"
         android:text="@string/insert_department" />
 
+    <Button
+        android:id="@+id/Button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_below="@+id/button3"
+        android:onClick="startListDepartment"
+        android:text="@string/list_department" />
+
 </RelativeLayout>

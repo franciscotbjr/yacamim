@@ -45,6 +45,10 @@
             android:label="@string/teste_list" >
         </activity>
         <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.DepartmentManyToOne_OneToManyActivity"
+            android:label="@string/teste_list" >
+        </activity>
+        <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.InsertEmployeeActivity"
             android:label="@string/teste_insert" >
         </activity>

@@ -26,7 +26,7 @@ import android.view.Menu;
 import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.persistence.DefaultDBAdapter;
 import br.org.yacamim.relationship.mapping.defaults.R;
-import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity.Employee;
+import br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.entity.Department;
 import br.org.yacamim.relationship.mapping.defaults.util.ConditionFactory;
 import br.org.yacamim.ui.components.AdapterConfig;
 import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
@@ -41,9 +41,9 @@ import br.org.yacamim.util.YUtilListView;
  * @version 1.0
  * @since 1.0
  */
-public class ManyToOne_OneToManyActivity extends YBaseListActivity {
+public class DepartmentManyToOne_OneToManyActivity extends YBaseListActivity {
 	
-	private static final String TAG = ManyToOne_OneToManyActivity.class.getSimpleName();
+	private static final String TAG = DepartmentManyToOne_OneToManyActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +57,18 @@ public class ManyToOne_OneToManyActivity extends YBaseListActivity {
 	 */
 	protected void init() {
 		try {
-			final DefaultDBAdapter<Employee> defaultDBAdapter = new DefaultDBAdapter<Employee>(Employee.class);
+			final DefaultDBAdapter<Department> defaultDBAdapter = new DefaultDBAdapter<Department>(Department.class);
 			defaultDBAdapter.open();
-			List<Employee> employees = defaultDBAdapter.list();
+			List<Department> departments = defaultDBAdapter.list();
 			defaultDBAdapter.close();
 			
-			this.initList(employees);
+			if(departments != null) {
+				for(final Department department : departments) {
+					Log.i(TAG, department.getName() + " : " + department.getEmployees());
+				}
+			}
+			
+			this.initList(departments);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
@@ -71,11 +77,11 @@ public class ManyToOne_OneToManyActivity extends YBaseListActivity {
 	
 	/**
 	 * 
-	 * @param employees
+	 * @param departments
 	 */
-    private void initList(final List<Employee> employees) {
+    private void initList(final List<Department> departments) {
     	try {
-			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(employees);
+			List<HashMap<String, Object>> listOfMappedData = YUtilListView.buildListOfMappedData(departments);
 			
 			final AdapterConfig adapterConfig = this.buildAdapterConfig();
 			
@@ -97,8 +103,7 @@ public class ManyToOne_OneToManyActivity extends YBaseListActivity {
 		final RowConfig rowConfig = new RowConfig()
 			.setResource(R.layout.list_bidirectional_many_to_one_one_to_many)
 			.setResourcesHint(new int[]{})
-			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_employee_name))
-			.addRowConfigItem(new RowConfigItem("department.name", R.id.txtv_department_name))
+			.addRowConfigItem(new RowConfigItem("name", R.id.txtv_department_name))
 			;
 		
 		final RowConfig[] rowConfigs = {rowConfig} ;
