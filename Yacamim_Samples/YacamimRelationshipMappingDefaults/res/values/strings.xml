@@ -34,6 +34,7 @@
     <string name="list">List</string>
     <string name="list_employee">List Employee</string>
     <string name="list_cubicle">List Cubicle</string>
+    <string name="list_department">List Department</string>
     <string name="insert">Insert</string>
     <string name="insert_employee">Insert Employee</string>
     <string name="insert_department">Insert Department</string>

@@ -401,21 +401,21 @@ class YDataBaseBuilder {
 	 * @param scriptMap
 	 * @param processedEntity
 	 * @param currentGetMethod
-	 * @param manyToMany
+	 * @param oneToMany
 	 * @return
 	 * @throws UnidirectionaOneToManyException
 	 */
 	private boolean handlesUnidirectionalOneToMany(final Class<?> sourceClassOfTableScript,
 			final Map<StringBuilder, Boolean> scriptMap,
 			final YProcessedEntity processedEntity,
-			final Method currentGetMethod, final OneToMany manyToMany)
+			final Method currentGetMethod, final OneToMany oneToMany)
 					throws UnidirectionaOneToManyException {
 		boolean isUnidirectionalManyToMany = false;
-		if(YUtilPersistence.isOneToManyOwner(manyToMany)) { 
+		if(YUtilPersistence.isOneToManyOwner(oneToMany)) { 
 			// Finds the owned of relationship
 			final Class<?> ownedType = YUtilReflection.getGenericType(sourceClassOfTableScript, currentGetMethod);
 			if(ownedType != null) {
-				final Method ownedMethod = YUtilPersistence.getBidirectionalManyToManyOwnedMethod(ownedType, sourceClassOfTableScript, currentGetMethod);
+				final Method ownedMethod = YUtilPersistence.getUnidirectionalOneToManyOwnedMethod(ownedType, sourceClassOfTableScript, currentGetMethod);
 				if(ownedMethod == null) {
 					isUnidirectionalManyToMany = true;
 					

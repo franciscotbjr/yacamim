@@ -213,7 +213,12 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 			if(targetMethod.getAnnotation(ManyToMany.class) != null) {
 				yRawDataList = this.handlesManyToMany(targetMethod, desiredEntityClass, parentClass, parenId);
 			} else if (targetMethod.getAnnotation(OneToMany.class) != null) {
-				yRawDataList = handlesOneToMany(desiredEntityClass, parentClass, parenId);
+				final Method ownedMethod = YUtilPersistence.getBidirectionalOneToManyOwnedMethod(parentClass, desiredEntityClass, targetMethod);
+				if(ownedMethod != null) {
+					yRawDataList = handlesOneToMany(desiredEntityClass, parentClass, parenId);
+				} else {
+					
+				}
 			}
 		}
 		return yRawDataList;

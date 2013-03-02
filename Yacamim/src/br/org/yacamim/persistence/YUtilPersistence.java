@@ -414,6 +414,48 @@ final class YUtilPersistence {
 
 	/**
 	 * 
+	 * @param ownedType
+	 * @param ownerType
+	 * @param ownedGetMethod
+	 * @return
+	 */
+	static Method getBidirectionalOneToManyOwnedMethod(final Class<?> ownedType, final Class<?> ownerType, final Method ownedGetMethod) {
+		Method ownedMethod = null;
+		final Method[] ownerTypeGetMethods = YUtilReflection.getGetMethodArray(ownerType);
+		if(ownerTypeGetMethods != null) {
+			for(final Method candidateOwnerMethod : ownerTypeGetMethods) {
+				if(YUtilPersistence.isBidirectionalManyToOneOwnerMethod(ownedType, candidateOwnerMethod, ownerType, ownedGetMethod)) {
+					ownedMethod = candidateOwnerMethod;
+					break;
+				}
+			}
+		}
+		return ownedMethod;
+	}
+
+	/**
+	 * 
+	 * @param ownedType
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static Method getUnidirectionalOneToManyOwnedMethod(final Class<?> ownedType, final Class<?> ownerType, final Method ownerGetMethod) {
+		Method ownedMethod = null;
+		final Method[] ownedTypeGetMethods = YUtilReflection.getGetMethodArray(ownedType);
+		if(ownedTypeGetMethods != null) {
+			for(final Method candidateOwnedMethod : ownedTypeGetMethods) {
+				if(YUtilPersistence.isUnidirectionOneToManyOwnedMethod(ownedType, candidateOwnedMethod, ownerType, ownerGetMethod)) {
+					ownedMethod = candidateOwnedMethod;
+					break;
+				}
+			}
+		}
+		return ownedMethod;
+	}
+
+	/**
+	 * 
 	 * @param ownedTypeGetMethods
 	 * @param ownerType
 	 * @param ownerGetMethod
@@ -494,6 +536,40 @@ final class YUtilPersistence {
 		return (((manyToMany = method.getAnnotation(ManyToMany.class)) != null
 				&& !YUtilString.isEmptyString(manyToMany.mappedBy())
 				&& manyToMany.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
+				&& YUtilReflection.getGenericType(ownedType, method).equals(ownerType));
+	}
+	
+	/**
+	 * 
+	 * @param ownedType
+	 * @param candidateOwnerMethod
+	 * @param ownerType
+	 * @param ownedGetMethod
+	 * @return
+	 */
+	static boolean isBidirectionalManyToOneOwnerMethod(final Class<?> ownedType, final Method candidateOwnerMethod, final Class<?> ownerType, final Method ownedGetMethod) {
+		OneToMany oneToMany = null;
+		return (
+				((candidateOwnerMethod.getAnnotation(ManyToOne.class) != null 
+					&& (oneToMany = ownedGetMethod.getAnnotation(OneToMany.class)) != null)
+				&& !YUtilString.isEmptyString(oneToMany.mappedBy())
+				&& oneToMany.mappedBy().equals(YUtilReflection.getPropertyName(candidateOwnerMethod)))
+				&& candidateOwnerMethod.getReturnType().equals(ownedType));
+	}
+	
+	/**
+	 * 
+	 * @param ownedType
+	 * @param method
+	 * @param ownerType
+	 * @param ownerGetMethod
+	 * @return
+	 */
+	static boolean isUnidirectionOneToManyOwnedMethod(final Class<?> ownedType, final Method method, final Class<?> ownerType, final Method ownerGetMethod) {
+		OneToMany  oneToMany = null;
+		return (((oneToMany = method.getAnnotation(OneToMany.class)) != null
+				&& !YUtilString.isEmptyString(oneToMany.mappedBy())
+				&& oneToMany.mappedBy().equals(YUtilReflection.getPropertyName(ownerGetMethod)))
 				&& YUtilReflection.getGenericType(ownedType, method).equals(ownerType));
 	}
 
