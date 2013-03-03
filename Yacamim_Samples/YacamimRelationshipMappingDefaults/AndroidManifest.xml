@@ -97,6 +97,10 @@
             android:label="@string/title_activity_unidirectional_one_to_one" >
         </activity>
         <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalMultiValuedRelationships.InsertEmployeeActivity"
+            android:label="@string/insert_employee" >
+        </activity>
+        <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalMultiValuedRelationships.OneToManyActivity"
             android:label="@string/title_activity_unidirectional_multi_valued_one_to_many" >
         </activity>

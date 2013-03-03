@@ -764,6 +764,27 @@ final class YUtilPersistence {
 	
 	/**
 	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @return
+	 * @throws NoSuchMethodException
+	 */
+	public static List<Method> filterOneToManyMethods(final Object entity, final List<Method> getMethods) throws NoSuchMethodException {
+		final List<Method> manyToOnemethods = new ArrayList<Method>();
+		if(getMethods != null) {
+			for(final Method method : getMethods) {
+				final OneToMany oneToMany;
+				if((oneToMany = method.getAnnotation(OneToMany.class)) != null
+						&& YUtilString.isEmptyString(oneToMany.mappedBy())) {
+					manyToOnemethods.add(method);
+				}
+			}
+		}
+		return manyToOnemethods;
+	}
+	
+	/**
+	 * 
 	 * @param declaringClass
 	 * @param mappedBy
 	 * @param targetMethod
