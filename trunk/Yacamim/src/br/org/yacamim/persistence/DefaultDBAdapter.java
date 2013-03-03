@@ -182,13 +182,13 @@ public class DefaultDBAdapter<E> {
 			
 			boolean success = this.localInsert(entity);
 			
-			this.endTransaction(true);
-			
 			return success;
 		} catch (Exception e) {
 			this.endTransaction(false);
 			Log.e("DefaultDBAdapter.insert", e.getMessage());
 			return false;
+		} finally {
+			this.endTransaction(true);
 		}
 	}
 
@@ -774,7 +774,10 @@ public class DefaultDBAdapter<E> {
 					this.insertManyToMany(entity, manyToManyMethods);
 				}
 				
-				this.handlesOneToManyMappedByRelationships(entity, getMethods);
+				final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMethods(entity, getMethods);
+				if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) {
+					this.insertOneToMany(entity, oneToManyMethods);
+				}
 			}
 			
 			return newId > 0;
@@ -866,7 +869,7 @@ public class DefaultDBAdapter<E> {
 	 * @throws CloneNotSupportedException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void handlesOneToManyMappedByRelationships(final E entity, final List<Method> getMethods) 
+	private void handlesBidirectionalOneToManyMappedByRelationships(final E entity, final List<Method> getMethods) 
 			throws Exception {
 		final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMappedByMethods(entity, getMethods);
 		if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) { // There are OneToMany (with mappedBy) relationships
@@ -904,13 +907,62 @@ public class DefaultDBAdapter<E> {
 	/**
 	 * 
 	 * @param entity
+	 * @param getMethods
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<JoinItemResult> handlesUnidirectionalOneToManyRelationships(final E entity, final List<Method> oneToManyMethods) 
+			throws Exception {
+		final List<JoinItemResult> handledOneToManyResults = new ArrayList<JoinItemResult>();
+		if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) { // There are OneToMany (with mappedBy) relationships
+			for(final Method oneToManyMethod : oneToManyMethods) {
+				// Gets the returned objeto
+				final Object object = YUtilReflection.invokeMethod(oneToManyMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				// Check if it is a List
+				if(object != null && YUtilReflection.isList(object.getClass())) {
+					final List targetList = (List)object;
+					// Check the list item type
+					final Class<?> targetClass = YUtilReflection.getGenericType(entity.getClass(), oneToManyMethod);
+					if(targetClass != null) {
+						
+						// Checks its ID
+						final Method idMethod = YUtilPersistence.getGetIdMethod(targetClass);
+						if(idMethod != null) {
+							for(Object targetObject : targetList) {
+								final Long longId = (Long)YUtilReflection.invokeMethod(idMethod, targetObject, 
+										YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+								// Checks the ID
+								if(longId != null && longId < 1) {
+									DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(targetClass);
+									defaultDBAdapter.setDatabase(this.getDatabase());
+									defaultDBAdapter.localInsert(targetObject);
+								}
+								JoinItemResult oneToManyResult = new JoinItemResult();
+								oneToManyResult.setTargetClass(targetClass);
+								oneToManyResult.setTargetMethod(oneToManyMethod);
+								oneToManyResult.setTargetObject(targetObject);
+								oneToManyResult.setIdMethod(idMethod);
+								handledOneToManyResults.add(oneToManyResult);
+							}
+						}
+					}
+				}
+			}
+		}
+		return handledOneToManyResults;
+	}
+	
+	/**
+	 * 
+	 * @param entity
 	 * @param manyToManyMethods
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private List<ManyToManyResult> handlesManyToManyRelationships(final E entity, final List<Method> manyToManyMethods) throws Exception {
-		final List<ManyToManyResult> handledManyToManyResults = new ArrayList<ManyToManyResult>();
+	private List<JoinItemResult> handlesManyToManyRelationships(final E entity, final List<Method> manyToManyMethods) throws Exception {
+		final List<JoinItemResult> handledManyToManyResults = new ArrayList<JoinItemResult>();
 		if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) { // There are ManyToMany (with mappedBy) relationships
 			for(final Method manyToManyMethod : manyToManyMethods) {
 				final Object object = YUtilReflection.invokeMethod(manyToManyMethod, entity, 
@@ -933,7 +985,7 @@ public class DefaultDBAdapter<E> {
 									defaultDBAdapter.setDatabase(this.getDatabase());
 									defaultDBAdapter.simpleInsert(targetObject);
 								}
-								ManyToManyResult manyToManyResult = new ManyToManyResult();
+								JoinItemResult manyToManyResult = new JoinItemResult();
 								manyToManyResult.setTargetClass(targetClass);
 								manyToManyResult.setTargetMethod(manyToManyMethod);
 								manyToManyResult.setTargetObject(targetObject);
@@ -954,10 +1006,10 @@ public class DefaultDBAdapter<E> {
 	 * @param manyToManyMethods
 	 * @throws Exception 
 	 */
-	private boolean handlesManyToManyJoin(final E entity, final List<ManyToManyResult> manyToManyResults) throws Exception {
+	private boolean handlesManyToManyJoin(final E entity, final List<JoinItemResult> manyToManyResults) throws Exception {
 		boolean result = false;
-		if(manyToManyResults != null && !manyToManyResults.isEmpty()) { // There are ManyToMany relationships
-			for(final ManyToManyResult manyToManyResult : manyToManyResults) {
+		if(manyToManyResults != null && !manyToManyResults.isEmpty()) { // There are JoinItemResult
+			for(final JoinItemResult manyToManyResult : manyToManyResults) {
 				final ManyToMany manyToMany = manyToManyResult.getTargetMethod().getAnnotation(ManyToMany.class); 
 				final Class<?> ownerClass;
 				final Class<?> ownedClass;
@@ -997,6 +1049,46 @@ public class DefaultDBAdapter<E> {
 		}
 		return result;
 	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param oneToManyResults
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean handlesOneToManyJoin(final E entity, final List<JoinItemResult> oneToManyResults) throws Exception {
+		boolean result = false;
+		if(oneToManyResults != null && !oneToManyResults.isEmpty()) { // There are JoinItemResult
+			for(final JoinItemResult manyToManyResult : oneToManyResults) {
+				final OneToMany oneToMany = manyToManyResult.getTargetMethod().getAnnotation(OneToMany.class); 
+				if(oneToMany != null) {
+					final Class<?> ownerClass = entity.getClass();
+					final Class<?> ownedClass = manyToManyResult.getTargetClass();
+					
+					final String ownerTableName = YUtilPersistence.getTableName(ownerClass);
+					final String ownedTableName = YUtilPersistence.getTableName(ownedClass);
+					
+					final String ownerIdColumnName = ownerTableName + "_" + YUtilPersistence.getIdColumnName(ownerClass);
+					final String ownedIdColumnName = ownedTableName + "_" + YUtilPersistence.getIdColumnName(ownedClass);
+					final String joinTableName = ownerTableName + "_" + ownedTableName;
+					
+					final Method ownerGetIdMethod = YUtilPersistence.getGetIdMethod(ownerClass);
+					final Method ownedGetIdMethod = YUtilPersistence.getGetIdMethod(ownedClass);
+					if(ownerGetIdMethod != null && ownedGetIdMethod != null) {
+						final ContentValues values = new ContentValues();
+						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, entity));
+						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, manyToManyResult.getTargetObject()));
+						
+						if(this.getDatabase() != null && this.getDatabase().isOpen() && this.getDatabase().inTransaction()) {
+							result = this.getDatabase().insert(joinTableName, null, values) > 0;
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * 
@@ -1006,8 +1098,20 @@ public class DefaultDBAdapter<E> {
 	 * @throws Exception
 	 */
 	private boolean insertManyToMany(final E entity, final List<Method> manyToManyMethods) throws Exception {
-		final List<ManyToManyResult>  manyToManyResults = this.handlesManyToManyRelationships(entity, manyToManyMethods);
+		final List<JoinItemResult>  manyToManyResults = this.handlesManyToManyRelationships(entity, manyToManyMethods);
 		return this.handlesManyToManyJoin(entity, manyToManyResults);
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param oneToManyMethods
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean insertOneToMany(final E entity, final List<Method> oneToManyMethods) throws Exception {
+		final List<JoinItemResult>  manyToManyResults = this.handlesUnidirectionalOneToManyRelationships(entity, oneToManyMethods);
+		return this.handlesOneToManyJoin(entity, manyToManyResults);
 	}
 
 	

@@ -47,7 +47,7 @@ final class YInnerRawDBAdapter<E> extends DefaultDBAdapter<E> {
 	 *
 	 * @param context
 	 */
-	public YInnerRawDBAdapter(final Class<E> genericType) {
+	YInnerRawDBAdapter(final Class<E> genericType) {
 		super(genericType);
 	}
 	
@@ -177,10 +177,8 @@ final class YInnerRawDBAdapter<E> extends DefaultDBAdapter<E> {
 				cursor.close();
 				
 			}
-			
-			
 		} catch (Exception e) {
-			Log.e("DefaultDBAdapter.selectRawData", e.getMessage());
+			Log.e("DefaultDBAdapter.selectRawDataWithJoinTable", e.getMessage());
 		}
 		return entities;
 	}

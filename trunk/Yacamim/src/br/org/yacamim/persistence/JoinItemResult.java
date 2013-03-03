@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
  * @version 1.0
  * @since 1.0
  */
-class ManyToManyResult {
+class JoinItemResult {
 	
 	private Class<?> targetClass;
 	private Method targetMethod;
@@ -36,7 +36,7 @@ class ManyToManyResult {
 	/**
 	 * 
 	 */
-	ManyToManyResult() {
+	JoinItemResult() {
 		super();
 	}
 
@@ -135,7 +135,7 @@ class ManyToManyResult {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ManyToManyResult other = (ManyToManyResult) obj;
+		JoinItemResult other = (JoinItemResult) obj;
 		if (idMethod == null) {
 			if (other.idMethod != null)
 				return false;

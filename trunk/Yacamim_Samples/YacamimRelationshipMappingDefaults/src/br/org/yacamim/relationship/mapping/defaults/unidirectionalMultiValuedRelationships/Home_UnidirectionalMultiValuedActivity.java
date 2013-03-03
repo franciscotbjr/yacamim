@@ -50,17 +50,9 @@ public class Home_UnidirectionalMultiValuedActivity extends YBaseActivity {
 		}
 	}
 	
-	public void startListEmployee2(final View view) {
-		try {
-//			startActivity(new Intent(this, ManyToOneActivity.class));
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-	}
-	
 	public void startInsertEmployee(final View view) {
 		try {
-//			startActivity(new Intent(this, InsertEmployeeActivity.class));
+			startActivity(new Intent(this, InsertEmployeeActivity.class));
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}

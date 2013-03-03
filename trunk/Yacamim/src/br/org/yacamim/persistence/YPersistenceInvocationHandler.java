@@ -217,7 +217,7 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 				if(ownedMethod != null) {
 					yRawDataList = handlesOneToMany(desiredEntityClass, parentClass, parenId);
 				} else {
-					
+					yRawDataList = handlesOneToManyJoinWithTable(desiredEntityClass, parentClass, parenId);
 				}
 			}
 		}
@@ -238,6 +238,23 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 		final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(desiredEntityClass);
 		yInnerRawDBAdapter.open();
 		yRawDataList = yInnerRawDBAdapter.selectRawData(parentClass, parenId);
+		yInnerRawDBAdapter.close();
+		return yRawDataList;
+	}
+
+	/**
+	 * 
+	 * @param desiredEntityClass
+	 * @param parentClass
+	 * @param parenId
+	 * @return
+	 */
+	@SuppressWarnings({ "unused", "unchecked", "rawtypes" })
+	private List<YRawData> handlesOneToManyJoinWithTable(final Class<?> desiredEntityClass, final Class<?> parentClass, final long parenId) {
+		List<YRawData> yRawDataList;
+		final YInnerRawDBAdapter yInnerRawDBAdapter = new YInnerRawDBAdapter(desiredEntityClass);
+		yInnerRawDBAdapter.open();
+		yRawDataList = yInnerRawDBAdapter.selectRawDataWithJoinTable(parentClass, desiredEntityClass, parenId, 0);
 		yInnerRawDBAdapter.close();
 		return yRawDataList;
 	}
