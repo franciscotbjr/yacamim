@@ -769,15 +769,18 @@ public class DefaultDBAdapter<E> {
 				newId = this.getDatabase().insert(this.getTableName(), null, initialValues);
 				this.setId(entity, newId);
 				
+				this.handlesBidirectionalOneToManyMappedByRelationships(entity, getMethods);
+
 				final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
 				if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) {
 					this.insertManyToMany(entity, manyToManyMethods);
 				}
-				
+
 				final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMethods(entity, getMethods);
 				if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) {
 					this.insertOneToMany(entity, oneToManyMethods);
 				}
+				
 			}
 			
 			return newId > 0;
