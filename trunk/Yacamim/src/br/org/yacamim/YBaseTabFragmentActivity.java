@@ -37,7 +37,6 @@ public abstract class YBaseTabFragmentActivity extends YBaseFragmentActivity imp
 	 */
 	public YBaseTabFragmentActivity() {
 		super();
-		YacamimState.getInstance().setCurrentActivity(this);
 	}
 
 	/**
