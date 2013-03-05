@@ -57,7 +57,7 @@ public final class YacamimState {
 	
 	private Session session;
 	
-	private YBaseActivity currentActivity;
+	private Activity currentActivity;
 	
 	private DeviceInfo deviceInfo;
 	
@@ -200,14 +200,14 @@ public final class YacamimState {
 	/**
 	 * @return the currentActivity
 	 */
-	public YBaseActivity getCurrentActivity() {
+	public Activity getCurrentActivity() {
 		return this.currentActivity;
 	}
 
 	/**
 	 * @param currentActivity the currentActivity to set
 	 */
-	protected YacamimState setCurrentActivity(final YBaseActivity currentActivity) {
+	protected YacamimState setCurrentActivity(final Activity currentActivity) {
 		this.currentActivity = currentActivity;
 		return this;
 	}

@@ -76,7 +76,6 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.keepScreenOn();
 	}
 
 	/**
@@ -97,7 +96,7 @@ public abstract class YBaseActivity extends Activity implements Callback {
     /**
      * 
      */
-	private void keepScreenOn() {
+	protected void keepScreenOn() {
 		try {
 			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		} catch (Exception _e) {
