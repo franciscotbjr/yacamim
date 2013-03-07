@@ -17,7 +17,7 @@
  */
 package br.org.yacamim;
 
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
@@ -29,25 +29,36 @@ import android.support.v4.app.FragmentPagerAdapter;
  * @version 1.0
  * @since 1.0
  */
-public class YBaseFragmentPagerAdapter extends FragmentPagerAdapter {
+public abstract class YBaseFragmentPagerAdapter extends FragmentPagerAdapter {
+	
+	private Context context;
 
 	/**
 	 * 
 	 */
-	public YBaseFragmentPagerAdapter(final FragmentManager fragmentManager) {
+	public YBaseFragmentPagerAdapter(final FragmentManager fragmentManager, final Context context) {
 		super(fragmentManager);
+		if(context == null) {
+			throw new IllegalArgumentException("context : null");
+		}
+		this.context = context;
 	}
 
-	@Override
-	public Fragment getItem(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * 
+	 * @return
+	 */
+	protected Context getContext() {
+		return this.context;
 	}
-
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	/**
+	 * 
+	 * @param resourceId
+	 * @return
+	 */
+	public String getString(final int resourceId) {
+		return this.getContext().getString(resourceId);
 	}
 
 }
