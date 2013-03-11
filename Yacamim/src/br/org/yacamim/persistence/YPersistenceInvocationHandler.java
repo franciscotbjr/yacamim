@@ -105,14 +105,16 @@ public class YPersistenceInvocationHandler extends YInvocationHandler {
 	 */
 	@Override
 	protected void fillChild(final Object result, final YRawData childRawData) {
-		final List<String> keys = childRawData.getKeys();
-		for(final String propertyName : keys) {
-			final Class<?> returnType = YUtilReflection.getGetMethod(YUtilReflection.getGetMethodName(propertyName), result.getClass()).getReturnType();
-			if(!YUtilPersistence.isEntity(returnType)) {
-				YUtilReflection.setValueToProperty(
-						propertyName,
-						childRawData.get(propertyName),
-						result);
+		if (childRawData != null) {
+			final List<String> keys = childRawData.getKeys();
+			for(final String propertyName : keys) {
+				final Class<?> returnType = YUtilReflection.getGetMethod(YUtilReflection.getGetMethodName(propertyName), result.getClass()).getReturnType();
+				if(!YUtilPersistence.isEntity(returnType)) {
+					YUtilReflection.setValueToProperty(
+							propertyName,
+							childRawData.get(propertyName),
+							result);
+				}
 			}
 		}
 	}
