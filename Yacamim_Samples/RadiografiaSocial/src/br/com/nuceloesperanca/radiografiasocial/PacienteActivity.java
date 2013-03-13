@@ -40,7 +40,7 @@ import br.org.yacamim.util.YUtilText;
  * @since 1.0
  */
 public class PacienteActivity extends YBaseActivity {
-	private static final String TAG_CLASS = ConsultarPacienteActivity.class.getName();
+	private static final String TAG_CLASS = PacienteActivity.class.getName();
 	static final int DATE_DIALOG_DATA_NASCIMENTO = 0;
 	private boolean inclusao = true;
 	private Paciente paciente = null;
