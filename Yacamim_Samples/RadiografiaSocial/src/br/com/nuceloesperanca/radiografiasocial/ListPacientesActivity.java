@@ -21,6 +21,7 @@ import br.com.nuceloesperanca.radiografiasocial.persitencia.PacienteDBAdapter;
 import br.com.nuceloesperanca.radiografiasocial.util.ConditionFactory;
 import br.com.nuceloesperanca.radiografiasocial.util.Constantes;
 import br.org.yacamim.YBaseListActivity;
+import br.org.yacamim.persistence.YProxyLoad;
 import br.org.yacamim.ui.components.AdapterConfig;
 import br.org.yacamim.ui.components.ComplexListSimpleAdapter;
 import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
@@ -143,8 +144,10 @@ public class ListPacientesActivity extends YBaseListActivity {
 	 */
 	private void showGerenciarPaciente() {
 		try {
-			final Intent intent = new Intent(this, PacienteActivity.class);
-			intent.putExtra("pacienteCadastro", pacienteSelecionado);
+			Intent intent = new Intent(this, PacienteActivity.class);
+			YProxyLoad yProxyLoad = new YProxyLoad();
+			Paciente paciente = (Paciente) yProxyLoad.load(pacienteSelecionado, false);
+			intent.putExtra("pacienteCadastro", paciente);
 			this.startActivityForResult(intent, YConstants.LOGOFF);
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
