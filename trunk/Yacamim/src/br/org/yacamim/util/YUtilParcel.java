@@ -231,10 +231,7 @@ public final class YUtilParcel {
 	public static Bundle writeToParcel(Object object, Parcel parcel) {
 		Bundle bundle = null;
 		try {
-			Class<?> clazz = object.getClass();
-			if(clazz.getPackage() == null && object.getClass().getSuperclass() != null) {
-				clazz = object.getClass().getSuperclass();
-			}
+			final Class<?> clazz = object.getClass();
 			List<Method> getMethodList = YUtilReflection.getGetMethodListSortedByName(clazz);
 			if(getMethodList != null) {
 				bundle = new Bundle(clazz.getClassLoader());
