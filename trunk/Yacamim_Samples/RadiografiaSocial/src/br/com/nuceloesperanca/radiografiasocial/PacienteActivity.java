@@ -105,14 +105,18 @@ public class PacienteActivity extends YBaseActivity {
     			YUtilText.setTextToEditText(this, R.id.txte_nome, this.paciente.getNome());
 
     	        final TextView textView = (TextView) findViewById(R.id.txtv_nascimento);
-    	        textView.setText(YUtilDate.getSimpleDateFormatData().format(this.paciente.getNascimento()));
-    	        
+    	        if (this.paciente.getNascimento() != null) {
+    	        	textView.setText(YUtilDate.getSimpleDateFormatData().format(this.paciente.getNascimento()));
+    	        }
+
     			YUtilText.setTextToEditText(this, R.id.txte_nome_mae, this.paciente.getNomeMae());
     			YUtilText.setTextToEditText(this, R.id.txte_nome_pai, this.paciente.getNomePai());
     			YUtilText.setTextToEditText(this, R.id.txte_irmaos, this.paciente.getIrmaos());
     			YUtilText.setTextToEditText(this, R.id.txte_telefones, this.paciente.getTelefones());
     			YUtilText.setTextToEditText(this, R.id.txte_endereco, this.paciente.getEndereco());
-    			UtilCombos.setSelectedObjectToSpinner(this, R.id.cmb_cid, this.paciente.getCid());
+    			if (this.paciente.getCid() != null && this.paciente.getCid().getDescricao() != null) {
+    				UtilCombos.setSelectedObjectToSpinner(this, R.id.cmb_cid, this.paciente.getCid());
+    			}
     			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_em_tratamento, R.id.radio_nao_em_tratamento, this.paciente.getEmTratamento());
     			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_obito, R.id.radio_nao_obito, this.paciente.getObito());
     		} else {
