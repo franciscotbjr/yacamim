@@ -5,9 +5,11 @@
  */
 package br.com.nuceloesperanca.radiografiasocial;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import br.com.nuceloesperanca.radiografiasocial.persitencia.PacienteDBAdapter;
 import br.com.nuceloesperanca.radiografiasocial.util.Constantes;
 import br.com.nuceloesperanca.radiografiasocial.util.UtilCombos;
 import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.entity.GpsLocationInfo;
 import br.org.yacamim.ui.components.BaseDatePickerDialog;
 import br.org.yacamim.ui.components.BaseOnDateSetListener;
 import br.org.yacamim.util.YUtilDate;
@@ -123,12 +126,8 @@ public class PacienteActivity extends YBaseActivity {
     			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_em_tratamento, R.id.radio_nao_em_tratamento, Constantes.SIM);
     			YUtilText.setBolStringFromRadioButton(this, R.id.radio_sim_obito, R.id.radio_nao_obito, Constantes.NAO);
     		}
-    		
-    		final EditText editTextLatitude = (EditText) this.findViewById(R.id.txte_latitude);
-    		final EditText editTextLongitude = (EditText) this.findViewById(R.id.txte_longitude);
 
-    		editTextLatitude.setText(String.valueOf(getBestLocalization().getLatitude()));
-    		editTextLongitude.setText(String.valueOf(getBestLocalization().getLongitude()));
+    		this.atualizaCamposGeo(this.getBestLocation());
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
 		} finally {
@@ -270,7 +269,7 @@ public class PacienteActivity extends YBaseActivity {
      */
     @Override
     protected Dialog onCreateDialog(final int idDialog) {
-    	final Calendar calendarInicio = YUtilDate.getCalendar(super.getBestLocalization());
+    	final Calendar calendarInicio = YUtilDate.getCalendar(super.getBestLocation());
     	switch (idDialog) {
 			case DATE_DIALOG_DATA_NASCIMENTO:
 	            return new BaseDatePickerDialog(
@@ -285,4 +284,31 @@ public class PacienteActivity extends YBaseActivity {
 				return super.onCreateDialog(idDialog);
 		}
     }
+    
+    @Override
+    public void onUpdateGpsLocationInfo(GpsLocationInfo _gpsLocationInfo) {
+    	super.onUpdateGpsLocationInfo(_gpsLocationInfo);
+		this.atualizaCamposGeo(_gpsLocationInfo);
+    }
+
+    /**
+     * 
+     * @param _gpsLocationInfo
+     */
+	private void atualizaCamposGeo(GpsLocationInfo _gpsLocationInfo) {
+		try {
+			final EditText editTextLatitude = (EditText)this.findViewById(R.id.txte_latitude);
+			final EditText editTextLongitude = (EditText)this.findViewById(R.id.txte_longitude);
+			
+			final NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
+			numberFormat.setMaximumFractionDigits(10);
+			numberFormat.setMinimumFractionDigits(10);
+			
+			editTextLatitude.setText(numberFormat.format(_gpsLocationInfo.getLatitude()));
+			editTextLongitude.setText(numberFormat.format(_gpsLocationInfo.getLongitude()));
+			
+		} catch (Exception _e) {
+			Log.e("PacienteActivity.onUpdateGpsLocationInfo", _e.getMessage());
+		}
+	}
 }
