@@ -198,7 +198,7 @@ public class VisitaActivity extends YBaseActivity {
      */
     @Override
     protected Dialog onCreateDialog(final int idDialog) {
-    	final Calendar calendarInicio = YUtilDate.getCalendar(super.getBestLocalization());
+    	final Calendar calendarInicio = YUtilDate.getCalendar(super.getBestLocation());
     	switch (idDialog) {
 			case DATE_DIALOG_DATA_VISITA:
 	            return new BaseDatePickerDialog(

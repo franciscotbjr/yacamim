@@ -51,12 +51,6 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	
 	private YBaseLocationListener yBaseLocationListener;
 	
-	private LocationManager locationManager;
-	
-	private GpsLocationInfo gpsLocationInfoInicial = new GpsLocationInfo();
-	
-	private GpsLocationInfo gpsLocationInfoFinal = new GpsLocationInfo();
-	
 	private StringBuilder message;
 	
 	private List<ProgressDialog> progressDialogStack = new ArrayList<ProgressDialog>();
@@ -83,11 +77,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	 */
 	protected void initGPS() {
 		try {
-			this.gpsLocationInfoInicial = new GpsLocationInfo();
-			this.gpsLocationInfoFinal = new GpsLocationInfo();
-			this.locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 			this.yBaseLocationListener = new YBaseLocationListener(this);
-			this.locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, yBaseLocationListener);
+			this.yBaseLocationListener.getLocationManager().requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, yBaseLocationListener);
 		} catch (Exception _e) {
 			Log.e("YBaseActivity.initGPS", _e.getMessage());
 		}
@@ -437,66 +428,11 @@ public abstract class YBaseActivity extends Activity implements Callback {
 
 	/**
 	 * 
+	 * 
+	 * @return
 	 */
-	protected GpsLocationInfo getBestLocalization() {
-		GpsLocationInfo gpsLocationInfo = new GpsLocationInfo();
-		try {
-			this.yBaseLocationListener.updatedGpsLocationInfo();
-			this.gpsLocationInfoFinal = new GpsLocationInfo(this.yBaseLocationListener.getGpsLocationInfo());
-			if(this.gpsLocationInfoInicial.getLatitude() != 0.0 && this.gpsLocationInfoFinal.getLatitude() != 0.0) {
-				if(this.gpsLocationInfoInicial.getAccuracy() != 0.0 &&  this.gpsLocationInfoFinal.getAccuracy() != 0.0) {
-					if(this.gpsLocationInfoInicial.getAccuracy() < this.gpsLocationInfoFinal.getAccuracy()) {
-						gpsLocationInfo = this.gpsLocationInfoInicial;
-					} else {
-						gpsLocationInfo = this.gpsLocationInfoFinal;
-					}
-				} else 
-				if (this.gpsLocationInfoInicial.getAccuracy() != 0.0) {
-					gpsLocationInfo = this.gpsLocationInfoInicial;
-				} else 
-				if (this.gpsLocationInfoFinal.getAccuracy() != 0.0) {
-					gpsLocationInfo = this.gpsLocationInfoFinal;
-				}
-			} else 
-			if (this.gpsLocationInfoInicial.getLatitude() != 0.0) {
-				gpsLocationInfo = this.gpsLocationInfoInicial;
-			} else
-			if (this.gpsLocationInfoFinal.getLatitude() != 0.0) {
-				gpsLocationInfo = this.gpsLocationInfoFinal;
-			}
-			
-		} catch (Exception _e) {
-			Log.e("FrmCadastrarVisitaIdentificacao.getMelhorLocalizacao", _e.getMessage());
-		}
-		return gpsLocationInfo;
-	}
-
-	/**
-	 * @return the gpsLocationInfoInicial
-	 */
-	public GpsLocationInfo getGpsLocationInfoInicial() {
-		return gpsLocationInfoInicial;
-	}
-
-	/**
-	 * @param gpsLocationInfoInicial the gpsLocationInfoInicial to set
-	 */
-	public void setGpsLocationInfoInicial(GpsLocationInfo gpsLocationInfoInicial) {
-		this.gpsLocationInfoInicial = gpsLocationInfoInicial;
-	}
-
-	/**
-	 * @return the gpsLocationInfoFinal
-	 */
-	public GpsLocationInfo getGpsLocationInfoFinal() {
-		return gpsLocationInfoFinal;
-	}
-
-	/**
-	 * @param gpsLocationInfoFinal the gpsLocationInfoFinal to set
-	 */
-	public void setGpsLocationInfoFinal(GpsLocationInfo gpsLocationInfoFinal) {
-		this.gpsLocationInfoFinal = gpsLocationInfoFinal;
+	protected GpsLocationInfo getBestLocation() {
+		return this.yBaseLocationListener.getCurrentGpsLocationInfo();
 	}
 
 	/**
