@@ -284,7 +284,10 @@ public class PacienteActivity extends YBaseActivity {
 				return super.onCreateDialog(idDialog);
 		}
     }
-    
+
+    /**
+     * @see br.org.yacamim.YBaseActivity#onUpdateGpsLocationInfo(br.org.yacamim.entity.GpsLocationInfo)
+     */
     @Override
     public void onUpdateGpsLocationInfo(GpsLocationInfo _gpsLocationInfo) {
     	super.onUpdateGpsLocationInfo(_gpsLocationInfo);
@@ -292,6 +295,7 @@ public class PacienteActivity extends YBaseActivity {
     }
 
     /**
+     * Atualiza os campos de localização.
      * 
      * @param _gpsLocationInfo
      */
