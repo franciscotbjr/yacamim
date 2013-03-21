@@ -20,6 +20,8 @@ package br.org.yacamim.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 /**
  * Class YUtilObject TODO
  *
@@ -28,6 +30,8 @@ import java.util.List;
  * @since 1.0
  */
 public strictfp abstract class YUtilObject {
+	
+	private static final String TAG = YUtilObject.class.getSimpleName();
 
 	/**
 	 *
@@ -38,125 +42,130 @@ public strictfp abstract class YUtilObject {
 
 	/**
 	 *
-	 * @param _arrString
+	 * @param arrString
 	 * @return
 	 */
-	public static String[] toStringArray(List<String> _arrString) {
+	public static String[] toStringArray(final List<String> arrString) {
 		try {
-			String[] classes = new String[_arrString.size()];
+			String[] classes = new String[arrString.size()];
 			int count = 0;
-			for(String strValue : _arrString) {
+			for(String strValue : arrString) {
 				classes[count++] = strValue;
 			}
 			return classes;
 		}
-		catch(Exception _e) {
+		catch(Exception e) {
+			Log.e(TAG + ".toStringArray", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _classNames
+	 * @param classNames
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	public static Class[] toClassArray(List<String> _classNames) {
+	public static Class[] toClassArray(final List<String> classNames) {
 		try {
-			Class[] classes = new Class[_classNames.size()];
+			Class[] classes = new Class[classNames.size()];
 			int count = 0;
-			for(String strNomeClasse : _classNames) {
+			for(String strNomeClasse : classNames) {
 				classes[count++] = Class.forName(strNomeClasse);
 			}
 			return classes;
 		}
-		catch(Exception _e) {
+		catch(Exception e) {
+			Log.e(TAG + ".toClassArray", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _classNames
+	 * @param classNames
 	 * @return
 	 */
-	public static List<Class<?>> toClassList(List<String> _classNames) {
+	public static List<Class<?>> toClassList(final List<String> classNames) {
 		try {
 			List<Class<?>> classes = new ArrayList<Class<?>>();
-			for(String strNomeClasse : _classNames) {
+			for(String strNomeClasse : classNames) {
 				classes.add(Class.forName(strNomeClasse));
 			}
 			return classes;
 		}
-		catch(Exception _e) {
+		catch(Exception e) {
+			Log.e(TAG + ".toClassList", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static Integer toInteger(Object _value) {
+	public static Integer toInteger(final  Object value) {
 		try {
-			return Integer.valueOf(_value.toString());
+			return Integer.valueOf(value.toString());
 		}
-		catch(Exception _e) {
+		catch(Exception e) {
+			Log.e(TAG + ".toInteger", e.getMessage());
 			return Integer.valueOf("0");
 		}
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static Boolean toBoolean(Object _value) {
+	public static Boolean toBoolean(final Object value) {
 		try {
-			return Boolean.valueOf(_value.toString());
+			return Boolean.valueOf(value.toString());
 		}
-		catch(Exception _e) {
+		catch(Exception e) {
+			Log.e(TAG + ".toBoolean", e.getMessage());
 			return Boolean.valueOf("false");
 		}
 	}
 
     /**
      *
-     * @param _value
-     * @param _defaultValue
+     * @param value
+     * @param defaultValue
      * @return
      */
-    public static int zeroToIntDefault(int _value, int _defaultValue) {
-        if(_value <= 0) {
-            return _defaultValue;
+    public static int zeroToIntDefault(final int value, final int defaultValue) {
+        if(value <= 0) {
+            return defaultValue;
         }
-        return _value;
+        return value;
     }
 
     /**
      *
-     * @param _value
-     * @param _defaultValue
+     * @param value
+     * @param defaultValue
      * @return
      */
-    public static long zeroToLongDefault(long _value, long _defaultValue) {
-        if(_value <= 0) {
-            return _defaultValue;
+    public static long zeroToLongDefault(final long value, final long defaultValue) {
+        if(value <= 0) {
+            return defaultValue;
         }
-        return _value;
+        return value;
     }
 
     /**
      *
-     * @param _value
+     * @param value
      * @return
      */
-	public static String nullToStringVazia(Object _value) {
-		if(_value == null) {
+	public static String nullToStringVazia(final Object value) {
+		if(value == null) {
 			return "";
 		}
-		return _value.toString();
+		return value.toString();
 	}
 
 }

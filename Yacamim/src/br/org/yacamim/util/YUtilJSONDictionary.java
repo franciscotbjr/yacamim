@@ -42,31 +42,31 @@ public class YUtilJSONDictionary {
 
     /**
      *
-     * @param _value
+     * @param value
      * @return
      */
-    public String add(final String _value) {
+    public String add(final String value) {
 		String token = "";
 		for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getValue().equals(_value)) {
+			if(keyValuePair.getValue().equals(value)) {
 				token = keyValuePair.getKey();
 			}
 		}
 		if(YUtilString.isEmptyString(token)) {
 			token = next();
-			this.keyValues.add(new YKeyValuePair<String, String>(token, _value));
+			this.keyValues.add(new YKeyValuePair<String, String>(token, value));
 		}
 		return token;
     }
 
     /**
      *
-     * @param _value
+     * @param value
      * @return
      */
-    public boolean contains(final String _value) {
+    public boolean contains(final String value) {
 	    for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getValue().equals(_value)) {
+			if(keyValuePair.getValue().equals(value)) {
 				return true;
 			}
 		}
@@ -75,12 +75,12 @@ public class YUtilJSONDictionary {
 
     /**
      *
-     * @param _nomeItem
+     * @param nomeItem
      * @return
      */
-    public String get(final String _nomeItem) {
+    public String get(final String nomeItem) {
 	    for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getKey().equals(_nomeItem)) {
+			if(keyValuePair.getKey().equals(nomeItem)) {
 				return keyValuePair.getValue();
 			}
 	    }

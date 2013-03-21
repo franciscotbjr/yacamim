@@ -32,6 +32,8 @@ import android.util.Log;
  * @since 1.0
  */
 public strictfp abstract class YUtilCryptographic {
+	
+	private static final String TAG = YUtilCryptographic.class.getSimpleName();
 
 	/**
 	 *
@@ -42,16 +44,16 @@ public strictfp abstract class YUtilCryptographic {
 
     /**
      *
-     * @param _string
+     * @param string
      * @return
      */
-    public static String encodeBase64(final String _string) {
+    public static String encodeBase64(final String string) {
         try {
             Base64 base64 = new Base64();
-            String resultado = new String(base64.encode(_string.getBytes()));
+            String resultado = new String(base64.encode(string.getBytes()));
             return resultado;
         } catch (Exception _e) {
-        	Log.e("YUtilCryptographic.encodeBase64", _e.getMessage());
+        	Log.e(TAG + ".encodeBase64", _e.getMessage());
             return null;
         }
 
@@ -59,41 +61,41 @@ public strictfp abstract class YUtilCryptographic {
 
     /**
      *
-     * @param _string
+     * @param string
      * @return
      */
-    public static String decodeBase64(final String _string) {
+    public static String decodeBase64(final String string) {
         try {
             Base64 base64 = new Base64();
-            byte[] b = base64.decode(_string.getBytes());
+            byte[] b = base64.decode(string.getBytes());
             String resultado = new String(b);
             return resultado;
         } catch (Exception _e) {
-        	Log.e("YUtilCryptographic.decodeBase64", _e.getMessage());
+        	Log.e(TAG + ".decodeBase64", _e.getMessage());
             return null;
         }
     }
 
     /**
      *
-     * @param _string
+     * @param string
      * @return
      */
-    public static String md5(final String _string) {
-    	return YUtilCryptographic.stringHexa(YUtilCryptographic.makeHash(_string, "MD5"));
+    public static String md5(final String string) {
+    	return YUtilCryptographic.stringHexa(YUtilCryptographic.makeHash(string, "MD5"));
     }
 
 
     /**
      *
-     * @param _string
+     * @param string
      * @return
      */
-    public static String encryptPassword(final String _string) {
+    public static String encryptPassword(final String string) {
     	final int maxSize = 35;
-    	int dif = maxSize - _string.length();
+    	int dif = maxSize - string.length();
     	StringBuffer bufferSenha = new StringBuffer();
-    	bufferSenha.append(_string);
+    	bufferSenha.append(string);
     	while(dif >= 0) {
     		dif--;
     		bufferSenha.insert(0,"0");
@@ -113,31 +115,31 @@ public strictfp abstract class YUtilCryptographic {
 
     /**
      *
-     * @param _phrase
-     * @param _algorithm
+     * @param phrase
+     * @param algorithm
      * @return
      */
-    private static byte[] makeHash(String _phrase, String _algorithm) {
+    private static byte[] makeHash(final String phrase, final String algorithm) {
 		try {
-			MessageDigest md = MessageDigest.getInstance(_algorithm);
-			md.update(_phrase.getBytes());
+			MessageDigest md = MessageDigest.getInstance(algorithm);
+			md.update(phrase.getBytes());
 			return md.digest();
 		} catch (NoSuchAlgorithmException _e) {
-			Log.e("YUtilCryptographic.makeHash", _e.getMessage());
+			Log.e(TAG + ".makeHash", _e.getMessage());
 			return null;
 		}
     }
 
     /**
      *
-     * @param _bytes
+     * @param bytes
      * @return
      */
-	private static String stringHexa(byte[] _bytes) {
+	private static String stringHexa(final byte[] bytes) {
 	   StringBuilder s = new StringBuilder();
-	   for (int i = 0; i < _bytes.length; i++) {
-	       int parteAlta = ((_bytes[i] >> 4) & 0xf) << 4;
-	       int parteBaixa = _bytes[i] & 0xf;
+	   for (int i = 0; i < bytes.length; i++) {
+	       int parteAlta = ((bytes[i] >> 4) & 0xf) << 4;
+	       int parteBaixa = bytes[i] & 0xf;
 	       if (parteAlta == 0) s.append('0');
 	       s.append(Integer.toHexString(parteAlta | parteBaixa));
 	   }

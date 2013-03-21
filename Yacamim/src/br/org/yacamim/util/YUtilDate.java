@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import android.util.Log;
 import br.org.yacamim.entity.GpsLocationInfo;
 
 /**
@@ -35,6 +36,8 @@ import br.org.yacamim.entity.GpsLocationInfo;
  * @since 1.0
  */
 public strictfp abstract class YUtilDate {
+	
+	private static final String TAG = YUtilDate.class.getSimpleName();
 
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
@@ -133,51 +136,51 @@ public strictfp abstract class YUtilDate {
 
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static Date convertDate(String _value) {
+	public static Date convertDate(final String value) {
 		Date retorno = null;
 		try {
-			if (!YUtilString.isEmptyString(_value)) {
-				retorno = getSimpleDateFormatData().parse(_value);
+			if (!YUtilString.isEmptyString(value)) {
+				retorno = getSimpleDateFormatData().parse(value);
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			Log.e(TAG + ".convertDate", e.getMessage());
 		}
 		return retorno;
 	}
 
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static Date convertHoraCurta(String _value) {
+	public static Date convertHoraCurta(final String value) {
 		Date retorno = null;
 		try {
-			if (!YUtilString.isEmptyString(_value)) {
-				retorno = getSimpleDateFormatHorarioCurto().parse(_value);
+			if (!YUtilString.isEmptyString(value)) {
+				retorno = getSimpleDateFormatHorarioCurto().parse(value);
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			Log.e(TAG + ".convertHoraCurta", e.getMessage());
 		}
 		return retorno;
 	}
 
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static Date convertHora(String _value) {
+	public static Date convertHora(final String value) {
 		Date retorno = null;
 		try {
-			if (!YUtilString.isEmptyString(_value)) {
-				retorno = getSimpleDateFormatHorario().parse(_value);
+			if (!YUtilString.isEmptyString(value)) {
+				retorno = getSimpleDateFormatHorario().parse(value);
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			Log.e(TAG + ".convertHora", e.getMessage());
 		}
 		return retorno;
 	}

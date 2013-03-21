@@ -37,6 +37,8 @@ import br.org.yacamim.entity.YWriteToParcel;
  * @since 1.0
  */
 public final class YUtilParcel {
+	
+	private static final String TAG = YUtilParcel.class.getSimpleName();
 
 	/**
 	 *
@@ -56,7 +58,7 @@ public final class YUtilParcel {
 			fillAttributesFromParcel(object, parcel);
 			yParcel.setValue(object);
 		} catch (Exception e) {
-			Log.e("YUtilParcel.fillValueFromParcel", e.getMessage());
+			Log.e(TAG + ".fillValueFromParcel", e.getMessage());
 		}
 	}
 
@@ -134,7 +136,7 @@ public final class YUtilParcel {
 				}
 			}
 		} catch (Exception e) {
-			Log.e("YUtilParcel.fillAttributesFromParcel", e.getMessage());
+			Log.e(TAG + ".fillAttributesFromParcel", e.getMessage());
 		}
 	}
 
@@ -143,7 +145,7 @@ public final class YUtilParcel {
 	 * @param object
 	 * @return
 	 */
-	public static Bundle getAttributesAsBundle(Object object) {
+	public static Bundle getAttributesAsBundle(final Object object) {
 		Bundle bundle = null;
 		try {
 			final Class<?> clazz = object.getClass();
@@ -158,7 +160,7 @@ public final class YUtilParcel {
 				}
 			}
 		} catch (Exception e) {
-			Log.e("YUtilParcel.getAttributesAsBundle", e.getMessage());
+			Log.e(TAG + ".getAttributesAsBundle", e.getMessage());
 			bundle = new Bundle();
 		}
 		return bundle;
@@ -172,8 +174,8 @@ public final class YUtilParcel {
 	 * @return
 	 * @throws Exception
 	 */
-	protected static void addToBundle(Object object, Bundle bundle,
-			Method getMethod) throws Exception {
+	protected static void addToBundle(final Object object, final Bundle bundle,
+			final Method getMethod) throws Exception {
 		String propertyName = YUtilReflection.getPropertyName(getMethod);
 		Object propertyValue = YUtilReflection.invokeMethodWithoutParams(getMethod, object);
 		if(getMethod.getReturnType().equals(String.class)) {
@@ -228,7 +230,7 @@ public final class YUtilParcel {
 	 * @param parcel
 	 * @return
 	 */
-	public static Bundle writeToParcel(Object object, Parcel parcel) {
+	public static Bundle writeToParcel(final Object object, final Parcel parcel) {
 		Bundle bundle = null;
 		try {
 			final Class<?> clazz = object.getClass();
@@ -243,7 +245,7 @@ public final class YUtilParcel {
 				}
 			}
 		} catch (Exception e) {
-			Log.e("YUtilParcel.getAttributesAsBundle", e.getMessage());
+			Log.e(TAG + ".getAttributesAsBundle", e.getMessage());
 			bundle = new Bundle();
 		}
 		return bundle;
@@ -256,7 +258,7 @@ public final class YUtilParcel {
 	 * @param getMethod
 	 * @throws Exception
 	 */
-	public static void writeToParcel(Object object, Parcel parcel, Method getMethod) throws Exception {
+	public static void writeToParcel(final Object object, final Parcel parcel, final Method getMethod) throws Exception {
 		Object propertyValue = YUtilReflection.invokeMethodWithoutParams(getMethod, object);
 		if(getMethod.getReturnType().equals(String.class)) {
 			parcel.writeString((String)propertyValue);

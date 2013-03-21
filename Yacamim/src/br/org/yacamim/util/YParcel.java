@@ -80,7 +80,7 @@ public class YParcel implements Parcelable {
 	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
 	 */
 	@Override
-	public void writeToParcel(Parcel dest, int flags) {
+	public void writeToParcel(final Parcel dest, final int flags) {
 		dest.writeString(this.value.getClass().getName());
 		YUtilParcel.writeToParcel(this.value, dest);
 	}
@@ -115,7 +115,7 @@ public class YParcel implements Parcelable {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

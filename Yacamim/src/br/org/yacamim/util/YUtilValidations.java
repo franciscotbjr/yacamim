@@ -32,6 +32,8 @@ import br.org.yacamim.entity.YBaseEntity;
  * @since 1.0
  */
 public strictfp abstract class YUtilValidations {
+	
+	private static final String TAG = YUtilValidations.class.getSimpleName();
 
 	/**
 	 *
@@ -43,18 +45,18 @@ public strictfp abstract class YUtilValidations {
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 *
-	 * @param _strCpfParam
+	 * @param strCpfParam
 	 * @return
 	 */
-	public static boolean isCpfValido(String _strCpfParam) {
-		if ((_strCpfParam == null) || _strCpfParam.equals("") || (_strCpfParam.length() < 11)) {
+	public static boolean isCpfValido(final String strCpfParam) {
+		if ((strCpfParam == null) || strCpfParam.equals("") || (strCpfParam.length() < 11)) {
 			return false;
 		}
-		if (!_strCpfParam.matches(YUtilString.CPF_REGEX)) {
+		if (!strCpfParam.matches(YUtilString.CPF_REGEX)) {
 			return false;
 		}
 
-		String cpfDesformatado = YUtilFormatting.unformatNumericValue(_strCpfParam);
+		String cpfDesformatado = YUtilFormatting.unformatNumericValue(strCpfParam);
 		if (cpfDesformatado.length() != 11) {
 			return false;
 		}
@@ -101,23 +103,23 @@ public strictfp abstract class YUtilValidations {
 				return false;
 			}
 			return true;
-		} catch (Exception _e) {
-			Log.e("YUtilValidations.isCpfValido", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".isCpfValido", e.getMessage());
 			return false;
 		}
 	}
 
 	/**
 	 *
-	 * @param _email
+	 * @param email
 	 * @return
 	 */
-	public static boolean isValidEmail(String _email) {
-		if (YUtilString.isEmptyString(_email)) {
+	public static boolean isValidEmail(final String email) {
+		if (YUtilString.isEmptyString(email)) {
 			return false;
 		}
 		Pattern p = Pattern.compile(YUtilString.EMAIL_REGEX);
-		Matcher m = p.matcher(_email);
+		Matcher m = p.matcher(email);
 		if (m.find()) {
 			return true;
 		}
@@ -127,13 +129,13 @@ public strictfp abstract class YUtilValidations {
 
 	/**
 	 *
-	 * @param _number
-	 * @param _digit
+	 * @param number
+	 * @param digit
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean isMod10(String _number, char _digit) throws Exception {
-		String strDigit = "" + _digit;
+	public static boolean isMod10(final String number, final char digit) throws Exception {
+		String strDigit = "" + digit;
 		if(YUtilString.isEmptyString(strDigit)) {
 			throw new Exception("Dígito vazio ou null!");
 		}
@@ -142,7 +144,7 @@ public strictfp abstract class YUtilValidations {
 		}
 
 
-		int mod10 = mod10(_number);
+		int mod10 = mod10(number);
 		int digito = Integer.valueOf(strDigit);
 
 		return mod10 == digito;
@@ -150,28 +152,28 @@ public strictfp abstract class YUtilValidations {
 
 	/**
 	 *
-	 * @param _number
+	 * @param number
 	 * @return
 	 * @throws Exception
 	 */
-	public static int mod10(String _number) throws Exception {
+	public static int mod10(final String number) throws Exception {
 
-		if(YUtilString.isEmptyString(_number)) {
+		if(YUtilString.isEmptyString(number)) {
 			throw new Exception("String vazia ou null!");
 		}
-		if(!YUtilString.isInteger(_number)) {
+		if(!YUtilString.isInteger(number)) {
 			throw new Exception("String contém caracteres inválidos!");
 		}
 
 	    int multi = 2;
-	    int posicao1 = _number.length()-1;
+	    int posicao1 = number.length()-1;
 	    int posicao2;
 	    int acumula = 0;
 	    int resultado;
 	    int dac = 0;
 
 	    while (posicao1 >= 0) {
-	        resultado = Integer.parseInt(_number.substring(posicao1,posicao1+1)) * multi;
+	        resultado = Integer.parseInt(number.substring(posicao1,posicao1+1)) * multi;
 	        posicao2  = Integer.toString(resultado).length()-1;
 
 	        while (posicao2 >= 0) {
@@ -200,11 +202,11 @@ public strictfp abstract class YUtilValidations {
 
 	/**
 	 *
-	 * @param _entity
+	 * @param entity
 	 * @return
 	 */
-	public static boolean isIntegralEntity(final YBaseEntity _entity) {
-		if(_entity == null || _entity.getId() <= 0) {
+	public static boolean isIntegralEntity(final YBaseEntity entity) {
+		if(entity == null || entity.getId() <= 0) {
 			return false;
 		}
 		return true;

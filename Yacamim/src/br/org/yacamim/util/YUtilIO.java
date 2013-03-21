@@ -39,6 +39,8 @@ import android.util.Log;
  * @since 1.0
  */
 public final class YUtilIO {
+	
+	private static final String TAG = YUtilIO.class.getSimpleName();
 
 	/**
 	 *
@@ -49,75 +51,75 @@ public final class YUtilIO {
 
 	/**
 	 *
-	 * @param _inputStream
+	 * @param inputStream
 	 * @return
 	 */
-	public static StringBuilder convertToStringBuilder(final InputStream _inputStream) {
+	public static StringBuilder convertToStringBuilder(final InputStream inputStream) {
 		final StringBuilder stringBuilder = new StringBuilder();
 		try {
 			final BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(_inputStream, Charset.forName("UTF-8"))
+					new InputStreamReader(inputStream, Charset.forName("UTF-8"))
 				);
 			String line = null;
 			while((line = bufferedReader.readLine()) != null) {
 				stringBuilder.append(line);
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilIO.convertToStringBuilder", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".convertToStringBuilder", e.getMessage());
 		}
 		return stringBuilder;
 	}
 
 	/**
 	 *
-	 * @param _context
-	 * @param _imageData
-	 * @param _quality
-	 * @param _directory
-	 * @param _fileName
+	 * @param context
+	 * @param imageData
+	 * @param quality
+	 * @param directory
+	 * @param fileName
 	 * @return
 	 */
-	public static String storeByteImage(final Context _context, final byte[] _imageData, final int _quality, final String _directory, final String _fileName) {
+	public static String storeByteImage(final Context context, final byte[] imageData, final int quality, final String directory, final String fileName) {
 		String nomeImagem = null;
 		FileOutputStream fileOutputStream = null;
 		try {
-			final File sdImageMainDirectory = new File(_directory);
+			final File sdImageMainDirectory = new File(directory);
 			final BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = 5;
 
-			final Bitmap myImage = BitmapFactory.decodeByteArray(_imageData, 0, _imageData.length,options);
+			final Bitmap myImage = BitmapFactory.decodeByteArray(imageData, 0, imageData.length,options);
 
-			final String nomeImagemTemp = sdImageMainDirectory.toString() +"/" + _fileName + "_" + System.currentTimeMillis() + ".jpg";
+			final String nomeImagemTemp = sdImageMainDirectory.toString() +"/" + fileName + "_" + System.currentTimeMillis() + ".jpg";
 			fileOutputStream = new FileOutputStream(nomeImagemTemp);
 
 			final BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream);
 
-			myImage.compress(CompressFormat.JPEG, _quality, bos);
+			myImage.compress(CompressFormat.JPEG, quality, bos);
 
 			bos.flush();
 			bos.close();
 
 			nomeImagem = nomeImagemTemp;
 		} catch (Exception _e) {
-			Log.e("YUtilIO.storeByteImage", _e.getMessage());
+			Log.e(TAG + ".storeByteImage", _e.getMessage());
 		}
 		return nomeImagem;
 	}
 
 	/**
 	 *
-	 * @param _fileImage
-	 * @param _newImageName
+	 * @param fileImage
+	 * @param newImageName
 	 * @return
 	 */
-	public static File renemaFile(File _fileImage, String _newImageName) {
+	public static File renemaFile(final File fileImage, final String newImageName) {
 		try {
-			final File newFile = new File(_fileImage.getPath().substring(0, _fileImage.getPath().lastIndexOf(File.separatorChar + "") + 1) + _newImageName);
-			_fileImage.renameTo(newFile);
-			_fileImage.delete();
+			final File newFile = new File(fileImage.getPath().substring(0, fileImage.getPath().lastIndexOf(File.separatorChar + "") + 1) + newImageName);
+			fileImage.renameTo(newFile);
+			fileImage.delete();
 			return newFile;
-		} catch (Exception _e) {
-			Log.e("YUtilIO.renemaFile", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".renemaFile", e.getMessage());
 		}
 		return null;
 	}

@@ -48,12 +48,12 @@ public enum YEnumMimeType {
 
 	/**
 	 *
-	 * @param _extention
-	 * @param _mimeType
+	 * @param extention
+	 * @param mimeType
 	 */
-	private YEnumMimeType(final String _extention, final String _mimeType) {
-		this.extention = _extention;
-		this.mimeType = _mimeType;
+	private YEnumMimeType(final String extention, final String mimeType) {
+		this.extention = extention;
+		this.mimeType = mimeType;
 	}
 
 	/**

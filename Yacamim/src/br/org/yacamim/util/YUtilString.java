@@ -30,6 +30,8 @@ import android.util.Log;
  * @since 1.0
  */
 public final strictfp class YUtilString {
+	
+	private static final String TAG = YUtilString.class.getSimpleName();
 
 	/**
 	 *
@@ -142,11 +144,11 @@ public final strictfp class YUtilString {
 
 	/**
 	 *
-	 * @param _string
+	 * @param string
 	 * @return
 	 */
-	public static final boolean isEmptyString(final CharSequence _string) {
-		if(_string !=  null && !_string.toString().trim().equals("")) {
+	public static final boolean isEmptyString(final CharSequence string) {
+		if(string !=  null && !string.toString().trim().equals("")) {
 			return false;
 		}
 		return true;
@@ -154,14 +156,14 @@ public final strictfp class YUtilString {
 
 	/**
 	 *
-	 * @param data
+	 * @param string
 	 * @return
 	 */
-	public static String keepOnlyNumbers(String data) {
-		if ((data == null) || data.trim().equals("")) {
+	public static String keepOnlyNumbers(final String string) {
+		if ((string == null) || string.trim().equals("")) {
 			return "";
 		}
-		char[] st = data.toCharArray();
+		char[] st = string.toCharArray();
 		StringBuffer noNumberBuffer = new StringBuffer();
 		for (int i = 0; i < st.length; i++) {
 			if (YUtilString.isNumeric(new String(new char[] { st[i] }))) {
@@ -173,14 +175,14 @@ public final strictfp class YUtilString {
 
 	/**
 	 *
-	 * @param value
+	 * @param string
 	 * @return
 	 */
-	public static boolean isNumeric(final String value) {
-		if (YUtilString.isEmptyString(value)) {
+	public static boolean isNumeric(final String string) {
+		if (YUtilString.isEmptyString(string)) {
 			return false;
 		}
-		return value.matches(YUtilString.REGEX_FLOATING_POINT);
+		return string.matches(YUtilString.REGEX_FLOATING_POINT);
 	}
 
 	/**
@@ -222,7 +224,7 @@ public final strictfp class YUtilString {
 			stringMod = firstCharacter + string.substring(1);
 			return stringMod;
 		} catch (Exception e) {
-			Log.e("YUtilString.firstCharacterToLowerCase", e.getMessage());
+			Log.e(TAG + ".firstCharacterToLowerCase", e.getMessage());
 			return "";
 		}
 	}
@@ -242,7 +244,7 @@ public final strictfp class YUtilString {
 			stringMod = firstCharacter + string.substring(1);
 			return stringMod;
 		} catch (Exception e) {
-			Log.e("YUtilString.firstCharacterToUpperCase", e.getMessage());
+			Log.e(TAG + ".firstCharacterToUpperCase", e.getMessage());
 			return "";
 		}
 	}
@@ -259,7 +261,7 @@ public final strictfp class YUtilString {
 		try {
 			return string.replaceAll("[^A-Za-z0-9]", "");
 		} catch (Exception e) {
-			Log.e("YUtilString.clearString", e.getMessage());
+			Log.e(TAG + ".clearString", e.getMessage());
 			return "";
 		}
 	}
