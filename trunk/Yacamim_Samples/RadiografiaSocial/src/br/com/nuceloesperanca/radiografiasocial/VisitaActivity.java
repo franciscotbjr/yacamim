@@ -5,9 +5,11 @@
  */
 package br.com.nuceloesperanca.radiografiasocial;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import br.com.nuceloesperanca.radiografiasocial.entidade.Paciente;
@@ -24,6 +27,7 @@ import br.com.nuceloesperanca.radiografiasocial.persitencia.VisitaDBAdapter;
 import br.com.nuceloesperanca.radiografiasocial.util.Constantes;
 import br.com.nuceloesperanca.radiografiasocial.util.UtilCombos;
 import br.org.yacamim.YBaseActivity;
+import br.org.yacamim.entity.GpsLocationInfo;
 import br.org.yacamim.ui.components.BaseDatePickerDialog;
 import br.org.yacamim.ui.components.BaseOnDateSetListener;
 import br.org.yacamim.util.YUtilDate;
@@ -213,4 +217,34 @@ public class VisitaActivity extends YBaseActivity {
 				return super.onCreateDialog(idDialog);
 		}
     }
+
+    /**
+     * @see br.org.yacamim.YBaseActivity#onUpdateGpsLocationInfo(br.org.yacamim.entity.GpsLocationInfo)
+     */
+    @Override
+    public void onUpdateGpsLocationInfo(GpsLocationInfo _gpsLocationInfo) {
+    	super.onUpdateGpsLocationInfo(_gpsLocationInfo);
+		this.atualizaCamposGeo(_gpsLocationInfo);
+    }
+
+    /**
+     * Atualiza os campos de localização.
+     * 
+     * @param _gpsLocationInfo
+     */
+	private void atualizaCamposGeo(GpsLocationInfo _gpsLocationInfo) {
+		try {
+			final EditText editTextLatitude = (EditText)this.findViewById(R.id.txte_latitude);
+			final EditText editTextLongitude = (EditText)this.findViewById(R.id.txte_longitude);
+
+			final NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
+			numberFormat.setMaximumFractionDigits(10);
+			numberFormat.setMinimumFractionDigits(10);
+
+			editTextLatitude.setText(numberFormat.format(_gpsLocationInfo.getLatitude()));
+			editTextLongitude.setText(numberFormat.format(_gpsLocationInfo.getLongitude()));
+		} catch (Exception _e) {
+			Log.e("VisitaActivity.onUpdateGpsLocationInfo", _e.getMessage());
+		}
+	}
 }

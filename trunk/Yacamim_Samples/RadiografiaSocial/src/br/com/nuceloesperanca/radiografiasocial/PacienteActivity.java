@@ -303,14 +303,13 @@ public class PacienteActivity extends YBaseActivity {
 		try {
 			final EditText editTextLatitude = (EditText)this.findViewById(R.id.txte_latitude);
 			final EditText editTextLongitude = (EditText)this.findViewById(R.id.txte_longitude);
-			
+
 			final NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
 			numberFormat.setMaximumFractionDigits(10);
 			numberFormat.setMinimumFractionDigits(10);
-			
+
 			editTextLatitude.setText(numberFormat.format(_gpsLocationInfo.getLatitude()));
 			editTextLongitude.setText(numberFormat.format(_gpsLocationInfo.getLongitude()));
-			
 		} catch (Exception _e) {
 			Log.e("PacienteActivity.onUpdateGpsLocationInfo", _e.getMessage());
 		}
