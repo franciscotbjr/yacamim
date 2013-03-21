@@ -36,6 +36,8 @@ import br.org.yacamim.YacamimResources;
  * @since 1.0
  */
 public final class YUtilText {
+	
+	private static final String TAG = YUtilText.class.getSimpleName();
 
 	/**
 	 *
@@ -46,321 +48,321 @@ public final class YUtilText {
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static String getTextFromEditText(final Activity _activity, final int _viewId) {
+	public static String getTextFromEditText(final Activity activity, final int viewId) {
 		try {
-			return ((EditText) _activity.findViewById(_viewId)).getText().toString().trim();
-		} catch (Exception _e) {
-			Log.e("YUtilText.getTextFromEditText", _e.getMessage());
+			return ((EditText) activity.findViewById(viewId)).getText().toString().trim();
+		} catch (Exception e) {
+			Log.e(TAG + ".getTextFromEditText", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static Integer getIntegerFromEditText(final Activity _activity, final int _viewId) {
+	public static Integer getIntegerFromEditText(final Activity activity, final int viewId) {
 		try {
-			return Integer.valueOf(((EditText) _activity.findViewById(_viewId)).getText().toString().trim());
-		} catch (Exception _e) {
-			Log.e("YUtilText.getIntegerFromEditText", _e.getMessage());
+			return Integer.valueOf(((EditText) activity.findViewById(viewId)).getText().toString().trim());
+		} catch (Exception e) {
+			Log.e(TAG + ".getIntegerFromEditText", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static Double getDoubleFromEditText(final Activity _activity, final int _viewId) {
+	public static Double getDoubleFromEditText(final Activity activity, final int viewId) {
 		try {
-			return Double.valueOf(((EditText) _activity.findViewById(_viewId)).getText().toString().trim());
-		} catch (Exception _e) {
-			Log.e("YUtilText.getDoubleFromEditText", _e.getMessage());
+			return Double.valueOf(((EditText) activity.findViewById(viewId)).getText().toString().trim());
+		} catch (Exception e) {
+			Log.e(TAG + ".getDoubleFromEditText", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static Long getLongFromEditText(final Activity _activity, final int _viewId) {
+	public static Long getLongFromEditText(final Activity activity, final int viewId) {
 		try {
-			return Long.valueOf(((EditText) _activity.findViewById(_viewId)).getText().toString().trim());
-		} catch (Exception _e) {
-			Log.e("YUtilText.getLongFromEditText", _e.getMessage());
+			return Long.valueOf(((EditText) activity.findViewById(viewId)).getText().toString().trim());
+		} catch (Exception e) {
+			Log.e(TAG + ".getLongFromEditText", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
+	 * @param text
+	 * @return
+	 */
+	public static void setTextToEditText(final Activity activity, final int viewId, final String text) {
+		try {
+			((EditText) activity.findViewById(viewId)).setText(text);
+		} catch (Exception e) {
+			Log.e(TAG + ".setTextToEditText", e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 * @param view
+	 * @param viewId
+	 * @param text
+	 */
+	public static void setTextToEditText(final View view, final int viewId, final String text) {
+		try {
+			((EditText) view.findViewById(viewId)).setText(text);
+		} catch (Exception e) {
+			Log.e(TAG + ".setTextToEditText", e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 * @param activity
+	 * @param viewId
+	 * @param value
+	 */
+	public static void setIntegerToEditText(final Activity activity, final int viewId, final Integer value) {
+		try {
+			((EditText) activity.findViewById(viewId)).setText(value.toString());
+		} catch (Exception e) {
+			Log.e(TAG + ".setIntegerToEditText", e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 * @param activity
+	 * @param viewId
+	 * @param value
+	 */
+	public static void setLongToEditText(final Activity activity, final int viewId, final Long value) {
+		try {
+			((EditText) activity.findViewById(viewId)).setText(value.toString());
+		} catch (Exception e) {
+			Log.e(TAG + ".setLongToEditText", e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 * @param activity
+	 * @param viewId
+	 * @param value
+	 */
+	public static void setDoubleToEditText(final Activity activity, final int viewId, final Double value) {
+		try {
+			((EditText) activity.findViewById(viewId)).setText(value.toString());
+		} catch (Exception e) {
+			Log.e(TAG + ".setDoubleToEditText", e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 * @param activity
+	 * @param viewId
 	 * @param _text
 	 * @return
 	 */
-	public static void setTextToEditText(final Activity _activity, final int _viewId, final String _text) {
+	public static void cleanTextEditText(final Activity activity, final int viewId) {
 		try {
-			((EditText) _activity.findViewById(_viewId)).setText(_text);
-		} catch (Exception _e) {
-			Log.e("YUtilText.setTextToEditText", _e.getMessage());
+			((EditText) activity.findViewById(viewId)).setText(null);
+		} catch (Exception e) {
+			Log.e(TAG + ".cleanTextEditText", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _view
-	 * @param _viewId
-	 * @param _text
-	 */
-	public static void setTextToEditText(final View _view, final int _viewId, final String _text) {
-		try {
-			((EditText) _view.findViewById(_viewId)).setText(_text);
-		} catch (Exception _e) {
-			Log.e("YUtilText.setTextToEditText", _e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @param _value
-	 */
-	public static void setIntegerToEditText(final Activity _activity, final int _viewId, final Integer _value) {
-		try {
-			((EditText) _activity.findViewById(_viewId)).setText(_value.toString());
-		} catch (Exception _e) {
-			Log.e("YUtilText.setIntegerToEditText", _e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @param _value
-	 */
-	public static void setLongToEditText(final Activity _activity, final int _viewId, final Long _value) {
-		try {
-			((EditText) _activity.findViewById(_viewId)).setText(_value.toString());
-		} catch (Exception _e) {
-			Log.e("YUtilText.setLongToEditText", _e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @param _value
-	 */
-	public static void setDoubleToEditText(final Activity _activity, final int _viewId, final Double _value) {
-		try {
-			((EditText) _activity.findViewById(_viewId)).setText(_value.toString());
-		} catch (Exception _e) {
-			Log.e("YUtilText.setDoubleToEditText", _e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @param _text
 	 * @return
 	 */
-	public static void cleanTextEditText(final Activity _activity, final int _viewId) {
+	public static void cleanTextTextView(final Activity activity, final int viewId) {
 		try {
-			((EditText) _activity.findViewById(_viewId)).setText(null);
-		} catch (Exception _e) {
-			Log.e("YUtilText.cleanTextEditText", _e.getMessage());
+			((TextView) activity.findViewById(viewId)).setText(null);
+		} catch (Exception e) {
+			Log.e(TAG + ".cleanTextTextView", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @param _text
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static void cleanTextTextView(final Activity _activity, final int _viewId) {
+	public static String getTextFromTextView(final Activity activity, final int viewId) {
 		try {
-			((TextView) _activity.findViewById(_viewId)).setText(null);
-		} catch (Exception _e) {
-			Log.e("YUtilText.cleanTextTextView", _e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @return
-	 */
-	public static String getTextFromTextView(final Activity _activity, final int _viewId) {
-		try {
-			return ((TextView) _activity.findViewById(_viewId)).getText().toString();
-		} catch (Exception _e) {
-			Log.e("YUtilText.getTextFromTextView", _e.getMessage());
+			return ((TextView) activity.findViewById(viewId)).getText().toString();
+		} catch (Exception e) {
+			Log.e(TAG + ".getTextFromTextView", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static Integer getIntegerFromTextView(final Activity _activity, final int _viewId) {
+	public static Integer getIntegerFromTextView(final Activity activity, final int viewId) {
 		try {
-			return Integer.valueOf(((TextView) _activity.findViewById(_viewId)).getText().toString());
-		} catch (Exception _e) {
-			Log.e("YUtilText.getIntegerFromTextView", _e.getMessage());
+			return Integer.valueOf(((TextView) activity.findViewById(viewId)).getText().toString());
+		} catch (Exception e) {
+			Log.e(TAG + ".getIntegerFromTextView", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @param _value
+	 * @param activity
+	 * @param viewId
+	 * @param value
 	 */
-	public static void setIntegerToTextView(final Activity _activity, final int _viewId, final Integer _value) {
+	public static void setIntegerToTextView(final Activity activity, final int viewId, final Integer value) {
 		try {
-			((TextView) _activity.findViewById(_viewId)).setText(_value.toString());
-		} catch (Exception _e) {
-			Log.e("YUtilText.setIntegerToTextView", _e.getMessage());
+			((TextView) activity.findViewById(viewId)).setText(value.toString());
+		} catch (Exception e) {
+			Log.e(TAG + ".setIntegerToTextView", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @param _text
+	 * @param activity
+	 * @param viewId
+	 * @param text
 	 */
-	public static void setTextToTextView(final Activity _activity, final int _viewId, final String _text) {
+	public static void setTextToTextView(final Activity activity, final int viewId, final String text) {
 		try {
-			((TextView) _activity.findViewById(_viewId)).setText(_text);
-		} catch (Exception _e) {
-			Log.e("YUtilText.setTextToTextView", _e.getMessage());
+			((TextView) activity.findViewById(viewId)).setText(text);
+		} catch (Exception e) {
+			Log.e(TAG + ".setTextToTextView", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static String getBolStringFromRadioButton(final Activity _activity, final int _viewId) {
+	public static String getBolStringFromRadioButton(final Activity activity, final int viewId) {
 		String bolString = YacamimConfig.getInstance().getYSqliteFalse();
 		try {
-			if(((RadioButton)_activity.findViewById(_viewId)).isChecked()) {
+			if(((RadioButton)activity.findViewById(viewId)).isChecked()) {
 				bolString = YacamimConfig.getInstance().getYSqliteTrue();
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilText.getBolStringFromRadioButton", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".getBolStringFromRadioButton", e.getMessage());
 		}
 		return bolString;
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewIdRadio1
-	 * @param _viewIdRadio2
-	 * @param _value
+	 * @param activity
+	 * @param viewIdRadio1
+	 * @param viewIdRadio2
+	 * @param value
 	 */
-	public static void setBolStringFromRadioButton(final Activity _activity, final int _viewIdRadio1, final int _viewIdRadio2 , final String _value) {
+	public static void setBolStringFromRadioButton(final Activity activity, final int viewIdRadio1, final int viewIdRadio2 , final String value) {
 		try {
-			if(_value != null && _value.equalsIgnoreCase(YacamimConfig.getInstance().getYSqliteTrue())) {
-				((RadioButton)_activity.findViewById(_viewIdRadio1)).setChecked(true);
+			if(value != null && value.equalsIgnoreCase(YacamimConfig.getInstance().getYSqliteTrue())) {
+				((RadioButton)activity.findViewById(viewIdRadio1)).setChecked(true);
 			} else {
-				((RadioButton)_activity.findViewById(_viewIdRadio2)).setChecked(true);
+				((RadioButton)activity.findViewById(viewIdRadio2)).setChecked(true);
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilText.setBolStringFromRadioButton", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".setBolStringFromRadioButton", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static String getTextFromSpinner(final Activity _activity, final int _viewId) {
+	public static String getTextFromSpinner(final Activity activity, final int viewId) {
 		try {
-			return ((Spinner) _activity.findViewById(_viewId)).getSelectedItem().toString();
-		} catch (Exception _e) {
-			Log.e("YUtilText.getTextFromSpinner", _e.getMessage());
+			return ((Spinner) activity.findViewById(viewId)).getSelectedItem().toString();
+		} catch (Exception e) {
+			Log.e(TAG + ".getTextFromSpinner", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
-	 * @param _text
+	 * @param activity
+	 * @param viewId
+	 * @param text
 	 */
-	public static void setTextToSpinner(final Activity _activity, final int _viewId, final String _text, final int _size) {
+	public static void setTextToSpinner(final Activity activity, final int viewId, final String text, final int size) {
 		try {
-			final Spinner spinner = ((Spinner) _activity.findViewById(_viewId));
-			for(int i = 0; i <= _size; i++) {
-				if(spinner.getItemAtPosition(i).toString().equals(_text)) {
+			final Spinner spinner = ((Spinner) activity.findViewById(viewId));
+			for(int i = 0; i <= size; i++) {
+				if(spinner.getItemAtPosition(i).toString().equals(text)) {
 					spinner.setSelection(i);
 					break;
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilText.setTextToSpinner", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".setTextToSpinner", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static boolean isSpinnerSelected(final Activity _activity, final int _viewId) {
+	public static boolean isSpinnerSelected(final Activity activity, final int viewId) {
 		try {
-			return !((Spinner) _activity.findViewById(_viewId)).getSelectedItem().toString().equalsIgnoreCase(_activity.getResources().getString(YacamimResources.getInstance().getIdResourceMsgSelectAnItem()));
-		} catch (Exception _e) {
-			Log.e("YUtilText.isSpinnerSelected", _e.getMessage());
+			return !((Spinner) activity.findViewById(viewId)).getSelectedItem().toString().equalsIgnoreCase(activity.getResources().getString(YacamimResources.getInstance().getIdResourceMsgSelectAnItem()));
+		} catch (Exception e) {
+			Log.e(TAG + ".isSpinnerSelected", e.getMessage());
 			return false;
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _viewId
+	 * @param activity
+	 * @param viewId
 	 * @return
 	 */
-	public static boolean isRadioButtonChecked(final Activity _activity, final int _viewId) {
+	public static boolean isRadioButtonChecked(final Activity activity, final int viewId) {
 		try {
-			return ((RadioButton)_activity.findViewById(_viewId)).isChecked();
-		} catch (Exception _e) {
-			Log.e("YUtilText.isRadioButtonChecked", _e.getMessage());
+			return ((RadioButton)activity.findViewById(viewId)).isChecked();
+		} catch (Exception e) {
+			Log.e(TAG + ".isRadioButtonChecked", e.getMessage());
 			return false;
 		}
 	}

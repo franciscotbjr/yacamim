@@ -71,16 +71,16 @@ public class YKeyValuePair<C, V> implements Serializable, Cloneable {
 
     /**
      *
-     * @param _key
-     * @param _value
+     * @param key
+     * @param value
      */
-    public YKeyValuePair(C _key, V _value) {
+    public YKeyValuePair(final C key, final V value) {
         super();
-        if(_key == null) {
+        if(key == null) {
         	throw new IllegalArgumentException(KEY_CAN_T_BE_NULL);
         }
-        this.key = _key;
-        this.value =  _value;
+        this.key = key;
+        this.value =  value;
         this.makeKeyHash();
     }
 
@@ -102,22 +102,22 @@ public class YKeyValuePair<C, V> implements Serializable, Cloneable {
 
     /**
      *
-     * @param _key
+     * @param key
      */
-    public void setKey(C _key) {
-        if(_key == null) {
+    public void setKey(final C key) {
+        if(key == null) {
         	throw new IllegalArgumentException(KEY_CAN_T_BE_NULL);
         }
-        this.key = _key;
+        this.key = key;
         this.makeKeyHash();
     }
 
     /**
      *
-     * @param _value
+     * @param value
      */
-    public void setValue(V _value) {
-        this.value = _value;
+    public void setValue(final V value) {
+        this.value = value;
     }
 
     /**
@@ -152,17 +152,17 @@ public class YKeyValuePair<C, V> implements Serializable, Cloneable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object _o) {
-        if(_o == null) {
+    public boolean equals(final Object o) {
+        if(o == null) {
             return false;
         }
-    	if(this == _o) {
+    	if(this == o) {
             return true;
         }
-        if(!(_o instanceof br.org.yacamim.util.YKeyValuePair<?, ?>)) {
+        if(!(o instanceof br.org.yacamim.util.YKeyValuePair<?, ?>)) {
             return false;
         }
-        if(_o.hashCode() != this.hashCode()) {
+        if(o.hashCode() != this.hashCode()) {
             return false;
         }
         return true;
@@ -185,13 +185,13 @@ public class YKeyValuePair<C, V> implements Serializable, Cloneable {
 
     /**
      *
-     * @param _key
+     * @param key
      * @return
      */
-    public static int keyHash(Object _key) {
+    public static int keyHash(final Object key) {
     	int result = -1;
         result = PRIME * result;
-        result = PRIME * result + ((_key==null)? 0 : _key.hashCode());
+        result = PRIME * result + ((key==null)? 0 : key.hashCode());
         return result;
     }
 

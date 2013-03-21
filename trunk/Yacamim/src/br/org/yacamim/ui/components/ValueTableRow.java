@@ -47,10 +47,10 @@ public class ValueTableRow extends TableRow {
 
 	/**
 	 * @param context
-	 * @param _attrs
+	 * @param attrs
 	 */
-	public ValueTableRow(final Context context, final AttributeSet _attrs) {
-		super(context, _attrs);
+	public ValueTableRow(final Context context, final AttributeSet attrs) {
+		super(context, attrs);
 	}
 
 	/**
@@ -63,10 +63,10 @@ public class ValueTableRow extends TableRow {
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 */
-	public void setValue(final Serializable _value) {
-		this.value = _value;
+	public void setValue(final Serializable value) {
+		this.value = value;
 	}
 
 }

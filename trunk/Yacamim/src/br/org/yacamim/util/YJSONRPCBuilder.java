@@ -106,21 +106,21 @@ public class YJSONRPCBuilder {
 
 	/**
 	 *
-	 * @param _itemName
-	 * @param _objectValue
+	 * @param itemName
+	 * @param objectValue
 	 */
-	public void addItem(String _itemName, Object _objectValue) {
+	public void addItem(final String itemName, final Object objectValue) {
 		if (this.items) {
 			this.buffer.append(",");
 		}
 		this.buffer.append("\"");
-		this.buffer.append(_itemName);
+		this.buffer.append(itemName);
 		this.buffer.append("\"");
 		this.buffer.append(":");
 
-		if(_objectValue != null){
+		if(objectValue != null){
 			this.buffer.append("\"");
-			this.buffer.append(_objectValue);
+			this.buffer.append(objectValue);
 			this.buffer.append("\"");
 		}
 
@@ -131,20 +131,20 @@ public class YJSONRPCBuilder {
 
 	/**
 	 *
-	 * @param _itemName
-	 * @param _objectValue
+	 * @param itemName
+	 * @param objectValue
 	 */
-	public void addItemValueNotString(String _itemName, Object _objectValue) {
+	public void addItemValueNotString(final String itemName, final Object objectValue) {
 		if (this.items) {
 			this.buffer.append(",");
 		}
 		this.buffer.append("\"");
-		this.buffer.append(_itemName);
+		this.buffer.append(itemName);
 		this.buffer.append("\"");
 		this.buffer.append(":");
 
-		if(_objectValue != null){
-			this.buffer.append(_objectValue.toString());
+		if(objectValue != null){
+			this.buffer.append(objectValue.toString());
 		}else{
 			this.buffer.append("null");
 		}
@@ -154,26 +154,26 @@ public class YJSONRPCBuilder {
 
 	/**
 	 *
-	 * @param _itemName
-	 * @param _builder
+	 * @param itemName
+	 * @param builder
 	 */
-	public void addJSONRPCBuilder(String _itemName, YJSONRPCBuilder _builder) {
+	public void addJSONRPCBuilder(final String itemName, final YJSONRPCBuilder builder) {
 		if (this.items) {
 			this.buffer.append(",");
 		}
-		this.buffer.append("\"" + _itemName + "\"" + ":");
-		this.buffer.append(_builder);
+		this.buffer.append("\"" + itemName + "\"" + ":");
+		this.buffer.append(builder);
 	}
 
 	/**
 	 *
-	 * @param _builder
+	 * @param builder
 	 */
-	public void addJSONRPCBuilder(YJSONRPCBuilder _builder) {
+	public void addJSONRPCBuilder(final YJSONRPCBuilder builder) {
 		if (this.items) {
 			this.buffer.append(",");
 		}
-		this.buffer.append(_builder);
+		this.buffer.append(builder);
 		this.items = true;
 	}
 

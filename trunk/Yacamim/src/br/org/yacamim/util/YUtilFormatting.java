@@ -34,6 +34,8 @@ import android.util.Log;
  * @since 1.0
  */
 public strictfp abstract class YUtilFormatting {
+	
+	private static final String TAG = YUtilFormatting.class.getSimpleName();
 
 	private static final String REGEX_0_9 = "[^0-9]";
 	private static final String REGEX_0_9A_Z_A_Z = "[^0-9a-zA-Z]";
@@ -49,18 +51,18 @@ public strictfp abstract class YUtilFormatting {
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static String formatCpfCnpj(String _value) {
-		if (_value == null || _value.trim().length() < 11) {
+	public static String formatCpfCnpj(final String value) {
+		if (value == null || value.trim().length() < 11) {
 			return "";
 		}
-		if (_value.length() == 11) { // CPF
-			return YUtilFormatting.format(_value, "###.###.###-##", '#');
+		if (value.length() == 11) { // CPF
+			return YUtilFormatting.format(value, "###.###.###-##", '#');
 		}
-		if (_value.length() == 14) { // CNPJ
-			return YUtilFormatting.format(_value, "##.###.###/####-##", '#');
+		if (value.length() == 14) { // CNPJ
+			return YUtilFormatting.format(value, "##.###.###/####-##", '#');
 		}
 		return "";
 	}
@@ -68,14 +70,14 @@ public strictfp abstract class YUtilFormatting {
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static String formatCpf(String _value) {
-		if (_value == null) {
+	public static String formatCpf(final String value) {
+		if (value == null) {
 			return "";
 		}
-		return YUtilFormatting.format(_value, "###.###.###-##", '#');
+		return YUtilFormatting.format(value, "###.###.###-##", '#');
 	}
 
 	/**
@@ -84,15 +86,15 @@ public strictfp abstract class YUtilFormatting {
 	 * @param _value
 	 * @return
 	 */
-	public static String formatData(String _value) {
+	public static String formatData(final String value) {
 		try {
-			if (_value == null) {
+			if (value == null) {
 				return "";
 			}
 			SimpleDateFormat simpleDateFormat = YUtilDate.getSimpleDateFormatData();
-			return simpleDateFormat.format(simpleDateFormat.parse(_value));
-		} catch (Exception _e) {
-			Log.e("YUtilFormatting.formatData", _e.getMessage());
+			return simpleDateFormat.format(simpleDateFormat.parse(value));
+		} catch (Exception e) {
+			Log.e(TAG + ".formatData", e.getMessage());
 			return "";
 		}
 	}
@@ -100,18 +102,18 @@ public strictfp abstract class YUtilFormatting {
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static String formatData(Date _value) {
+	public static String formatData(final Date value) {
 		try {
-			if (_value == null) {
+			if (value == null) {
 				return "";
 			}
 			SimpleDateFormat simpleDateFormat = YUtilDate.getSimpleDateFormatData();
-			return simpleDateFormat.format(_value);
-		} catch (Exception _e) {
-			Log.e("YUtilFormatting.formatData", _e.getMessage());
+			return simpleDateFormat.format(value);
+		} catch (Exception e) {
+			Log.e(TAG + ".formatData", e.getMessage());
 			return "";
 		}
 	}
@@ -119,13 +121,13 @@ public strictfp abstract class YUtilFormatting {
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static String formatCEP(String _value) {
+	public static String formatCEP(final String value) {
 		String strReturn = "";
-		if (_value.length() == 8) {
-			strReturn = YUtilFormatting.format(_value, "#####-###", '#');
+		if (value.length() == 8) {
+			strReturn = YUtilFormatting.format(value, "#####-###", '#');
 		}
 		return strReturn;
 	}
@@ -133,14 +135,14 @@ public strictfp abstract class YUtilFormatting {
 	/**
 	 * <strong>Brazilian users only</strong>.<br/>
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static String formatTelefone(String _value) {
+	public static String formatTelefone(final String value) {
 		String strReturn = "";
 
-		if (_value != null) {
-			strReturn = YUtilFormatting.format(_value, "(##)####-####", '#');
+		if (value != null) {
+			strReturn = YUtilFormatting.format(value, "(##)####-####", '#');
 		}
 
 		return strReturn;
@@ -148,49 +150,50 @@ public strictfp abstract class YUtilFormatting {
 
 	/**
 	 *
-	 * @param _value
-	 * @param _pattern
-	 * @param _patternChar
+	 * @param value
+	 * @param pattern
+	 * @param patternChar
 	 * @return
 	 */
-	public static String format(String _value, String _pattern, char _patternChar) {
+	public static String format(final String value, final String pattern, final char patternChar) {
 		try {
-			char[] valueArray = _value.toCharArray();
-			char[] patternArray = _pattern.toCharArray();
+			char[] valueArray = value.toCharArray();
+			char[] patternArray = pattern.toCharArray();
 			StringBuffer buffer = new StringBuffer();
 			int control = 0;
-			for (char patternChar : patternArray) {
-				if (control < _value.length()) {
-					if (patternChar == _patternChar) {
+			for (char patternCharItem : patternArray) {
+				if (control < value.length()) {
+					if (patternCharItem == patternChar) {
 						buffer.append(valueArray[control]);
 						control++;
 					} else {
-						buffer.append(patternChar);
+						buffer.append(patternCharItem);
 					}
 				}
 			}
 			return buffer.toString();
-		} catch (Exception _e) {
-			Log.e("YUtilFormatting.format", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".format", e.getMessage());
 			return null;
 		}
 	}
 
 	/**
 	 *
-	 * @param _value
-	 * @param _pattern
-	 * @param _patternChar
+	 * @param value
+	 * @param pattern
+	 * @param patternChar
 	 * @return
 	 */
-	public static String formatDatum(String _value, final String _pattern, final char _patternChar) {
+	public static String formatDatum(final String value, final String pattern, final char patternChar) {
 		try {
-			StringBuffer buffer = new StringBuffer(_pattern);
-			int patternLength = _pattern.replaceAll("[^" + _patternChar + "]", "").length();
-			int valueLength = _value.length();
+			String valueTemp = value;
+			StringBuffer buffer = new StringBuffer(pattern);
+			int patternLength = pattern.replaceAll("[^" + patternChar + "]", "").length();
+			int valueLength = valueTemp.length();
 
 			if (valueLength > patternLength) {
-				_value = _value.substring(0, patternLength);
+				valueTemp = valueTemp.substring(0, patternLength);
 				valueLength = patternLength;
 			}
 
@@ -202,38 +205,39 @@ public strictfp abstract class YUtilFormatting {
 				if (buffer.length() == 0) {
 					break;
 				}
-				if (buffer.charAt(0) == _patternChar) {
+				if (buffer.charAt(0) == patternChar) {
 					patternLength--;
 				}
 				buffer.deleteCharAt(0);
 			}
 
-			if (buffer.length() > 0 && buffer.charAt(0) != _patternChar) {
+			if (buffer.length() > 0 && buffer.charAt(0) != patternChar) {
 				buffer.deleteCharAt(0);
 			}
 
-			return format(_value, buffer.toString(), _patternChar);
-		} catch (Exception _e) {
-			Log.e("YUtilFormatting.formatarDado", _e.getMessage());
+			return format(valueTemp, buffer.toString(), patternChar);
+		} catch (Exception e) {
+			Log.e(TAG + ".formatDatum", e.getMessage());
 			return "";
 		}
 	}
 
 	/**
 	 *
-	 * @param _value
-	 * @param _pattern
-	 * @param _patternChar
+	 * @param value
+	 * @param pattern
+	 * @param patternChar
 	 * @return
 	 */
-	public static String formatDecimalDatum(String _value, final String _pattern, final char _patternChar) {
+	public static String formatDecimalDatum(final String value, final String pattern, final char patternChar) {
 		try {
-			StringBuffer buffer = new StringBuffer(_pattern);
-			int padraoLength = _pattern.replaceAll("[^" + _patternChar + "]", "").length();
+			String valueTemp = value;
+			StringBuffer buffer = new StringBuffer(pattern);
+			int padraoLength = pattern.replaceAll("[^" + patternChar + "]", "").length();
 
 
-			int virgPadrao = _pattern.lastIndexOf(",");
-			int pontoPadrao = _pattern.lastIndexOf(".");
+			int virgPadrao = pattern.lastIndexOf(",");
+			int pontoPadrao = pattern.lastIndexOf(".");
 			int poscDecimalPadrao = -1;
 			int qtdDecimaisPadrao = -1;
 
@@ -243,32 +247,32 @@ public strictfp abstract class YUtilFormatting {
 				}else{
 					poscDecimalPadrao = pontoPadrao;
 				}
-				qtdDecimaisPadrao = _pattern.length() - poscDecimalPadrao -1;
+				qtdDecimaisPadrao = pattern.length() - poscDecimalPadrao -1;
 			}
 
 
-			int indexDOT = _value.indexOf(".");
+			int indexDOT = valueTemp.indexOf(".");
 			int valueDecimalAmount = 0;
 			if(indexDOT != -1){
-				valueDecimalAmount = _value.length() - indexDOT -1;
-				_value = _value.replace(".", "");
+				valueDecimalAmount = valueTemp.length() - indexDOT -1;
+				valueTemp = valueTemp.replace(".", "");
 				if(valueDecimalAmount < qtdDecimaisPadrao){
 					for (int i = 0; i < valueDecimalAmount; i++) {
-						_value = _value + "0";
+						valueTemp = valueTemp + "0";
 					}
 				}
 
 			}else if(valueDecimalAmount < qtdDecimaisPadrao){
 				for (int i = 0; i < qtdDecimaisPadrao; i++) {
-					_value = _value + "0";
+					valueTemp = valueTemp + "0";
 				}
 			}
 
 
-			int valueLength = _value.length();
+			int valueLength = valueTemp.length();
 
 			if (valueLength > padraoLength) {
-				_value = _value.substring(0, padraoLength);
+				valueTemp = valueTemp.substring(0, padraoLength);
 				valueLength = padraoLength;
 			}
 
@@ -280,112 +284,112 @@ public strictfp abstract class YUtilFormatting {
 				if (buffer.length() == 0) {
 					break;
 				}
-				if (buffer.charAt(0) == _patternChar) {
+				if (buffer.charAt(0) == patternChar) {
 					padraoLength--;
 				}
 				buffer.deleteCharAt(0);
 			}
 
-			if (buffer.length() > 0 && buffer.charAt(0) != _patternChar) {
+			if (buffer.length() > 0 && buffer.charAt(0) != patternChar) {
 				buffer.deleteCharAt(0);
 			}
 
-			return format(_value, buffer.toString(), _patternChar);
-		} catch (Exception _e) {
-			Log.e("YUtilFormatting.formatarDadoDecimal", _e.getMessage());
+			return format(valueTemp, buffer.toString(), patternChar);
+		} catch (Exception e) {
+			Log.e(TAG + ".formatDecimalDatum", e.getMessage());
 			return "";
 		}
 	}
 
 	/**
 	 *
-	 * @param _pattern
-	 * @param _patternChar
+	 * @param pattern
+	 * @param patternChar
 	 * @return
 	 */
-	public static int sizeCharFormat(final String _pattern, char _patternChar) {
+	public static int sizeCharFormat(final String pattern, final char patternChar) {
 		try {
 			int intSize = 0;
-			for (int i = 0; i < _pattern.length(); i++) {
-				if (_pattern.charAt(i) != _patternChar) {
+			for (int i = 0; i < pattern.length(); i++) {
+				if (pattern.charAt(i) != patternChar) {
 					intSize++;
 				}
 			}
 			return intSize;
-		} catch (Exception _e) {
-			Log.e("YUtilFormatting.sizeCharFormat", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".sizeCharFormat", e.getMessage());
 			return -1;
 		}
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static final String formataDecimal(double _value) {
+	public static final String formataDecimal(final double value) {
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(YUtilDate.getLocaleBrasil());
 		numberFormat.setMaximumFractionDigits(2);
 		numberFormat.setMinimumFractionDigits(2);
-		return numberFormat.format(_value);
+		return numberFormat.format(value);
 	}
 
 	/**
 	 *
-	 * @param _value
-	 * @param _fractionDigits
+	 * @param value
+	 * @param fractionDigits
 	 * @return
 	 */
-	public static final String formataDecimal(double _value, int _fractionDigits) {
+	public static final String formataDecimal(final double value, final int fractionDigits) {
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(YUtilDate.getLocaleBrasil());
-		numberFormat.setMaximumFractionDigits(_fractionDigits);
-		numberFormat.setMinimumFractionDigits(_fractionDigits);
-		return numberFormat.format(_value);
+		numberFormat.setMaximumFractionDigits(fractionDigits);
+		numberFormat.setMinimumFractionDigits(fractionDigits);
+		return numberFormat.format(value);
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static final String formataDecimal(final Double _value) {
-		NumberFormat numberFormat = NumberFormat.getNumberInstance(YUtilDate.getLocaleBrasil());
-		numberFormat.setMaximumFractionDigits(2);
-		numberFormat.setMinimumFractionDigits(2);
-		return numberFormat.format(_value);
-	}
-
-	/**
-	 *
-	 * @param _value
-	 * @return
-	 */
-	public static final String formataDecimal(float _value) {
+	public static final String formataDecimal(final Double value) {
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(YUtilDate.getLocaleBrasil());
 		numberFormat.setMaximumFractionDigits(2);
 		numberFormat.setMinimumFractionDigits(2);
-		return numberFormat.format(_value);
+		return numberFormat.format(value);
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static final String formataDecimal(final Float _value) {
+	public static final String formataDecimal(final float value) {
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(YUtilDate.getLocaleBrasil());
 		numberFormat.setMaximumFractionDigits(2);
 		numberFormat.setMinimumFractionDigits(2);
-		return numberFormat.format(_value);
+		return numberFormat.format(value);
 	}
 
 	/**
 	 *
-	 * @param _value
-	 * @param _surrencySimble
+	 * @param value
 	 * @return
 	 */
-	public static final String formataCurrency(double _value, final String _surrencySimble) {
+	public static final String formataDecimal(final Float value) {
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(YUtilDate.getLocaleBrasil());
+		numberFormat.setMaximumFractionDigits(2);
+		numberFormat.setMinimumFractionDigits(2);
+		return numberFormat.format(value);
+	}
+
+	/**
+	 *
+	 * @param value
+	 * @param surrencySimble
+	 * @return
+	 */
+	public static final String formataCurrency(final double value, final String surrencySimble) {
 		NumberFormat f = NumberFormat.getInstance(YUtilDate.getLocaleBrasil());
 		if (f instanceof DecimalFormat) {
 			((DecimalFormat) f).setDecimalSeparatorAlwaysShown(true);
@@ -394,42 +398,42 @@ public strictfp abstract class YUtilFormatting {
 		((DecimalFormat) f).setMinimumFractionDigits(2);
 		Currency c = Currency.getInstance(YUtilDate.getLocaleBrasil());
 		((DecimalFormat) f).setCurrency(c);
-		return (_surrencySimble + f.format(_value));
+		return (surrencySimble + f.format(value));
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static String unformatValue(final String _value) {
-		if (_value == null) {
+	public static String unformatValue(final String value) {
+		if (value == null) {
 			return "";
 		}
-		return _value.replaceAll(REGEX_0_9A_Z_A_Z, "");
+		return value.replaceAll(REGEX_0_9A_Z_A_Z, "");
 	}
 
 	/**
 	 *
-	 * @param _text
+	 * @param text
 	 * @return
 	 */
-	public static String unformatText(final String _text) {
-		if (_text == null) {
+	public static String unformatText(final String text) {
+		if (text == null) {
 			return "";
 		}
-		return _text.replaceAll(REGEX_TEXT, "");
+		return text.replaceAll(REGEX_TEXT, "");
 	}
 
 	/**
 	 *
-	 * @param _value
+	 * @param value
 	 * @return
 	 */
-	public static String unformatNumericValue(final String _value) {
-		if (_value == null) {
+	public static String unformatNumericValue(final String value) {
+		if (value == null) {
 			return "";
 		}
-		return _value.replaceAll(REGEX_0_9, "");
+		return value.replaceAll(REGEX_0_9, "");
 	}
 }

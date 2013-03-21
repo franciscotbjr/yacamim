@@ -41,6 +41,8 @@ import android.util.Log;
  * @since 1.0
  */
 public strictfp abstract class YUtilReflection {
+	
+	private static final String TAG = YUtilReflection.class.getSimpleName();
 
 	/**
 	 *
@@ -123,7 +125,7 @@ public strictfp abstract class YUtilReflection {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Object invokeMethod(Method method, Object objectoTo, Object... methodParams) throws Exception {
+	public static Object invokeMethod(final Method method, final Object objectoTo, final Object... methodParams) throws Exception {
 		return method.invoke(objectoTo, methodParams);
 	}
 
@@ -134,12 +136,12 @@ public strictfp abstract class YUtilReflection {
 	 * @param methodParams
 	 * @return
 	 */
-	public static String invokeMethodToString(Method method, Object objectTo, Object[] methodParams) {
+	public static String invokeMethodToString(final Method method, final Object objectTo, final Object[] methodParams) {
 		try {
 			return method.invoke(objectTo, methodParams).toString();
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.invokeMethodToString", e.getMessage());
+			Log.e(TAG + ".invokeMethodToString", e.getMessage());
 			return null;
 		}
 	}
@@ -150,7 +152,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param object
 	 * @return
 	 */
-	public static Object getPropertyValue(String propertyName, Object object) {
+	public static Object getPropertyValue(final String propertyName, final Object object) {
 		try {
 			Object result  = null;
 			if(propertyName.indexOf('.') == -1) {
@@ -168,7 +170,7 @@ public strictfp abstract class YUtilReflection {
 			}
 			return result;
 		} catch(Exception e) {
-			Log.e("YUtilReflection.getPropertyValue", e.getMessage());
+			Log.e(TAG + ".getPropertyValue", e.getMessage());
 			return null;
 		}
 	}
@@ -213,7 +215,7 @@ public strictfp abstract class YUtilReflection {
 				}
 			}
 		} catch(Exception e) {
-			Log.e("YUtilReflection.setValueToProperty", e.getMessage());
+			Log.e(TAG + ".setValueToProperty", e.getMessage());
 		}
 	}
 
@@ -237,7 +239,7 @@ public strictfp abstract class YUtilReflection {
 			return setMethods;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.getSetMethodList", e.getMessage());
+			Log.e(TAG + ".getSetMethodList", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
@@ -262,7 +264,7 @@ public strictfp abstract class YUtilReflection {
 			return getMethods;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.getGetMethodList", e.getMessage());
+			Log.e(TAG + ".getGetMethodList", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
@@ -290,7 +292,7 @@ public strictfp abstract class YUtilReflection {
 			return getMethods;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.getGetMethodList", e.getMessage());
+			Log.e(TAG + ".getGetMethodList", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
@@ -313,7 +315,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static Method[] getGetMethodArray(Class<?> classType) {
+	public static Method[] getGetMethodArray(final Class<?> classType) {
 		try {
 			final List<Method> getMethods = new ArrayList<Method>();
 			
@@ -333,7 +335,7 @@ public strictfp abstract class YUtilReflection {
 			return arryGetMethods;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.getGetMethodList", e.getMessage());
+			Log.e(TAG + ".getGetMethodList", e.getMessage());
 			return new Method[]{};
 		}
 	}
@@ -343,7 +345,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static List<Method> getGetMethodListSortedByName(Class<?> classType) {
+	public static List<Method> getGetMethodListSortedByName(final Class<?> classType) {
 		try {
 			final List<Method> getMethods = getGetMethodList(classType);
 
@@ -365,7 +367,7 @@ public strictfp abstract class YUtilReflection {
 			}
 			return sortedGetMethods;
 		} catch(Exception e) {
-			Log.e("YUtilReflection.getGetMethodListSortedByName", e.getMessage());
+			Log.e(TAG + ".getGetMethodListSortedByName", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
@@ -375,7 +377,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static Method[] getGetMethodListSortedByNameAsArray(Class<?> classType) {
+	public static Method[] getGetMethodListSortedByNameAsArray(final Class<?> classType) {
 		try {
 			final List<Method> getMethods = getGetMethodList(classType);
 			
@@ -398,7 +400,7 @@ public strictfp abstract class YUtilReflection {
 			}
 			return sortedGetMethods;
 		} catch(Exception e) {
-			Log.e("YUtilReflection.getGetMethodListSortedByNameAsArray", e.getMessage());
+			Log.e(TAG + ".getGetMethodListSortedByNameAsArray", e.getMessage());
 			return new Method[]{};
 		}
 	}
@@ -408,7 +410,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static List<String> getReadOnlyPropertyNameList(Class<?> classType) {
+	public static List<String> getReadOnlyPropertyNameList(final Class<?> classType) {
 		try {
 			List<String> propriedades = new ArrayList<String>();
 
@@ -426,7 +428,7 @@ public strictfp abstract class YUtilReflection {
 			return propriedades;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.getReadOnlyPropertyNameList", e.getMessage());
+			Log.e(TAG + ".getReadOnlyPropertyNameList", e.getMessage());
 			return new ArrayList<String>();
 		}
 	}
@@ -436,7 +438,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static List<String> getReadOnlyPropertyNamesList(Class<?> classType) {
+	public static List<String> getReadOnlyPropertyNamesList(final Class<?> classType) {
 		try {
 			List<String> properties = new ArrayList<String>();
 
@@ -453,8 +455,8 @@ public strictfp abstract class YUtilReflection {
 
 			return properties;
 		}
-		catch(Exception _e) {
-			Log.e("YUtilReflection.getReadOnlyPropertyNamesList", _e.getMessage());
+		catch(Exception e) {
+			Log.e(TAG + ".getReadOnlyPropertyNamesList", e.getMessage());
 			return new ArrayList<String>();
 		}
 	}
@@ -464,7 +466,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static List<String> getReadAndWritePropertyNamesList(Class<?> classType) {
+	public static List<String> getReadAndWritePropertyNamesList(final Class<?> classType) {
 		try {
 			List<String> readonlyProperties = getReadOnlyPropertyNameList(classType);
 
@@ -483,7 +485,7 @@ public strictfp abstract class YUtilReflection {
 			return properties;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.getReadAndWritePropertyNamesList", e.getMessage());
+			Log.e(TAG + ".getReadAndWritePropertyNamesList", e.getMessage());
 			return new ArrayList<String>();
 		}
 	}
@@ -493,7 +495,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param setMethodName
 	 * @return
 	 */
-	public static String convertToGetMethodName(String setMethodName) {
+	public static String convertToGetMethodName(final String setMethodName) {
 		return setMethodName.replaceFirst(REGEX_FIRST_CHARACTER_S, CHARACTER_G);
 	}
 
@@ -502,7 +504,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param method
 	 * @return
 	 */
-	public static String convertToGetMethodName(Method method) {
+	public static String convertToGetMethodName(final Method method) {
 		if(method == null) {
 			return null;
 		}
@@ -514,7 +516,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param nomeMetodoGet
 	 * @return
 	 */
-	public static String convertToSetMethodName(String nomeMetodoGet) {
+	public static String convertToSetMethodName(final String nomeMetodoGet) {
 		return nomeMetodoGet.replaceFirst(REGEX_FIRST_CHARACTER_G, CHARACTER_S);
 	}
 
@@ -523,7 +525,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param method
 	 * @return
 	 */
-	public static String convertToSetMethodName(Method method) {
+	public static String convertToSetMethodName(final Method method) {
 		if(method == null) {
 			return null;
 		}
@@ -535,7 +537,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param propertyName
 	 * @return
 	 */
-	public static String getGetMethodName(String propertyName) {
+	public static String getGetMethodName(final String propertyName) {
 		return convertToMethodName(propertyName, PREFIX_GET);
 	}
 
@@ -545,7 +547,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static String getGetMethodName(String propertyName, Class<?> classType) {
+	public static String getGetMethodName(final String propertyName, final Class<?> classType) {
 		String prefixo = PREFIX_GET;
 		if(classType.equals(java.lang.Boolean.class)) {
 			prefixo = PREFIX_IS;
@@ -558,7 +560,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param propertyName
 	 * @return
 	 */
-	public static String getSetMethodName(String propertyName) {
+	public static String getSetMethodName(final String propertyName) {
 		return convertToMethodName(propertyName, PREFIX_SET);
 	}
 
@@ -568,7 +570,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param _accessorMethodName
 	 * @return
 	 */
-	private static String convertToMethodName(String propertyName, String _accessorMethodName) {
+	private static String convertToMethodName(final String propertyName, final String _accessorMethodName) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(_accessorMethodName);
 		buffer.append(propertyName.substring(0, 1).toUpperCase());
@@ -582,11 +584,11 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static Method getGetMethod(String getMethodName, Class<?> classType) {
+	public static Method getGetMethod(final String getMethodName, final Class<?> classType) {
 		try {
 			return classType.getMethod(getMethodName, YUtilReflection.DEFAULT_PARAM_ARRAY_CLASS_REFLECTION);
 		} catch(Exception e) {
-			Log.e("YUtilReflection.getGetMethod", e.getMessage());
+			Log.e(TAG + ".getGetMethod", e.getMessage());
 			return null;
 		}
 	}
@@ -598,11 +600,11 @@ public strictfp abstract class YUtilReflection {
 	 * @param params
 	 * @return
 	 */
-	public static Method getSetMethod(String setMethodName, Class<?> classType, Class<?>[] params) {
+	public static Method getSetMethod(final String setMethodName, final Class<?> classType, final Class<?>[] params) {
 		try {
 			return classType.getMethod(setMethodName, params);
 		} catch(Exception e) {
-			Log.e("YUtilReflection.getSetMethod", e.getMessage());
+			Log.e(TAG + ".getSetMethod", e.getMessage());
 			return null;
 		}
 	}
@@ -613,11 +615,11 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static Method getSetMethod(String setMethodName, Class<?> classType) {
+	public static Method getSetMethod(final String setMethodName, final Class<?> classType) {
 		try {
 			return classType.getMethod(setMethodName, DEFAULT_PARAM_ARRAY_CLASS_REFLECTION);
 		} catch(Exception _e) {
-			Log.e("YUtilReflection.getSetMethod", _e.getMessage());
+			Log.e(TAG + ".getSetMethod", _e.getMessage());
 			return null;
 		}
 	}
@@ -628,7 +630,7 @@ public strictfp abstract class YUtilReflection {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	public static Class<?> convertToClass(String classFullyQualifiedName) throws ClassNotFoundException {
+	public static Class<?> convertToClass(final String classFullyQualifiedName) throws ClassNotFoundException {
 		return Class.forName(classFullyQualifiedName);
 	}
 
@@ -637,7 +639,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param fullyQualifiedName
 	 * @return
 	 */
-	public static String getClassNameFromFullyQualifiedName(String fullyQualifiedName) {
+	public static String getClassNameFromFullyQualifiedName(final String fullyQualifiedName) {
 		return fullyQualifiedName.substring(fullyQualifiedName.lastIndexOf(".") + 1);
 	}
 
@@ -646,7 +648,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static boolean implementsCollection(Class<?> classType) {
+	public static boolean implementsCollection(final Class<?> classType) {
 		try {
 			if(classType.isPrimitive()) {
 				return false;
@@ -660,7 +662,7 @@ public strictfp abstract class YUtilReflection {
 			return false;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.implementsCollection", e.getMessage());
+			Log.e(TAG + ".implementsCollection", e.getMessage());
 			return false;
 		}
 	}
@@ -671,11 +673,11 @@ public strictfp abstract class YUtilReflection {
 	 * @param className
 	 * @return
 	 */
-	public static boolean isClassOfType(Class<?> classType, String className) {
+	public static boolean isClassOfType(final Class<?> classType, final String className) {
 		try {
 			return YUtilReflection.getClassNameFromFullyQualifiedName(classType.toString()).equals(className);
 		} catch(Exception e) {
-			Log.e("YUtilReflection.isClassOfType", e.getMessage());
+			Log.e(TAG + ".isClassOfType", e.getMessage());
 			return false;
 		}
 	}
@@ -685,22 +687,23 @@ public strictfp abstract class YUtilReflection {
 	 * @param accessorMethodName
 	 * @return
 	 */
-	public static String getPropertyName(String accessorMethodName) {
+	public static String getPropertyName(final String accessorMethodName) {
+		String accessorMethodNameTemp = null;
 		try {
 			if((accessorMethodName.startsWith(PREFIX_GET)) || (accessorMethodName.startsWith(PREFIX_SET)) || (accessorMethodName.startsWith(PREFIX_IS))) {
 
-				accessorMethodName = accessorMethodName.replaceFirst(REGEX_ACCESSORS_GET_SET_IS, "");
+				accessorMethodNameTemp = accessorMethodName.replaceFirst(REGEX_ACCESSORS_GET_SET_IS, "");
 
-				accessorMethodName = YUtilString.firstCharacterToLowerCase(accessorMethodName);
+				accessorMethodNameTemp = YUtilString.firstCharacterToLowerCase(accessorMethodNameTemp);
 
-				return accessorMethodName;
+				return accessorMethodNameTemp;
 			}
 
 			return null;
 		} catch (Exception e) {
-			Log.e("YUtilReflection.getPropertyName", e.getMessage());
+			Log.e(TAG + ".getPropertyName", e.getMessage());
 		}
-		return null;
+		return accessorMethodNameTemp;
 	}
 
 	/**
@@ -708,12 +711,12 @@ public strictfp abstract class YUtilReflection {
 	 * @param method
 	 * @return
 	 */
-	public static String getPropertyName(Method method) {
+	public static String getPropertyName(final Method method) {
 		try {
 			String methodName = method.getName();
 			return YUtilReflection.getPropertyName(methodName);
 		} catch (Exception e) {
-			Log.e("YUtilReflection.getPropertyName", e.getMessage());
+			Log.e(TAG + ".getPropertyName", e.getMessage());
 		}
 		return null;
 	}
@@ -723,7 +726,7 @@ public strictfp abstract class YUtilReflection {
      * @param classType
      * @return
      */
-    public static List<String> getPropertyList(Class<?> classType) {
+    public static List<String> getPropertyList(final Class<?> classType) {
         try {
             List<String> properties = new ArrayList<String>();
 
@@ -740,7 +743,7 @@ public strictfp abstract class YUtilReflection {
 
             return properties;
         } catch (Exception e) {
-        	Log.e("YUtilReflection.getPropertyList", e.getMessage());
+        	Log.e(TAG + ".getPropertyList", e.getMessage());
             return new ArrayList<String>();
         }
     }
@@ -751,7 +754,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param value
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void addToCollection(Object collection, Object value) {
+	public static void addToCollection(final Object collection, final Object value) {
 		if(collection instanceof java.util.List) {
 			((java.util.List)collection).add(value);
 		} else if(collection instanceof java.util.Set) {
@@ -766,7 +769,7 @@ public strictfp abstract class YUtilReflection {
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	public static Object getCollectionInstance(Class<?> collectionType) {
+	public static Object getCollectionInstance(final Class<?> collectionType) {
 		if("java.util.List".equals(collectionType.getName())) {
 			return new java.util.ArrayList();
 		} else if("java.util.Set".equals(collectionType.getName())) {
@@ -780,7 +783,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param collectionType
 	 * @return
 	 */
-	public static boolean isList(Class<?> listClass) {
+	public static boolean isList(final Class<?> listClass) {
 		return (listClass.equals(java.util.List.class)
 				|| listClass.equals(java.util.ArrayList.class));
 	}
@@ -790,7 +793,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static List<Method> getDeclaredMethodsGetList(Class<?> classType) {
+	public static List<Method> getDeclaredMethodsGetList(final Class<?> classType) {
 		try {
 			List<Method> getMethods = new ArrayList<Method>();
 
@@ -804,7 +807,7 @@ public strictfp abstract class YUtilReflection {
 			return getMethods;
 		}
 		catch(Exception e) {
-			Log.e("YUtilReflection.getDeclaredMethodsGetList", e.getMessage());
+			Log.e(TAG + ".getDeclaredMethodsGetList", e.getMessage());
 			return new ArrayList<Method>();
 		}
 	}
@@ -819,7 +822,7 @@ public strictfp abstract class YUtilReflection {
 	 * @throws IllegalArgumentException 
 	 * @throws Exception
 	 */
-	public static Object invokeMethodWithoutParams(Method method, Object objectTo) 
+	public static Object invokeMethodWithoutParams(final Method method, final Object objectTo) 
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException  {
 		return method.invoke(objectTo, DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
 	}
@@ -830,11 +833,11 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static Method getGetMethod(Field _field, Class<?> classType) {
+	public static Method getGetMethod(final Field _field, final Class<?> classType) {
 		try {
 			return classType.getMethod(_field.getName(), YUtilReflection.DEFAULT_PARAM_ARRAY_CLASS_REFLECTION);
 		} catch(Exception e) {
-			Log.e("YUtilReflection.getGetMethod", e.getMessage());
+			Log.e(TAG + ".getGetMethod", e.getMessage());
 			return null;
 		}
 	}
@@ -844,7 +847,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param classType
 	 * @return
 	 */
-	public static Map<Field, Method> buildDeclaredFieldMethodsMap(Class<?> classType) {
+	public static Map<Field, Method> buildDeclaredFieldMethodsMap(final Class<?> classType) {
 		Field[] declaredFields = classType.getDeclaredFields();
 		if(declaredFields != null && declaredFields.length > 0) {
 			Map<Field, Method> declaredFieldMethodsMap = new HashMap<Field, Method>();
@@ -864,7 +867,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param object
 	 * @return
 	 */
-	public static Map<Field, Object> buildDeclaredFieldValuesMap(Object object) {
+	public static Map<Field, Object> buildDeclaredFieldValuesMap(final Object object) {
 		try {
 			Field[] declaredFields = object.getClass().getDeclaredFields();
 			if(declaredFields != null && declaredFields.length > 0) {
@@ -880,7 +883,7 @@ public strictfp abstract class YUtilReflection {
 			}
 			return new HashMap<Field, Object>();
 		} catch (Exception e) {
-			Log.e("YUtilReflection.buildDeclaredFieldValuesMap", e.getMessage());
+			Log.e(TAG + ".buildDeclaredFieldValuesMap", e.getMessage());
 		}
 		return new HashMap<Field, Object>();
 	}
@@ -890,7 +893,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param object
 	 * @return
 	 */
-	public static Map<Field, Method> buildDeclaredFieldNotNullMethodsMap(Object object) {
+	public static Map<Field, Method> buildDeclaredFieldNotNullMethodsMap(final Object object) {
 		try {
 			Field[] declaredFields = object.getClass().getDeclaredFields();
 			if(declaredFields != null && declaredFields.length > 0) {
@@ -907,7 +910,7 @@ public strictfp abstract class YUtilReflection {
 				return declaredFieldNotNullMethodsMap;
 			}
 		} catch (Exception e) {
-			Log.e("YUtilReflection.buildDeclaredFieldNotNullMethodsMap", e.getMessage());
+			Log.e(TAG + ".buildDeclaredFieldNotNullMethodsMap", e.getMessage());
 		}
 		return new HashMap<Field, Method>();
 	}
@@ -917,7 +920,7 @@ public strictfp abstract class YUtilReflection {
 	 * @param object
 	 * @return
 	 */
-	public static Map<Field, Object> buildDeclaredFieldNotNullValuesMap(Object object) {
+	public static Map<Field, Object> buildDeclaredFieldNotNullValuesMap(final Object object) {
 		try {
 			Field[] declaredFields = object.getClass().getDeclaredFields();
 			if(declaredFields != null && declaredFields.length > 0) {
@@ -934,7 +937,7 @@ public strictfp abstract class YUtilReflection {
 				return declaredFieldNotNullValuesMap;
 			}
 		} catch (Exception e) {
-			Log.e("YUtilReflection.buildDeclaredFieldNotNullValuesMap", e.getMessage());
+			Log.e(TAG + ".buildDeclaredFieldNotNullValuesMap", e.getMessage());
 		}
 		return new HashMap<Field, Object>();
 	}
@@ -948,10 +951,10 @@ public strictfp abstract class YUtilReflection {
 		try {
 			return getGenericSuperclassClass(classType).newInstance();
 		} catch (InstantiationException e) {
-			Log.e("YUtilReflection.getGenericSuperclassInstance", e.getMessage());
+			Log.e(TAG + ".getGenericSuperclassInstance", e.getMessage());
 			return null;
 		} catch (IllegalAccessException e) {
-			Log.e("YUtilReflection.getGenericSuperclassInstance", e.getMessage());
+			Log.e(TAG + ".getGenericSuperclassInstance", e.getMessage());
 			return null;
 		}
 
@@ -969,7 +972,7 @@ public strictfp abstract class YUtilReflection {
 //
 //			return (Class<?>) parameterizedType.getActualTypeArguments()[0];
 		} catch (Exception e) {
-			Log.e("YUtilReflection.getGenericSuperclassClass", e.getMessage());
+			Log.e(TAG + ".getGenericSuperclassClass", e.getMessage());
 			return null;
 		}
 
@@ -994,7 +997,7 @@ public strictfp abstract class YUtilReflection {
 		try {
 			return declaringClass.getDeclaredField(YUtilReflection.getPropertyName(targetMethod));
 		} catch (Exception e) {
-			Log.e("YUtilReflection.getField", e.getMessage());
+			Log.e(TAG + ".getField", e.getMessage());
 			return null;
 		}
 	}
@@ -1011,7 +1014,7 @@ public strictfp abstract class YUtilReflection {
 			final ParameterizedType fieldListGenericType = (ParameterizedType) targetField.getGenericType();
 			return (Class<?>) fieldListGenericType.getActualTypeArguments()[0];
 		} catch (Exception e) {
-			Log.e("YUtilReflection.getGenericType", e.getMessage());
+			Log.e(TAG + ".getGenericType", e.getMessage());
 			return null;
 		}
 	}

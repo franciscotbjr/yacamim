@@ -32,6 +32,8 @@ import android.widget.TextView;
  * @since 1.0
  */
 public final class YUtilUIFields {
+	
+	private static final String TAG = YUtilUIFields.class.getSimpleName();
 
 	/**
 	 *
@@ -42,13 +44,13 @@ public final class YUtilUIFields {
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _idUIFields
+	 * @param activity
+	 * @param idUIFields
 	 */
-	public static void clearUIFields(final Activity _activity, final int[] _idUIFields) {
+	public static void clearUIFields(final Activity activity, final int[] idUIFields) {
 		try {
-			for(int i = 0; i < _idUIFields.length; i++) {
-				View view = _activity.findViewById(_idUIFields[i]);
+			for(int i = 0; i < idUIFields.length; i++) {
+				View view = activity.findViewById(idUIFields[i]);
 				if(view instanceof EditText) {
 					((EditText)view).setText("");
 				} else
@@ -59,8 +61,8 @@ public final class YUtilUIFields {
 					((Spinner)view).setSelection(0);
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilUIFields.clearUIFields", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".clearUIFields", e.getMessage());
 		}
 	}
 

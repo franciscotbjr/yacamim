@@ -44,6 +44,8 @@ import br.org.yacamim.YacamimState;
  * @since 1.0
  */
 public final class YUtilAndroid {
+	
+	private static final String TAG = YUtilAndroid.class.getSimpleName();
 
 	/**
 	 *
@@ -64,7 +66,7 @@ public final class YUtilAndroid {
 				imei = "";
 			}
 		} catch (Exception e) {
-			Log.e("YUtilAndroid.getImei", e.getMessage());
+			Log.e(TAG + ".getImei", e.getMessage());
 		}
 		return imei;
 	}
@@ -81,7 +83,7 @@ public final class YUtilAndroid {
 				macAddress = "";
 			}
 		} catch (Exception e) {
-			Log.e("YUtilAndroid.getMacAddress", e.getMessage());
+			Log.e(TAG + ".getMacAddress", e.getMessage());
 		}
 		return macAddress;
 	}
@@ -98,7 +100,7 @@ public final class YUtilAndroid {
 	    		bluetoothMac = "";
 			}
 		} catch (Exception e) {
-			Log.e("YUtilAndroid.getBluetoothMacAddress", e.getMessage());
+			Log.e(TAG + ".getBluetoothMacAddress", e.getMessage());
 		}
 		return bluetoothMac;
 	}
@@ -115,7 +117,7 @@ public final class YUtilAndroid {
 	    		androidID = "";
 			}
 		} catch (Exception e) {
-			Log.e("YUtilAndroid.getAndroidID", e.getMessage());
+			Log.e(TAG + ".getAndroidID", e.getMessage());
 		}
 		return androidID;
 	}
@@ -130,7 +132,7 @@ public final class YUtilAndroid {
 			final String idsConcatenadosTemporal = getImei() + getMacAddress() + getBluetoothMacAddress() + getAndroidID() +System.currentTimeMillis();
 			idCombinadoTemporal = YUtilCryptographic.md5(idsConcatenadosTemporal);
 		} catch (Exception e) {
-			Log.e("YUtilAndroid.getIdCombinadoTemporal", e.getMessage());
+			Log.e(TAG + ".getIdCombinadoTemporal", e.getMessage());
 		}
 		return idCombinadoTemporal;
 	}
@@ -198,7 +200,7 @@ public final class YUtilAndroid {
 				}
 			}
 		} catch (Exception _e) {
-			Log.e("YUtilAndroid.checkInternetConnection", _e.getMessage());
+			Log.e(TAG + ".checkInternetConnection", _e.getMessage());
 		}
 		handleDefaultDialogs(activity, wifi);
 		return false;
@@ -225,8 +227,8 @@ public final class YUtilAndroid {
 					return true;
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("YUtilAndroid.checkWifiConnection", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".checkWifiConnection", e.getMessage());
 		}
 		return false;
 	}
@@ -246,7 +248,7 @@ public final class YUtilAndroid {
 	 * @param activity
 	 * @param wifi
 	 */
-	private static void handleDefaultDialogs(final Activity activity, boolean wifi) {
+	private static void handleDefaultDialogs(final Activity activity, final boolean wifi) {
 		if(activity instanceof YBaseActivity) {
 			final YBaseActivity yBaseActivity = (YBaseActivity)activity;
 			yBaseActivity.clearProgressDialogStack();

@@ -35,78 +35,80 @@ import android.widget.Toast;
  * @since 1.0
  */
 public final class YUtilFileDisplayer {
+	
+	private static final String TAG = YUtilIO.class.getSimpleName();
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _path
-	 * @param _fileExtension
-	 * @param _resourceMsgFileNotFound
-	 * @param _resourceMsgNoApplicationAvailableToDisplay
-	 * @param _resourceMsgFileTypeNotFound
+	 * @param activity
+	 * @param path
+	 * @param fileExtension
+	 * @param resourceMsgFileNotFound
+	 * @param resourceMsgNoApplicationAvailableToDisplay
+	 * @param resourceMsgFileTypeNotFound
 	 */
-	public static void displayFile(final Activity _activity, final String _path, final String _fileExtension,
-			final int _resourceMsgFileNotFound,
-			final int _resourceMsgNoApplicationAvailableToDisplay,
-			final int _resourceMsgFileTypeNotFound) {
+	public static void displayFile(final Activity activity, final String path, final String fileExtension,
+			final int resourceMsgFileNotFound,
+			final int resourceMsgNoApplicationAvailableToDisplay,
+			final int resourceMsgFileTypeNotFound) {
 		try {
-			File file = new File(_path);
+			File file = new File(path);
 
             if (file.exists()) {
-                final Uri path = Uri.fromFile(file);
+                final Uri uriPath = Uri.fromFile(file);
                 final Intent intent = new Intent(Intent.ACTION_VIEW);
-                if(configFileType(_activity, _fileExtension, path, intent, _resourceMsgFileTypeNotFound)) {
+                if(configFileType(activity, fileExtension, uriPath, intent, resourceMsgFileTypeNotFound)) {
                 	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                	displayFile(_activity, _fileExtension, intent, _resourceMsgNoApplicationAvailableToDisplay);
+                	displayFile(activity, fileExtension, intent, resourceMsgNoApplicationAvailableToDisplay);
                 }
             } else {
-            	Toast.makeText(_activity,
-            			_activity.getText(_resourceMsgFileNotFound),
+            	Toast.makeText(activity,
+            			activity.getText(resourceMsgFileNotFound),
         		        Toast.LENGTH_SHORT).show();
             }
 		} catch (final Exception _e) {
-			Log.e("YUtilFileDisplayer.displayFile", _e.getMessage());
+			Log.e(TAG + ".displayFile", _e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _fileExtension
-	 * @param _intent
-	 * @param _resourceMsgNoApplicationAvailableToDisplay
+	 * @param activity
+	 * @param fileExtension
+	 * @param intent
+	 * @param resourceMsgNoApplicationAvailableToDisplay
 	 */
-	protected static void displayFile(final Activity _activity, final String _fileExtension, final Intent _intent,
-			final int _resourceMsgNoApplicationAvailableToDisplay) {
+	protected static void displayFile(final Activity activity, final String fileExtension, final Intent intent,
+			final int resourceMsgNoApplicationAvailableToDisplay) {
 		try {
-			_activity.startActivity(_intent);
+			activity.startActivity(intent);
 		} catch (final ActivityNotFoundException _e) {
-		    Toast.makeText(_activity,
-		    		_activity.getText(_resourceMsgNoApplicationAvailableToDisplay) + _fileExtension.toUpperCase(),
+		    Toast.makeText(activity,
+		    		activity.getText(resourceMsgNoApplicationAvailableToDisplay) + fileExtension.toUpperCase(),
 		        Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _fileExtension
-	 * @param _path
-	 * @param _intent
-	 * @param _resourceMsgFileTypeNotFound
+	 * @param activity
+	 * @param fileExtension
+	 * @param path
+	 * @param intent
+	 * @param resourceMsgFileTypeNotFound
 	 * @return
 	 */
 	protected static boolean configFileType(
-			final Activity _activity, final String _fileExtension,
-			final Uri _path, final Intent _intent,
-			final int _resourceMsgFileTypeNotFound) {
+			final Activity activity, final String fileExtension,
+			final Uri path, final Intent intent,
+			final int resourceMsgFileTypeNotFound) {
 		try {
-			_intent.setDataAndType(_path, YEnumMimeType.getMimeType(_fileExtension).getMimeType());
+			intent.setDataAndType(path, YEnumMimeType.getMimeType(fileExtension).getMimeType());
 			return true;
 		} catch (NullPointerException e) {
-			 Toast.makeText(_activity,
-					 _activity.getText(_resourceMsgFileTypeNotFound) + _fileExtension.toUpperCase(),
+			 Toast.makeText(activity,
+					 activity.getText(resourceMsgFileTypeNotFound) + fileExtension.toUpperCase(),
 		        Toast.LENGTH_SHORT).show();
 			 return false;
 		}

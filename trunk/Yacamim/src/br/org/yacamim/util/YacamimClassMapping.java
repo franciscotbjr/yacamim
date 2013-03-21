@@ -54,17 +54,17 @@ public final class YacamimClassMapping {
 
 	/**
 	 *
-	 * @param _key
-	 * @param _value
+	 * @param key
+	 * @param value
 	 */
-	public void add(final String _key, final String _value) {
+	public void add(final String key, final String value) {
 		for(YKeyValuePair<String, String> keyValuePair : this.keyValues) {
-			if(keyValuePair.getKey().equals(_key)) {
-				keyValuePair.setValue(_value);
+			if(keyValuePair.getKey().equals(key)) {
+				keyValuePair.setValue(value);
 				return;
 			}
 		}
-		this.keyValues.add(new YKeyValuePair<String, String>(_key, _value));
+		this.keyValues.add(new YKeyValuePair<String, String>(key, value));
 	}
 
 	/**
