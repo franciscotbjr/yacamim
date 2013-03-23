@@ -321,7 +321,7 @@ public abstract class YBaseActivity extends Activity implements Callback {
 					}
 				});
 				return builderSemAcessoWifi.show();
-			case YConstants.INFO_DATA_SUCCESFULLY_INSERTED:
+			case YConstants.INFO_DATA_SUCCESSFULLY_INSERTED:
 		    	AlertDialog.Builder builderDadosCadastradosSucesso = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgSuccesfullyInserted()), false);
 		    	builderDadosCadastradosSucesso.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 		    		public void onClick(DialogInterface _dialog, int id) {
@@ -330,7 +330,7 @@ public abstract class YBaseActivity extends Activity implements Callback {
 		    	})
 		    	;
 		    	return builderDadosCadastradosSucesso.show();
-			case YConstants.INFO_DATA_SUCCESFULLY_UPDATED:
+			case YConstants.INFO_DATA_SUCCESSFULLY_UPDATED:
 				AlertDialog.Builder builderDadosAlteradosSucesso = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgSuccesfullyUpdated()), false);
 				builderDadosAlteradosSucesso.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface _dialog, int id) {
