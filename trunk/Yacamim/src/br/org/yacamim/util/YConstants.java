@@ -32,8 +32,8 @@ public class YConstants {
 	 public static final int DIALOG_WAIT = 200001;
 	 public static final int DIALOG_YES_NO = 200002;
 
-	 public static final int INFO_DATA_SUCCESFULLY_INSERTED = 300001;
-	 public static final int INFO_DATA_SUCCESFULLY_UPDATED = 300002;
+	 public static final int INFO_DATA_SUCCESSFULLY_INSERTED = 300001;
+	 public static final int INFO_DATA_SUCCESSFULLY_UPDATED = 300002;
 
 	 public static final int ERROR_NO_INFORMATION_FOUND = 400001;
 	 public static final int ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE = 400002;
