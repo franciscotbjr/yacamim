@@ -32,51 +32,51 @@ public class DefaultAlertDialogBuilder extends AlertDialog.Builder {
 
 	/**
 	 *
-	 * @param _context
+	 * @param context
 	 */
-	public DefaultAlertDialogBuilder(final Context _context) {
-		super(_context);
+	public DefaultAlertDialogBuilder(final Context context) {
+		super(context);
 		this.setTitle("");
 	}
 
 	/**
 	 *
-	 * @param _context
-	 * @param _message
-	 * @param _cancelable
+	 * @param context
+	 * @param message
+	 * @param cancelable
 	 */
-	public DefaultAlertDialogBuilder(final Context _context, final CharSequence _message, final boolean _cancelable) {
-		super(_context);
+	public DefaultAlertDialogBuilder(final Context context, final CharSequence message, final boolean cancelable) {
+		super(context);
 		this.setTitle("");
-		this.setMessage(_message);
-		this.setCancelable(_cancelable);
+		this.setMessage(message);
+		this.setCancelable(cancelable);
 	}
 
 	/**
 	 *
-	 * @param _context
-	 * @param _title
-	 * @param _message
-	 * @param _cancelable
+	 * @param context
+	 * @param title
+	 * @param message
+	 * @param cancelable
 	 */
-	public DefaultAlertDialogBuilder(final Context _context, final CharSequence _title, final CharSequence _message, final boolean _cancelable) {
-		super(_context);
-		this.setTitle(_title);
-		this.setMessage(_message);
-		this.setCancelable(_cancelable);
+	public DefaultAlertDialogBuilder(final Context context, final CharSequence title, final CharSequence message, final boolean cancelable) {
+		super(context);
+		this.setTitle(title);
+		this.setMessage(message);
+		this.setCancelable(cancelable);
 	}
 
 	/**
 	 *
-	 * @param _context
-	 * @param _message
-	 * @param _cancelable
+	 * @param context
+	 * @param message
+	 * @param cancelable
 	 */
-	public DefaultAlertDialogBuilder(final Context _context, final int _message, final boolean _cancelable) {
-		super(_context);
+	public DefaultAlertDialogBuilder(final Context context, final int message, final boolean cancelable) {
+		super(context);
 		this.setTitle("");
-		this.setMessage(_message);
-		this.setCancelable(_cancelable);
+		this.setMessage(message);
+		this.setCancelable(cancelable);
 	}
 
 }
