@@ -20,6 +20,7 @@ package br.org.yacamim;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +29,6 @@ import android.os.Bundle;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.os.Vibrator;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.WindowManager;
 import br.org.yacamim.entity.GpsLocationInfo;
@@ -46,7 +46,7 @@ import br.org.yacamim.util.YUtilUIFields;
  * @version 1.0
  * @since 1.0
  */
-public abstract class YBaseActivity extends FragmentActivity implements Callback, OnDialogDoneListener {
+public abstract class YBaseActivity extends Activity implements Callback, OnDialogDoneListener {
 	
 	private static final String TAG = YBaseActivity.class.getSimpleName();
 	
@@ -400,7 +400,7 @@ public abstract class YBaseActivity extends FragmentActivity implements Callback
 						titleResource, 
 						mensageResource, 
 						positiveButtonresource);
-		yAlertDialogFragment.show(this.getSupportFragmentManager(), TAG);
+		yAlertDialogFragment.show(this.getFragmentManager(), TAG);
 	}
 
 	/**
