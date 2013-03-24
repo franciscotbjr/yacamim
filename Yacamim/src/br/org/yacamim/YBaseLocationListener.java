@@ -36,6 +36,8 @@ import br.org.yacamim.entity.GpsLocationInfo;
  */
 public class YBaseLocationListener implements LocationListener {
 	
+	private static final String TAG = YBaseLocationListener.class.getSimpleName();
+	
 	private LocationManager locationManager;
 	
 	private GpsLocationInfo gpsLocationInfo;
@@ -97,7 +99,7 @@ public class YBaseLocationListener implements LocationListener {
 			}
 			
 		} catch (Exception _e) {
-			Log.e("BaseLocationListenerActivity.onLocationChanged", _e.getMessage());
+			Log.e(TAG + ".onLocationChanged", _e.getMessage());
 		}
 	}
 
@@ -111,7 +113,7 @@ public class YBaseLocationListener implements LocationListener {
 		try {
 
 		} catch (Exception _e) {
-			Log.e("YBaseLocationListener.onProviderDisabled", _e.getMessage());
+			Log.e(TAG + ".onProviderDisabled", _e.getMessage());
 		}
 	}
 
@@ -125,7 +127,7 @@ public class YBaseLocationListener implements LocationListener {
 		try {
 
 		} catch (Exception _e) {
-			Log.e("YBaseLocationListener.onProviderEnabled", _e.getMessage());
+			Log.e(TAG + ".onProviderEnabled", _e.getMessage());
 		}
 	}
 
@@ -139,7 +141,7 @@ public class YBaseLocationListener implements LocationListener {
 		try {
 
 		} catch (Exception _e) {
-			Log.e("YBaseLocationListener.onStatusChanged", _e.getMessage());
+			Log.e(TAG + ".onStatusChanged", _e.getMessage());
 		}
 	}
 

@@ -32,6 +32,8 @@ import br.org.yacamim.xml.YLoader;
  */
 public final class YacamimInitializer {
 	
+	private static final String TAG = YacamimInitializer.class.getSimpleName();
+	
 	private static final YacamimInitializer singleton = new YacamimInitializer();
 	
 	/**
@@ -121,7 +123,7 @@ public final class YacamimInitializer {
 			}
 		} catch (Exception e) {
 			YacamimConfig.getInstance().clearEntities();
-			Log.e("YacamimInitializer.loadConfigs", e.getMessage());
+			Log.e(TAG + ".loadConfigs", e.getMessage());
 		}
 	}
 
@@ -136,7 +138,7 @@ public final class YacamimInitializer {
 			}
 		} catch (Exception e) {
 			YacamimConfig.getInstance().clearEntities();
-			Log.e("YacamimInitializer.loadDBLoad", e.getMessage());
+			Log.e(TAG + ".loadDBLoad", e.getMessage());
 		}
 	}
 
@@ -150,7 +152,7 @@ public final class YacamimInitializer {
 				YLoader.loadServiceURLs(yApplication);
 			}
 		} catch (Exception e) {
-			Log.e("YacamimInitializer.loadServiceURLs", e.getMessage());
+			Log.e(TAG + ".loadServiceURLs", e.getMessage());
 		}
 	}
 	
@@ -164,7 +166,7 @@ public final class YacamimInitializer {
 				YLoader.loadClassMapping(yApplication, this.yacamimClassMapping);
 			}
 		} catch (Exception e) {
-			Log.e("YacamimInitializer.loadClassMapping", e.getMessage());
+			Log.e(TAG + ".loadClassMapping", e.getMessage());
 		}
 	}
 	
@@ -178,7 +180,7 @@ public final class YacamimInitializer {
 				YLoader.loadParams(yApplication);
 			}
 		} catch (Exception e) {
-			Log.e("YacamimInitializer.loadParams", e.getMessage());
+			Log.e(TAG + ".loadParams", e.getMessage());
 		}
 	}
 	

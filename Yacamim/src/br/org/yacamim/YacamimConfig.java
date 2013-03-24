@@ -34,6 +34,8 @@ import android.util.Log;
  */
 public final class YacamimConfig {
 	
+	private static final String TAG = YacamimConfig.class.getSimpleName();
+	
 	private static final YacamimConfig singleton = new YacamimConfig();
 
 	private Map<String, String> mConfigItems = new HashMap<String, String>();
@@ -149,7 +151,7 @@ public final class YacamimConfig {
 				return Integer.valueOf(value);
 			}
 		} catch (Exception e) {
-			Log.e("YacamimConfig.getDbVersion", e.getMessage());
+			Log.e(TAG + ".getDbVersion", e.getMessage());
 		}
 		return -1;
 	}
