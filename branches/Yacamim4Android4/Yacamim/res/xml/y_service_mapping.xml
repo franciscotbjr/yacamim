@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<y-services>
+
+	<!-- Raiz -->
+    <y-service id="0" url="https://www.kapragon.com.br"/>
+	
+	<!-- Login -->
+    <y-service id="1" url="/Test02.json"/>
+    <y-service id="2" url="/Test03.json"/>
+    <y-service id="3" url="/Test04.json"/>
+    
+</y-services>
