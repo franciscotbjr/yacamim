@@ -20,17 +20,13 @@ package br.org.yacamim;
 import java.util.HashMap;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
 import br.org.yacamim.util.YConstants;
 
 /**
@@ -41,6 +37,8 @@ import br.org.yacamim.util.YConstants;
  * @since 1.0
  */
 public class YBaseListActivity extends ListActivity {
+	
+	private static final String TAG = YBaseListActivity.class.getSimpleName();
 
 	/**
 	 * 
@@ -66,7 +64,7 @@ public class YBaseListActivity extends ListActivity {
 		try {
 			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		} catch (Exception _e) {
-			Log.e("YBaseListActivity.keepScreenOn", _e.getMessage());
+			Log.e(TAG + ".keepScreenOn", _e.getMessage());
 		}
 	}
 
@@ -120,7 +118,7 @@ public class YBaseListActivity extends ListActivity {
 				_mapList.add(map);
 			}
 		} catch (Exception _e) {
-			Log.e("YBaseListActivity.fillMapList", _e.getMessage());
+			Log.e(TAG + ".fillMapList", _e.getMessage());
 		}
 	}
 
@@ -146,36 +144,8 @@ public class YBaseListActivity extends ListActivity {
 				((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
 			}
 		} catch (Exception _e) {
-			Log.e("YBaseListActivity.removeListViewItem", _e.getMessage());
+			Log.e(TAG + ".removeListViewItem", _e.getMessage());
 		}
 	}
 	
-	
-	/**
-	 * 
-	 */
-	protected void showDialogConstraintDependency() {
-		showDialog(YConstants.ERROR_CONSTRAINT_DEPENDENCY);
-	}
-	
-	/**
-	 * 
-	 *
-	 * @see android.app.Activity#onCreateDialog(int)
-	 */
-	@Override
-	protected Dialog onCreateDialog(final int _idDialog) {
-		switch(_idDialog) {
-			case YConstants.ERROR_CONSTRAINT_DEPENDENCY:
-				AlertDialog.Builder builderRegistroNaoPodeSerExcluidoPorDependencia = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgConstraintDependency()).toString(), false);
-				builderRegistroNaoPodeSerExcluidoPorDependencia.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface _dialog, int id) {
-						removeDialog(_idDialog);
-					}
-				});
-				return builderRegistroNaoPodeSerExcluidoPorDependencia.show();
-			default:
-				return super.onCreateDialog(_idDialog);
-		}
-	}
 }

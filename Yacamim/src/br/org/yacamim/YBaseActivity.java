@@ -20,22 +20,21 @@ package br.org.yacamim;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.os.Vibrator;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.WindowManager;
 import br.org.yacamim.entity.GpsLocationInfo;
-import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
+import br.org.yacamim.ui.components.OnDialogDoneListener;
+import br.org.yacamim.ui.components.YAlertDialogFragment;
+import br.org.yacamim.ui.components.YDialogEvent;
 import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilUIFields;
 
@@ -47,7 +46,9 @@ import br.org.yacamim.util.YUtilUIFields;
  * @version 1.0
  * @since 1.0
  */
-public abstract class YBaseActivity extends Activity implements Callback {
+public abstract class YBaseActivity extends FragmentActivity implements Callback, OnDialogDoneListener {
+	
+	private static final String TAG = YBaseActivity.class.getSimpleName();
 	
 	private YBaseLocationListener yBaseLocationListener;
 	
@@ -79,8 +80,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 		try {
 			this.yBaseLocationListener = new YBaseLocationListener(this);
 			this.yBaseLocationListener.getLocationManager().requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, yBaseLocationListener);
-		} catch (Exception _e) {
-			Log.e("YBaseActivity.initGPS", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".initGPS", e.getMessage());
 		}
 	}
 
@@ -90,8 +91,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	protected void keepScreenOn() {
 		try {
 			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		} catch (Exception _e) {
-			Log.e("YBaseActivity.keepScreenOn", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".keepScreenOn", e.getMessage());
 		}
 	}
 	
@@ -109,8 +110,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 				this.getMessage().append(" - " + nomeCampo);
 			}
 			
-		} catch (Exception _e) {
-			Log.e("YBaseActivity.buildMessage", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".buildMessage", e.getMessage());
 		}
 	}
 	
@@ -126,8 +127,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 				this.getMessage().append(" - " + nomeCampo);
 			}
 			
-		} catch (Exception _e) {
-			Log.e("YBaseActivity._uiFieldNames", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + "._uiFieldNames", e.getMessage());
 		}
 	}
 	
@@ -158,8 +159,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	public void displayProgressDialog(final String _message) {
 		try {
 			this.progressDialogStack.add(ProgressDialog.show(this, "", _message, true, false));
-		} catch (Exception _e) {
-			Log.e("YBaseActivity.displayProgressDialog", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".displayProgressDialog", e.getMessage());
 		}
 	}
 	
@@ -170,8 +171,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	public void displayProgressDialog() {
 		try {
 			this.progressDialogStack.add(ProgressDialog.show(this, "", this.getText(YacamimResources.getInstance().getIdResourceMsgWait()), true, false));
-		} catch (Exception _e) {
-			Log.e("YBaseActivity.displayProgressDialog", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".displayProgressDialog", e.getMessage());
 		}
 	}
 
@@ -183,8 +184,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 			if(this.progressDialogStack != null && !this.progressDialogStack.isEmpty()) {
 				this.progressDialogStack.remove(0).cancel();
 			}
-		} catch (Exception _e) {
-			Log.e("YBaseActivity.removeProgressDialog", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".removeProgressDialog", e.getMessage());
 		}
 	}
 	
@@ -199,8 +200,8 @@ public abstract class YBaseActivity extends Activity implements Callback {
 				}
 				this.progressDialogStack.clear();
 			}
-		} catch (final Exception _e) {
-			Log.e("YBaseActivity.clearProgressDialogStack", _e.getMessage());
+		} catch (final Exception e) {
+			Log.e(TAG + ".clearProgressDialogStack", e.getMessage());
 		}
 	}
 	
@@ -224,16 +225,59 @@ public abstract class YBaseActivity extends Activity implements Callback {
 					this.showDialogNoRecordFound();
 					break;
 			}
-		} catch (Exception _e) {
-			Log.e("YBaseActivity.onActivityResult", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".onActivityResult", e.getMessage());
 		}
+	}
+	
+	/**
+	 * 
+	 * @see br.org.yacamim.ui.components.OnDialogDoneListener#onDialogClick(br.org.yacamim.ui.components.YDialogEvent)
+	 */
+	@Override
+	public void onDialogClick(final YDialogEvent dialogEvent) {
+		switch(dialogEvent.getDialogId()) {
+			case YConstants.ERROR_NO_INFORMATION_FOUND:
+				// TODO
+				break;
+			case YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS:
+				// TODO
+				break;
+			case YConstants.ERROR_NO_RECORD_SELECTED:
+				// TODO
+				break;
+			case YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE:
+				// TODO
+				break;
+			case YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
+				// TODO
+				break;
+			case YConstants.ERROR_CONSTRAINT_DEPENDENCY:
+				// TODO
+				break;
+			case YConstants.INFO_DATA_SUCCESSFULLY_INSERTED:
+				// TODO
+				break;
+			case YConstants.INFO_DATA_SUCCESSFULLY_UPDATED:
+				// TODO
+				break;
+			case YConstants.ERROR_INVALID_DATA:
+				// TODO
+				break;
+			case YConstants.ERROR_REQUIRED_FIELDS:
+				// TODO
+				break;
+		}
+		
 	}
 	
 	/**
 	 * 
 	 */
 	protected void showDialogNoInformationFound() {
-		showDialog(YConstants.ERROR_NO_INFORMATION_FOUND);
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_NO_INFORMATION_FOUND, 0, 
+				YacamimResources.getInstance().getIdResourceMsgNoInformationFound(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
 	}
 	
 	/**
@@ -248,14 +292,9 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	 * 
 	 */
 	protected void showDialogNoRecordFound() {
-		showDialog(YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS);
-	}
-	
-	/**
-	 * 
-	 */
-	protected void showDialogNoRecordSelected() {
-		showDialog(YConstants.ERROR_NO_RECORD_SELECTED);
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS, 0, 
+				YacamimResources.getInstance().getIdResourceMsgNoRecordsFoundForParameters(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
 	}
 	
 	/**
@@ -269,99 +308,101 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	/**
 	 * 
 	 */
+	protected void showDialogNoRecordSelected() {
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_NO_RECORD_SELECTED, 0, 
+				YacamimResources.getInstance().getIdResourceMsgNoRecordSelected(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
+	}
+	
+	/**
+	 * 
+	 */
 	protected void finishForNoRecordSelected() {
 		super.setResult(YConstants.ERROR_NO_RECORD_SELECTED);
 		super.finish();
 	}
-
+	
+	
 	/**
 	 * 
-	 * @see android.app.Activity#onCreateDialog(int)
 	 */
-	@Override
-	protected Dialog onCreateDialog(final int _idDialog) {
-		switch(_idDialog) {
-			case YConstants.ERROR_NO_INFORMATION_FOUND:
-				AlertDialog.Builder builderNenhumResultadoEncontrado = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgNoInformationFound()).toString(), false);
-	        	builderNenhumResultadoEncontrado.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-	        	           public void onClick(DialogInterface _dialog, int id) {
-	        	        	   removeDialog(_idDialog);
-	        	           }
-	        	       });
-	        	return builderNenhumResultadoEncontrado.show();
-			case YConstants.ERROR_NO_RECORD_FOUND_FOR_PARAMETERS:
-	        	AlertDialog.Builder builderNenhumRegistro = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgNoRecordsFoundForParameters()).toString(), false);
-	        	builderNenhumRegistro.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-	        	           public void onClick(DialogInterface _dialog, int id) {
-	        	        	   removeDialog(_idDialog);
-	        	           }
-	        	       });
-	        	return builderNenhumRegistro.show();
-			case YConstants.ERROR_NO_RECORD_SELECTED:
-				AlertDialog.Builder builderNenhumRegistroSelecionado = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgNoRecordSelected()).toString(), false);
-				builderNenhumRegistroSelecionado.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface _dialog, int id) {
-						removeDialog(_idDialog);
-					}
-				});
-				return builderNenhumRegistroSelecionado.show();
-			case YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE:
-	        	AlertDialog.Builder builderSemAcessoRede = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgNoConnectivityAvailable()).toString(), false);
-	        	builderSemAcessoRede.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-	        	           public void onClick(DialogInterface _dialog, int id) {
-	        	        	   removeDialog(_idDialog);
-	        	           }
-	        	       });
-	        	return builderSemAcessoRede.show();
-			case YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
-				AlertDialog.Builder builderSemAcessoWifi = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgNoWifiConnectivityAvailable()).toString(), false);
-				builderSemAcessoWifi.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface _dialog, int id) {
-						removeDialog(_idDialog);
-					}
-				});
-				return builderSemAcessoWifi.show();
-			case YConstants.INFO_DATA_SUCCESSFULLY_INSERTED:
-		    	AlertDialog.Builder builderDadosCadastradosSucesso = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgSuccesfullyInserted()), false);
-		    	builderDadosCadastradosSucesso.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-		    		public void onClick(DialogInterface _dialog, int id) {
-		    			removeDialog(_idDialog);
-		    		}
-		    	})
-		    	;
-		    	return builderDadosCadastradosSucesso.show();
-			case YConstants.INFO_DATA_SUCCESSFULLY_UPDATED:
-				AlertDialog.Builder builderDadosAlteradosSucesso = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgSuccesfullyUpdated()), false);
-				builderDadosAlteradosSucesso.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface _dialog, int id) {
-						removeDialog(_idDialog);
-					}
-				})
-				;
-				return builderDadosAlteradosSucesso.show();
-			case YConstants.ERROR_INVALID_DATA:
-		    	AlertDialog.Builder builderDadosInvalidos = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgInvalidData()), false);
-		    	builderDadosInvalidos.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-		    		public void onClick(DialogInterface _dialog, int id) {
-		    			removeDialog(_idDialog);
-		    		}
-		    	})
-		    	;
-		    	return builderDadosInvalidos.show();
-		    case YConstants.ERROR_REQUIRED_FIELDS:
-		    	AlertDialog.Builder builderCamposObrigatorios = new DefaultAlertDialogBuilder(this, this.getMessage().toString(), false);
-		    	builderCamposObrigatorios.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-		    	           public void onClick(DialogInterface _dialog, int id) {
-		    	        	   removeDialog(_idDialog);
-		    	           }
-		    	       })
-		    	       ;
-		    	return builderCamposObrigatorios.show();
-			default:
-				return super.onCreateDialog(_idDialog);
-		}
+	public final void displayDialogNetworkAccess() {
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE, 0, 
+				YacamimResources.getInstance().getIdResourceMsgNoConnectivityAvailable(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
 	}
 	
+	/**
+	 * 
+	 */
+	public final void displayDialogWifiAccess() {
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE, 0, 
+				YacamimResources.getInstance().getIdResourceMsgNoWifiConnectivityAvailable(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
+	}
+	
+	/**
+	 * 
+	 */
+	protected void showDialogConstraintDependency() {
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_CONSTRAINT_DEPENDENCY, 0, 
+				YacamimResources.getInstance().getIdResourceMsgConstraintDependency(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
+	}
+	
+	/**
+	 * 
+	 */
+	protected void showDialogDataSuccessfullyInserted() {
+		this.buildSimplePositiveAlertDialog(YConstants.INFO_DATA_SUCCESSFULLY_INSERTED, 0, 
+				YacamimResources.getInstance().getIdResourceMsgSuccesfullyInserted(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
+	}
+	
+	/**
+	 * 
+	 */
+	protected void showDialogDataSuccessfullyUpdated() {
+		this.buildSimplePositiveAlertDialog(YConstants.INFO_DATA_SUCCESSFULLY_UPDATED, 0, 
+				YacamimResources.getInstance().getIdResourceMsgSuccesfullyUpdated(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
+	}
+	
+	/**
+	 * 
+	 */
+	protected void showDialogInvalidData() {
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_INVALID_DATA, 0, 
+				YacamimResources.getInstance().getIdResourceMsgInvalidData(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
+	}
+	
+	/**
+	 * 
+	 */
+	protected void showDialogErrorRequiredFields() {
+		this.buildSimplePositiveAlertDialog(YConstants.ERROR_REQUIRED_FIELDS, 0, 
+				YacamimResources.getInstance().getIdResourceMsgInvalidData(), 
+				YacamimResources.getInstance().getIdResourceMsgOK());
+	}
+	
+	/**
+	 * 
+	 * @param dialogId
+	 * @param titleResource
+	 * @param mensageResource
+	 * @param positiveButtonresource
+	 */
+	protected void buildSimplePositiveAlertDialog(final int dialogId, final int titleResource, 
+			final int mensageResource, final int positiveButtonresource) {
+		final YAlertDialogFragment yAlertDialogFragment = 
+				YAlertDialogFragment.newInstance(dialogId, 
+						titleResource, 
+						mensageResource, 
+						positiveButtonresource);
+		yAlertDialogFragment.show(this.getSupportFragmentManager(), TAG);
+	}
+
 	/**
 	 *
 	 * @see android.os.Handler.Callback#handleMessage(android.os.Message)
@@ -385,25 +426,11 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	/**
 	 * 
 	 */
-	public final void displayDialogNetworkAccess() {
-		this.showDialog(YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE);
-	}
-	
-	/**
-	 * 
-	 */
-	public final void displayDialogWifiAccess() {
-		this.showDialog(YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE);
-	}
-	
-	/**
-	 * 
-	 */
 	protected void vibrar() {
 		try {
 			((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 150}, -1);
 		} catch (Exception _e) {
-			Log.e("YBaseActivity.vibrar", _e.getMessage());
+			Log.e(TAG + ".vibrar", _e.getMessage());
 		}
 	}
 	
@@ -422,7 +449,7 @@ public abstract class YBaseActivity extends Activity implements Callback {
 		try {
 			YUtilUIFields.clearUIFields(this, this.getFieldsForWindowsCleanup());
 		} catch (Exception _e) {
-			Log.e("YBaseActivity.limpaTela", _e.getMessage());
+			Log.e(TAG + ".limpaTela", _e.getMessage());
 		}
 	}
 
@@ -433,22 +460,6 @@ public abstract class YBaseActivity extends Activity implements Callback {
 	 */
 	protected GpsLocationInfo getBestLocation() {
 		return this.yBaseLocationListener.getCurrentGpsLocationInfo();
-	}
-
-	/**
-	 * 
-	 * @param _idResourceText
-	 * @return
-	 */
-	protected Dialog buildSimplePositiveAlertDialog(final int _idDialog, final int _idResourceText) {
-		AlertDialog.Builder builderSimpleAlertDialog = new DefaultAlertDialogBuilder(this, _idResourceText, false);
-		builderSimpleAlertDialog.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface _dialog, int id) {
-				YBaseActivity.this.removeDialog(_idDialog);
-			}
-		})
-		;
-		return builderSimpleAlertDialog.show();
 	}
 	
 	/**
