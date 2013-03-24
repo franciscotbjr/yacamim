@@ -232,10 +232,10 @@ public class PacienteActivity extends YBaseActivity {
 
 			if (inclusao) {
 				adapter.insert(paciente);
-				showDialog(Constantes.INFO_DATA_SUCCESFULLY_INSERTED);
+				showDialog(Constantes.INFO_DATA_SUCCESSFULLY_INSERTED);
 			} else {
 				adapter.update(paciente);
-				showDialog(Constantes.INFO_DATA_SUCCESFULLY_UPDATED);
+				showDialog(Constantes.INFO_DATA_SUCCESSFULLY_UPDATED);
 			}
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
