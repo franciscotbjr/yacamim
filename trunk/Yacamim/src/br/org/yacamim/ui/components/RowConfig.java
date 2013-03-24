@@ -59,8 +59,8 @@ public class RowConfig {
 	 * @param rowConfigItems
 	 * @param resource The identifier of a XML file layout that defines the appearance of its rows.
 	 */
-	public RowConfig(int[] resourcesHint, List<RowConfigItem> rowConfigItems,
-			int resource) {
+	public RowConfig(final int[] resourcesHint, final List<RowConfigItem> rowConfigItems,
+			final int resource) {
 		super();
 		this.resourcesHint = resourcesHint;
 		this.rowConfigItems = rowConfigItems;
@@ -79,7 +79,7 @@ public class RowConfig {
 	/**
 	 * @param resourcesHint the resourcesHint to set
 	 */
-	public RowConfig setResourcesHint(int[] resourcesHint) {
+	public RowConfig setResourcesHint(final int[] resourcesHint) {
 		this.resourcesHint = resourcesHint;
 		return this;
 	}
@@ -94,7 +94,7 @@ public class RowConfig {
 	/**
 	 * @param rowConfigItems the rowConfigItems to set
 	 */
-	public RowConfig setRowConfigItems(List<RowConfigItem> rowConfigItems) {
+	public RowConfig setRowConfigItems(final List<RowConfigItem> rowConfigItems) {
 		this.rowConfigItems = rowConfigItems;
 		return this;
 	}
@@ -109,7 +109,7 @@ public class RowConfig {
 	/**
 	 * @param resource the resource to set
 	 */
-	public RowConfig setResource(int resource) {
+	public RowConfig setResource(final int resource) {
 		this.resource = resource;
 		return this;
 	}
@@ -118,7 +118,7 @@ public class RowConfig {
 	 *
 	 * @param rowConfigItem
 	 */
-	public RowConfig addRowConfigItem(RowConfigItem rowConfigItem) {
+	public RowConfig addRowConfigItem(final RowConfigItem rowConfigItem) {
 		if(this.rowConfigItems == null) {
 			this.rowConfigItems = new ArrayList<RowConfigItem>();
 		}
@@ -131,7 +131,7 @@ public class RowConfig {
 	 * @param rowConfigItem
 	 * @return
 	 */
-	public boolean removeRowConfigItem(RowConfigItem rowConfigItem) {
+	public boolean removeRowConfigItem(final RowConfigItem rowConfigItem) {
 		if(this.rowConfigItems == null) {
 			this.rowConfigItems = new ArrayList<RowConfigItem>();
 		}
@@ -160,7 +160,7 @@ public class RowConfig {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

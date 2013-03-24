@@ -29,11 +29,11 @@ public interface RowCondition {
 
 	/**
 	 *
-	 * @param _data
-	 * @param _position
-	 * @param _rowConfigs
+	 * @param data
+	 * @param position
+	 * @param rowConfigs
 	 * @return
 	 */
-	public RowConfig selectRowConfig(final Object _data, final int _position, final RowConfig[] _rowConfigs);
+	public RowConfig selectRowConfig(final Object data, final int position, final RowConfig[] rowConfigs);
 
 }
