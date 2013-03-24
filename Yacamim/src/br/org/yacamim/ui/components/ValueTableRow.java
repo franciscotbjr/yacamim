@@ -41,7 +41,7 @@ public class ValueTableRow extends TableRow {
 	/**
 	 * @param context
 	 */
-	public ValueTableRow(Context context) {
+	public ValueTableRow(final Context context) {
 		super(context);
 	}
 

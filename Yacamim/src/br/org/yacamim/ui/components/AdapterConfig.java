@@ -54,8 +54,8 @@ public class AdapterConfig {
 	 * @param rowCondition
 	 * @param listModelSelection A simple list that stores the data of each selected row. Should be <tt>null</tt> if there is no <tt>CheckBox</tt>.
 	 */
-	public AdapterConfig(RowConfig[] rowConfigs, RowCondition rowCondition,
-			List<Object> listModelSelection) {
+	public AdapterConfig(final RowConfig[] rowConfigs, final RowCondition rowCondition,
+			final List<Object> listModelSelection) {
 		super();
 		this.rowConfigs = rowConfigs;
 		this.rowCondition = rowCondition;
@@ -74,7 +74,7 @@ public class AdapterConfig {
 	/**
 	 * @param rowConfigs the rowConfigs to set
 	 */
-	public void setRowConfigs(RowConfig[] rowConfigs) {
+	public void setRowConfigs(final RowConfig[] rowConfigs) {
 		this.rowConfigs = rowConfigs;
 	}
 
@@ -90,7 +90,7 @@ public class AdapterConfig {
 	/**
 	 * @param rowCondition the rowCondition to set
 	 */
-	public void setRowCondition(RowCondition rowCondition) {
+	public void setRowCondition(final RowCondition rowCondition) {
 		this.rowCondition = rowCondition;
 	}
 
@@ -106,7 +106,7 @@ public class AdapterConfig {
 	/**
 	 * @param listModelSelection the listModelSelection to set
 	 */
-	public void setListModelSelection(List<Object> listModelSelection) {
+	public void setListModelSelection(final List<Object> listModelSelection) {
 		this.listModelSelection = listModelSelection;
 	}
 

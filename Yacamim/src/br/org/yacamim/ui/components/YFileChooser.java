@@ -34,7 +34,7 @@ public class YFileChooser extends View {
 	/**
 	 * @param context
 	 */
-	public YFileChooser(Context context) {
+	public YFileChooser(final Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
@@ -43,7 +43,7 @@ public class YFileChooser extends View {
 	 * @param context
 	 * @param attrs
 	 */
-	public YFileChooser(Context context, AttributeSet attrs) {
+	public YFileChooser(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
@@ -53,7 +53,7 @@ public class YFileChooser extends View {
 	 * @param attrs
 	 * @param defStyle
 	 */
-	public YFileChooser(Context context, AttributeSet attrs, int defStyle) {
+	public YFileChooser(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
 	}

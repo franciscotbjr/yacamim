@@ -71,7 +71,7 @@ public class RowConfigItem implements Serializable {
 	 * @param graphFrom A graph that will be scanned for the value to be displayed.
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
 	 */
-	public RowConfigItem(String graphFrom, int resourceIdTo) {
+	public RowConfigItem(final String graphFrom, final int resourceIdTo) {
 		super();
 		this.graphFrom = graphFrom;
 		this.resourceIdTo = resourceIdTo;
@@ -84,7 +84,7 @@ public class RowConfigItem implements Serializable {
 	 * @param resourceIdTo A resource identifier to which will be displayed the value obtained throw the scanned graph.
 	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
 	 */
-	public RowConfigItem(String graphFrom, int resourceIdTo, int formatingType) {
+	public RowConfigItem(final String graphFrom, final int resourceIdTo, final int formatingType) {
 		super();
 		this.graphFrom = graphFrom;
 		this.resourceIdTo = resourceIdTo;
@@ -99,9 +99,9 @@ public class RowConfigItem implements Serializable {
 	 * @param formatingType A formating type identifier supposed to format information displayed. When there is no formatting, then <tt>-1</tt> is the value to be provided.
 	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
 	 */
-	public RowConfigItem(String graphFrom, int resourceIdTo,
-			int formatingType,
-			Condition condition) {
+	public RowConfigItem(final String graphFrom, final int resourceIdTo,
+			final int formatingType,
+			final Condition condition) {
 		super();
 		this.graphFrom = graphFrom;
 		this.resourceIdTo = resourceIdTo;
@@ -118,10 +118,10 @@ public class RowConfigItem implements Serializable {
 	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
 	 * @param interactionConfig
 	 */
-	public RowConfigItem(String graphFrom, int resourceIdTo,
-			int formatingType,
-			Condition condition,
-			InteractionConfig interactionConfig) {
+	public RowConfigItem(final String graphFrom, final int resourceIdTo,
+			final int formatingType,
+			final Condition condition,
+			final InteractionConfig interactionConfig) {
 		super();
 		this.graphFrom = graphFrom;
 		this.resourceIdTo = resourceIdTo;
@@ -138,8 +138,8 @@ public class RowConfigItem implements Serializable {
 	 * @param condition An instance of a class that implements <tt>br.org.yacamim.ui.componentes.Condition</tt> interface. This will be used to check if the item represented by the <tt>RowConfigItem</tt> instance will be displayed.
 	 * @param interactionConfig
 	 */
-	public RowConfigItem(String graphFrom, int resourceIdTo, Condition condition,
-			InteractionConfig interactionConfig) {
+	public RowConfigItem(final String graphFrom, final int resourceIdTo, final Condition condition,
+			final InteractionConfig interactionConfig) {
 		super();
 		this.graphFrom = graphFrom;
 		this.resourceIdTo = resourceIdTo;
@@ -154,8 +154,8 @@ public class RowConfigItem implements Serializable {
 	 * @param interactionConfig
 	 */
 	public RowConfigItem(
-			Condition condition,
-			InteractionConfig interactionConfig) {
+			final Condition condition,
+			final InteractionConfig interactionConfig) {
 		super();
 		this.condition = condition;
 		this.interactionConfig = interactionConfig;
@@ -171,7 +171,7 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * @param formatingType the formatingType to set
 	 */
-	public void setFormatingType(int formatingType) {
+	public void setFormatingType(final int formatingType) {
 		this.formatingType = formatingType;
 	}
 
@@ -185,7 +185,7 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * @param graphFrom the graphFrom to set
 	 */
-	public void setGraphFrom(String graphFrom) {
+	public void setGraphFrom(final String graphFrom) {
 		this.graphFrom = graphFrom;
 	}
 
@@ -199,7 +199,7 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * @param resourceIdTo the resourceIdTo to set
 	 */
-	public void setResourceIdTo(int resourceIdTo) {
+	public void setResourceIdTo(final int resourceIdTo) {
 		this.resourceIdTo = resourceIdTo;
 	}
 
@@ -213,7 +213,7 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * @param condition the condition to set
 	 */
-	public void setCondition(Condition condition) {
+	public void setCondition(final Condition condition) {
 		this.condition = condition;
 	}
 
@@ -227,7 +227,7 @@ public class RowConfigItem implements Serializable {
 	/**
 	 * @param interactionConfig the interactionConfig to set
 	 */
-	public void setInteractionConfig(InteractionConfig interactionConfig) {
+	public void setInteractionConfig(final InteractionConfig interactionConfig) {
 		this.interactionConfig = interactionConfig;
 	}
 
@@ -265,7 +265,7 @@ public class RowConfigItem implements Serializable {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

@@ -41,6 +41,8 @@ import br.org.yacamim.util.YUtilString;
  * @since 1.0
  */
 public class TextListSimpleAdapter extends SimpleAdapter {
+	
+	private static final String TAG = TextListSimpleAdapter.class.getSimpleName();
 
 	/**
 	 *
@@ -54,18 +56,18 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 
 	/**
 	 *
-	 * @param _activity
-	 * @param _context
-	 * @param _data
-	 * @param _adapterConfig
+	 * @param activity
+	 * @param context
+	 * @param data
+	 * @param adapterConfig
 	 */
-	public TextListSimpleAdapter(final Activity _activity,
-			final Context _context,
-			final List<? extends Map<String, Object>> _data,
-			final AdapterConfig _adapterConfig) {
-		super(_context, _data, 0, null, null);
-		this.activity = _activity;
-		this.adapterConfig = _adapterConfig;
+	public TextListSimpleAdapter(final Activity activity,
+			final Context context,
+			final List<? extends Map<String, Object>> data,
+			final AdapterConfig adapterConfig) {
+		super(context, data, 0, null, null);
+		this.activity = activity;
+		this.adapterConfig = adapterConfig;
 	}
 
 	/**
@@ -74,12 +76,12 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public View getView(int _position, View convertView, ViewGroup _parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 		try {
-			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
+			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(position);
 			final Object object = (Object) data.get(YConstants.OBJECT);
 
-			final RowConfig rowConfig = this.selectRowConfig(_position, object);
+			final RowConfig rowConfig = this.selectRowConfig(position, object);
 
 			convertView = this.activity.getLayoutInflater().inflate(rowConfig.getResource(), null);
 
@@ -89,82 +91,82 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 				}
 			}
 		} catch (Exception _e) {
-			Log.e("TextListSimpleAdapter.getView", _e.getMessage());
+			Log.e(TAG + ".getView", _e.getMessage());
 		}
 		return convertView;
     }
 
 	/**
-	 * @param _position
-	 * @param _object
+	 * @param position
+	 * @param object
 	 * @return
 	 */
-	protected RowConfig selectRowConfig(int _position, final Object _object) {
-		return this.adapterConfig.getRowCondition().selectRowConfig(_object, _position, this.adapterConfig.getRowConfigs());
+	protected RowConfig selectRowConfig(final int position, final Object object) {
+		return this.adapterConfig.getRowCondition().selectRowConfig(object, position, this.adapterConfig.getRowConfigs());
 	}
 
 	/**
-	 * @param _convertView
-	 * @param _object
-	 * @param _rowConfigItem
+	 * @param convertView
+	 * @param object
+	 * @param rowConfigItem
 	 */
-	private void fillField(View _convertView, final Object _object, RowConfigItem _rowConfigItem) {
+	private void fillField(final View convertView, final Object object, final RowConfigItem rowConfigItem) {
 		try {
-			if(_rowConfigItem.getResourceIdTo() != -1 && _rowConfigItem.getGraphFrom() != null) {
-				final TextView textView = (TextView) _convertView.findViewById(_rowConfigItem.getResourceIdTo());
-				Object value = YUtilReflection.getPropertyValue(_rowConfigItem.getGraphFrom(), _object);
-				String formmatedValue = format(_rowConfigItem, value);
+			if(rowConfigItem.getResourceIdTo() != -1 && rowConfigItem.getGraphFrom() != null) {
+				final TextView textView = (TextView) convertView.findViewById(rowConfigItem.getResourceIdTo());
+				Object value = YUtilReflection.getPropertyValue(rowConfigItem.getGraphFrom(), object);
+				String formmatedValue = format(rowConfigItem, value);
 				textView.setText(formmatedValue);
 				textView.setPadding(0, 0, 0, 0);
 			}
-		} catch (Exception _e) {
-			Log.e("TextListSimpleAdapter.fillField", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".fillField", e.getMessage());
 		}
 	}
 
 	/**
-	 * @param _rowConfigItem
-	 * @param _value
+	 * @param rowConfigItem
+	 * @param value
 	 * @return
 	 */
-	private String format(final RowConfigItem _rowConfigItem, final Object _value) {
-		String value = "";
+	private String format(final RowConfigItem rowConfigItem, final Object value) {
+		String strValue = "";
 		try {
-			if(_value.getClass().equals(int.class)
-					|| _value.getClass().equals(long.class)
-					|| _value.getClass().equals(double.class)
-					|| _value.getClass().equals(float.class)
-					|| _value.getClass().equals(Integer.class)
-					|| _value.getClass().equals(Long.class)
-					|| _value.getClass().equals(Double.class)
-					|| _value.getClass().equals(Float.class)
-					|| _value.getClass().equals(String.class)) {
-				value = _value.toString();
+			if(value.getClass().equals(int.class)
+					|| value.getClass().equals(long.class)
+					|| value.getClass().equals(double.class)
+					|| value.getClass().equals(float.class)
+					|| value.getClass().equals(Integer.class)
+					|| value.getClass().equals(Long.class)
+					|| value.getClass().equals(Double.class)
+					|| value.getClass().equals(Float.class)
+					|| value.getClass().equals(String.class)) {
+				strValue = value.toString();
 			}
-			if(_value instanceof String) {
-				if(!YUtilString.isEmptyString(value) && _rowConfigItem.getFormatingType() > 0) {
-					if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_CPF) {
-						value = YUtilFormatting.formatCpf(
+			if(value instanceof String) {
+				if(!YUtilString.isEmptyString(strValue) && rowConfigItem.getFormatingType() > 0) {
+					if (rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_CPF) {
+						strValue = YUtilFormatting.formatCpf(
 								YUtilString.keepOnlyNumbers(
-										value));
-					} else if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_TELEFONE) {
-						value = YUtilFormatting.formatTelefone(
+										strValue));
+					} else if (rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_TELEFONE) {
+						strValue = YUtilFormatting.formatTelefone(
 								YUtilString.keepOnlyNumbers(
-										value));
-					} else if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
-						value = YUtilFormatting.formatData(value);
+										strValue));
+					} else if (rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
+						strValue = YUtilFormatting.formatData(strValue);
 					}
 				}
 			} else
-			if(_value instanceof java.util.Date) {
-				if (_rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
-					value = YUtilFormatting.formatData((java.util.Date)_value);
+			if(value instanceof java.util.Date) {
+				if (rowConfigItem.getFormatingType() == TextWatcherFormatter.TIPO_FORMATACAO_DATA) {
+					strValue = YUtilFormatting.formatData((java.util.Date)value);
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("TextListSimpleAdapter.format", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".format", e.getMessage());
 		}
-		return value.trim();
+		return strValue.trim();
 	}
 
 	/**
