@@ -98,8 +98,8 @@ public class YBaseLocationListener implements LocationListener {
 				this.gpsLocationInfo.setTime(location.getTime());
 			}
 			
-		} catch (Exception _e) {
-			Log.e(TAG + ".onLocationChanged", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".onLocationChanged", e.getMessage());
 		}
 	}
 
@@ -112,8 +112,8 @@ public class YBaseLocationListener implements LocationListener {
 	public void onProviderDisabled(final String provider) {
 		try {
 
-		} catch (Exception _e) {
-			Log.e(TAG + ".onProviderDisabled", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".onProviderDisabled", e.getMessage());
 		}
 	}
 
@@ -126,8 +126,8 @@ public class YBaseLocationListener implements LocationListener {
 	public void onProviderEnabled(final String provider) {
 		try {
 
-		} catch (Exception _e) {
-			Log.e(TAG + ".onProviderEnabled", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".onProviderEnabled", e.getMessage());
 		}
 	}
 
@@ -140,8 +140,8 @@ public class YBaseLocationListener implements LocationListener {
 	public void onStatusChanged(final String provider, final int status, final Bundle extras) {
 		try {
 
-		} catch (Exception _e) {
-			Log.e(TAG + ".onStatusChanged", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".onStatusChanged", e.getMessage());
 		}
 	}
 

@@ -36,6 +36,8 @@ import br.org.yacamim.util.YUtilString;
  */
 final class YUtilPersistence {
 	
+	private static final String TAG = YUtilPersistence.class.getSimpleName();
+	
 	public static final int NULL = 0;
 	public static final int INTEGER = 1;
 	public static final int TEXT = 2;
@@ -164,7 +166,7 @@ final class YUtilPersistence {
 				}
 			}
 		} catch (Exception e) {
-			Log.e("YUtilPersistence.getIdGetMethod", e.getMessage());
+			Log.e(TAG + ".getIdGetMethod", e.getMessage());
 		}
 		return idMethod;
 	}
@@ -336,7 +338,7 @@ final class YUtilPersistence {
 			}
 			return sortedGetMethods;
 		} catch(Exception e) {
-			Log.e("YUtilPersistence.getColumnGetMethodListSortedByNameAsArray", e.getMessage());
+			Log.e(TAG + ".getColumnGetMethodListSortedByNameAsArray", e.getMessage());
 			return new Method[]{};
 		}
 	}

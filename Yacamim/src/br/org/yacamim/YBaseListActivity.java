@@ -73,14 +73,14 @@ public class YBaseListActivity extends ListActivity {
 	}
 
 	/**
-	 * @param _listView
-	 * @param _position
+	 * @param listView
+	 * @param position
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected Object getObjectFromListView(final ListView _listView,
-			final int _position) {
-		return ((HashMap<String, Object>)_listView.getAdapter().getItem(_position)).get(YConstants.OBJECT);
+	protected Object getObjectFromListView(final ListView listView,
+			final int position) {
+		return ((HashMap<String, Object>)listView.getAdapter().getItem(position)).get(YConstants.OBJECT);
 	}
 	
 	/**
@@ -101,25 +101,25 @@ public class YBaseListActivity extends ListActivity {
 
 	/**
 	 * 
-	 * @param _view
-	 * @param _objectValue
+	 * @param view
+	 * @param objectValue
 	 */
-	public void onListViewClick(final View _view, final Object _objectValue) {
+	public void onListViewClick(final View view, final Object objectValue) {
 		
 	}
 	
 	/**
 	 * 
-	 * @param _mapList
-	 * @param _sourceList
+	 * @param mapList
+	 * @param sourceList
 	 */
 	@SuppressWarnings("rawtypes")
-	protected void fillMapList(final List<HashMap<String, Object>> _mapList, final List _sourceList) {
+	protected void fillMapList(final List<HashMap<String, Object>> mapList, final List sourceList) {
 		try {
-			for(final Object item : _sourceList) {
+			for(final Object item : sourceList) {
 				final HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put(YConstants.OBJECT, item);
-				_mapList.add(map);
+				mapList.add(map);
 			}
 		} catch (Exception _e) {
 			Log.e(TAG + ".fillMapList", _e.getMessage());
@@ -128,23 +128,23 @@ public class YBaseListActivity extends ListActivity {
 
 	/**
 	 * 
-	 * @param _objectValue
-	 * @param _mapList
-	 * @param _sourceList
+	 * @param objectValue
+	 * @param mapList
+	 * @param sourceList
 	 */
 	@SuppressWarnings("rawtypes")
-	protected void removeListViewItem(final Object _objectValue, final List<HashMap<String, Object>> _mapList,  final List _sourceList) {
+	protected void removeListViewItem(final Object objectValue, final List<HashMap<String, Object>> mapList,  final List sourceList) {
 		try {
 			HashMap<String, Object> mapToRemove = null;
-			for(HashMap<String, Object> map  : _mapList) {
-				if(map.containsValue(_objectValue)) {
+			for(HashMap<String, Object> map  : mapList) {
+				if(map.containsValue(objectValue)) {
 					mapToRemove = map;
 					break;
 				}
 			}
 			if(mapToRemove != null) {
-				_sourceList.remove(_objectValue);
-				_mapList.remove(mapToRemove);
+				sourceList.remove(objectValue);
+				mapList.remove(mapToRemove);
 				((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
 			}
 		} catch (Exception _e) {
@@ -166,18 +166,18 @@ public class YBaseListActivity extends ListActivity {
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
 	@Override
-	protected Dialog onCreateDialog(final int _idDialog) {
-		switch(_idDialog) {
+	protected Dialog onCreateDialog(final int idDialog) {
+		switch(idDialog) {
 			case YConstants.ERROR_CONSTRAINT_DEPENDENCY:
 				AlertDialog.Builder builderRegistroNaoPodeSerExcluidoPorDependencia = new DefaultAlertDialogBuilder(this, this.getText(YacamimResources.getInstance().getIdResourceMsgConstraintDependency()).toString(), false);
 				builderRegistroNaoPodeSerExcluidoPorDependencia.setPositiveButton(YacamimResources.getInstance().getIdResourceMsgOK(), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface _dialog, int id) {
-						removeDialog(_idDialog);
+						removeDialog(idDialog);
 					}
 				});
 				return builderRegistroNaoPodeSerExcluidoPorDependencia.show();
 			default:
-				return super.onCreateDialog(_idDialog);
+				return super.onCreateDialog(idDialog);
 		}
 	}
 }

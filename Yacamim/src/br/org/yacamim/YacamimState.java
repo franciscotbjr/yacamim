@@ -118,8 +118,8 @@ public final class YacamimState {
 				YacamimState.getInstance().setPreferences(preferenciasAdapter.get());
 				
 			}
-		} catch (Exception _e) {
-			Log.e(TAG + ".getPreferences", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".getPreferences", e.getMessage());
 		}
 		return preferences;
 	}
@@ -157,10 +157,10 @@ public final class YacamimState {
 
 	/**
 	 * 
-	 * @param _logoff
+	 * @param logoff
 	 */
-	public YacamimState setLogoff(final boolean _logoff) {
-		this.logoff = _logoff;
+	public YacamimState setLogoff(final boolean logoff) {
+		this.logoff = logoff;
 		return this;
 	}
 
@@ -192,10 +192,10 @@ public final class YacamimState {
 	}
 
 	/**
-	 * @param _sessao the session to set
+	 * @param sessao the session to set
 	 */
-	protected YacamimState setSessao(final Session _sessao) {
-		this.session = _sessao;
+	protected YacamimState setSessao(final Session sessao) {
+		this.session = sessao;
 		return this;
 	}
 

@@ -36,6 +36,8 @@ import android.util.Log;
  */
 public class Mail extends Authenticator {
 	
+	private static final String TAG = Mail.class.getSimpleName();
+	
 	  private String user; 
 	  private String password; 
 	 
@@ -66,14 +68,14 @@ public class Mail extends Authenticator {
 	
 	/**
 	 * 
-	 * @param _user
-	 * @param _password
+	 * @param user
+	 * @param password
 	 */
-	public Mail(final String _user, final String _password) { 
+	public Mail(final String user, final String password) { 
 		this(); 
 		this.init();
-		this.user = _user; 
-		this.password = _password; 
+		this.user = user; 
+		this.password = password; 
 	} 
 	
 	/**
@@ -104,35 +106,35 @@ public class Mail extends Authenticator {
 		    mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed"); 
 		    mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822"); 
 		    CommandMap.setDefaultCommandMap(mc); 
-		} catch (Exception _e) {
-			Log.e("Email.init ", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".init ", e.getMessage());
 		}
 	}
 	
 	/**
 	 * 
-	 * @param _filename
+	 * @param filename
 	 * @throws Exception
 	 */
-	public void addAttachment(final String _filename) throws Exception { 
+	public void addAttachment(final String filename) throws Exception { 
 	    BodyPart messageBodyPart = new MimeBodyPart(); 
-	    DataSource source = new FileDataSource(_filename); 
+	    DataSource source = new FileDataSource(filename); 
 	    messageBodyPart.setDataHandler(new DataHandler(source)); 
-	    messageBodyPart.setFileName(_filename); 
+	    messageBodyPart.setFileName(filename); 
 	 
 	    multipart.addBodyPart(messageBodyPart); 
 	} 
 	
 	/**
 	 * 
-	 * @param _imageFile
+	 * @param imageFile
 	 * @throws Exception
 	 */
-	public void addAttachment(final File _imageFile) throws Exception { 
+	public void addAttachment(final File imageFile) throws Exception { 
 		BodyPart messageBodyPart = new MimeBodyPart(); 
-		DataSource source = new FileDataSource(_imageFile); 
+		DataSource source = new FileDataSource(imageFile); 
 		messageBodyPart.setDataHandler(new DataHandler(source)); 
-		messageBodyPart.setFileName(_imageFile.getName()); 
+		messageBodyPart.setFileName(imageFile.getName()); 
 		
 		multipart.addBodyPart(messageBodyPart); 
 	}
@@ -221,10 +223,10 @@ public class Mail extends Authenticator {
 		
 	/**
 	 * 
-	 * @param _body
+	 * @param body
 	 */
-	public void setBody(String _body) { 
-		this.body = _body; 
+	public void setBody(String body) { 
+		this.body = body; 
 	}
 	
 	/**
