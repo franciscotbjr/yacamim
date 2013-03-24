@@ -22,13 +22,13 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
-*
-* Class YFileChooser TODO
-*
-* @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
-* @version 1.0
-* @since 1.0
-*/
+ *
+ * Class YFileChooser TODO
+ *
+ * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
+ * @version 1.0
+ * @since 1.0
+ */
 public class YFileChooser extends View {
 
 	/**
