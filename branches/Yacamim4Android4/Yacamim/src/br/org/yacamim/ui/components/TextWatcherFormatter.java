@@ -81,31 +81,31 @@ public class TextWatcherFormatter implements TextWatcher {
 
 	/**
 	 *
-	 * @param _editText
-	 * @param _formattingType
-	 * @param _lenghtCountStart
+	 * @param editText
+	 * @param formattingType
+	 * @param lenghtCountStart
 	 */
-	public TextWatcherFormatter(final EditText _editText, final int _formattingType, final int _lenghtCountStart) {
+	public TextWatcherFormatter(final EditText editText, final int formattingType, final int lenghtCountStart) {
 		super();
-		this.editText = _editText;
-		this.formattingType = _formattingType;
-		this.lenghtCountStart = _lenghtCountStart;
+		this.editText = editText;
+		this.formattingType = formattingType;
+		this.lenghtCountStart = lenghtCountStart;
 		this.editText.addTextChangedListener(this);
 	}
 
 	/**
 	 *
-	 * @param _editText
-	 * @param _dynamicMask
-	 * @param _mask
-	 * @param _lenghtCountStart
+	 * @param editText
+	 * @param dynamicMask
+	 * @param mask
+	 * @param lenghtCountStart
 	 */
-	public TextWatcherFormatter(final EditText _editText, final boolean _dynamicMask, final String _mask, final int _lenghtCountStart) {
+	public TextWatcherFormatter(final EditText editText, final boolean dynamicMask, final String mask, final int lenghtCountStart) {
 		super();
-		this.editText = _editText;
-		this.dynamicMask = _dynamicMask;
-		this.lenghtCountStart = _lenghtCountStart;
-		this.mask = _mask;
+		this.editText = editText;
+		this.dynamicMask = dynamicMask;
+		this.lenghtCountStart = lenghtCountStart;
+		this.mask = mask;
 		this.editText.addTextChangedListener(this);
 	}
 
@@ -114,7 +114,7 @@ public class TextWatcherFormatter implements TextWatcher {
 	 * @see android.text.TextWatcher#afterTextChanged(android.text.Editable)
 	 */
 	@Override
-	public void afterTextChanged(final Editable _editable) {
+	public void afterTextChanged(final Editable editable) {
 
 	}
 
@@ -123,7 +123,7 @@ public class TextWatcherFormatter implements TextWatcher {
 	 * @see android.text.TextWatcher#beforeTextChanged(java.lang.CharSequence, int, int, int)
 	 */
 	@Override
-	public void beforeTextChanged(final CharSequence _charSequence, final int _start, final int _count, final int _after) {
+	public void beforeTextChanged(final CharSequence charSequence, final int start, final int count, final int after) {
 		// TODO Auto-generated method stub
 
 	}
@@ -133,7 +133,7 @@ public class TextWatcherFormatter implements TextWatcher {
 	 * @see android.text.TextWatcher#onTextChanged(java.lang.CharSequence, int, int, int)
 	 */
 	@Override
-	public void onTextChanged(final CharSequence _charSequence, final int _start, final int _before, final int _count) {
+	public void onTextChanged(final CharSequence charSequence, final int start, final int before, final int count) {
 		try {
         	this.editText.removeTextChangedListener(this);
         	if (filterLongEnough()) {
