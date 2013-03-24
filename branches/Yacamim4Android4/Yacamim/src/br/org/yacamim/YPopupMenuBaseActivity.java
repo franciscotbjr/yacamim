@@ -41,11 +41,11 @@ public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
 
 	/**
 	 * 
-	 * @param _menuItems
+	 * @param menuItems
 	 */
-	public YPopupMenuBaseActivity(final YPopupMenuItem[] _menuItems) {
+	public YPopupMenuBaseActivity(final YPopupMenuItem[] menuItems) {
 		super();
-		this.setMenuItems(_menuItems);
+		this.setMenuItems(menuItems);
 	}
 	
     /**
@@ -53,7 +53,7 @@ public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
      * @param _menuItems
      * @return
      */
-    public void showPopupMenu(final View _view) {
+    public void showPopupMenu(final View view) {
     	if(this.getMenuItems() != null && this.getMenuItems().length > 0) {
     		this.showDialog(POPUP_MENU);
     	}
@@ -61,10 +61,10 @@ public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
 	
 	/**
 	 * 
-	 * @param _menuItem
+	 * @param menuItem
 	 * @return
 	 */
-	protected boolean onPopupMenuItemSelected(final YPopupMenuItem _menuItem) {
+	protected boolean onPopupMenuItemSelected(final YPopupMenuItem menuItem) {
 		return true;
 	}
 
@@ -73,22 +73,22 @@ public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
      * @see br.org.yacamim.YBaseActivity#onCreateDialog(int)
      */
 	@Override
-	protected Dialog onCreateDialog(final int _idDialog) {
-		switch (_idDialog) {
+	protected Dialog onCreateDialog(final int idDialog) {
+		switch (idDialog) {
 			case POPUP_MENU:
-				final String[] companhiasDomesticas = this.getMenuItemsText();
-				if(companhiasDomesticas != null && companhiasDomesticas.length > 0) {
-					AlertDialog.Builder builderCompanhiasDomesticas = new DefaultAlertDialogBuilder(this, null, null, true);
-					builderCompanhiasDomesticas.setItems(companhiasDomesticas, new DialogInterface.OnClickListener() {
+				final String[] menuItems = this.getMenuItemsText();
+				if(menuItems != null && menuItems.length > 0) {
+					AlertDialog.Builder alertDialogBuilder = new DefaultAlertDialogBuilder(this, null, null, true);
+					alertDialogBuilder.setItems(menuItems, new DialogInterface.OnClickListener() {
 						public void onClick(final DialogInterface _dialog, final int _item) {
-							YPopupMenuBaseActivity.this.removeDialog(_idDialog);
+							YPopupMenuBaseActivity.this.removeDialog(idDialog);
 							YPopupMenuBaseActivity.this.onPopupMenuItemSelected(YPopupMenuBaseActivity.this.getMenuItems()[_item]);
 						}
 					});
-					return builderCompanhiasDomesticas.create();
+					return alertDialogBuilder.create();
 				}
 			default:
-				return super.onCreateDialog(_idDialog);
+				return super.onCreateDialog(idDialog);
 		}
 	}
 
@@ -104,10 +104,10 @@ public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
 
 	/**
 	 * 
-	 * @param _menuItems
+	 * @param menuItems
 	 */
-	protected void setMenuItems(final YPopupMenuItem[] _menuItems) {
-		this.menuItems = _menuItems;
+	protected void setMenuItems(final YPopupMenuItem[] menuItems) {
+		this.menuItems = menuItems;
 	}
 	
 	/**
@@ -123,8 +123,8 @@ public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
 				}
 				return textosMenus;
 			}
-		} catch (Exception _e) {
-			Log.e("YPopupMenuBaseActivity.getMenuItemsText", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("YPopupMenuBaseActivity.getMenuItemsText", e.getMessage());
 		}
 		return null;
 	}
