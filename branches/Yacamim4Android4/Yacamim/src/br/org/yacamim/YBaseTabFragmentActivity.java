@@ -30,7 +30,7 @@ import android.app.FragmentTransaction;
  * @version 1.0
  * @since 1.0
  */
-public abstract class YBaseTabFragmentActivity extends YBaseFragmentActivity implements ActionBar.TabListener  {
+public abstract class YBaseTabFragmentActivity extends YBaseActivity implements ActionBar.TabListener  {
 
 	/**
 	 * 
