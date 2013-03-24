@@ -166,7 +166,7 @@ public class VisitaActivity extends YBaseActivity {
 			}
 
 			adapter.insert(visita);
-			showDialog(Constantes.INFO_DATA_SUCCESFULLY_INSERTED);
+			showDialog(Constantes.INFO_DATA_SUCCESSFULLY_INSERTED);
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
 			if (adapter != null) {
