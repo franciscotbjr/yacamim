@@ -62,14 +62,14 @@ public class YJSONRPCBuilder {
 
 	/**
 	 *
-	 * @param _objectName
+	 * @param objectName
 	 */
-	public void startJsonRPCObjectArray(String _objectName) {
+	public void startJsonRPCObjectArray(final String objectName) {
 		if (this.items) {
 			this.buffer.append(",");
 		}
 		this.buffer.append("\"");
-		this.buffer.append(_objectName);
+		this.buffer.append(objectName);
 		this.buffer.append("\"");
 		this.buffer.append(":");
 		this.buffer.append("[");

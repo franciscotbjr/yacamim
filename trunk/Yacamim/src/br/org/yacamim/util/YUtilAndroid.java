@@ -199,8 +199,8 @@ public final class YUtilAndroid {
 					}
 				}
 			}
-		} catch (Exception _e) {
-			Log.e(TAG + ".checkInternetConnection", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".checkInternetConnection", e.getMessage());
 		}
 		handleDefaultDialogs(activity, wifi);
 		return false;

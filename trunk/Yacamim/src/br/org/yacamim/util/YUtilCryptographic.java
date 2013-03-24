@@ -52,8 +52,8 @@ public strictfp abstract class YUtilCryptographic {
             Base64 base64 = new Base64();
             String resultado = new String(base64.encode(string.getBytes()));
             return resultado;
-        } catch (Exception _e) {
-        	Log.e(TAG + ".encodeBase64", _e.getMessage());
+        } catch (Exception e) {
+        	Log.e(TAG + ".encodeBase64", e.getMessage());
             return null;
         }
 
@@ -70,8 +70,8 @@ public strictfp abstract class YUtilCryptographic {
             byte[] b = base64.decode(string.getBytes());
             String resultado = new String(b);
             return resultado;
-        } catch (Exception _e) {
-        	Log.e(TAG + ".decodeBase64", _e.getMessage());
+        } catch (Exception e) {
+        	Log.e(TAG + ".decodeBase64", e.getMessage());
             return null;
         }
     }
@@ -124,8 +124,8 @@ public strictfp abstract class YUtilCryptographic {
 			MessageDigest md = MessageDigest.getInstance(algorithm);
 			md.update(phrase.getBytes());
 			return md.digest();
-		} catch (NoSuchAlgorithmException _e) {
-			Log.e(TAG + ".makeHash", _e.getMessage());
+		} catch (NoSuchAlgorithmException e) {
+			Log.e(TAG + ".makeHash", e.getMessage());
 			return null;
 		}
     }

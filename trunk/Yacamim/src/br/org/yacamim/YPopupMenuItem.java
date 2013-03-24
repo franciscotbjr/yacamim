@@ -47,13 +47,13 @@ public class YPopupMenuItem implements Serializable {
 	
 	/**
 	 * 
-	 * @param _action
+	 * @param action
 	 * @param _descricao
 	 */
-	public YPopupMenuItem(final Integer _action, final Integer _idDescriptionResource) {
+	public YPopupMenuItem(final Integer action, final Integer idDescriptionResource) {
 		super();
-		this.action = _action;
-		this.descriptionResourceId = _idDescriptionResource;
+		this.action = action;
+		this.descriptionResourceId = idDescriptionResource;
 	}
 
 	/**

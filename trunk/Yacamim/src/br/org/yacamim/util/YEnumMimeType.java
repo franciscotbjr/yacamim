@@ -74,40 +74,40 @@ public enum YEnumMimeType {
 
 	/**
 	 *
-	 * @param _extention
+	 * @param extention
 	 * @return
 	 */
-	public static YEnumMimeType getMimeType(final String _extention) {
+	public static YEnumMimeType getMimeType(final String extention) {
 		YEnumMimeType yEnumMimeType = null;
-		if(_extention.equalsIgnoreCase(MIME_TYPE_PDF.getExtention())) {
+		if(extention.equalsIgnoreCase(MIME_TYPE_PDF.getExtention())) {
 			yEnumMimeType = MIME_TYPE_PDF;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_MPEG.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_MPEG.getExtention())) {
 			yEnumMimeType = MIME_TYPE_MPEG;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_JPEG.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_JPEG.getExtention())) {
 			yEnumMimeType = MIME_TYPE_JPEG;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_PNG.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_PNG.getExtention())) {
 			yEnumMimeType = MIME_TYPE_PNG;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_HTML.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_HTML.getExtention())) {
 			yEnumMimeType = MIME_TYPE_HTML;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_GIF.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_GIF.getExtention())) {
 			yEnumMimeType = MIME_TYPE_GIF;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_TXT.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_TXT.getExtention())) {
 			yEnumMimeType = MIME_TYPE_TXT;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_RTF.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_RTF.getExtention())) {
 			yEnumMimeType = MIME_TYPE_RTF;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_BMP.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_BMP.getExtention())) {
 			yEnumMimeType = MIME_TYPE_BMP;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_DOC.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_DOC.getExtention())) {
 			yEnumMimeType = MIME_TYPE_DOC;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_XLS.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_XLS.getExtention())) {
 			yEnumMimeType = MIME_TYPE_XLS;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_PPT.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_PPT.getExtention())) {
 			yEnumMimeType = MIME_TYPE_PPT;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_DOCX.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_DOCX.getExtention())) {
 			yEnumMimeType = MIME_TYPE_DOCX;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_XLSX.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_XLSX.getExtention())) {
 			yEnumMimeType = MIME_TYPE_XLSX;
-		} else if(_extention.equalsIgnoreCase(MIME_TYPE_PPTX.getExtention())) {
+		} else if(extention.equalsIgnoreCase(MIME_TYPE_PPTX.getExtention())) {
 			yEnumMimeType = MIME_TYPE_PPTX;
 		}
 		return yEnumMimeType;

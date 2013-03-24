@@ -54,8 +54,8 @@ public abstract class YMenuBaseActivity extends YBaseActivity {
 			YacamimState.getInstance().setLogoff(true);
 			
 			this.finish();
-		} catch (Exception _e) {
-			Log.e(TAG + ".logoff", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".logoff", e.getMessage());
 		}
 	}
 
