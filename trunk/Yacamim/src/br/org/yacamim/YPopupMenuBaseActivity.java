@@ -35,6 +35,8 @@ import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
  */
 public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
 	
+	private static final String TAG = YPopupMenuBaseActivity.class.getSimpleName();
+	
 	public static final int POPUP_MENU = 2011074537;
 	
 	private YPopupMenuItem[] menuItems;
@@ -124,7 +126,7 @@ public abstract class YPopupMenuBaseActivity extends YMenuBaseActivity {
 				return textosMenus;
 			}
 		} catch (Exception _e) {
-			Log.e("YPopupMenuBaseActivity.getMenuItemsText", _e.getMessage());
+			Log.e(TAG + ".getMenuItemsText", _e.getMessage());
 		}
 		return null;
 	}

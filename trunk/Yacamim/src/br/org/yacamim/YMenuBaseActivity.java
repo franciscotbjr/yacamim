@@ -30,6 +30,7 @@ import br.org.yacamim.persistence.SessionDBAdapter;
  */
 public abstract class YMenuBaseActivity extends YBaseActivity {
 	
+	private static final String TAG = YMenuBaseActivity.class.getSimpleName();
 	
 	/**
 	 * 
@@ -54,7 +55,7 @@ public abstract class YMenuBaseActivity extends YBaseActivity {
 			
 			this.finish();
 		} catch (Exception _e) {
-			Log.e("YMenuBaseActivity.logoff", _e.getMessage());
+			Log.e(TAG + ".logoff", _e.getMessage());
 		}
 	}
 

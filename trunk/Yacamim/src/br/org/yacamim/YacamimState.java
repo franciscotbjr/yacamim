@@ -38,6 +38,8 @@ import br.org.yacamim.persistence.PreferencesAdapter;
  * @since 1.0
  */
 public final class YacamimState {
+	
+	private static final String TAG = YacamimState.class.getSimpleName();
 
 	private static final YacamimState singletonYacamimState = new YacamimState();
 	
@@ -117,7 +119,7 @@ public final class YacamimState {
 				
 			}
 		} catch (Exception _e) {
-			Log.e("YacamimState.getPreferences", _e.getMessage());
+			Log.e(TAG + ".getPreferences", _e.getMessage());
 		}
 		return preferences;
 	}

@@ -31,6 +31,8 @@ import br.org.yacamim.util.YUtilAndroid;
  * @since 1.0
  */
 public abstract class YBaseAsyncTask<Params, Result> extends AsyncTask<Params, Integer, Result> {
+	
+	private static final String TAG = YBaseAsyncTask.class.getSimpleName();
 
 	private boolean errorWithoutConnectivity;
 	
@@ -78,7 +80,7 @@ public abstract class YBaseAsyncTask<Params, Result> extends AsyncTask<Params, I
 				} 
 			}
 		} catch (Exception e) {
-			Log.e("YBaseAsyncTask.onPostExecute", e.getMessage());
+			Log.e(TAG + ".onPostExecute", e.getMessage());
 		}
 	}
 	
@@ -94,7 +96,7 @@ public abstract class YBaseAsyncTask<Params, Result> extends AsyncTask<Params, I
 				this.errorWithoutConnectivity = true;
 			}
 		} catch (Exception e) {
-			Log.e("YBaseAsyncTask.doInBackground", e.getMessage());
+			Log.e(TAG + ".doInBackground", e.getMessage());
 		}
 		return null;
 	}

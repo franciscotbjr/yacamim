@@ -28,6 +28,8 @@ import java.io.Serializable;
  */
 public class YPopupMenuItem implements Serializable {
 	
+	private static final String TAG = YPopupMenuItem.class.getSimpleName();
+	
 	private Integer action;
 	private Integer descriptionResourceId;
 

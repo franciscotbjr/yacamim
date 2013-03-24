@@ -28,6 +28,8 @@ import android.app.Application;
  * @since 1.0
  */
 public abstract class YApplication extends Application {
+	
+	private static final String TAG = YApplication.class.getSimpleName();
 
 	/**
 	 * 

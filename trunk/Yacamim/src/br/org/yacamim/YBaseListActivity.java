@@ -41,6 +41,8 @@ import br.org.yacamim.util.YConstants;
  * @since 1.0
  */
 public class YBaseListActivity extends ListActivity {
+	
+	private static final String TAG = YBaseListActivity.class.getSimpleName();
 
 	/**
 	 * 
@@ -66,7 +68,7 @@ public class YBaseListActivity extends ListActivity {
 		try {
 			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		} catch (Exception _e) {
-			Log.e("YBaseListActivity.keepScreenOn", _e.getMessage());
+			Log.e(TAG + ".keepScreenOn", _e.getMessage());
 		}
 	}
 
@@ -120,7 +122,7 @@ public class YBaseListActivity extends ListActivity {
 				_mapList.add(map);
 			}
 		} catch (Exception _e) {
-			Log.e("YBaseListActivity.fillMapList", _e.getMessage());
+			Log.e(TAG + ".fillMapList", _e.getMessage());
 		}
 	}
 
@@ -146,7 +148,7 @@ public class YBaseListActivity extends ListActivity {
 				((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
 			}
 		} catch (Exception _e) {
-			Log.e("YBaseListActivity.removeListViewItem", _e.getMessage());
+			Log.e(TAG + ".removeListViewItem", _e.getMessage());
 		}
 	}
 	
