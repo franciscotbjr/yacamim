@@ -32,15 +32,16 @@ import br.org.yacamim.util.YUtilReflection;
  * @version 1.0
  * @since 1.0
  */
-public class YProxyLoad {
+public abstract class YProxyLoad {
 	/**
 	 * Load the entity of a proxy object.
 	 * 
 	 * @param proxy
 	 * @param loadAll
+	 * @param father
 	 * @return
 	 */
-	public YBaseEntity load(Object proxy, boolean loadAll) {
+	public static YBaseEntity load(Object proxy, boolean loadAll, Object father) {
 		YBaseEntity objReturn = null;
 		try {
 			objReturn = (YBaseEntity) proxy.getClass().getSuperclass().newInstance();
@@ -51,8 +52,8 @@ public class YProxyLoad {
 				if (value != null) {
 					if (value.getClass().getName().indexOf("_Proxy") < 0) {
 						YUtilReflection.setValueToProperty(propertyName, value, objReturn);
-					} else if (loadAll) {
-						Object objRelation = load(value, loadAll);
+					} else if (loadAll && !value.equals(father)) {
+						Object objRelation = load(value, loadAll, proxy);
 						YUtilReflection.setValueToProperty(propertyName, objRelation, objReturn);
 					}
 				}
