@@ -145,8 +145,7 @@ public class ListPacientesActivity extends YBaseListActivity {
 	private void showGerenciarPaciente() {
 		try {
 			Intent intent = new Intent(this, PacienteActivity.class);
-			YProxyLoad yProxyLoad = new YProxyLoad();
-			Paciente paciente = (Paciente) yProxyLoad.load(pacienteSelecionado, false);
+			Paciente paciente = (Paciente) YProxyLoad.load(pacienteSelecionado, false, null);
 			intent.putExtra("pacienteCadastro", paciente);
 			this.startActivityForResult(intent, YConstants.LOGOFF);
 		} catch (Exception e) {
