@@ -839,4 +839,12 @@ final class YUtilPersistence {
 		return currentId;
 	}
 
+	/**
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	static boolean isProxy(final Class<?> clazz) {
+		return clazz.getName().indexOf("_Proxy") > 0;
+	}
 }

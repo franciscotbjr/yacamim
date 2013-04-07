@@ -197,18 +197,36 @@ public class DefaultDBAdapter<E> {
 	 * @param entity
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean update(final E entity) {
 		try {
-			if(!this.isEntity()) {
-				throw new NotAnEntityException();
+			boolean success = false;
+
+			if (YUtilPersistence.isProxy(entity.getClass())) {
+				E loadEntity = (E) YProxyLoad.load(entity, true, null);
+				this.beginTransaction();
+				success = this.localUpdate(loadEntity);
+			} else {
+				if(!this.isEntity()) {
+					throw new NotAnEntityException();
+				}
+				success = this.localUpdate(entity);
 			}
+
+			/*
 			final ContentValues updateValues = createContentValues(entity);
 			final String idColumnName = YUtilPersistence.getIdColumnName(this.getGenericClass());
 			updateValues.remove(idColumnName);
 			return this.getDatabase().update(this.getTableName(), updateValues, idColumnName + " = " + this.getId(entity), null) > 0;
+			*/
+
+			return success;
 		} catch (Exception e) {
+			this.endTransaction(false);
 			Log.e("DefaultDBAdapter.update", e.getMessage());
 			return false;
+		} finally {
+			this.endTransaction(true);
 		}
 	}
 
@@ -1117,5 +1135,128 @@ public class DefaultDBAdapter<E> {
 		return this.handlesOneToManyJoin(entity, manyToManyResults);
 	}
 
-	
+
+	/**
+	 * 
+	 * @param entity
+	 * @param database
+	 * @return
+	 * @throws Exception
+	 */
+	private final boolean localUpdate(final E entity) throws Exception {
+		if (!this.isEntity()) {
+			throw new NotAnEntityException();
+		}
+
+		final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
+
+		this.updateManyToOneRelationships(entity, getMethods);
+		this.updateOneToOneOwnerRelationships(entity, getMethods);
+		if (YUtilPersistence.getCurrentId(entity) >= 1) {
+			simpleUpdate(entity);
+
+			//this.handlesBidirectionalOneToManyMappedByRelationships(entity, getMethods);
+
+			/*
+			final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
+			if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) {
+				this.insertManyToMany(entity, manyToManyMethods);
+			}
+
+			final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMethods(entity, getMethods);
+			if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) {
+				this.insertOneToMany(entity, oneToManyMethods);
+			}
+			*/
+		}
+
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 * @throws NotAnEntityException 
+	 */
+	private final boolean simpleUpdate(final E entity) throws NotAnEntityException {
+		boolean success = false;
+		if (!this.isEntity()) {
+			throw new NotAnEntityException();
+		}
+
+		if (database != null && database.isOpen() && database.inTransaction()) {
+			final ContentValues updateValues = createContentValues(entity);
+			final String idColumnName = YUtilPersistence.getIdColumnName(this.getGenericClass());
+			updateValues.remove(idColumnName);
+			success = this.getDatabase().update(this.getTableName(), updateValues, idColumnName + " = " + this.getId(entity), null) > 0;
+		}
+
+		return success;
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void updateManyToOneRelationships(final E entity, final List<Method> getMethods) 
+			throws Exception {
+		final List<Method> manyToOneMethods = YUtilPersistence.filterManyToOneMethods(getMethods);
+		if (manyToOneMethods != null && !manyToOneMethods.isEmpty()) { // There are ManyToOne (with mappedBy) relationships
+			for (final Method manyToOneMethod : manyToOneMethods) {
+				// Gets the returned objeto
+				Object object = YUtilReflection.invokeMethod(manyToOneMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				if (object != null && YUtilPersistence.isProxy(object.getClass())) {
+					object = YProxyLoad.load(object, false, null);
+				}
+
+				if (object != null && YUtilPersistence.isEntity(object.getClass())) {
+					DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
+					defaultDBAdapter.setDatabase(this.getDatabase());
+					if (YUtilPersistence.getCurrentId(object) < 1) {
+						defaultDBAdapter.localInsert(object);
+					} else {
+						defaultDBAdapter.localUpdate(object);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @throws Exception 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void updateOneToOneOwnerRelationships(final E entity, final List<Method> getMethods) 
+			throws Exception {
+		final List<Method> oneToOneMethods = YUtilPersistence.filterOneToOneOwnerMethods(getMethods);
+		if (oneToOneMethods != null && !oneToOneMethods.isEmpty()) { // There are OneToOne relationships
+			for (final Method oneToOneMethod : oneToOneMethods) {
+				// Gets the returned objeto
+				Object object = YUtilReflection.invokeMethod(oneToOneMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				if (object != null && YUtilPersistence.isProxy(object.getClass())) {
+					object = YProxyLoad.load(object, false, null);
+				}
+
+				if (object != null && YUtilPersistence.isEntity(object.getClass())) {
+					DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(object.getClass());
+					defaultDBAdapter.setDatabase(this.getDatabase());
+
+					if (YUtilPersistence.getCurrentId(object) < 1) {
+						defaultDBAdapter.simpleInsert(object);
+					} else {
+						defaultDBAdapter.simpleUpdate(object);
+					}
+				}
+			}
+		}
+	}
 }
