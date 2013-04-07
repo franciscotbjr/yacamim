@@ -66,6 +66,14 @@ public class Home_UnidirectionalSingleValueActivity extends YBaseActivity {
 		}
 	}
 	
+	public void startUpdateEmployee(final View view) {
+		try {
+			startActivity(new Intent(this, UpdateEmployeeActivity.class));
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

@@ -69,6 +69,10 @@
             android:label="@string/insert_employee" >
         </activity>
         <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.UpdateEmployeeActivity"
+            android:label="@string/update_employee" >
+        </activity>
+        <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalOneToOneRelationships.InsertCubicleActivity"
             android:label="@string/insert_cubicle" >
         </activity>
@@ -91,6 +95,10 @@
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.InsertEmployeeActivity"
             android:label="@string/insert_employee" >
+        </activity>
+        <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.UpdateEmployeeActivity"
+            android:label="@string/update_employee" >
         </activity>
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.unidirectionalSingleValuedRelationships.Home_UnidirectionalSingleValueActivity"

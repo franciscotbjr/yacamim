@@ -37,6 +37,7 @@
     <string name="list_department">List Department</string>
     <string name="insert">Insert</string>
     <string name="insert_employee">Insert Employee</string>
+    <string name="update_employee">Update Employee</string>
     <string name="insert_department">Insert Department</string>
     <string name="insert_project">Insert Project</string>
     <string name="insert_cubicle">Insert Cubicle</string>
