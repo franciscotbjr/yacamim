@@ -28,7 +28,7 @@
 	<string name="lbl_longitude">Longitude</string>
 
 	<!-- Visita -->
-	<string name="lbl_visita">Paciente</string>
+	<string name="lbl_visita">Visita</string>
 	<string name="lbl_itens_levados">Itens Levados</string>
 	<string name="lbl_data_visita">Data Visita</string>
 
@@ -50,4 +50,5 @@
     <string name="msg1">Existe(m) campo(s) obrigatório(s) não preenchido(s):</string>
     <string name="msg2">O paciente {0} será excluído. Confirma a operação?</string>
     <string name="msg3">Informação apagada com sucesso.</string>
+    <string name="msg4">Deseja atualizar o cadastro do paciente com a localização atual?</string>
 </resources>
