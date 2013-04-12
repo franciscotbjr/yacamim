@@ -169,7 +169,7 @@
 	                android:id="@+id/txte_telefones"
 	                android:layout_width="fill_parent"
 	                android:layout_height="150sp"
-	                android:maxLength="60"
+	                android:maxLength="100"
 	                android:maxLines="5"
 	                android:inputType="textMultiLine"
 	                style="@style/EditText">
@@ -188,7 +188,7 @@
 	                android:id="@+id/txte_endereco"
 	                android:layout_width="fill_parent"
 	                android:layout_height="150sp"
-	                android:maxLength="60"
+	                android:maxLength="100"
 	                android:maxLines="5"
 	                android:inputType="textMultiLine"
 	                style="@style/EditText">

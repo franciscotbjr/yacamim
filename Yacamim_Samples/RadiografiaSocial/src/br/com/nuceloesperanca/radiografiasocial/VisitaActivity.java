@@ -11,7 +11,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +32,8 @@ import br.org.yacamim.YBaseActivity;
 import br.org.yacamim.entity.GpsLocationInfo;
 import br.org.yacamim.ui.components.BaseDatePickerDialog;
 import br.org.yacamim.ui.components.BaseOnDateSetListener;
+import br.org.yacamim.ui.components.DefaultAlertDialogBuilder;
+import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilDate;
 import br.org.yacamim.util.YUtilString;
 import br.org.yacamim.util.YUtilText;
@@ -45,6 +49,7 @@ import br.org.yacamim.util.YUtilText;
 public class VisitaActivity extends YBaseActivity {
 	private static final String TAG_CLASS = VisitaActivity.class.getName();
 	static final int DATE_DIALOG_DATA_VISITA = 0;
+	private Visita visita; 
 
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -72,6 +77,8 @@ public class VisitaActivity extends YBaseActivity {
     private void init() {
     	try {
     		super.initGPS();
+
+    		this.atualizaCamposGeo(this.getBestLocation());
 
     		this.initCombos();
 
@@ -153,6 +160,7 @@ public class VisitaActivity extends YBaseActivity {
 			Visita visita = new Visita();
 			if (((Spinner) this.findViewById(R.id.cmb_paciente)).getSelectedItem() != null) {
 				visita.setPaciente((Paciente)((Spinner)this.findViewById(R.id.cmb_paciente)).getSelectedItem());
+				this.visita = visita;
 			}
 			visita.setData((YUtilDate.convertDate(YUtilText.getTextFromTextView(this, R.id.txtv_data_visita))));
 			visita.setItensLevados(YUtilText.getTextFromEditText(this, R.id.txte_itens_levados));
@@ -162,11 +170,11 @@ public class VisitaActivity extends YBaseActivity {
 			}
 
 			if (YUtilText.getDoubleFromEditText(this, R.id.txte_longitude) != null) {
-				visita.setLongitude(YUtilText.getLongFromEditText(this, R.id.txte_longitude));
+				visita.setLongitude(YUtilText.getDoubleFromEditText(this, R.id.txte_longitude));
 			}
 
 			adapter.insert(visita);
-			showDialog(Constantes.INFO_DATA_SUCCESSFULLY_INSERTED);
+			showDialog(Constantes.DIALOG_YES_NO);
 		} catch (Exception e) {
 			Log.e(TAG_CLASS, e.getMessage());
 			if (adapter != null) {
@@ -213,6 +221,20 @@ public class VisitaActivity extends YBaseActivity {
 	            		calendarInicio.get(Calendar.DAY_OF_MONTH), 
 	            		R.string.valor_definir_data,
 	            		true);
+			case YConstants.DIALOG_YES_NO:
+				String msg = this.getText(R.string.msg4).toString();
+				AlertDialog.Builder builderSimNao = new DefaultAlertDialogBuilder(this, msg, false);
+	        	builderSimNao.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			VisitaActivity.this.updatePaciente();
+	        		}
+	        	}).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+	        		public void onClick(DialogInterface dialog, int id) {
+	        			dialog.cancel();
+	        			showDialog(Constantes.INFO_DATA_SUCCESSFULLY_INSERTED);
+	        		}
+	        	});
+	        	return builderSimNao.show();
 			default:
 				return super.onCreateDialog(idDialog);
 		}
@@ -245,6 +267,25 @@ public class VisitaActivity extends YBaseActivity {
 			editTextLongitude.setText(numberFormat.format(_gpsLocationInfo.getLongitude()));
 		} catch (Exception _e) {
 			Log.e("VisitaActivity.onUpdateGpsLocationInfo", _e.getMessage());
+		}
+	}
+
+	/**
+	 * Atualiza a localização do paciente, quando o usúario solicitar. 
+	 */
+	private void updatePaciente() {
+		PacienteDBAdapter adapter = new PacienteDBAdapter(Paciente.class);
+		try {
+			adapter.open();
+			Paciente paciente = this.visita.getPaciente();
+			paciente.setLatitude(visita.getLatitude());
+			paciente.setLongitude(visita.getLongitude());
+			adapter.update(paciente);
+			showDialog(Constantes.INFO_DATA_SUCCESSFULLY_INSERTED);
+		} catch (Exception e) {
+			Log.e(TAG_CLASS, e.getMessage());
+		} finally {
+			adapter.close();
 		}
 	}
 }
