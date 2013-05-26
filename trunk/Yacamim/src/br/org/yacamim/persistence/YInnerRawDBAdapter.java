@@ -104,7 +104,7 @@ final class YInnerRawDBAdapter<E> extends DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			final List<Method> attColumnGetMethods = YUtilPersistence.getGetColumnMethodList(this.getGenericClass());
-			final String[] columns = this.getColumnNamesAsArray();
+			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
 			final Method parentGetIdMethod = YUtilPersistence.getGetIdMethod(parentClass);
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(
@@ -151,7 +151,7 @@ final class YInnerRawDBAdapter<E> extends DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			final List<Method> attColumnGetMethods = YUtilPersistence.getGetColumnMethodList(this.getGenericClass());
-			final String[] columns = this.getColumnNamesAsArray();
+			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
 			
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = 
