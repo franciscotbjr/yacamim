@@ -29,7 +29,7 @@ import br.org.yacamim.util.YUtilReflection;
  * 
  * @author manny.
  * Criado em Mar 16, 2013 6:40:10 AM
- * @version 1.0
+ * @version 1.0	
  * @since 1.0
  */
 public abstract class YProxyLoad {
