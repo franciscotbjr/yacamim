@@ -201,6 +201,8 @@ public strictfp abstract class YUtilReflection {
 						parameterClass = double.class;
 					} else if (parameterClass.equals(Boolean.class)) {
 						parameterClass = boolean.class;
+					} else if (parameterClass.equals(ArrayList.class)) {
+						parameterClass = List.class;
 					}
 					Method setMethod = YUtilReflection.getSetMethod(YUtilReflection.getSetMethodName(propertyName), object.getClass(), new Class<?>[]{parameterClass});
 

@@ -20,6 +20,7 @@ package br.org.yacamim.persistence;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ import android.util.Log;
 import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.dex.YInvocationHandlerProxy;
+import br.org.yacamim.entity.YBaseEntity;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
 
@@ -70,7 +72,7 @@ public class DefaultDBAdapter<E> {
 		this.database = FactoryDatabase.getInstance().getDatabase(getDbHelper());
 		return this;
 	}
-	
+
 	/**
 	 * 
 	 * @param sqLiteDatabase
@@ -150,7 +152,7 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			final String[] columns = this.getColumnNamesAsArray();
+			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(this.getTableName(), columns, null, null, null,
 						null, null);
@@ -276,7 +278,7 @@ public class DefaultDBAdapter<E> {
 			if(!this.isEntity()) {
 				throw new NotAnEntityException();
 			}
-			final String[] columns = this.getColumnNamesAsArray();
+			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(
 						this.getTableName(), 
@@ -309,7 +311,7 @@ public class DefaultDBAdapter<E> {
 				throw new NotAnEntityException();
 			}
 			final List<Method> attColumnGetMethods = YUtilPersistence.getGetColumnMethodList(this.getGenericClass(), attributes);
-			final String[] columns = this.getColumnNamesAsArray();
+			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
 			if(columns != null && columns.length > 0) {
 				final Cursor cursor = this.getDatabase().query(
 						this.getTableName(), 
@@ -448,13 +450,14 @@ public class DefaultDBAdapter<E> {
 
 	/**
 	 *
-	 * @param type
+	 * @param clazz
 	 * @return
 	 */
-	protected List<String> getColumnNames() {
+	@SuppressWarnings("rawtypes")
+	protected List<String> getColumnNames(Class clazz) {
 		final List<String> columns = new ArrayList<String>();
 		try {
-			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(clazz);
 			final Method getIDMethod = YUtilPersistence.getGetIdMethod(getMethods);
 			columns.add(YUtilPersistence.getColumnName(getIDMethod.getAnnotation(Column.class), getIDMethod));
 			for(final Method getMethod : getMethods) {
@@ -511,13 +514,14 @@ public class DefaultDBAdapter<E> {
 
 	/**
 	 *
-	 * @param type
+	 * @param clazz
 	 * @return
 	 */
-	protected String[] getColumnNamesAsArray() {
+	@SuppressWarnings("rawtypes")
+	protected String[] getColumnNamesAsArray(Class clazz) {
 		String[] columns = null;
 		try {
-			final List<String> columnList = getColumnNames();
+			final List<String> columnList = getColumnNames(clazz);
 			columns = new String[columnList.size()];
 			for(int i = 0; i < columnList.size(); i++) {
 				columns[i] = columnList.get(i);
@@ -541,27 +545,58 @@ public class DefaultDBAdapter<E> {
 
 			final List<Method> getMethods = YUtilReflection.getGetMethodList(this.getGenericClass());
 
-			for(final Method getMethod : getMethods) {
-				final Column column = getMethod.getAnnotation(Column.class);
-				if(column != null
-						|| (YUtilPersistence.isId(getMethod))) {
-					final String columnName = YUtilPersistence.getColumnName(column, getMethod);
-					if(!DataAdapterHelper.treatRawData(cursor, object, getMethod, columnName)
-							&& !YacamimConfig.getInstance().usesLazyProxy()) {
-						if(DataAdapterHelper.isOneToOneOwner(getMethod)) {
-							DataAdapterHelper.treatOneToOne(cursor, object, getMethod, columnName);
-						} else if (DataAdapterHelper.isManyToOne(getMethod)) {
-
-						} else if (DataAdapterHelper.isManyToMany(getMethod)) {
-
-						}
-					}
-				}
-			}
+			treatBuild(cursor, object, getMethods);
 		} catch (Exception e) {
 			Log.e("DefaultDBAdapter.build", e.getMessage());
 		}
 		return object;
+	}
+
+	/**
+	 *
+	 * @param cursor
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	protected Object build(final Cursor cursor, Class clazz) {
+		Object object = null;
+
+		try {
+			object = this.buildNewInstance(clazz);
+
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(clazz);
+
+			treatBuild(cursor, object, getMethods);
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.build", e.getMessage());
+		}
+		return object;
+	}
+
+	/**
+	 * @param cursor
+	 * @param object
+	 * @param getMethods
+	 * @throws ParseException
+	 */
+	private void treatBuild(final Cursor cursor, Object object, final List<Method> getMethods) throws ParseException {
+		for(final Method getMethod : getMethods) {
+			final Column column = getMethod.getAnnotation(Column.class);
+			if(column != null
+					|| (YUtilPersistence.isId(getMethod))) {
+				final String columnName = YUtilPersistence.getColumnName(column, getMethod);
+				if(!DataAdapterHelper.treatRawData(cursor, object, getMethod, columnName)
+						&& !YacamimConfig.getInstance().usesLazyProxy()) {
+					if(DataAdapterHelper.isOneToOneOwner(getMethod)) {
+						DataAdapterHelper.treatOneToOne(cursor, object, getMethod, columnName);
+					} else if (DataAdapterHelper.isManyToOne(getMethod)) {
+
+					} else if (DataAdapterHelper.isManyToMany(getMethod)) {
+
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -583,6 +618,30 @@ public class DefaultDBAdapter<E> {
 					.build();
 		} else {
 			object = (E) this.getGenericClass().newInstance();
+		}
+		return object;
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Object buildNewInstance(Class clazz) throws IOException, InstantiationException, IllegalAccessException {
+		Object object;
+		if(YacamimConfig.getInstance().usesLazyProxy()) {
+			if(!YInvocationHandlerProxy.getInstance().contains(clazz)) {
+				YInvocationHandlerProxy.getInstance().add(clazz, new YPersistenceInvocationHandler(new YGetMethodFilter()));
+			}
+			
+			object = ProxyBuilder.forClass(clazz)
+					.handler(YInvocationHandlerProxy.getInstance().get(clazz))
+					.build();
+		} else {
+			object = clazz.newInstance();
 		}
 		return object;
 	}
@@ -1155,14 +1214,14 @@ public class DefaultDBAdapter<E> {
 		if (YUtilPersistence.getCurrentId(entity) >= 1) {
 			simpleUpdate(entity);
 
-			//this.handlesBidirectionalOneToManyMappedByRelationships(entity, getMethods);
+			this.updateBidirectionalOneToManyMappedByRelationships(entity, getMethods);
 
-			/*
 			final List<Method> manyToManyMethods = YUtilPersistence.filterManyToManyMethods(getMethods);
 			if(manyToManyMethods != null && !manyToManyMethods.isEmpty()) {
-				this.insertManyToMany(entity, manyToManyMethods);
+				this.updateManyToMany(entity, manyToManyMethods);
 			}
 
+			/*
 			final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMethods(entity, getMethods);
 			if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) {
 				this.insertOneToMany(entity, oneToManyMethods);
@@ -1258,5 +1317,205 @@ public class DefaultDBAdapter<E> {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param getMethods
+	 * @throws Exception
+	 * @throws CloneNotSupportedException
+	 */
+	private void updateBidirectionalOneToManyMappedByRelationships(final E entity, final List<Method> getMethods) 
+			throws Exception {
+		final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMappedByMethods(entity, getMethods);
+		if (oneToManyMethods != null && !oneToManyMethods.isEmpty()) { // There are OneToMany (with mappedBy) relationships
+			for (final Method oneToManyMethod : oneToManyMethods) {
+				// Gets the returned object
+				final Object object = YUtilReflection.invokeMethod(oneToManyMethod, entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				// Check if it is a List
+				if (object != null && YUtilReflection.isList(object.getClass())) {
+					final List<?> targetList = (List<?>) object;
+					String tableName = YUtilPersistence.getTableName(entity.getClass());
+					String fkColumn = YUtilPersistence.getIdColumnName(entity.getClass()) + tableName;;
+					final List<?> originalList = getOriginalList(entity, targetList, fkColumn);
+
+					treatNewAndUpdateObjects(targetList, originalList);
+					treatDeleteObjects(targetList, originalList);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param targetList
+	 * @param originalList
+	 * @throws Exception 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void treatDeleteObjects(final List targetList, final List originalList) throws Exception {
+		for (Object obj : originalList) {
+			boolean found = false;
+			for (Object targetObj : targetList) {
+				if (YUtilPersistence.getCurrentId(targetObj) >= 1) {
+					if (((YBaseEntity) obj).getId() == ((YBaseEntity) targetObj).getId()) {
+						found = true;
+						break;
+					}
+				} else {
+					found = true;
+				}
+			}
+
+			//object deleted
+			if (!found) {
+				if (YUtilPersistence.isProxy(obj.getClass())) {
+					obj = (E) YProxyLoad.load(obj, true, null);
+				}
+				DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(obj.getClass());
+				defaultDBAdapter.setDatabase(this.getDatabase());
+				defaultDBAdapter.delete(obj);
+			}
+		}
+	}
+
+	/**
+	 * @param targetList
+	 * @param originalList
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void treatNewAndUpdateObjects(final List targetList, final List originalList) throws Exception {
+		for (Object obj : targetList) {
+			if (YUtilPersistence.isProxy(obj.getClass())) {
+				obj = (Object) YProxyLoad.load(obj, true, null);
+			}
+
+			DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(obj.getClass());
+			defaultDBAdapter.setDatabase(this.getDatabase());
+
+			if (YUtilPersistence.getCurrentId(obj) < 1) {
+				defaultDBAdapter.insert(obj);
+			} else {
+				defaultDBAdapter.simpleUpdate(obj);
+			}
+		}
+	}
+
+	/**
+	 * Return an original list of a object.
+	 * 
+	 * @param entity
+	 * @param targetList
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private List<YBaseEntity> getOriginalList(final E entity, final List<?> targetList, final String fkColumn) {
+		List<YBaseEntity> entities = null;
+		if (targetList != null && targetList.size() > 0) {
+			Object firstObject = targetList.get(0);
+			if (YUtilPersistence.isProxy(firstObject.getClass())) {
+				firstObject = (E) YProxyLoad.load(firstObject, true, null);
+			}
+
+			String tableName = YUtilPersistence.getTableName(firstObject.getClass());
+			final long fkValue = ((YBaseEntity) entity).getId();
+			final String[] columns = this.getColumnNamesAsArray(firstObject.getClass());
+			entities = getOriginalList(firstObject.getClass(), tableName, fkColumn, fkValue, columns);
+		}
+
+		return entities;
+	}
+
+	/**
+	 * 
+	 * @param clazz
+	 * @param tableName
+	 * @param fkColumn
+	 * @param fkValue
+	 * @param columns
+	 * @return
+	 */
+	private List<YBaseEntity> getOriginalList(final Class<?> clazz, final String tableName, final String fkColumn, final long fkValue, String[] columns) {
+		final String selection = fkColumn + " = ?";
+		
+		final String[] fkParam = {String.valueOf(fkValue)};
+
+		final List<YBaseEntity> entities = new ArrayList<YBaseEntity>();
+		final Cursor cursor = this.getDatabase().query(tableName, columns, selection, fkParam, null,
+				null, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			Object obj = build(cursor, clazz);
+			entities.add((YBaseEntity) obj);
+			while(cursor.moveToNext()) {
+				obj = build(cursor, clazz);
+				entities.add((YBaseEntity) obj);
+			}
+		}
+		cursor.close();
+		return entities;
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param manyToManyMethods
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean updateManyToMany(final E entity, final List<Method> manyToManyMethods) throws Exception {
+		final List<JoinItemResult>  manyToManyResults = this.handlesManyToManyRelationships(entity, manyToManyMethods);
+		return this.updateManyToManyJoin(entity, manyToManyResults);
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param manyToManyMethods
+	 * @throws Exception 
+	 */
+	private boolean updateManyToManyJoin(final E entity, final List<JoinItemResult> manyToManyResults) throws Exception {
+		boolean result = false;
+		if(manyToManyResults != null && !manyToManyResults.isEmpty()) { // There are JoinItemResult
+			for(final JoinItemResult manyToManyResult : manyToManyResults) {
+				final ManyToMany manyToMany = manyToManyResult.getTargetMethod().getAnnotation(ManyToMany.class); 
+				final Class<?> ownerClass;
+				final Class<?> ownedClass;
+				if(YUtilString.isEmptyString(manyToMany.mappedBy())) {
+					ownerClass = entity.getClass();
+					ownedClass = manyToManyResult.getTargetClass();
+				} else {
+					ownerClass = manyToManyResult.getTargetClass();
+					ownedClass = entity.getClass();
+				}
+
+				final String ownerTableName = YUtilPersistence.getTableName(ownerClass);
+				final String ownedTableName = YUtilPersistence.getTableName(ownedClass);
+
+				final String ownerIdColumnName = ownerTableName + "_" + YUtilPersistence.getIdColumnName(ownerClass);
+				final String ownedIdColumnName = ownedTableName + "_" + YUtilPersistence.getIdColumnName(ownedClass);
+				final String joinTableName = ownerTableName + "_" + ownedTableName;
+
+				final Object object = YUtilReflection.invokeMethod(manyToManyResult.getTargetMethod(), entity, 
+						YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+				// Check if it is a List
+				if (object != null && YUtilReflection.isList(object.getClass())) {
+					final Method ownerGetIdMethod = YUtilPersistence.getGetIdMethod(ownerClass);
+
+					if(ownerGetIdMethod != null) {
+						Long ownerId = (Long) YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, entity);
+						final List<?> targetList = (List<?>) object;
+						final String[] columns = {ownerIdColumnName, ownedIdColumnName};
+						final List<?> originalList = getOriginalList(ownedClass, joinTableName, ownerIdColumnName, ownerId, columns);
+						System.out.println("Ok..");
+
+						//treatNewAndUpdateObjects(targetList, originalList);
+						//treatDeleteObjects(targetList, originalList);
+					}
+				}
+			}
+		}
+		return result;
 	}
 }
