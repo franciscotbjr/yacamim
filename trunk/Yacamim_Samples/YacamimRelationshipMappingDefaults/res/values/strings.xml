@@ -31,6 +31,7 @@
 
     <string name="teste_list">Teste List</string>
     <string name="teste_insert">Teste Insert</string>
+    <string name="teste_update">Teste Update</string>
     <string name="list">List</string>
     <string name="list_employee">List Employee</string>
     <string name="list_cubicle">List Cubicle</string>
@@ -39,6 +40,8 @@
     <string name="insert_employee">Insert Employee</string>
     <string name="update_employee">Update Employee</string>
     <string name="insert_department">Insert Department</string>
+    <string name="update_department">Update Department</string>
     <string name="insert_project">Insert Project</string>
+    <string name="update_project">Update Project</string>
     <string name="insert_cubicle">Insert Cubicle</string>
 </resources>

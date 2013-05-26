@@ -33,4 +33,13 @@
         android:onClick="startInsertProjec"
         android:text="@string/insert_project" />
 
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_below="@+id/button3"
+        android:onClick="startUpdateProjec"
+        android:text="@string/update_project" />
+
 </RelativeLayout>

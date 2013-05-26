@@ -159,5 +159,4 @@ public class Employee extends YBaseEntity {
 			return false;
 		return true;
 	}
-
 }

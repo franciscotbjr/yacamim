@@ -37,6 +37,10 @@
             android:label="@string/teste_insert" >
         </activity>
         <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.UpdateProjectActivity"
+            android:label="@string/teste_update" >
+        </activity>
+        <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToManyRelationships.InsertEmployeeActivity"
             android:label="@string/teste_insert" >
         </activity>
@@ -55,6 +59,10 @@
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.InsertDepartmentActivity"
             android:label="@string/teste_insert" >
+        </activity>
+        <activity
+            android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.UpdateDepartmentActivity"
+            android:label="@string/teste_update" >
         </activity>
         <activity
             android:name="br.org.yacamim.relationship.mapping.defaults.bidirectionalManyToOneOneToManyRelationships.Home_ManyToOne_OneToManyActivity"

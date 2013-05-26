@@ -65,7 +65,7 @@ public class Home_ManyToOne_OneToManyActivity extends YBaseActivity {
 			Log.e(TAG, e.getMessage());
 		}
 	}
-	
+
 	public void startInsertDepartment(final View view) {
 		try {
 			startActivity(new Intent(this, InsertDepartmentActivity.class));
@@ -74,6 +74,27 @@ public class Home_ManyToOne_OneToManyActivity extends YBaseActivity {
 		}
 	}
 	
+	public void startUpdateDepartment(final View view) {
+		try {
+			startActivity(new Intent(this, UpdateDepartmentActivity.class));
+			/*
+			Employee employee1 = new Employee();
+			employee1.setId(1);
+			Employee employee2 = new Employee();
+			employee2.setId(2);
+			List<Employee> lista = new ArrayList<Employee>();
+			lista.add(employee1);
+			lista.add(employee2);
+			Employee employee3 = new Employee();
+			employee3.setId(2);
+			int position = lista.indexOf(employee3);
+			System.out.println(position);
+			*/
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
