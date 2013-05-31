@@ -1510,12 +1510,66 @@ public class DefaultDBAdapter<E> {
 						final List<?> originalList = getOriginalList(ownedClass, joinTableName, ownerIdColumnName, ownerId, columns);
 						System.out.println("Ok..");
 
-						//treatNewAndUpdateObjects(targetList, originalList);
-						//treatDeleteObjects(targetList, originalList);
+						treatInsertAndDeleteObjects(targetList, originalList, entity, joinTableName, manyToManyResult, manyToMany, ownerClass, ownerIdColumnName, ownedClass, ownedIdColumnName);
 					}
 				}
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * @param targetList
+	 * @param originalList
+	 * @throws Exception 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void treatInsertAndDeleteObjects(final List targetList, final List originalList, final E entity, String joinTableName,
+				JoinItemResult manyToManyResult, ManyToMany manyToMany, Class<?> ownerClass, String ownerIdColumnName, 
+				Class<?> ownedClass, String ownedIdColumnName) throws Exception {
+		for (Object obj : originalList) {
+			boolean found = false;
+			for (Object targetObj : targetList) {
+				if (YUtilPersistence.getCurrentId(targetObj) >= 1) {
+					if (((YBaseEntity) obj).getId() == ((YBaseEntity) targetObj).getId()) {
+						found = true;
+						break;
+					}
+				} else {
+					found = true;
+				}
+			}
+
+			//object deleted
+			if (!found) {
+				String[] whereValue = {String.valueOf(((YBaseEntity) obj).getId())};
+				this.getDatabase().delete(joinTableName, ownerIdColumnName + " = ?", whereValue);
+
+				if (YUtilPersistence.isProxy(obj.getClass())) {
+					obj = (E) YProxyLoad.load(obj, true, null);
+				}
+				DefaultDBAdapter defaultDBAdapter = new DefaultDBAdapter(obj.getClass());
+				defaultDBAdapter.setDatabase(this.getDatabase());
+				defaultDBAdapter.delete(obj);
+			} else {
+				//new object
+				final Method ownerGetIdMethod = YUtilPersistence.getGetIdMethod(ownerClass);
+				final Method ownedGetIdMethod = YUtilPersistence.getGetIdMethod(ownedClass);
+				if(ownerGetIdMethod != null && ownedGetIdMethod != null) {
+					final ContentValues values = new ContentValues();
+					if(YUtilString.isEmptyString(manyToMany.mappedBy())) {
+						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, entity));
+						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, manyToManyResult.getTargetObject()));
+					} else {
+						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, manyToManyResult.getTargetObject()));
+						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, entity));
+					}
+
+					if(this.getDatabase() != null && this.getDatabase().isOpen() && this.getDatabase().inTransaction()) {
+						this.getDatabase().insert(joinTableName, null, values);
+					}
+				}
+			}
+		}
 	}
 }
