@@ -1221,12 +1221,10 @@ public class DefaultDBAdapter<E> {
 				this.updateManyToMany(entity, manyToManyMethods);
 			}
 
-			/*
 			final List<Method> oneToManyMethods = YUtilPersistence.filterOneToManyMethods(entity, getMethods);
 			if(oneToManyMethods != null && !oneToManyMethods.isEmpty()) {
-				this.insertOneToMany(entity, oneToManyMethods);
+				this.updateOneToMany(entity, oneToManyMethods);
 			}
-			*/
 		}
 
 		return true;
@@ -1508,9 +1506,8 @@ public class DefaultDBAdapter<E> {
 						final List<?> targetList = (List<?>) object;
 						final String[] columns = {ownerIdColumnName, ownedIdColumnName};
 						final List<?> originalList = getOriginalList(ownedClass, joinTableName, ownerIdColumnName, ownerId, columns);
-						System.out.println("Ok..");
 
-						treatInsertAndDeleteObjects(targetList, originalList, entity, joinTableName, manyToManyResult, manyToMany, ownerClass, ownerIdColumnName, ownedClass, ownedIdColumnName);
+						treatInsertAndDeleteObjects(targetList, originalList, entity, joinTableName, manyToManyResult, manyToMany.mappedBy(), ownerClass, ownerIdColumnName, ownedClass, ownedIdColumnName);
 					}
 				}
 			}
@@ -1518,14 +1515,10 @@ public class DefaultDBAdapter<E> {
 		return result;
 	}
 
-	/**
-	 * @param targetList
-	 * @param originalList
-	 * @throws Exception 
-	 */
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void treatInsertAndDeleteObjects(final List targetList, final List originalList, final E entity, String joinTableName,
-				JoinItemResult manyToManyResult, ManyToMany manyToMany, Class<?> ownerClass, String ownerIdColumnName, 
+				JoinItemResult joinItemResult, String mappedBy, Class<?> ownerClass, String ownerIdColumnName, 
 				Class<?> ownedClass, String ownedIdColumnName) throws Exception {
 		for (Object obj : originalList) {
 			boolean found = false;
@@ -1557,11 +1550,11 @@ public class DefaultDBAdapter<E> {
 				final Method ownedGetIdMethod = YUtilPersistence.getGetIdMethod(ownedClass);
 				if(ownerGetIdMethod != null && ownedGetIdMethod != null) {
 					final ContentValues values = new ContentValues();
-					if(YUtilString.isEmptyString(manyToMany.mappedBy())) {
+					if(YUtilString.isEmptyString(mappedBy)) {
 						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, entity));
-						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, manyToManyResult.getTargetObject()));
+						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, joinItemResult.getTargetObject()));
 					} else {
-						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, manyToManyResult.getTargetObject()));
+						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, joinItemResult.getTargetObject()));
 						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, entity));
 					}
 
@@ -1571,5 +1564,67 @@ public class DefaultDBAdapter<E> {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param oneToManyMethods
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean updateOneToMany(final E entity, final List<Method> oneToManyMethods) throws Exception {
+		final List<JoinItemResult>  manyToManyResults = this.handlesUnidirectionalOneToManyRelationships(entity, oneToManyMethods);
+		return this.updateOneToManyJoin(entity, manyToManyResults);
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 * @param oneToManyResults
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean updateOneToManyJoin(final E entity, final List<JoinItemResult> oneToManyResults) throws Exception {
+		boolean result = false;
+		if(oneToManyResults != null && !oneToManyResults.isEmpty()) { // There are JoinItemResult
+			for(final JoinItemResult oneToManyResult : oneToManyResults) {
+				final OneToMany oneToMany = oneToManyResult.getTargetMethod().getAnnotation(OneToMany.class); 
+				if(oneToMany != null) {
+					final Class<?> ownerClass = entity.getClass();
+					final Class<?> ownedClass = oneToManyResult.getTargetClass();
+
+					final String ownerTableName = YUtilPersistence.getTableName(ownerClass);
+					final String ownedTableName = YUtilPersistence.getTableName(ownedClass);
+					
+					final String ownerIdColumnName = ownerTableName + "_" + YUtilPersistence.getIdColumnName(ownerClass);
+					final String ownedIdColumnName = ownedTableName + "_" + YUtilPersistence.getIdColumnName(ownedClass);
+					final String joinTableName = ownerTableName + "_" + ownedTableName;
+					
+					final Method ownerGetIdMethod = YUtilPersistence.getGetIdMethod(ownerClass);
+					final Method ownedGetIdMethod = YUtilPersistence.getGetIdMethod(ownedClass);
+					if(ownerGetIdMethod != null && ownedGetIdMethod != null) {
+						final ContentValues values = new ContentValues();
+						values.put(ownerIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, entity));
+						values.put(ownedIdColumnName, (Long)YUtilReflection.invokeMethodWithoutParams(ownedGetIdMethod, oneToManyResult.getTargetObject()));
+
+						final Object object = YUtilReflection.invokeMethod(oneToManyResult.getTargetMethod(), entity, 
+								YUtilReflection.DEAFULT_PARAM_ARRAY_OBJECT_REFLECTION);
+
+						// Check if it is a List
+						if (object != null && YUtilReflection.isList(object.getClass())) {
+							Long ownerId = (Long) YUtilReflection.invokeMethodWithoutParams(ownerGetIdMethod, entity);
+							final List<?> targetList = (List<?>) object;
+							final String[] columns = {ownerIdColumnName, ownedIdColumnName};
+							final List<?> originalList = getOriginalList(ownedClass, joinTableName, ownerIdColumnName, ownerId, columns);
+
+							treatInsertAndDeleteObjects(targetList, originalList, entity, joinTableName, oneToManyResult, oneToMany.mappedBy(), ownerClass, ownerIdColumnName, ownedClass, ownedIdColumnName);
+						}
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 }
