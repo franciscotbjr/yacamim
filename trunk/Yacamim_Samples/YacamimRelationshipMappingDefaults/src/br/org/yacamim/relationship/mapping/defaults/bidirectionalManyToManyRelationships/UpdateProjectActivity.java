@@ -67,7 +67,7 @@ public class UpdateProjectActivity extends YBaseListActivity {
 			project.getEmployees().add(newEmployee);
 
 			if (project.getEmployees() != null && project.getEmployees().size() > 1) {
-				//project.getEmployees().remove(0);
+				//project.getEmployees().remove(project.getEmployees().size()-1);
 			}
 
 			defaultDBAdapter.update(project);
