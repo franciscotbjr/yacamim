@@ -24,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Class YBaseAsyncTask TODO
+ * Class YSimpleHttpResponseAdapter TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0

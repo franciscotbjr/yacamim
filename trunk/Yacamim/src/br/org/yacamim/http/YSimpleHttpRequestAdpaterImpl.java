@@ -26,7 +26,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 /**
- * Class YBaseAsyncTask TODO
+ * Class YSimpleHttpRequestAdpaterImpl TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0

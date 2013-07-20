@@ -23,7 +23,7 @@ import java.util.Set;
 import org.apache.http.NameValuePair;
 
 /**
- * Class YBaseAsyncTask TODO
+ * Class YSimpleHttpRequestAdpater TODO
  *
  * @author yacamim.org.br (Francisco Tarcizo Bomfim Júnior)
  * @version 1.0
