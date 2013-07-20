@@ -1,7 +1,7 @@
 /**
  * DefaultDataServiceHandler.java
  *
- * Copyright 2012 yacamim.org.br
+ * Copyright 2013 yacamim.org.br
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.org.yacamim.http;
+package br.org.yacamim.http.rest;
 
 import java.util.List;
 import java.util.Set;
@@ -23,21 +23,23 @@ import java.util.Set;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 
 import android.app.Activity;
 import android.util.Log;
 import br.org.yacamim.YBaseAsyncTask;
+import br.org.yacamim.http.YAsyncHttpResponseHandler;
+import br.org.yacamim.http.YCookieProxy;
+import br.org.yacamim.http.YSimpleHttpResponseAdapter;
+import br.org.yacamim.http.YSimpleHttpResponseAdapterImpl;
+import br.org.yacamim.http.YTokenProxy;
 
 /**
- * Hides some complexity on handling an HTTP calls throw POST method.<br/>
+ * Hides some complexity on handling an REST HTTP calls throw PUT method.<br/>
  *
  * Since it is an <tt>AsyncTask</tt>, all HTTP call process runs in background
  * as the recommended way to do such job on Android.<br/>
@@ -51,9 +53,11 @@ import br.org.yacamim.YBaseAsyncTask;
  *
  * @see android.os.AsyncTask
  */
-public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, YSimpleHttpResponseAdapter> {
+public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequestAdpater, YSimpleHttpResponseAdapter> {
+	
+	private static final String TAG = YPutSimpleAsyncHttpRest.class.getSimpleName();
 
-	private YSimpleHttpRequestAdpater ySimpleHttpAdpater;
+	private YSimpleHttpRestRequestAdpater ySimpleHttpRestRequestAdpater;
 	private YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter;
 	private YAsyncHttpResponseHandler asyncHttpResponseHandler;
 
@@ -62,7 +66,7 @@ public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, 
 	 * @param activity
 	 * @param asyncHttpResponseHandler
 	 */
-	public YSimpleAsyncHttp(final Activity activity, final YAsyncHttpResponseHandler asyncHttpResponseHandler) {
+	public YPutSimpleAsyncHttpRest(final Activity activity, final YAsyncHttpResponseHandler asyncHttpResponseHandler) {
 		super(activity);
 		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
 	}
@@ -72,51 +76,51 @@ public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, 
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
 	@Override
-	protected YSimpleHttpResponseAdapter doInBackground(YSimpleHttpRequestAdpater... ySimpleHttpRequestAdpater) {
+	protected YSimpleHttpResponseAdapter doInBackground(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
 		if(!super.isErrorWithoutConnectivity()) {
-			return doHTTP(ySimpleHttpRequestAdpater);
+			return doRest(ySimpleHttpRestRequestAdpater);
 		}
-		return super.doInBackground(ySimpleHttpRequestAdpater);
+		return super.doInBackground(ySimpleHttpRestRequestAdpater);
 	}
 
 	/**
 	 * Execute the HTTP call handling Cookies e Tokens.<br/>
-	 * @param ySimpleHttpRequestAdpater
+	 * @param ySimpleHttpRestRequestAdpater
 	 * @return
 	 */
-	private YSimpleHttpResponseAdapter doHTTP(YSimpleHttpRequestAdpater... ySimpleHttpRequestAdpater) {
+	private YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
 		try {
-			this.ySimpleHttpAdpater = ySimpleHttpRequestAdpater[0];
+			this.ySimpleHttpRestRequestAdpater = ySimpleHttpRestRequestAdpater[0];
 
-			final HttpParams params = new BasicHttpParams();
-			final DefaultHttpClient client = new DefaultHttpClient(params);
+			final DefaultHttpClient client = new DefaultHttpClient();
 
 			final CookieStore cookieStore;
 			if((cookieStore = buildCookieStore()) != null) {
 				client.setCookieStore(cookieStore);
 			}
 
-            final HttpPost post = new HttpPost(this.ySimpleHttpAdpater.getUri());
+            final HttpPut put = new HttpPut(this.ySimpleHttpRestRequestAdpater.getUri());
 
             final BasicResponseHandler handler = new BasicResponseHandler();
 
-            // Encoding parameters
-            post.setEntity(new UrlEncodedFormEntity(this.updateParamsWithTokens(), ySimpleHttpAdpater.getEnconding()));
+            final YBasicHttpRestEntity restHttpEntity = new YBasicHttpRestEntity();
+            restHttpEntity.setContent(this.ySimpleHttpRestRequestAdpater.getContent());
+            put.setEntity(restHttpEntity);
 
             // Http call
-            final HttpResponse response = client.execute(post);
+            final HttpResponse response = client.execute(put);
 
             this.ySimpleHttpResponseAdapter = new YSimpleHttpResponseAdapterImpl()
-            .setStatus(response.getStatusLine().getStatusCode())
-            .setBody(buildResponseBody(handler, response))
-            .addCookies(client.getCookieStore().getCookies());
+	            .setStatus(response.getStatusLine().getStatusCode())
+	            .setBody(buildResponseBody(handler, response))
+	            .addCookies(client.getCookieStore().getCookies());
 
             this.heandleTokens(response, this.ySimpleHttpResponseAdapter);
 
             YCookieProxy.getInstance().addCookies(this.ySimpleHttpResponseAdapter.getCookies());
 
 		} catch (Exception e) {
-			Log.e("YSimpleHttpResponseAdapter.doHTTP", e.getMessage());
+			Log.e(TAG + ".doRest", e.getMessage());
 		}
 		return this.ySimpleHttpResponseAdapter;
 	}
@@ -130,7 +134,7 @@ public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, 
 		if(!YCookieProxy.getInstance().getCookies().isEmpty()) {
 			for(final Cookie cookieRec : YCookieProxy.getInstance().getCookies()) {
 				String baseUri = cookieRec.getDomain() + cookieRec.getPath();
-				if(this.ySimpleHttpAdpater.getUri()
+				if(this.ySimpleHttpRestRequestAdpater.getUri()
 						.replace("http://", "")
 						.replace("https://", "")
 						.startsWith(baseUri));
@@ -163,28 +167,9 @@ public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, 
 		try {
 			return new StringBuilder(handler.handleResponse(response));
 		} catch (Exception e) {
-			Log.e("YSimpleHttpResponseAdapter.buildResponseBody", e.getMessage());
+			Log.e(TAG + ".buildResponseBody", e.getMessage());
 			return new StringBuilder();
 		}
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	private List<NameValuePair> updateParamsWithTokens() {
-		List<NameValuePair> parameters = this.ySimpleHttpAdpater.getParameters();
-		List<NameValuePair> tokens = YTokenProxy.getInstance().getTokens();
-		if(!tokens.isEmpty() && !this.ySimpleHttpAdpater.getTokens().isEmpty()) {
-			for(NameValuePair token : tokens) {
-				for(String strToken : this.ySimpleHttpAdpater.getTokens()) {
-					if(token.getName().equals(strToken)) {
-						parameters.add(token);
-					}
-				}
-			}
-		}
-		return parameters;
 	}
 
 	/**
@@ -204,7 +189,7 @@ public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, 
 	 * @param response
 	 */
 	private void handleTokensFromHeader(final HttpResponse response) {
-		final Set<String> tokens = this.ySimpleHttpAdpater.getTokens();
+		final Set<String> tokens = this.ySimpleHttpRestRequestAdpater.getTokens();
 		for(String tokenName : tokens) {
 			if(response.containsHeader(tokenName)) {
 				YTokenProxy.getInstance().addToken(tokenName, response.getFirstHeader(tokenName).getValue());
@@ -220,10 +205,10 @@ public class YSimpleAsyncHttp extends YBaseAsyncTask<YSimpleHttpRequestAdpater, 
 	 */
 	private boolean handleTokensFromBody(final HttpResponse response, final YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter) {
 		boolean foundTokens = false;
-		if(this.ySimpleHttpAdpater.getBodyTokenRecoverHandler() != null) {
+		if(this.ySimpleHttpRestRequestAdpater.getBodyTokenRecoverHandler() != null) {
 			final List<NameValuePair> tokens =
-					this.ySimpleHttpAdpater.getBodyTokenRecoverHandler().recover(
-							ySimpleHttpResponseAdapter.getBody(), this.ySimpleHttpAdpater.getTokens()
+					this.ySimpleHttpRestRequestAdpater.getBodyTokenRecoverHandler().recover(
+							ySimpleHttpResponseAdapter.getBody(), this.ySimpleHttpRestRequestAdpater.getTokens()
 							);
 			foundTokens = !tokens.isEmpty();
 			YTokenProxy.getInstance().addTokens(tokens);
