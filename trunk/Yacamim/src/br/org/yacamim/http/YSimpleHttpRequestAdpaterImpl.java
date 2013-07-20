@@ -1,5 +1,5 @@
 /**
- * DefaultDataServiceHandler.java
+ * YSimpleHttpRequestAdpaterImpl.java
  *
  * Copyright 2012 yacamim.org.br
  *
