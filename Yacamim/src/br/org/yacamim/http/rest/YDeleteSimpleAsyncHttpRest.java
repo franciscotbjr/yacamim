@@ -23,7 +23,7 @@ import java.util.Set;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -53,13 +53,13 @@ import br.org.yacamim.http.YTokenProxy;
  *
  * @see android.os.AsyncTask
  */
-public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequestAdpater, YSimpleHttpResponseAdapter> {
+public class YDeleteSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequestAdpater, YSimpleHttpResponseAdapter> {
 	
 	private static final String UTF_8 = "UTF-8";
 
 	private static final String APPLICATION_JSON = "application/json";
 
-	private static final String TAG = YPutSimpleAsyncHttpRest.class.getSimpleName();
+	private static final String TAG = YDeleteSimpleAsyncHttpRest.class.getSimpleName();
 
 	private YSimpleHttpRestRequestAdpater ySimpleHttpRestRequestAdpater;
 	private YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter;
@@ -71,7 +71,7 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	 * @param activity
 	 * @param asyncHttpResponseHandler
 	 */
-	public YPutSimpleAsyncHttpRest(final Activity activity, 
+	public YDeleteSimpleAsyncHttpRest(final Activity activity, 
 			final YAsyncHttpResponseHandler asyncHttpResponseHandler) {
 		super(activity);
 		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
@@ -83,7 +83,7 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	 * @param asyncHttpResponseHandler
 	 * @param restHttpEntity
 	 */
-	public YPutSimpleAsyncHttpRest(final Activity activity, 
+	public YDeleteSimpleAsyncHttpRest(final Activity activity, 
 			final YAsyncHttpResponseHandler asyncHttpResponseHandler,
 			final YBasicHttpRestEntity restHttpEntity) {
 		super(activity);
@@ -121,20 +121,14 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 				client.setCookieStore(cookieStore);
 			}
 
-            final HttpPut put = new HttpPut(this.ySimpleHttpRestRequestAdpater.getUri());
-            put.setHeader("Accept", APPLICATION_JSON);
-            put.setHeader("Content-Type", APPLICATION_JSON + "; charset=" + restHttpEntity.getContentEncoding().getValue());
+            final HttpDelete delete = new HttpDelete(this.ySimpleHttpRestRequestAdpater.getUri());
+            delete.setHeader("Accept", APPLICATION_JSON);
+            delete.setHeader("Content-Type", APPLICATION_JSON + "; charset=" + restHttpEntity.getContentEncoding().getValue());
 
             final BasicResponseHandler handler = new BasicResponseHandler();
 
-            restHttpEntity.setContent(this.ySimpleHttpRestRequestAdpater.getContent());
-            restHttpEntity.setContentType(APPLICATION_JSON);
-            restHttpEntity.setContentEncoding(restHttpEntity.getContentEncoding().getValue());
-			put.setEntity(restHttpEntity);
-            
-
             // Http call
-            final HttpResponse response = client.execute(put);
+            final HttpResponse response = client.execute(delete);
 
             this.ySimpleHttpResponseAdapter = new YSimpleHttpResponseAdapterImpl()
 	            .setStatus(response.getStatusLine().getStatusCode())
