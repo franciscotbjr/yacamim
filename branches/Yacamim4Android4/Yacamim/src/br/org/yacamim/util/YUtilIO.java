@@ -100,8 +100,8 @@ public final class YUtilIO {
 			bos.close();
 
 			nomeImagem = nomeImagemTemp;
-		} catch (Exception _e) {
-			Log.e(TAG + ".storeByteImage", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".storeByteImage", e.getMessage());
 		}
 		return nomeImagem;
 	}

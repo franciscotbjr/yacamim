@@ -20,6 +20,8 @@ package br.org.yacamim.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 /**
  * Class YUtilJSONDictionary TODO
  *
@@ -28,6 +30,8 @@ import java.util.List;
  * @since 1.0
  */
 public class YUtilJSONDictionary {
+	
+	private static final String TAG = YUtilJSONDictionary.class.getSimpleName();
 
 	private List<YKeyValuePair<String, String>> keyValues = new ArrayList<YKeyValuePair<String,String>>();
 
@@ -122,7 +126,8 @@ public class YUtilJSONDictionary {
 			}
 			jsonrpcBuilder.endJsonRPCObject();
 			result = jsonrpcBuilder.toString();
-		} catch (Exception _e) {
+		} catch (Exception e) {
+			Log.e(TAG + ".toString", e.getMessage());
 		}
 		return result;
 	}
