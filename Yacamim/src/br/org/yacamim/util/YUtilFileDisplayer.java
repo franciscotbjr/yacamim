@@ -67,8 +67,8 @@ public final class YUtilFileDisplayer {
             			activity.getText(resourceMsgFileNotFound),
         		        Toast.LENGTH_SHORT).show();
             }
-		} catch (final Exception _e) {
-			Log.e(TAG + ".displayFile", _e.getMessage());
+		} catch (final Exception e) {
+			Log.e(TAG + ".displayFile", e.getMessage());
 		}
 	}
 
@@ -83,7 +83,7 @@ public final class YUtilFileDisplayer {
 			final int resourceMsgNoApplicationAvailableToDisplay) {
 		try {
 			activity.startActivity(intent);
-		} catch (final ActivityNotFoundException _e) {
+		} catch (final ActivityNotFoundException e) {
 		    Toast.makeText(activity,
 		    		activity.getText(resourceMsgNoApplicationAvailableToDisplay) + fileExtension.toUpperCase(),
 		        Toast.LENGTH_SHORT).show();
