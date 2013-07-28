@@ -60,6 +60,18 @@ public final class YacamimConfig {
 	
 	/**
 	 * 
+	 * @param key
+	 * @return
+	 */
+	public String getConfigItem(final String key) {
+		if(this.isConfigItemsLoaded()) {
+			return this.getConfigItems().get(key);
+		}
+		return null;
+	}
+	
+	/**
+	 * 
 	 * @return
 	 */
 	public Map<String, String> getConfigItems() {

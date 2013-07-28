@@ -74,7 +74,6 @@ class YDataBaseBuilder {
 		
 		// Date
 		sqlTypeMap.put(Date.class, YUtilPersistence.SQL_TEXT);
-		
 	}
 	
 	/**
@@ -96,7 +95,7 @@ class YDataBaseBuilder {
 			this.processEntities(classes);
 			
 			final YDependencyOrderer yDependencyOrderer = new YDependencyOrderer();
-			List<Class<?>> orderedList = yDependencyOrderer.order(classes);
+			final List<Class<?>> orderedList = yDependencyOrderer.order(classes);
 			
 			for(Class<?> clazz : orderedList) {
 				final Map<StringBuilder, Boolean> scriptMap = this.buildCreateSQL(clazz);
