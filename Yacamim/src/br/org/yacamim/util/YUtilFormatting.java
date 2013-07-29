@@ -91,7 +91,7 @@ public strictfp abstract class YUtilFormatting {
 			if (value == null) {
 				return "";
 			}
-			SimpleDateFormat simpleDateFormat = YUtilDate.getSimpleDateFormatData();
+			SimpleDateFormat simpleDateFormat = YUtilDate.getSimpleDateFormat();
 			return simpleDateFormat.format(simpleDateFormat.parse(value));
 		} catch (Exception e) {
 			Log.e(TAG + ".formatData", e.getMessage());
@@ -110,7 +110,7 @@ public strictfp abstract class YUtilFormatting {
 			if (value == null) {
 				return "";
 			}
-			SimpleDateFormat simpleDateFormat = YUtilDate.getSimpleDateFormatData();
+			SimpleDateFormat simpleDateFormat = YUtilDate.getSimpleDateFormat();
 			return simpleDateFormat.format(value);
 		} catch (Exception e) {
 			Log.e(TAG + ".formatData", e.getMessage());
