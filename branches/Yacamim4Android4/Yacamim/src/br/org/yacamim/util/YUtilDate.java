@@ -130,8 +130,16 @@ public strictfp abstract class YUtilDate {
 	 * <strong>Brazilian users only</strong>.<br/>
 	 * @return
 	 */
-	public static SimpleDateFormat getSimpleDateFormatData() {
+	public static SimpleDateFormat getSimpleDateFormat() {
 		return new SimpleDateFormat("dd/MM/yyyy", LOCALE_BRASIL);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static SimpleDateFormat getSimpleDateFormat_EN_Format() {
+		return new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 	}
 
 	/**
@@ -143,7 +151,24 @@ public strictfp abstract class YUtilDate {
 		Date retorno = null;
 		try {
 			if (!YUtilString.isEmptyString(value)) {
-				retorno = getSimpleDateFormatData().parse(value);
+				retorno = getSimpleDateFormat().parse(value);
+			}
+		} catch (ParseException e) {
+			Log.e(TAG + ".convertDate", e.getMessage());
+		}
+		return retorno;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static Date convertDate_EN_Format(final String value) {
+		Date retorno = null;
+		try {
+			if (!YUtilString.isEmptyString(value)) {
+				retorno = getSimpleDateFormat_EN_Format().parse(value);
 			}
 		} catch (ParseException e) {
 			Log.e(TAG + ".convertDate", e.getMessage());

@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.util.Log;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
@@ -271,7 +270,6 @@ final class YUtilPersistence {
 	 * @return
 	 * @throws YCacheProcessedEntityTerminatedException 
 	 */
-	@SuppressLint("DefaultLocale")
 	static StringBuilder convertToColumnNames(final DbLoad dbLoad, final String row) {
 		int start = row.toUpperCase().indexOf(YUtilPersistence.SQL_WORD_VALUES);
 		String strCols = row.substring(0, start).trim();
@@ -305,7 +303,6 @@ final class YUtilPersistence {
 	 * @param row
 	 * @return
 	 */
-	@SuppressLint("DefaultLocale")
 	static StringBuilder convertToInsert(final DbLoad dbLoad, final String row) {
 		StringBuilder builderInsert = new StringBuilder();
 		builderInsert.append(YUtilPersistence.SQL_WORD_INSERT_INTO);
