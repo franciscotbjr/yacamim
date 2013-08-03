@@ -39,38 +39,38 @@ public class BaseDatePickerDialog extends DatePickerDialog {
 
 	/**
 	 *
-	 * @param _context
-	 * @param _callBack
-	 * @param _year
-	 * @param _monthOfYear
-	 * @param _dayOfMonth
-	 * @param _idResourceTituloJanela
+	 * @param context
+	 * @param callBack
+	 * @param year
+	 * @param monthOfYear
+	 * @param dayOfMonth
+	 * @param idResourceTituloJanela
 	 */
-	public BaseDatePickerDialog(final Context _context, final BaseOnDateSetListener _callBack,
-			final int _year, final int _monthOfYear, final int _dayOfMonth,
-			final int _idResourceTituloJanela, final boolean _updateDate) {
-		super(_context, _callBack, _year, _monthOfYear, _dayOfMonth);
-		_callBack.setBaseDatePickerDialog(this);
-		this.setTitle(_context.getText(_idResourceTituloJanela));
-		this.updateDate = _updateDate;
+	public BaseDatePickerDialog(final Context context, final BaseOnDateSetListener callBack,
+			final int year, final int monthOfYear, final int dayOfMonth,
+			final int idResourceTituloJanela, final boolean updateDate) {
+		super(context, callBack, year, monthOfYear, dayOfMonth);
+		callBack.setBaseDatePickerDialog(this);
+		this.setTitle(context.getText(idResourceTituloJanela));
+		this.updateDate = updateDate;
 	}
 
 	/**
 	 *
-	 * @param _context
-	 * @param _theme
-	 * @param _callBack
+	 * @param context
+	 * @param theme
+	 * @param callBack
 	 * @param year
 	 * @param monthOfYear
 	 * @param dayOfMonth
-	 * @param _idResourceTituloJanela
+	 * @param idResourceTituloJanela
 	 */
-	public BaseDatePickerDialog(final Context _context, final int _theme,
-			final BaseOnDateSetListener _callBack, final int year, final int monthOfYear,
-			final int dayOfMonth, final int _idResourceTituloJanela, final boolean _updateDate) {
-		super(_context, _theme, _callBack, year, monthOfYear, dayOfMonth);
-		_callBack.setBaseDatePickerDialog(this);
-		this.setTitle(_context.getText(_idResourceTituloJanela));
+	public BaseDatePickerDialog(final Context context, final int theme,
+			final BaseOnDateSetListener callBack, final int year, final int monthOfYear,
+			final int dayOfMonth, final int idResourceTituloJanela, final boolean updateDate) {
+		super(context, theme, callBack, year, monthOfYear, dayOfMonth);
+		callBack.setBaseDatePickerDialog(this);
+		this.setTitle(context.getText(idResourceTituloJanela));
 	}
 
 	/**

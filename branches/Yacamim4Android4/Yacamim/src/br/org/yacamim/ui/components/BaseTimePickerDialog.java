@@ -44,29 +44,29 @@ public class BaseTimePickerDialog extends TimePickerDialog {
 	 * @param minute
 	 * @param is24HourView
 	 */
-	public BaseTimePickerDialog(final Context _context, final BaseOnTimeSetListener _callBack,
-			final int _hourOfDay, final int _minute, final boolean _is24HourView,
-			final int _idResourceTituloJanela, final boolean _updateTime) {
-		super(_context, _callBack, _hourOfDay, _minute, _is24HourView);
-		_callBack.setTimePickerDialog(this);
-		this.setTitle(_context.getText(_idResourceTituloJanela));
-		this.updateTime = _updateTime;
+	public BaseTimePickerDialog(final Context context, final BaseOnTimeSetListener callBack,
+			final int hourOfDay, final int minute, final boolean is24HourView,
+			final int idResourceTituloJanela, final boolean updateTime) {
+		super(context, callBack, hourOfDay, minute, is24HourView);
+		callBack.setTimePickerDialog(this);
+		this.setTitle(context.getText(idResourceTituloJanela));
+		this.updateTime = updateTime;
 	}
 
 	/**
-	 * @param _context
-	 * @param _theme
-	 * @param _callBack
-	 * @param _hourOfDay
-	 * @param _minute
-	 * @param _is24HourView
+	 * @param context
+	 * @param theme
+	 * @param callBack
+	 * @param hourOfDay
+	 * @param minute
+	 * @param is24HourView
 	 */
-	public BaseTimePickerDialog(Context _context, int _theme,
-			BaseOnTimeSetListener _callBack, int _hourOfDay, int _minute,
-			boolean _is24HourView, final int _idResourceTituloJanela, final boolean _updateTime) {
-		super(_context, _theme, _callBack, _hourOfDay, _minute, _is24HourView);
-		_callBack.setTimePickerDialog(this);
-		this.setTitle(_context.getText(_idResourceTituloJanela));
+	public BaseTimePickerDialog(Context context, int theme,
+			BaseOnTimeSetListener callBack, int hourOfDay, int minute,
+			boolean is24HourView, final int idResourceTituloJanela, final boolean updateTime) {
+		super(context, theme, callBack, hourOfDay, minute, is24HourView);
+		callBack.setTimePickerDialog(this);
+		this.setTitle(context.getText(idResourceTituloJanela));
 	}
 
 	/**

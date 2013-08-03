@@ -17,6 +17,8 @@
  */
 package br.org.yacamim.ui.components;
 
+import java.util.Date;
+
 import android.content.DialogInterface;
 
 /**
@@ -34,22 +36,11 @@ class YDialogEventImpl implements YDialogEvent {
 	private boolean neutral;
 	private DialogInterface dialogInterface;
 	private int dialogId;
+	private boolean isDate;
+	private Date date;
 	
-	/**
-	 * 
-	 * @param confirmed
-	 * @param canceled
-	 * @param neutral
-	 * @param dialogInterface
-	 * @param dialogType
-	 */
-	YDialogEventImpl(final boolean confirmed, final boolean canceled, final boolean neutral, final DialogInterface dialogInterface, final int dialogId) {
+	private YDialogEventImpl() {
 		super();
-		this.confirmed = confirmed;
-		this.canceled = canceled;
-		this.neutral = neutral;
-		this.dialogInterface = dialogInterface;
-		this.dialogId = dialogId;
 	}
 
 	/**
@@ -95,6 +86,184 @@ class YDialogEventImpl implements YDialogEvent {
 	@Override
 	public int getDialogId() {
 		return this.dialogId;
+	}
+
+	/**
+	 * 
+	 * @see br.org.yacamim.ui.components.YDialogEvent#isDate()
+	 */
+	@Override
+	public boolean isDate() {
+		return this.isDate;
+	}
+
+	/**
+	 * 
+	 * @see br.org.yacamim.ui.components.YDialogEvent#getDate()
+	 */
+	@Override
+	public Date getDate() {
+		return this.date;
+	}
+	
+	/**
+	 * 
+	 * @param confirmed
+	 */
+	private void setConfirmed(boolean confirmed) {
+		this.confirmed = confirmed;
+	}
+
+	/**
+	 * 
+	 * @param canceled
+	 */
+	private void setCanceled(boolean canceled) {
+		this.canceled = canceled;
+	}
+
+	/**
+	 * 
+	 * @param neutral
+	 */
+	private void setNeutral(boolean neutral) {
+		this.neutral = neutral;
+	}
+
+	/**
+	 * 
+	 * @param dialogInterface
+	 */
+	private void setDialogInterface(DialogInterface dialogInterface) {
+		this.dialogInterface = dialogInterface;
+	}
+
+	/**
+	 * 
+	 * @param dialogId
+	 */
+	private void setDialogId(int dialogId) {
+		this.dialogId = dialogId;
+	}
+
+	/**
+	 * 
+	 * @param isDate
+	 */
+	private void setIsDate(boolean isDate) {
+		this.isDate = isDate;
+	}
+
+	/**
+	 * 
+	 * @param date
+	 */
+	private void setDate(Date date) {
+		this.date = date;
+	}
+
+	/**
+	 * 
+	 * @author Francisco Tarciso Bomfim Júnior
+	 *
+	 */
+	public static class Builder {
+		
+		private boolean confirmed;
+		private boolean canceled;
+		private boolean neutral;
+		private DialogInterface dialogInterface;
+		private int dialogId;
+		private boolean isDate;
+		private Date date;
+		
+		/**
+		 * 
+		 * @param confirmed
+		 * @return
+		 */
+		public Builder withConfirmed(boolean confirmed) {
+			this.confirmed = confirmed;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param canceled
+		 * @return
+		 */
+		public Builder withCanceled(boolean canceled) {
+			this.canceled = canceled;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param neutral
+		 * @return
+		 */
+		public Builder withNeutral(boolean neutral) {
+			this.neutral = neutral;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param dialogInterface
+		 * @return
+		 */
+		public Builder withDialogInterface(DialogInterface dialogInterface) {
+			this.dialogInterface = dialogInterface;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param dialogId
+		 * @return
+		 */
+		public Builder withDialogId(int dialogId) {
+			this.dialogId = dialogId;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param isDate
+		 * @return
+		 */
+		public Builder withIsDate(boolean isDate) {
+			this.isDate = isDate;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param date
+		 * @return
+		 */
+		public Builder withDate(Date date) {
+			this.date = date;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @return
+		 */
+		public YDialogEventImpl build() {
+			final YDialogEventImpl yDialogEventImpl = new YDialogEventImpl();
+			
+			yDialogEventImpl.setCanceled(canceled);
+			yDialogEventImpl.setConfirmed(confirmed);
+			yDialogEventImpl.setNeutral(neutral);
+			yDialogEventImpl.setDialogInterface(dialogInterface);
+			yDialogEventImpl.setDialogId(dialogId);
+			yDialogEventImpl.setIsDate(isDate);
+			yDialogEventImpl.setDate(date);
+			
+			return yDialogEventImpl;
+		}
 	}
 
 }

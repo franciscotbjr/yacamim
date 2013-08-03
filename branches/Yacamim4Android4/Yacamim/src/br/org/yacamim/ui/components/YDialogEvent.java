@@ -17,6 +17,8 @@
  */
 package br.org.yacamim.ui.components;
 
+import java.util.Date;
+
 import android.content.DialogInterface;
 
 /**
@@ -58,5 +60,17 @@ public interface YDialogEvent {
 	 * @return
 	 */
 	public int getDialogId();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isDate();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Date getDate();
 
 }
