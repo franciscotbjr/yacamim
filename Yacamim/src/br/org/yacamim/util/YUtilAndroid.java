@@ -61,7 +61,10 @@ public final class YUtilAndroid {
 	public static String getImei() {
 		String imei = "";
 		try {
-			imei = ((TelephonyManager)YacamimState.getInstance().getCurrentActivity().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+			imei = ((TelephonyManager)YacamimState.getInstance()
+						.getCurrentActivity()
+							.getSystemService(Context.TELEPHONY_SERVICE))
+								.getDeviceId();
 			if(imei == null) {
 				imei = "";
 			}
@@ -78,7 +81,11 @@ public final class YUtilAndroid {
 	public static String getMacAddress() {
 		String macAddress = "";
 		try {
-			macAddress = ((WifiManager)YacamimState.getInstance().getCurrentActivity().getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getMacAddress();
+			macAddress = ((WifiManager)YacamimState.getInstance()
+							.getCurrentActivity()
+								.getSystemService(Context.WIFI_SERVICE))
+									.getConnectionInfo()
+										.getMacAddress();
 			if(macAddress == null) {
 				macAddress = "";
 			}
@@ -112,7 +119,9 @@ public final class YUtilAndroid {
 	public static String getAndroidID() {
 		String androidID = "";
 		try {
-			androidID = Secure.getString(YacamimState.getInstance().getCurrentActivity().getContentResolver(), Secure.ANDROID_ID);
+			androidID = Secure.getString(YacamimState.getInstance()
+							.getCurrentActivity()
+								.getContentResolver(), Secure.ANDROID_ID);
 	    	if(androidID == null) {
 	    		androidID = "";
 			}
@@ -124,29 +133,17 @@ public final class YUtilAndroid {
 
 	/**
 	 *
-	 * @return
-	 */
-	public static String getInstalationID() {
-		String idCombinadoTemporal = new String();
-		try {
-			final String idsConcatenadosTemporal = getImei() + getMacAddress() + getBluetoothMacAddress() + getAndroidID() +System.currentTimeMillis();
-			idCombinadoTemporal = YUtilCryptographic.md5(idsConcatenadosTemporal);
-		} catch (Exception e) {
-			Log.e(TAG + ".getIdCombinadoTemporal", e.getMessage());
-		}
-		return idCombinadoTemporal;
-	}
-
-
-	/**
-	 *
 	 * @param fileName
 	 * @param pathImagens
 	 * @param yBaseActivity
 	 * @param refs
 	 * @return
 	 */
-	public static Intent montaIntentParaCamera(final String fileName, final String pathImagens, final YBaseActivity yBaseActivity,  final List<File> refs) {
+	public static Intent montaIntentParaCamera(
+			final String fileName, 
+			final String pathImagens, 
+			final YBaseActivity yBaseActivity,  
+			final List<File> refs) {
 		final ContentValues values = new ContentValues();
 		values.put(MediaStore.Images.Media.TITLE, fileName);
 		values.put(MediaStore.Images.Media.DESCRIPTION, fileName);

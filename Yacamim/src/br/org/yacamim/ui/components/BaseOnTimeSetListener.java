@@ -51,13 +51,13 @@ public class BaseOnTimeSetListener implements android.app.TimePickerDialog.OnTim
 
 	/**
 	 *
-	 * @param _txtvTime
-	 * @param _format
+	 * @param txtvTime
+	 * @param format
 	 */
-	public BaseOnTimeSetListener(final TextView _txtvTime, final String _format) {
+	public BaseOnTimeSetListener(final TextView txtvTime, final String format) {
 		super();
-		this.txtvTime = _txtvTime;
-		this.format = _format;
+		this.txtvTime = txtvTime;
+		this.format = format;
 	}
 
 	/**

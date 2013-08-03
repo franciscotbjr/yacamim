@@ -184,13 +184,13 @@ public class YAlertDialogFragment  extends DialogFragment implements DialogInter
     public void onClick(final DialogInterface dialogInterface, final int which) {
     	((OnDialogDoneListener) getActivity())
     		.onDialogClick(
-    			new YDialogEventImpl(
-    					which == AlertDialog.BUTTON_POSITIVE, 
-    					which == AlertDialog.BUTTON_NEGATIVE, 
-    					which == AlertDialog.BUTTON_NEUTRAL, 
-    					dialogInterface,
-    					this.getDialogId()
-    				)
+    				new YDialogEventImpl.Builder()
+    					.withConfirmed(which == AlertDialog.BUTTON_POSITIVE)
+    					.withCanceled(which == AlertDialog.BUTTON_POSITIVE)
+    					.withNeutral(which == AlertDialog.BUTTON_NEUTRAL)
+    					.withDialogInterface(dialogInterface)
+    					.withDialogId(this.getDialogId())
+    					.build()
     			);
     }
 

@@ -52,13 +52,13 @@ public class BaseOnDateSetListener implements DatePickerDialog.OnDateSetListener
 
 	/**
 	 *
-	 * @param _txtvDate
-	 * @param _format
+	 * @param txtvDate
+	 * @param format
 	 */
-	public BaseOnDateSetListener(final TextView _txtvDate, final String _format) {
+	public BaseOnDateSetListener(final TextView txtvDate, final String format) {
 		super();
-		this.txtvDate = _txtvDate;
-		this.format = _format;
+		this.txtvDate = txtvDate;
+		this.format = format;
 	}
 
 	/**
@@ -67,12 +67,12 @@ public class BaseOnDateSetListener implements DatePickerDialog.OnDateSetListener
 	 * @see android.app.DatePickerDialog.OnDateSetListener#onDateSet(android.widget.DatePicker, int, int, int)
 	 */
 	@Override
-	public void onDateSet(final DatePicker _view, int _year, final int _monthOfYear, final int _dayOfMonth) {
+	public void onDateSet(final DatePicker view, int year, final int monthOfYear, final int dayOfMonth) {
 		try {
-			Calendar calendar = YUtilDate.getFilledCleanedCalendar(0, 0, 0, 0, _dayOfMonth, _monthOfYear, _year);
+			Calendar calendar = YUtilDate.getFilledCleanedCalendar(0, 0, 0, 0, dayOfMonth, monthOfYear, year);
             this.txtvDate.setText(DateFormat.format(this.format, calendar));
-		} catch (Exception _e) {
-			Log.e("BaseOnDateSetListener.onDateSet", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("BaseOnDateSetListener.onDateSet", e.getMessage());
 		}
 	}
 
@@ -84,10 +84,10 @@ public class BaseOnDateSetListener implements DatePickerDialog.OnDateSetListener
 	}
 
 	/**
-	 * @param _baseDatePickerDialog the baseDatePickerDialog to set
+	 * @param baseDatePickerDialog the baseDatePickerDialog to set
 	 */
-	public void setBaseDatePickerDialog(BaseDatePickerDialog _baseDatePickerDialog) {
-		this.baseDatePickerDialog = _baseDatePickerDialog;
+	public void setBaseDatePickerDialog(BaseDatePickerDialog baseDatePickerDialog) {
+		this.baseDatePickerDialog = baseDatePickerDialog;
 	}
 
 }
