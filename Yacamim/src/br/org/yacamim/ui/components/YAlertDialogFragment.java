@@ -17,6 +17,7 @@
  */
 package br.org.yacamim.ui.components;
 
+import br.org.yacamim.util.YUtilString;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -71,6 +72,23 @@ public class YAlertDialogFragment  extends DialogFragment implements DialogInter
 		bundle.putInt(TITLE, titleTextResource);
 		bundle.putInt(POSITIVE_BUTTON, positivoButtonLabelResource);
 		bundle.putInt(MESSAGE, messageResource);
+		alertDialogFragment.setArguments(bundle);
+		return alertDialogFragment;
+	}
+
+	public static YAlertDialogFragment newInstance(
+			final int dialogId,
+			final String titleTextResource, 
+			final String messageResource, 
+			final int positivoButtonLabelResource 
+			) {
+		final YAlertDialogFragment alertDialogFragment = new YAlertDialogFragment();
+		alertDialogFragment.setDialogId(dialogId);
+		alertDialogFragment.configState(false, false);
+		final Bundle bundle = new Bundle();
+		bundle.putString(TITLE, titleTextResource);
+		bundle.putInt(POSITIVE_BUTTON, positivoButtonLabelResource);
+		bundle.putString(MESSAGE, messageResource);
 		alertDialogFragment.setArguments(bundle);
 		return alertDialogFragment;
 	}
@@ -152,16 +170,30 @@ public class YAlertDialogFragment  extends DialogFragment implements DialogInter
     @Override    
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
     	final Activity activity = getActivity();
+    	String message;
+    	if(YUtilString.isEmptyString(message = this.getArguments().getString(MESSAGE))) {
+    		int messageResource;
+    		if((messageResource = this.getArguments().getInt(MESSAGE)) > 0) {
+    			message = activity.getText(messageResource).toString();
+    		} else {
+    			message = "";
+    		}
+    	}
+    	
     	final AlertDialog.Builder builder = 
     	    new AlertDialog.Builder(activity)
-    	    .setMessage(activity.getText(this.getArguments().getInt(MESSAGE)));
+    	    .setMessage(message);
 
-    	int titleResource;
-    	if((titleResource = this.getArguments().getInt(TITLE)) > 0) {
-    		builder.setTitle(activity.getText(titleResource));
-    	} else {
-    		builder.setTitle("");
+    	String title;
+		if(YUtilString.isEmptyString(title = this.getArguments().getString(TITLE))) {
+			int titleResource;
+			if((titleResource = this.getArguments().getInt(TITLE)) > 0) {
+				title = activity.getText(titleResource).toString();
+	    	} else {
+	    		title = "";
+	    	}	
     	}
+		builder.setTitle(title);
 
     	builder.setPositiveButton(activity.getText(this.getArguments().getInt(POSITIVE_BUTTON)), this);
 

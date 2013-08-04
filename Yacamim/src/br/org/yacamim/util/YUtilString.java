@@ -277,4 +277,41 @@ public final strictfp class YUtilString {
 		}
 		return value.matches(YUtilString.REGEX_INTEGER);
 	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static boolean isLowerCase(final String value) {
+		if (YUtilString.isEmptyString(value)) {
+			return false;
+		}
+		return value.toLowerCase().equals(value);
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static boolean isUpperCase(final String value) {
+		if (YUtilString.isEmptyString(value)) {
+			return false;
+		}
+		return value.toLowerCase().equals(value);
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static boolean isMixedUpperLowerCase(final String value) {
+		if (YUtilString.isEmptyString(value)) {
+			return false;
+		}
+		return (!YUtilString.isLowerCase(value) && !YUtilString.isUpperCase(value));
+	}
+	
 }

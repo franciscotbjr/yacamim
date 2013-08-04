@@ -98,14 +98,14 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	
 	/**
 	 * 
-	 * @param _uiFieldNames
-	 * @param _string
+	 * @param uiFieldNames
+	 * @param messageErrorType
 	 */
-	protected void buildMessage(final List<String> _uiFieldNames, final int _string) {
+	protected void buildMessage(final List<String> uiFieldNames, final int messageErrorType) {
 		try {
 			clearMessage();
-			this.getMessage().append(getText(_string));
-			for(final String nomeCampo : _uiFieldNames) {
+			this.getMessage().append(getText(messageErrorType));
+			for(final String nomeCampo : uiFieldNames) {
 				this.getMessage().append("\n");
 				this.getMessage().append(" - " + nomeCampo);
 			}
@@ -117,12 +117,12 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	
 	/**
 	 * 
-	 * @param _uiFieldNames
+	 * @param uiFieldNames
 	 */
-	protected void buildMessage(final List<String> _uiFieldNames) {
+	protected void buildMessage(final List<String> uiFieldNames) {
 		try {
 			clearMessage();
-			for(final String nomeCampo : _uiFieldNames) {
+			for(final String nomeCampo : uiFieldNames) {
 				this.getMessage().append("\n");
 				this.getMessage().append(" - " + nomeCampo);
 			}
@@ -154,11 +154,11 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 
 	/**
 	 * 
-	 * @param _message
+	 * @param message
 	 */
-	public void displayProgressDialog(final String _message) {
+	public void displayProgressDialog(final String message) {
 		try {
-			this.progressDialogStack.add(ProgressDialog.show(this, "", _message, true, false));
+			this.progressDialogStack.add(ProgressDialog.show(this, "", message, true, false));
 		} catch (Exception e) {
 			Log.e(TAG + ".displayProgressDialog", e.getMessage());
 		}
@@ -404,12 +404,29 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	}
 
 	/**
+	 * 
+	 * @param dialogId
+	 * @param title
+	 * @param mensage
+	 * @param positiveButtonresource
+	 */
+	protected void buildSimplePositiveAlertDialog(final int dialogId, final String title, 
+			final String mensage, final int positiveButtonresource) {
+		final YAlertDialogFragment yAlertDialogFragment = 
+				YAlertDialogFragment.newInstance(dialogId, 
+						title, 
+						mensage, 
+						positiveButtonresource);
+		yAlertDialogFragment.show(this.getFragmentManager(), TAG);
+	}
+
+	/**
 	 *
 	 * @see android.os.Handler.Callback#handleMessage(android.os.Message)
 	 */
 	@Override
-	public boolean handleMessage(final Message _message) {
-		switch(_message.what){
+	public boolean handleMessage(final Message message) {
+		switch(message.what){
 	        case YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
 	        	this.clearProgressDialogStack();
 	        	this.displayDialogWifiAccess();
@@ -429,8 +446,8 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	protected void vibrar() {
 		try {
 			((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 150}, -1);
-		} catch (Exception _e) {
-			Log.e(TAG + ".vibrar", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".vibrar", e.getMessage());
 		}
 	}
 	
@@ -448,8 +465,8 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	public void cleanupWindowUIFields() {
 		try {
 			YUtilUIFields.clearUIFields(this, this.getFieldsForWindowsCleanup());
-		} catch (Exception _e) {
-			Log.e(TAG + ".limpaTela", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".limpaTela", e.getMessage());
 		}
 	}
 
@@ -482,9 +499,9 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	
 	/**
 	 * 
-	 * @param _gpsLocationInfo
+	 * @param gpsLocationInfo
 	 */
-	public void onUpdateGpsLocationInfo(GpsLocationInfo _gpsLocationInfo) {
+	public void onUpdateGpsLocationInfo(GpsLocationInfo gpsLocationInfo) {
 		
 	}
 }

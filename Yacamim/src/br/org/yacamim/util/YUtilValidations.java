@@ -137,10 +137,10 @@ public strictfp abstract class YUtilValidations {
 	public static boolean isMod10(final String number, final char digit) throws Exception {
 		String strDigit = "" + digit;
 		if(YUtilString.isEmptyString(strDigit)) {
-			throw new Exception("Dígito vazio ou null!");
+			throw new Exception("Digit empty or null!");
 		}
 		if(!YUtilString.isInteger(strDigit)) {
-			throw new Exception("Dígito contém caracteres inválidos!");
+			throw new Exception("Digit contains invalid characters!");
 		}
 
 
@@ -159,10 +159,10 @@ public strictfp abstract class YUtilValidations {
 	public static int mod10(final String number) throws Exception {
 
 		if(YUtilString.isEmptyString(number)) {
-			throw new Exception("String vazia ou null!");
+			throw new Exception("Empty String or null!");
 		}
 		if(!YUtilString.isInteger(number)) {
-			throw new Exception("String contém caracteres inválidos!");
+			throw new Exception("String contains invalid characters!");
 		}
 
 	    int multi = 2;
@@ -210,6 +210,20 @@ public strictfp abstract class YUtilValidations {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @param minRange
+	 * @param maxRange
+	 * @return
+	 */
+	public static boolean isStringInRange(final String value, final int minRange, final int maxRange) {
+		if (YUtilString.isEmptyString(value)) {
+			return false;
+		}
+		return ((value.length() >= minRange) && (value.length() <= maxRange));
 	}
 
 }

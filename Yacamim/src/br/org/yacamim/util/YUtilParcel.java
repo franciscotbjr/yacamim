@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import br.org.yacamim.entity.YBaseEntity;
 import br.org.yacamim.entity.YWriteToParcel;
 
 /**
@@ -130,6 +131,16 @@ public final class YUtilParcel {
 							YUtilReflection.setValueToProperty(
 									propertyName,
 									parcel.readSerializable(),
+									object);
+						} else if (isParcelable(getMethod.getReturnType())) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readParcelable(getMethod.getReturnType().getClassLoader()),
+									object);
+						} else if (isYBaseEntity(getMethod.getReturnType())) {
+							YUtilReflection.setValueToProperty(
+									propertyName,
+									parcel.readValue(getMethod.getReturnType().getClassLoader()),
 									object);
 						}
 					}
@@ -291,7 +302,29 @@ public final class YUtilParcel {
 			parcel.writeBundle((Bundle)propertyValue);
 		} else if (getMethod.getReturnType().equals(Serializable.class)) {
 			parcel.writeSerializable((Serializable)propertyValue);
+		} else if (isParcelable(getMethod.getReturnType())) {
+			parcel.writeValue(propertyValue);
+		} else if (isYBaseEntity(getMethod.getReturnType())) {
+			parcel.writeValue(propertyValue);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param declaringClass
+	 * @return
+	 */
+	public static final boolean isParcelable(final Class<?> declaringClass) {
+		return YUtilReflection.implementsInterface(declaringClass, Parcelable.class);
+	}
+	
+	/**
+	 * 
+	 * @param declaringClass
+	 * @return
+	 */
+	public static final boolean isYBaseEntity(final Class<?> declaringClass) {
+		return YUtilReflection.extendsClass(declaringClass, YBaseEntity.class);
 	}
 
 }

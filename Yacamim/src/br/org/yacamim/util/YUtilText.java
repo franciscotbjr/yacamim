@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import br.org.yacamim.YacamimConfig;
@@ -281,6 +282,38 @@ public final class YUtilText {
 			Log.e(TAG + ".getBolStringFromRadioButton", e.getMessage());
 		}
 		return bolString;
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param viewId
+	 * @return
+	 */
+	public static boolean isRadioGroupChecked(final Activity activity, final int viewId) {
+		boolean resultado = false;
+		try {
+			resultado = ((RadioGroup)activity.findViewById(viewId)).getCheckedRadioButtonId() != -1;
+		} catch (Exception e) {
+			Log.e(TAG + ".isRadioGroupChecked", e.getMessage());
+		}
+		return resultado;
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param radioGroupId
+	 * @return
+	 */
+	public static RadioButton getCheckedRadioFromRadioGroup(final Activity activity, final int radioGroupId) {
+		RadioButton radioButton = null;
+		try {
+			radioButton = (RadioButton)activity.findViewById(((RadioGroup)activity.findViewById(radioGroupId)).getCheckedRadioButtonId());
+		} catch (Exception e) {
+			Log.e(TAG + ".getCheckedRadioFromRadioGroup", e.getMessage());
+		}
+		return radioButton;
 	}
 
 	/**
