@@ -1021,6 +1021,44 @@ public strictfp abstract class YUtilReflection {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param declaringClass
+	 * @param declaringInterface
+	 * @return
+	 */
+	public static boolean implementsInterface(final Class<?> declaringClass, final Class<?> declaringInterface) {
+		boolean result = false;
+		try {
+			final Class<?>[] intarfaces = declaringClass.getInterfaces();
+			if(intarfaces != null && intarfaces.length > 0) {
+				for(Class<?> interf : intarfaces) {
+					if(interf.equals(declaringInterface)) {
+						result = true;
+						break;
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.e(TAG + ".implementsInterface", e.getMessage());
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param declaringClass
+	 * @param declaringInterface
+	 * @return
+	 */
+	public static boolean extendsClass(final Class<?> declaringClass, final Class<?> declaringInterface) {
+		try {
+			return declaringClass.getSuperclass().equals(declaringInterface);
+		} catch (Exception e) {
+			Log.e(TAG + ".extendsClass", e.getMessage());
+			return false;
+		}
+	}
 	
 
 }

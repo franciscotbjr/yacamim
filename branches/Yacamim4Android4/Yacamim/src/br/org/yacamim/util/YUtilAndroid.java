@@ -55,7 +55,10 @@ public final class YUtilAndroid {
 	}
 
 	/**
-	 *
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.READ_PHONE_STATE" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
+	 * 
 	 * @return
 	 */
 	public static String getImei() {
@@ -75,7 +78,10 @@ public final class YUtilAndroid {
 	}
 
 	/**
-	 *
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
+	 * 
 	 * @return
 	 */
 	public static String getMacAddress() {
@@ -96,6 +102,33 @@ public final class YUtilAndroid {
 	}
 
 	/**
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.READ_PHONE_STATE" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
+	 * 
+	 * 
+	 * @return
+	 */
+	public static String getLine1Number() {
+		String line1Number = "";
+		try {
+			line1Number = ((TelephonyManager)YacamimState.getInstance()
+							.getCurrentActivity()
+								.getSystemService(Context.TELEPHONY_SERVICE))
+									.getLine1Number();
+			if(line1Number == null) {
+				line1Number = "";
+			}
+		} catch (Exception e) {
+			Log.e(TAG + ".getLine1Number", e.getMessage());
+		}
+		return line1Number;
+	}
+
+	/**
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.BLUETOOTH" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
 	 *
 	 * @return
 	 */
@@ -132,6 +165,13 @@ public final class YUtilAndroid {
 	}
 
 	/**
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.CAMERA" /&gt; <br/><br/>
+	 *  and <br/><br/>
+	 *  &lt;uses-feature android:name="android.hardware.camera" /&gt; <br/><br/>
+	 *  and <br/><br/>
+	 *  &lt;uses-feature android:name="android.hardware.camera.autofocus" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
 	 *
 	 * @param fileName
 	 * @param pathImagens
@@ -172,7 +212,12 @@ public final class YUtilAndroid {
 
 
 	/**
-	 *
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /&gt; <br/><br/>
+	 *  and <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
+	 * 
 	 * @param activity
 	 * @return
 	 */
@@ -204,7 +249,10 @@ public final class YUtilAndroid {
 	}
 
 	/**
-	 *
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
+	 * 
 	 * @param activity
 	 * @return
 	 */
@@ -231,7 +279,12 @@ public final class YUtilAndroid {
 	}
 
 	/**
-	 *
+	 * Requires <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /&gt; <br/><br/>
+	 *  and <br/><br/>
+	 *  &lt;uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /&gt; <br/><br/>
+	 * on your project Manifest.<br/>
+	 * 
 	 * @param activity
 	 * @return
 	 */
@@ -256,5 +309,7 @@ public final class YUtilAndroid {
 			}
 		}
 	}
+	
+	
 
 }

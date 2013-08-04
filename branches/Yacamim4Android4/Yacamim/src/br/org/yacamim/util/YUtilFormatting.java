@@ -141,8 +141,12 @@ public strictfp abstract class YUtilFormatting {
 	public static String formatTelefone(final String value) {
 		String strReturn = "";
 
-		if (value != null) {
-			strReturn = YUtilFormatting.format(value, "(##)####-####", '#');
+		if (value != null && YUtilString.isNumeric(value)) {
+			if(value.length() > 10) {
+				strReturn = YUtilFormatting.format(value, "(##) #####-####", '#');
+			} else {
+				strReturn = YUtilFormatting.format(value, "(##) ####-####", '#');
+			}
 		}
 
 		return strReturn;
