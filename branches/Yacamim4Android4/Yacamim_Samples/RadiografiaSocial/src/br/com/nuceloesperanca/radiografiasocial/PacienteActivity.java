@@ -109,7 +109,7 @@ public class PacienteActivity extends YBaseActivity {
 
     	        final TextView textView = (TextView) findViewById(R.id.txtv_nascimento);
     	        if (this.paciente.getNascimento() != null) {
-    	        	textView.setText(YUtilDate.getSimpleDateFormatData().format(this.paciente.getNascimento()));
+    	        	textView.setText(YUtilDate.getSimpleDateFormat().format(this.paciente.getNascimento()));
     	        }
 
     			YUtilText.setTextToEditText(this, R.id.txte_nome_mae, this.paciente.getNomeMae());
