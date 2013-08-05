@@ -17,7 +17,6 @@
  */
 package br.org.yacamim.util;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.util.Log;
@@ -111,24 +110,6 @@ public strictfp abstract class YUtilValidations {
 
 	/**
 	 *
-	 * @param email
-	 * @return
-	 */
-	public static boolean isValidEmail(final String email) {
-		if (YUtilString.isEmptyString(email)) {
-			return false;
-		}
-		Pattern p = Pattern.compile(YUtilString.EMAIL_REGEX);
-		Matcher m = p.matcher(email);
-		if (m.find()) {
-			return true;
-		}
-		return false;
-	}
-
-
-	/**
-	 *
 	 * @param number
 	 * @param digit
 	 * @return
@@ -198,6 +179,21 @@ public strictfp abstract class YUtilValidations {
 	    }
 
 	    return dac;
+	}
+	
+	/**
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public static boolean isValidEmail(final String email){
+		if(YUtilString.isEmptyString(email)) {
+			return false;
+		}
+		return Pattern
+				.compile(YUtilString.EMAIL_REGEX)
+					.matcher(email)
+						.matches();
 	}
 
 	/**
