@@ -49,28 +49,30 @@ public class FactoryDatabase {
 	/**
 	 * Retorna a instância de database.
 	 *
-	 * @param _dbHelper
+	 * @param dbHelper
 	 * @return
 	 */
-	public SQLiteDatabase getDatabase(DefaultDBHelper _dbHelper) {
+	public SQLiteDatabase getDatabase(DefaultDBHelper dbHelper) {
 		if (database == null) {
-			database = _dbHelper.getWritableDatabase();
+			database = dbHelper.getWritableDatabase();
 		}
-
 		return database;
 	}
 
 	/**
 	 * Set <tt>null</tt> to <tt>database</tt> only when it is not in tha same transaction.
 	 */
-	public void close(DefaultDBHelper _dbHelper) {
+	public void close(DefaultDBHelper dbHelper) {
 		if (database != null) {
 			if (!database.inTransaction()) {
+				if(database.isOpen()) {
+					database.close();
+				}
 				database = null;
-				_dbHelper.close();
+				dbHelper.close();
 			}
 		} else {
-			_dbHelper.close();
+			dbHelper.close();
 		}
 	}
 }

@@ -100,7 +100,7 @@ public class YDeleteSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRe
 		if(!super.isErrorWithoutConnectivity()) {
 			return doRest(ySimpleHttpRestRequestAdpater);
 		}
-		return super.doInBackground(ySimpleHttpRestRequestAdpater);
+		return null;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class YDeleteSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRe
 	 * @param ySimpleHttpRestRequestAdpater
 	 * @return
 	 */
-	private YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
+	protected YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
 		try {
 			this.configHttpEntity();
 

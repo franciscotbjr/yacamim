@@ -33,6 +33,7 @@ import org.json.JSONObject;
  */
 public class YSimpleHttpResponseAdapterImpl implements YSimpleHttpResponseAdapter {
 
+	private String requestPath;
 	private StringBuilder body;
 	private List<Cookie> cookies;
 	public int status;
@@ -78,10 +79,20 @@ public class YSimpleHttpResponseAdapterImpl implements YSimpleHttpResponseAdapte
 	 *
 	 * @see br.org.yacamim.http.YSimpleHttpResponseAdapter#getStatus()
 	 */
+	@Override
 	public int getStatus() {
 		return this.status;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public String getRequestPath() {
+		return requestPath;
+	}
+	
 	/**
 	 *
 	 * @see br.org.yacamim.http.YSimpleHttpResponseAdapter#setBody(java.lang.StringBuilder)
@@ -117,6 +128,16 @@ public class YSimpleHttpResponseAdapterImpl implements YSimpleHttpResponseAdapte
 	 */
 	public YSimpleHttpResponseAdapter setStatus(final int status) {
 		this.status = status;
+		return this;
+	}
+	
+	/**
+	 * 
+	 * @param requestPath
+	 * @return
+	 */
+	public YSimpleHttpResponseAdapter setRequestPath(String requestPath) {
+		this.requestPath = requestPath;
 		return this;
 	}
 

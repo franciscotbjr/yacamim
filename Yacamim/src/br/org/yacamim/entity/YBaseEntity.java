@@ -32,8 +32,6 @@ import br.org.yacamim.util.YUtilParcel;
 public class YBaseEntity implements Parcelable {
 
 	protected long id;
-	private String yError;
-	private String yMessage;
 
 	/**
 	 *
@@ -62,34 +60,6 @@ public class YBaseEntity implements Parcelable {
 	 */
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	/**
-	 * @return the error
-	 */
-	public String getYError() {
-		return yError;
-	}
-
-	/**
-	 * @param yError the error to set
-	 */
-	public void setYError(String yError) {
-		this.yError = yError;
-	}
-
-	/**
-	 * @return the message
-	 */
-	public String getYMessage() {
-		return yMessage;
-	}
-
-	/**
-	 * @param yMessage the message to set
-	 */
-	public void setYMessage(String yMessage) {
-		this.yMessage = yMessage;
 	}
 
 	// Parcelable implementations
@@ -133,9 +103,7 @@ public class YBaseEntity implements Parcelable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((yError == null) ? 0 : yError.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((yMessage == null) ? 0 : yMessage.hashCode());
 		return result;
 	}
 
@@ -155,21 +123,7 @@ public class YBaseEntity implements Parcelable {
 			return false;
 		}
 		YBaseEntity other = (YBaseEntity) obj;
-		if (yError == null) {
-			if (other.yError != null) {
-				return false;
-			}
-		} else if (!yError.equals(other.yError)) {
-			return false;
-		}
 		if (id != other.id) {
-			return false;
-		}
-		if (yMessage == null) {
-			if (other.yMessage != null) {
-				return false;
-			}
-		} else if (!yMessage.equals(other.yMessage)) {
 			return false;
 		}
 		return true;

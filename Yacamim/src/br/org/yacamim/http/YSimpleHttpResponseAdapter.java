@@ -48,4 +48,8 @@ public interface YSimpleHttpResponseAdapter {
 
 	public YSimpleHttpResponseAdapter addCookie(Cookie cookie);
 
+	public YSimpleHttpResponseAdapter setRequestPath(final String requestPath);
+
+	public String getRequestPath();
+
 }
