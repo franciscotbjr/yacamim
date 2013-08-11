@@ -100,7 +100,7 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 		if(!super.isErrorWithoutConnectivity()) {
 			return doRest(ySimpleHttpRestRequestAdpater);
 		}
-		return super.doInBackground(ySimpleHttpRestRequestAdpater);
+		return null;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	 * @param ySimpleHttpRestRequestAdpater
 	 * @return
 	 */
-	private YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
+	protected YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
 		try {
 			this.configHttpEntity();
 

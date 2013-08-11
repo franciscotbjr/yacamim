@@ -119,6 +119,9 @@ public final class YUtilAndroid {
 			if(line1Number == null) {
 				line1Number = "";
 			}
+			if(!YUtilString.isNumeric(line1Number)) {
+				line1Number = YUtilString.keepOnlyNumbers(line1Number);
+			}
 		} catch (Exception e) {
 			Log.e(TAG + ".getLine1Number", e.getMessage());
 		}

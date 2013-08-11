@@ -100,7 +100,7 @@ public class YPostSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequ
 		if(!super.isErrorWithoutConnectivity()) {
 			return doRest(ySimpleHttpRestRequestAdpater);
 		}
-		return super.doInBackground(ySimpleHttpRestRequestAdpater);
+		return null;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class YPostSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequ
 	 * @param ySimpleHttpRestRequestAdpater
 	 * @return
 	 */
-	private YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
+	protected YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
 		try {
 			this.configHttpEntity();
 
@@ -126,12 +126,7 @@ public class YPostSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequ
             post.setHeader("Content-Type", APPLICATION_JSON + "; charset=" + restHttpEntity.getContentEncoding().getValue());
 
             final BasicResponseHandler handler = new BasicResponseHandler();
-
-            restHttpEntity.setContent(this.ySimpleHttpRestRequestAdpater.getContent());
-            restHttpEntity.setContentType(APPLICATION_JSON);
-            restHttpEntity.setContentEncoding(restHttpEntity.getContentEncoding().getValue());
-			post.setEntity(restHttpEntity);
-            
+            post.setEntity(restHttpEntity);
 
             // Http call
             final HttpResponse response = client.execute(post);
@@ -139,7 +134,9 @@ public class YPostSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequ
             this.ySimpleHttpResponseAdapter = new YSimpleHttpResponseAdapterImpl()
 	            .setStatus(response.getStatusLine().getStatusCode())
 	            .setBody(buildResponseBody(handler, response))
-	            .addCookies(client.getCookieStore().getCookies());
+	            .addCookies(client.getCookieStore().getCookies())
+	            .setRequestPath(this.ySimpleHttpRestRequestAdpater.getUri())
+	            ;
 
             this.heandleTokens(response, this.ySimpleHttpResponseAdapter);
 
