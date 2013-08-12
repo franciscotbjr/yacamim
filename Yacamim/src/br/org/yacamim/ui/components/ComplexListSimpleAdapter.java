@@ -65,15 +65,15 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * <br/>
 	 *
 	 *
-	 * @param _baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
-	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
-	 * @param _adapterConfig
+	 * @param baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
+	 * @param data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
+	 * @param adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final YBaseListActivity _baseListActivity,
-			List<? extends Map<String, Object>> _data,
-			AdapterConfig _adapterConfig) {
-		super(_baseListActivity, _baseListActivity.getApplicationContext(), _data, _adapterConfig);
-		this.yBaseListActivity = _baseListActivity;
+	public ComplexListSimpleAdapter(final YBaseListActivity baseListActivity,
+			List<? extends Map<String, Object>> data,
+			AdapterConfig adapterConfig) {
+		super(baseListActivity, baseListActivity.getApplicationContext(), data, adapterConfig);
+		this.yBaseListActivity = baseListActivity;
 		this.configNoListModelSelection();
 	}
 
@@ -85,17 +85,17 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * <br/>
 	 *
 	 *
-	 * @param _baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
-	 * @param _context An instance of <tt>android.content.Context</tt>.
-	 * @param _data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
-	 * @param _adapterConfig
+	 * @param baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
+	 * @param context An instance of <tt>android.content.Context</tt>.
+	 * @param data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
+	 * @param adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final YBaseListActivity _baseListActivity,
-			Context _context,
-			List<? extends Map<String, Object>> _data,
-			AdapterConfig _adapterConfig) {
-		super(_baseListActivity, _context, _data, _adapterConfig);
-		this.yBaseListActivity = _baseListActivity;
+	public ComplexListSimpleAdapter(final YBaseListActivity baseListActivity,
+			Context context,
+			List<? extends Map<String, Object>> data,
+			AdapterConfig adapterConfig) {
+		super(baseListActivity, context, data, adapterConfig);
+		this.yBaseListActivity = baseListActivity;
 		this.configNoListModelSelection();
 	}
 
@@ -106,8 +106,8 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	protected void configNoListModelSelection() {
 		try {
 			this.noListModelSelection = super.getAdapterConfig().getListModelSelection() == null;
-		} catch (Exception _e) {
-			Log.e("ComplexListSimpleAdapter.configNoListModelSelection", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.configNoListModelSelection", e.getMessage());
 		}
 	}
 
@@ -118,17 +118,17 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public View getView(final int _position, View _convertView, final ViewGroup _parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 		try {
 			/* calls getView from superclasse TextListSimpleAdapter */
-			_convertView = super.getView(_position, _convertView, _parent);
+			convertView = super.getView(position, convertView, parent);
 
-			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(_position);
+			final HashMap<String, Object> data = (HashMap<String, Object>) getItem(position);
 			final Object object = (Object) data.get(YConstants.OBJECT);
-			final RowConfig rowConfig = super.selectRowConfig(_position, object);
+			final RowConfig rowConfig = super.selectRowConfig(position, object);
 
-			if(_convertView != null && rowConfig != null) {
-				_convertView.setOnClickListener(new View.OnClickListener() {
+			if(convertView != null && rowConfig != null) {
+				convertView.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(final View _view) {
 						if(rowConfig.getResourcesHint() != null && rowConfig.getResourcesHint().length > 0) {
@@ -143,19 +143,19 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
 					if(rowConfigItem.getInteractionConfig() != null && rowConfigItem.getInteractionConfig().getResourceTypeForInteraction() != null) {
 						if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(CheckBox.class) && !this.noListModelSelection) {
-							this.treatCheckBox(_convertView, object, rowConfigItem);
+							this.treatCheckBox(convertView, object, rowConfigItem);
 						} else if (rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(Button.class)) {
-							this.treatButton(_convertView, object, rowConfigItem);
+							this.treatButton(convertView, object, rowConfigItem);
 						} else if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(ImageView.class)) {
-							this.treatImageView(_convertView, object, rowConfigItem);
+							this.treatImageView(convertView, object, rowConfigItem);
 						}
 					}
 				}
 			}
-		} catch (Exception _e) {
-			Log.e("ComplexListSimpleAdapter.getView", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.getView", e.getMessage());
 		}
-		return _convertView;
+		return convertView;
 	}
 
 	/**
@@ -178,68 +178,68 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 
 	/**
 	 *
-	 * @param _convertView
-	 * @param _object
-	 * @param _rowConfigItem
+	 * @param convertView
+	 * @param object
+	 * @param rowConfigItem
 	 */
-	protected void treatButton(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
+	protected void treatButton(final View convertView, final Object object, final RowConfigItem rowConfigItem) {
 		try {
-			final Button button = (Button)_convertView.findViewById(_rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
-			if(_rowConfigItem.getCondition() != null) {
-				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
-					this.trataBotaoVisible(_object, button);
+			final Button button = (Button)convertView.findViewById(rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
+			if(rowConfigItem.getCondition() != null) {
+				if(rowConfigItem.getCondition().checkToVisibility(object)) {
+					this.treatVisibleButtom(object, button);
 				} else {
 					button.setVisibility(View.GONE);
 				}
-				_rowConfigItem.getCondition().handle(_object, button);
+				rowConfigItem.getCondition().handle(object, button);
 			} else {
-				this.trataBotaoVisible(_object, button);
+				this.treatVisibleButtom(object, button);
 			}
-		} catch (Exception _e) {
-			Log.e("ComplexListSimpleAdapter.treatButton", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.treatButton", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _convertView
-	 * @param _object
-	 * @param _rowConfigItem
+	 * @param convertView
+	 * @param object
+	 * @param rowConfigItem
 	 */
-	protected void treatCheckBox(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
+	protected void treatCheckBox(final View convertView, final Object object, final RowConfigItem rowConfigItem) {
 		try {
-			final CheckBox checkBox = (CheckBox)_convertView.findViewById(_rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
-			if(_rowConfigItem.getCondition() != null) {
-				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
-					this.trataCheckBoxVisible(_object, checkBox);
+			final CheckBox checkBox = (CheckBox)convertView.findViewById(rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
+			if(rowConfigItem.getCondition() != null) {
+				if(rowConfigItem.getCondition().checkToVisibility(object)) {
+					this.treatVisibleCheckBox(object, checkBox);
 				} else {
 					checkBox.setVisibility(View.GONE);
 				}
-				_rowConfigItem.getCondition().handle(_object, checkBox);
+				rowConfigItem.getCondition().handle(object, checkBox);
 			} else {
-				this.trataCheckBoxVisible(_object, checkBox);
+				this.treatVisibleCheckBox(object, checkBox);
 			}
-		} catch (Exception _e) {
-			Log.e("ComplexListSimpleAdapter.treatCheckBox", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.treatCheckBox", e.getMessage());
 		}
 	}
 
 	/**
 	 *
-	 * @param _convertView
-	 * @param _object
-	 * @param _rowConfigItem
+	 * @param convertView
+	 * @param object
+	 * @param rowConfigItem
 	 */
-	protected void treatImageView(final View _convertView, final Object _object, final RowConfigItem _rowConfigItem) {
+	protected void treatImageView(final View convertView, final Object object, final RowConfigItem rowConfigItem) {
 		try {
-			final ImageView imageView = (ImageView)_convertView.findViewById(_rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
-			if(_rowConfigItem.getCondition() != null) {
-				if(_rowConfigItem.getCondition().checkToVisibility(_object)) {
+			final ImageView imageView = (ImageView)convertView.findViewById(rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
+			if(rowConfigItem.getCondition() != null) {
+				if(rowConfigItem.getCondition().checkToVisibility(object)) {
 					imageView.setVisibility(View.VISIBLE);
 				} else {
 					imageView.setVisibility(View.GONE);
 				}
-				_rowConfigItem.getCondition().handle(_object, imageView);
+				rowConfigItem.getCondition().handle(object, imageView);
 			} else {
 				imageView.setVisibility(View.VISIBLE);
 			}
@@ -250,16 +250,16 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 
 	/**
 	 *
-	 * @param _object
-	 * @param _checkBox
+	 * @param object
+	 * @param checkBox
 	 */
-	protected void trataCheckBoxVisible(final Object _object, final CheckBox _checkBox) {
+	protected void treatVisibleCheckBox(final Object object, final CheckBox checkBox) {
 		try {
-			_checkBox.setVisibility(View.VISIBLE);
-			_checkBox.setTag(_object);
-			_checkBox.setChecked(ComplexListSimpleAdapter.this.getAdapterConfig().getListModelSelection().contains(_object));
-			_checkBox.requestLayout();
-			_checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			checkBox.setVisibility(View.VISIBLE);
+			checkBox.setTag(object);
+			checkBox.setChecked(ComplexListSimpleAdapter.this.getAdapterConfig().getListModelSelection().contains(object));
+			checkBox.requestLayout();
+			checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 					if(isChecked) {
@@ -269,27 +269,27 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 					}
 				}
 			});
-		} catch (Exception _e) {
-			Log.e("ComplexListSimpleAdapter.trataCheckBoxVisible", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.treatVisibleCheckBox", e.getMessage());
 		}
 	}
 
 	/**
-	 * @param _object
-	 * @param _button
+	 * @param object
+	 * @param button
 	 */
-	protected void trataBotaoVisible(final Object _object, final Button _button) {
+	protected void treatVisibleButtom(final Object object, final Button button) {
 		try {
-			_button.setVisibility(View.VISIBLE);
-			_button.setTag(_object);
-			_button.setOnClickListener(new View.OnClickListener() {
+			button.setVisibility(View.VISIBLE);
+			button.setTag(object);
+			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View _view) {
 					ComplexListSimpleAdapter.this.yBaseListActivity.onListViewClick(_view, _view.getTag());
 				}
 			});
-		} catch (Exception _e) {
-			Log.e("ComplexListSimpleAdapter.trataBotaoVisible", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.treatVisible", e.getMessage());
 		}
 	}
 }
