@@ -25,12 +25,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.R.bool;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import br.org.yacamim.YacamimConfig;
+import br.org.yacamim.YacamimResources;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.dex.YInvocationHandlerProxy;
 import br.org.yacamim.entity.YBaseEntity;
@@ -164,8 +166,8 @@ public class DefaultDBAdapter<E> {
 				}
 				cursor.close();
 			}
-		} catch (Exception _e) {
-			Log.e("DefaultDBAdapter.list", _e.getMessage());
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.list", e.getMessage());
 		}
 		return entities;
 	}
@@ -196,6 +198,66 @@ public class DefaultDBAdapter<E> {
 
 	/**
 	 * 
+	 * @param entities
+	 * @return
+	 */
+	public boolean insert(final List<E> entities) {
+		boolean success = false;
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			this.beginTransaction();
+			
+			for(E e : entities) {
+				success = this.localInsert(e);
+			}
+			
+			return success;
+		} catch (Exception e) {
+			this.endTransaction(false);
+			Log.e("DefaultDBAdapter.insert", e.getMessage());
+			return false;
+		} finally {
+			this.endTransaction(success);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param entities
+	 * @return
+	 */
+	public boolean insert(final List<E> entities, final boolean transaction) {
+		boolean success = false;
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			if(transaction) {
+				this.beginTransaction();
+			}
+			
+			for(E e : entities) {
+				success = this.localInsert(e);
+			}
+			
+			return success;
+		} catch (Exception e) {
+			if(transaction) {
+				this.endTransaction(false);
+			}
+			Log.e("DefaultDBAdapter.insert", e.getMessage());
+			return false;
+		} finally {
+			if(transaction) {
+				this.endTransaction(success);
+			}
+		}
+	}
+
+	/**
+	 * 
 	 * @param entity
 	 * @return
 	 */
@@ -204,9 +266,9 @@ public class DefaultDBAdapter<E> {
 		try {
 			boolean success = false;
 
+			this.beginTransaction();
 			if (YUtilPersistence.isProxy(entity.getClass())) {
 				E loadEntity = (E) YProxyLoad.load(entity, true, null);
-				this.beginTransaction();
 				success = this.localUpdate(loadEntity);
 			} else {
 				if(!this.isEntity()) {
@@ -214,13 +276,6 @@ public class DefaultDBAdapter<E> {
 				}
 				success = this.localUpdate(entity);
 			}
-
-			/*
-			final ContentValues updateValues = createContentValues(entity);
-			final String idColumnName = YUtilPersistence.getIdColumnName(this.getGenericClass());
-			updateValues.remove(idColumnName);
-			return this.getDatabase().update(this.getTableName(), updateValues, idColumnName + " = " + this.getId(entity), null) > 0;
-			*/
 
 			return success;
 		} catch (Exception e) {
@@ -697,6 +752,12 @@ public class DefaultDBAdapter<E> {
 				final String columnName = YUtilPersistence.getColumnName(column, getMethod);
 				if(getMethod.getReturnType().equals(String.class)) {
 					values.put(columnName, (String)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
+				} else if (getMethod.getReturnType().equals(Boolean.class) || getMethod.getReturnType().equals(boolean.class)) {
+					final Boolean value = (Boolean)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade);
+					if(value != null) {
+						values.put(columnName, 
+								value ? YacamimConfig.getInstance().getYSqliteTrue() : YacamimConfig.getInstance().getYSqliteFalse());
+					}
 				} else if (getMethod.getReturnType().equals(Byte.class) || getMethod.getReturnType().equals(byte.class)) {
 					values.put(columnName, (Byte)YUtilReflection.invokeMethodWithoutParams(getMethod, entidade));
 				} else if (getMethod.getReturnType().equals(Short.class) || getMethod.getReturnType().equals(short.class)) {
