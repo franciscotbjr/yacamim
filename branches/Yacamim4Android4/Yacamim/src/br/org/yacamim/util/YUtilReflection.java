@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import br.org.yacamim.YacamimConfig;
+
 import android.util.Log;
 
 
@@ -82,7 +84,7 @@ public strictfp abstract class YUtilReflection {
 	/**
 	 *
 	 */
-	private static final String PREFIX_IS = "is";
+	public static final String PREFIX_IS = "is";
 
 	/**
 	 *
@@ -93,7 +95,7 @@ public strictfp abstract class YUtilReflection {
 	 *
 	 */
 	public static final String PREFIX_GET = "get";
-
+	
 	/**
 	 *
 	 */
@@ -258,7 +260,7 @@ public strictfp abstract class YUtilReflection {
 			Method[] methods = classType.getMethods();
 
 			for(Method method : methods) {
-				if(method.getName().startsWith(PREFIX_GET) && !method.getName().equals(GET_CLASS_METHOD_NAME)) {
+				if(matchGetterMethodName(method.getName())) {
 					getMethods.add(method);
 				}
 			}
@@ -285,8 +287,7 @@ public strictfp abstract class YUtilReflection {
 			final List<String> getMethodNames = getGetMethodNames(attributes);
 			
 			for(final Method method : methods) {
-				if(method.getName().startsWith(PREFIX_GET) 
-						&& !method.getName().equals(GET_CLASS_METHOD_NAME)
+				if(matchGetterMethodName(method.getName())
 						&& getMethodNames.contains(method.getName())) {
 					getMethods.add(method);
 				}
@@ -324,7 +325,7 @@ public strictfp abstract class YUtilReflection {
 			final Method[] methods = classType.getMethods();
 			
 			for(Method method : methods) {
-				if(method.getName().startsWith(PREFIX_GET) && !method.getName().equals(GET_CLASS_METHOD_NAME)) {
+				if(matchGetterMethodName(method.getName())) {
 					getMethods.add(method);
 				}
 			}
@@ -416,11 +417,11 @@ public strictfp abstract class YUtilReflection {
 		try {
 			List<String> propriedades = new ArrayList<String>();
 
-			Method[] metodos = classType.getMethods();
+			Method[] methods = classType.getMethods();
 
-			for(Method metodo : metodos) {
-				if(metodo.getName().startsWith(PREFIX_GET) && !metodo.getName().equals(GET_CLASS_METHOD_NAME)) {
-					String nomeMetodo = metodo.getName().substring(3);
+			for(Method method : methods) {
+				if(matchGetterMethodName(method.getName())) {
+					String nomeMetodo = method.getName().substring(3);
 					String nomePropriedade = nomeMetodo.substring(0, 1).toLowerCase()
 							+ nomeMetodo.substring(1);
 					propriedades.add(nomePropriedade);
@@ -736,7 +737,7 @@ public strictfp abstract class YUtilReflection {
 
             for(int i = 0; i < methods.length; i++) {
                 Method method  = methods[i];
-                if(method.getName().startsWith(PREFIX_GET) && !method.getName().equals(GET_CLASS_METHOD_NAME)) {
+                if(matchGetterMethodName(method.getName())) {
                     String methodName = method.getName().substring(3);
                     String propertyName = methodName.substring(0, 1).toLowerCase()+methodName.substring(1);
                     properties.add(propertyName);
@@ -1060,5 +1061,15 @@ public strictfp abstract class YUtilReflection {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param methodName
+	 * @return
+	 */
+	public static boolean matchGetterMethodName(String methodName) {
+		return (methodName.startsWith(PREFIX_GET) 
+				&& !methodName.equals(GET_CLASS_METHOD_NAME))
+				|| methodName.startsWith(PREFIX_IS);
+	}
 
 }

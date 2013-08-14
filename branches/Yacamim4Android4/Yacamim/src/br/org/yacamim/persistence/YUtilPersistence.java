@@ -17,6 +17,9 @@
  */
 package br.org.yacamim.persistence;
 
+import static br.org.yacamim.util.YUtilReflection.PREFIX_GET;
+import static br.org.yacamim.util.YUtilReflection.PREFIX_IS;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +53,6 @@ final class YUtilPersistence {
 	public static final String SQL_REAL = "REAL";
 	public static final String SQL_BLOB = "BLOB";
 	
-	public static final String GET_PREFIX = "get";
-//	public static final String GET_ID_METHOD_NAME = GET_PREFIX + "Id";
-
 	public static final String SQL_WORD_INSERT_INTO = " INSERT INTO ";
 	public static final String SQL_WORD_VALUES = " VALUES ";
 
@@ -258,7 +258,11 @@ final class YUtilPersistence {
 	 */
 	static String toColumnName(final String name) {
 		if(!YUtilString.isEmptyString(name)) {
-			return name.replaceFirst(GET_PREFIX, "");
+			if(name.startsWith(PREFIX_GET)) {
+				return name.replaceFirst(PREFIX_GET, "");
+			} else if(name.startsWith(PREFIX_IS)) {
+				return name.replaceFirst(PREFIX_IS, "");
+			}
 		}
 		return name;
 	}

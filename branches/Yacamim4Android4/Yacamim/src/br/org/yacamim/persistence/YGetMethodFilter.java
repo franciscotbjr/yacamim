@@ -42,7 +42,7 @@ public class YGetMethodFilter implements YMethodFilter {
 	 */
 	@Override
 	public boolean accept(final Method method) {
-		return (method.getName().startsWith("get") 
+		return (method.getName().startsWith(YUtilReflection.PREFIX_GET) 
 				&& (YUtilPersistence.isEntity(method.getReturnType())
 						|| YUtilReflection.isList(method.getReturnType())));
 	}

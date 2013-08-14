@@ -25,6 +25,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.util.Log;
 import br.org.yacamim.YRawData;
+import br.org.yacamim.YacamimConfig;
 import br.org.yacamim.util.YUtilReflection;
 import br.org.yacamim.util.YUtilString;
 
@@ -62,6 +63,18 @@ public final class DataAdapterHelper {
 				YUtilReflection.setValueToProperty(
 						YUtilReflection.getPropertyName(getMethod),
 						cursor.getString(cursor.getColumnIndex(columnName)),
+						object);
+			} else if (returnType.equals(Boolean.class) || returnType.equals(boolean.class)) {
+				rawData = true;
+				Boolean bolValue = false;
+				if(YacamimConfig.getInstance().getYSqliteTrue().equals(
+						YUtilString.nullToEmptyString(
+								cursor.getString(cursor.getColumnIndex(columnName))))) {
+					bolValue = true;
+				}
+				YUtilReflection.setValueToProperty(
+						YUtilReflection.getPropertyName(getMethod),
+						bolValue,
 						object);
 			} else if ((returnType.equals(Byte.class) || returnType.equals(byte.class))
 					|| (returnType.equals(Short.class) || returnType.equals(short.class))) {
