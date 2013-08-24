@@ -37,6 +37,7 @@ import br.org.yacamim.http.YCookieProxy;
 import br.org.yacamim.http.YSimpleHttpResponseAdapter;
 import br.org.yacamim.http.YSimpleHttpResponseAdapterImpl;
 import br.org.yacamim.http.YTokenProxy;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * Hides some complexity on handling an REST HTTP calls throw PUT method.<br/>
@@ -64,7 +65,6 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	private YSimpleHttpRestRequestAdpater ySimpleHttpRestRequestAdpater;
 	private YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter;
 	private YAsyncHttpResponseHandler asyncHttpResponseHandler;
-	private YBasicHttpRestEntity restHttpEntity;
 
 	/**
 	 * 
@@ -75,20 +75,6 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 			final YAsyncHttpResponseHandler asyncHttpResponseHandler) {
 		super(activity);
 		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
-	}
-
-	/**
-	 * 
-	 * @param activity
-	 * @param asyncHttpResponseHandler
-	 * @param restHttpEntity
-	 */
-	public YGetSimpleAsyncHttpRest(final Activity activity, 
-			final YAsyncHttpResponseHandler asyncHttpResponseHandler,
-			final YBasicHttpRestEntity restHttpEntity) {
-		super(activity);
-		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
-		this.restHttpEntity = restHttpEntity;
 	}
 
 	/**
@@ -110,8 +96,6 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	 */
 	protected YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
 		try {
-			this.configHttpEntity();
-
 			this.ySimpleHttpRestRequestAdpater = ySimpleHttpRestRequestAdpater[0];
 
 			final DefaultHttpClient client = new DefaultHttpClient();
@@ -123,7 +107,7 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 
             final HttpGet delete = new HttpGet(this.ySimpleHttpRestRequestAdpater.getUri());
             delete.setHeader("Accept", APPLICATION_JSON);
-            delete.setHeader("Content-Type", APPLICATION_JSON + "; charset=" + restHttpEntity.getContentEncoding().getValue());
+            delete.setHeader("Content-Type", APPLICATION_JSON + "; charset=" + getEncoding());
 
             final BasicResponseHandler handler = new BasicResponseHandler();
 
@@ -147,20 +131,13 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 
 	/**
 	 * 
+	 * @return
 	 */
-	private void configHttpEntity() {
-		if(restHttpEntity == null) {
-			this.restHttpEntity = new YBasicHttpRestEntity();
-			restHttpEntity.setContentType(APPLICATION_JSON);
-			restHttpEntity.setContentEncoding(UTF_8);
-		} else {
-			if(restHttpEntity.getContentType() == null) {
-				restHttpEntity.setContentType(APPLICATION_JSON);
-			}
-			if(restHttpEntity.getContentEncoding() == null) {
-				restHttpEntity.setContentEncoding(UTF_8);
-			}
+	private String getEncoding() {
+		if(YUtilString.isEmptyString(this.ySimpleHttpRestRequestAdpater.getEnconding())) {
+			return UTF_8;
 		}
+		return this.ySimpleHttpRestRequestAdpater.getEnconding();
 	}
 
 	/**
