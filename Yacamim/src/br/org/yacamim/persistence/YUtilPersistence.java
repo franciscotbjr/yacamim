@@ -72,6 +72,8 @@ final class YUtilPersistence {
 	static final String SQL_WORD_AND = " AND ";
 	static final String SQL_WORD_OR = " OR ";
 	static final String SQL_WORD_MAX = " MAX ";
+	static final String SQL_WORD_ASC = " ASC ";
+	static final String SQL_WORD_DESC = " DESC ";
 
 	/**
 	 * 
