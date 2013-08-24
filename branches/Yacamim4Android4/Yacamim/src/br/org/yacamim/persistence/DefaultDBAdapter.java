@@ -25,14 +25,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.R.bool;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import br.org.yacamim.YacamimConfig;
-import br.org.yacamim.YacamimResources;
 import br.org.yacamim.YacamimState;
 import br.org.yacamim.dex.YInvocationHandlerProxy;
 import br.org.yacamim.entity.YBaseEntity;
@@ -156,8 +154,114 @@ public class DefaultDBAdapter<E> {
 			}
 			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
 			if(columns != null && columns.length > 0) {
-				final Cursor cursor = this.getDatabase().query(this.getTableName(), columns, null, null, null,
-						null, null);
+				final Cursor cursor = this.getDatabase().query(this.getTableName(), columns, 
+						null, null, null, null, null);
+				if (cursor != null && cursor.moveToFirst()) {
+					entities.add(build(cursor));
+					while(cursor.moveToNext()) {
+						entities.add(build(cursor));
+					}
+				}
+				cursor.close();
+			}
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.list", e.getMessage());
+		}
+		return entities;
+	}
+	
+	/**
+	 * 
+	 * @param orderByProperties
+	 * @return
+	 */
+	public List<E> list(final String... orderByProperties) {
+		return list(true, orderByProperties);
+	}
+	
+	/**
+	 * 
+	 * @param asc
+	 * @param orderByProperties
+	 * @return
+	 */
+	public List<E> list(final boolean asc, final String... orderByProperties) {
+		final List<E> entities = new ArrayList<E>();
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
+			if(columns != null && columns.length > 0) {
+				final Cursor cursor = this.getDatabase().query(this.getTableName(), columns, 
+						null, null, null, null, 
+						getOrderByColumns(this.getGenericClass(), orderByProperties, asc));
+				if (cursor != null && cursor.moveToFirst()) {
+					entities.add(build(cursor));
+					while(cursor.moveToNext()) {
+						entities.add(build(cursor));
+					}
+				}
+				cursor.close();
+			}
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.list", e.getMessage());
+		}
+		return entities;
+	}
+
+	/**
+	 * 
+	 * @param clazz
+	 * @param orderByProperties
+	 * @param asc
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	private String getOrderByColumns(final Class clazz, final String[] orderByProperties, final boolean asc) {
+		final StringBuilder stringBuilder = new StringBuilder();
+		try {
+			final List<String> properties = new ArrayList<String>();
+			for(final String string : orderByProperties) {
+				properties.add(string);
+			}
+			final List<String> columnsOrderBy = getColumnNames(clazz, properties);
+			int count = 0;
+			for(final String string : columnsOrderBy) {
+				count++;
+				stringBuilder.append(string);
+				if(columnsOrderBy.size() >= (count + 1)) {
+					stringBuilder.append(", ");
+				}
+			}
+			if (asc) {
+				stringBuilder.append(YUtilPersistence.SQL_WORD_ASC);
+			} else {
+				stringBuilder.append(YUtilPersistence.SQL_WORD_DESC);
+			}
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getOrderByColumns", e.getMessage());
+		}
+		return stringBuilder.toString();
+	}
+
+	/**
+	 * 
+	 * @param groupBy
+	 * @param having
+	 * @param orderBy
+	 * @return
+	 */
+	public List<E> list(final String groupBy, final String having, final String orderBy) {
+		final List<E> entities = new ArrayList<E>();
+		try {
+			if(!this.isEntity()) {
+				throw new NotAnEntityException();
+			}
+			final String[] columns = this.getColumnNamesAsArray(this.getGenericClass());
+			if(columns != null && columns.length > 0) {
+				final Cursor cursor = this.getDatabase().query(this.getTableName(), columns, 
+						null, null, groupBy, having, orderBy);
 				if (cursor != null && cursor.moveToFirst()) {
 					entities.add(build(cursor));
 					while(cursor.moveToNext()) {
@@ -526,6 +630,42 @@ public class DefaultDBAdapter<E> {
 				}
 				
 				columns.add(YUtilPersistence.builColumnName(getMethod));
+				
+			}
+		} catch (Exception e) {
+			Log.e("DefaultDBAdapter.getColumnNames", e.getMessage());
+		}
+		return columns;
+	}
+
+	/**
+	 * 
+	 * @param clazz
+	 * @param propertiesFilter
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	protected List<String> getColumnNames(final Class clazz, final List<String> propertiesFilter) {
+		final List<String> columns = new ArrayList<String>();
+		try {
+			final List<Method> getMethods = YUtilReflection.getGetMethodList(clazz);
+			final Method getIDMethod = YUtilPersistence.getGetIdMethod(getMethods);
+			if(propertiesFilter.contains(YUtilReflection.getPropertyName(getIDMethod))) {
+				columns.add(YUtilPersistence.getColumnName(getIDMethod.getAnnotation(Column.class), getIDMethod));
+			}
+			for(final Method getMethod : getMethods) {
+				final Column column = getMethod.getAnnotation(Column.class);
+				if(getMethod.equals(getIDMethod)
+						|| column == null
+						|| YUtilReflection.isList(getIDMethod.getReturnType())
+						|| getMethod.getAnnotation(ManyToMany.class) != null
+						|| getMethod.getAnnotation(OneToMany.class) != null) {
+					continue;
+				}
+				
+				if(propertiesFilter.contains(YUtilReflection.getPropertyName(getMethod))) {
+					columns.add(YUtilPersistence.builColumnName(getMethod));
+				}
 				
 			}
 		} catch (Exception e) {
