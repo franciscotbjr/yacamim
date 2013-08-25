@@ -17,9 +17,11 @@
  */
 package br.org.yacamim;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import br.org.yacamim.ui.components.YProgressDialogFragment;
 import br.org.yacamim.util.YConstants;
 
 /**
@@ -39,6 +42,8 @@ import br.org.yacamim.util.YConstants;
 public class YBaseListActivity extends ListActivity {
 	
 	private static final String TAG = YBaseListActivity.class.getSimpleName();
+	
+	private static final List<YProgressDialogFragment> mYProgressDialogFragmentStack = new ArrayList<YProgressDialogFragment>();
 
 	/**
 	 * 
@@ -55,13 +60,13 @@ public class YBaseListActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.keepScreenOn();
+		this.dismissCurrentProgressDialog();
 	}
 
     /**
      * 
      */
-	private void keepScreenOn() {
+	protected void keepScreenOn() {
 		try {
 			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		} catch (Exception _e) {
@@ -146,6 +151,79 @@ public class YBaseListActivity extends ListActivity {
 			}
 		} catch (Exception _e) {
 			Log.e(TAG + ".removeListViewItem", _e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param titleResourceID
+	 * @param messageResourceID
+	 */
+	public void displayProgressDialog(final int titleResourceID, final int messageResourceID) {
+		try {
+			progressDialog(titleResourceID, messageResourceID);
+		} catch (Exception e) {
+			Log.e(TAG + ".displayProgressDialog(int titleResourceID, int messageResourceID)", e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param titleResourceID
+	 */
+	public void displayProgressDialog(final int titleResourceID) {
+		try {
+			progressDialog(titleResourceID, YacamimResources.getInstance().getIdResourceMsgWait());
+		} catch (Exception e) {
+			Log.e(TAG + ".displayProgressDialog(int messageResourceID)", e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void displayProgressDialog() {
+		try {
+			progressDialog(0, YacamimResources.getInstance().getIdResourceMsgWait());
+		} catch (Exception e) {
+			Log.e(TAG + ".displayProgressDialog()", e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param titleResourceID
+	 * @param messageResourceID
+	 */
+	private void progressDialog(final int titleResourceID,
+			final int messageResourceID) {
+		final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+		YProgressDialogFragment yProgressDialogFragment = YProgressDialogFragment.newInstance(
+				YConstants.DIALOG_WAIT, 
+				titleResourceID, 
+				messageResourceID);
+		
+		mYProgressDialogFragmentStack.add(yProgressDialogFragment);
+
+		fragmentTransaction.add(yProgressDialogFragment, YConstants.Y_PROGRESS_DIALOG_FRAGMENT_PREFIX + YConstants.DIALOG_WAIT);
+		
+		fragmentTransaction.commit();
+		
+		fragmentTransaction.show(yProgressDialogFragment);
+	}
+	
+	/**
+	 * 
+	 */
+	public void dismissCurrentProgressDialog() {
+		try {
+			for(YProgressDialogFragment yProgressDialogFragment : mYProgressDialogFragmentStack) {
+				yProgressDialogFragment.dismiss();
+			}
+			mYProgressDialogFragmentStack.clear();
+		} catch (final Exception e) {
+			Log.e(TAG + ".dimissCurrentProgressDialog()", e.getMessage());
 		}
 	}
 	
