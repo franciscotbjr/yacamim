@@ -153,7 +153,19 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 		}
 		return message;
 	}
-
+	
+	/**
+	 * 
+	 * @param titleResourceID
+	 * @param messageResourceID
+	 */
+	public void displayProgressDialog(final int titleResourceID, final int messageResourceID) {
+		try {
+			progressDialog(titleResourceID, messageResourceID);
+		} catch (Exception e) {
+			Log.e(TAG + ".displayProgressDialog(int titleResourceID, int messageResourceID)", e.getMessage());
+		}
+	}
 	
 	/**
 	 * 
