@@ -76,6 +76,14 @@ public class YAlertDialogFragment  extends DialogFragment implements DialogInter
 		return alertDialogFragment;
 	}
 
+	/**
+	 * 
+	 * @param dialogId
+	 * @param titleTextResource
+	 * @param messageResource
+	 * @param positivoButtonLabelResource
+	 * @return
+	 */
 	public static YAlertDialogFragment newInstance(
 			final int dialogId,
 			final String titleTextResource, 
@@ -92,7 +100,6 @@ public class YAlertDialogFragment  extends DialogFragment implements DialogInter
 		alertDialogFragment.setArguments(bundle);
 		return alertDialogFragment;
 	}
-
 
 	/**
 	 * 
