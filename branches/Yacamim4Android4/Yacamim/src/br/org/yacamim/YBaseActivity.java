@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -35,6 +35,7 @@ import br.org.yacamim.entity.GpsLocationInfo;
 import br.org.yacamim.ui.components.OnDialogDoneListener;
 import br.org.yacamim.ui.components.YAlertDialogFragment;
 import br.org.yacamim.ui.components.YDialogEvent;
+import br.org.yacamim.ui.components.YProgressDialogFragment;
 import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilUIFields;
 
@@ -54,7 +55,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	
 	private StringBuilder message;
 	
-	private List<ProgressDialog> progressDialogStack = new ArrayList<ProgressDialog>();
+	private static final List<YProgressDialogFragment> mYProgressDialogFragmentStack = new ArrayList<YProgressDialogFragment>();
 	
 	/**
 	 * 
@@ -71,6 +72,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.dismissCurrentProgressDialog();
 	}
 
 	/**
@@ -152,56 +154,64 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 		return message;
 	}
 
+	
 	/**
 	 * 
-	 * @param message
+	 * @param titleResourceID
 	 */
-	public void displayProgressDialog(final String message) {
+	public void displayProgressDialog(final int titleResourceID) {
 		try {
-			this.progressDialogStack.add(ProgressDialog.show(this, "", message, true, false));
+			progressDialog(titleResourceID, YacamimResources.getInstance().getIdResourceMsgWait());
 		} catch (Exception e) {
-			Log.e(TAG + ".displayProgressDialog", e.getMessage());
+			Log.e(TAG + ".displayProgressDialog(int messageResourceID)", e.getMessage());
 		}
 	}
 	
 	/**
 	 * 
-	 * @param _mensagem
 	 */
 	public void displayProgressDialog() {
 		try {
-			this.progressDialogStack.add(ProgressDialog.show(this, "", this.getText(YacamimResources.getInstance().getIdResourceMsgWait()), true, false));
+			progressDialog(0, YacamimResources.getInstance().getIdResourceMsgWait());
 		} catch (Exception e) {
-			Log.e(TAG + ".displayProgressDialog", e.getMessage());
-		}
-	}
-
-	/**
-	 * 
-	 */
-	public void removeProgressDialog() {
-		try {
-			if(this.progressDialogStack != null && !this.progressDialogStack.isEmpty()) {
-				this.progressDialogStack.remove(0).cancel();
-			}
-		} catch (Exception e) {
-			Log.e(TAG + ".removeProgressDialog", e.getMessage());
+			Log.e(TAG + ".displayProgressDialog()", e.getMessage());
 		}
 	}
 	
 	/**
 	 * 
+	 * @param titleResourceID
+	 * @param messageResourceID
 	 */
-	public void clearProgressDialogStack() {
+	private void progressDialog(final int titleResourceID,
+			final int messageResourceID) {
+		final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+		YProgressDialogFragment yProgressDialogFragment = YProgressDialogFragment.newInstance(
+				YConstants.DIALOG_WAIT, 
+				titleResourceID, 
+				messageResourceID);
+		
+		mYProgressDialogFragmentStack.add(yProgressDialogFragment);
+
+		fragmentTransaction.add(yProgressDialogFragment, YConstants.Y_PROGRESS_DIALOG_FRAGMENT_PREFIX + YConstants.DIALOG_WAIT);
+		
+		fragmentTransaction.commit();
+		
+		fragmentTransaction.show(yProgressDialogFragment);
+	}
+	
+	/**
+	 * 
+	 */
+	public void dismissCurrentProgressDialog() {
 		try {
-			if(this.progressDialogStack != null && !this.progressDialogStack.isEmpty()) {
-				for(int i = 0; i < this.progressDialogStack.size(); i++) {
-					this.progressDialogStack.get(i).cancel();
-				}
-				this.progressDialogStack.clear();
+			for(YProgressDialogFragment yProgressDialogFragment : mYProgressDialogFragmentStack) {
+				yProgressDialogFragment.dismiss();
 			}
+			mYProgressDialogFragmentStack.clear();
 		} catch (final Exception e) {
-			Log.e(TAG + ".clearProgressDialogStack", e.getMessage());
+			Log.e(TAG + ".dimissCurrentProgressDialog()", e.getMessage());
 		}
 	}
 	
@@ -428,11 +438,11 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	public boolean handleMessage(final Message message) {
 		switch(message.what){
 	        case YConstants.ERROR_NO_WIFI_CONNECTIVITY_AVAILABLE:
-	        	this.clearProgressDialogStack();
+	        	this.dismissCurrentProgressDialog();
 	        	this.displayDialogWifiAccess();
 	        	return true;
 	        case YConstants.ERROR_NO_CONNECTIVITY_AVAILABLE:
-	        	this.clearProgressDialogStack();
+	        	this.dismissCurrentProgressDialog();
     			this.displayDialogNetworkAccess();
 	    		return true;
 	        default:

@@ -304,7 +304,7 @@ public final class YUtilAndroid {
 	private static void handleDefaultDialogs(final Activity activity, final boolean wifi) {
 		if(activity instanceof YBaseActivity) {
 			final YBaseActivity yBaseActivity = (YBaseActivity)activity;
-			yBaseActivity.clearProgressDialogStack();
+			yBaseActivity.dismissCurrentProgressDialog();
 			if(wifi) {
 				yBaseActivity.displayDialogWifiAccess();
 			} else {
@@ -312,7 +312,5 @@ public final class YUtilAndroid {
 			}
 		}
 	}
-	
-	
 
 }
