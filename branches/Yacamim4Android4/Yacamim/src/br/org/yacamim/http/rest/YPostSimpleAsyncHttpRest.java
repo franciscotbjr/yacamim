@@ -28,6 +28,8 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.app.Activity;
 import android.util.Log;
@@ -115,6 +117,10 @@ public class YPostSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequ
 			this.ySimpleHttpRestRequestAdpater = ySimpleHttpRestRequestAdpater[0];
 
 			final DefaultHttpClient client = new DefaultHttpClient();
+			
+			final HttpParams httpParams = client.getParams();
+			HttpConnectionParams.setConnectionTimeout(httpParams, 10 * 1000);
+			HttpConnectionParams.setSoTimeout(httpParams, 10 * 1000);
 
 			final CookieStore cookieStore;
 			if((cookieStore = buildCookieStore()) != null) {

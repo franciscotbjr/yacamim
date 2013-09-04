@@ -59,7 +59,7 @@ public class DefaultDBAdapter<E> {
 	 */
 	public DefaultDBAdapter(final Class<E> genericType) {
 		super();
-		this.setDbHelper(new DefaultDBHelper(YacamimState.getInstance().getCurrentActivity().getApplicationContext()));
+		this.setDbHelper(new DefaultDBHelper(YacamimState.getInstance().getCurrentContext()));
 		this.genericType = genericType;
 	}
 

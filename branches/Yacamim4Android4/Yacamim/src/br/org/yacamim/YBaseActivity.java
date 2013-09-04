@@ -62,7 +62,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 */
 	public YBaseActivity() {
 		super();
-		YacamimState.getInstance().setCurrentActivity(this);
+		YacamimState.getInstance().setCurrentContext(this);
 	}
 	
 	/**
