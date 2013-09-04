@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import br.org.yacamim.entity.DeviceInfo;
 import br.org.yacamim.entity.Preferences;
@@ -57,7 +58,7 @@ public final class YacamimState {
 	
 	private Session session;
 	
-	private Activity currentActivity;
+	private Context mCurrentContext;
 	
 	private DeviceInfo deviceInfo;
 	
@@ -200,15 +201,15 @@ public final class YacamimState {
 	/**
 	 * @return the currentActivity
 	 */
-	public Activity getCurrentActivity() {
-		return this.currentActivity;
+	public Context getCurrentContext() {
+		return this.mCurrentContext;
 	}
 
 	/**
-	 * @param currentActivity the currentActivity to set
+	 * @param currentContext the currentActivity to set
 	 */
-	protected YacamimState setCurrentActivity(final Activity currentActivity) {
-		this.currentActivity = currentActivity;
+	protected YacamimState setCurrentContext(final Context currentContext) {
+		this.mCurrentContext = currentContext;
 		return this;
 	}
 

@@ -50,7 +50,7 @@ public class YBaseListActivity extends ListActivity {
 	 */
 	public YBaseListActivity() {
 		super();
-		YacamimState.getInstance().setCurrentActivity(this);
+		YacamimState.getInstance().setCurrentContext(this);
 	}
 	
 	/**

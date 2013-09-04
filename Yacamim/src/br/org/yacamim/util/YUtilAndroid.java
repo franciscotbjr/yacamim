@@ -65,7 +65,7 @@ public final class YUtilAndroid {
 		String imei = "";
 		try {
 			imei = ((TelephonyManager)YacamimState.getInstance()
-						.getCurrentActivity()
+						.getCurrentContext()
 							.getSystemService(Context.TELEPHONY_SERVICE))
 								.getDeviceId();
 			if(imei == null) {
@@ -88,7 +88,7 @@ public final class YUtilAndroid {
 		String macAddress = "";
 		try {
 			macAddress = ((WifiManager)YacamimState.getInstance()
-							.getCurrentActivity()
+							.getCurrentContext()
 								.getSystemService(Context.WIFI_SERVICE))
 									.getConnectionInfo()
 										.getMacAddress();
@@ -113,7 +113,7 @@ public final class YUtilAndroid {
 		String line1Number = "";
 		try {
 			line1Number = ((TelephonyManager)YacamimState.getInstance()
-							.getCurrentActivity()
+							.getCurrentContext()
 								.getSystemService(Context.TELEPHONY_SERVICE))
 									.getLine1Number();
 			if(line1Number == null) {
@@ -156,7 +156,7 @@ public final class YUtilAndroid {
 		String androidID = "";
 		try {
 			androidID = Secure.getString(YacamimState.getInstance()
-							.getCurrentActivity()
+							.getCurrentContext()
 								.getContentResolver(), Secure.ANDROID_ID);
 	    	if(androidID == null) {
 	    		androidID = "";
@@ -311,6 +311,18 @@ public final class YUtilAndroid {
 				yBaseActivity.displayDialogNetworkAccess();
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @param activity
+	 */
+	public static void leaveApplication(final Activity activity) {
+		final Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		activity.startActivity(intent);
+		activity.finish();
 	}
 
 }
