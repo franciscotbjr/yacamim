@@ -130,7 +130,7 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
             YCookieProxy.getInstance().addCookies(this.ySimpleHttpResponseAdapter.getCookies());
 
 		} catch (Exception e) {
-			Log.e(TAG + ".doRest", e.getMessage());
+			Log.e(TAG + ".doRest", YUtilString.nullToEmptyString(e.getMessage()));
 		}
 		return this.ySimpleHttpResponseAdapter;
 	}
@@ -175,7 +175,9 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	@Override
 	protected void onPostExecute(YSimpleHttpResponseAdapter result) {
 		super.onPostExecute(result);
-		this.asyncHttpResponseHandler.onAsyncHttpResponse(result);
+		if(this.asyncHttpResponseHandler != null) {
+			this.asyncHttpResponseHandler.onAsyncHttpResponse(result);
+		}
 	}
 
 	/**
@@ -188,7 +190,7 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 		try {
 			return new StringBuilder(handler.handleResponse(response));
 		} catch (Exception e) {
-			Log.e(TAG + ".buildResponseBody", e.getMessage());
+			Log.e(TAG + ".buildResponseBody", YUtilString.nullToEmptyString(e.getMessage()));
 			return new StringBuilder();
 		}
 	}

@@ -28,7 +28,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.util.YConstants;
@@ -148,6 +150,10 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 							this.treatButton(convertView, object, rowConfigItem);
 						} else if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(ImageView.class)) {
 							this.treatImageView(convertView, object, rowConfigItem);
+						} else if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(TextView.class)) {
+							this.treatTextView(convertView, object, rowConfigItem);
+						} else if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(EditText.class)) {
+							this.treatEditText(convertView, object, rowConfigItem);
 						}
 					}
 				}
@@ -245,6 +251,54 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			}
 		} catch (Exception _e) {
 			Log.e("ComplexListSimpleAdapter.treatImageView", _e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * @param convertView
+	 * @param object
+	 * @param rowConfigItem
+	 */
+	protected void treatTextView(final View convertView, final Object object, final RowConfigItem rowConfigItem) {
+		try {
+			final TextView textView = (TextView)convertView.findViewById(rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
+			if(rowConfigItem.getCondition() != null) {
+				if(rowConfigItem.getCondition().checkToVisibility(object)) {
+					textView.setVisibility(View.VISIBLE);
+				} else {
+					textView.setVisibility(View.GONE);
+				}
+				rowConfigItem.getCondition().handle(object, textView);
+			} else {
+				textView.setVisibility(View.VISIBLE);
+			}
+		} catch (Exception _e) {
+			Log.e("ComplexListSimpleAdapter.treatTextView", _e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * @param convertView
+	 * @param object
+	 * @param rowConfigItem
+	 */
+	protected void treatEditText(final View convertView, final Object object, final RowConfigItem rowConfigItem) {
+		try {
+			final EditText editText = (EditText)convertView.findViewById(rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
+			if(rowConfigItem.getCondition() != null) {
+				if(rowConfigItem.getCondition().checkToVisibility(object)) {
+					editText.setVisibility(View.VISIBLE);
+				} else {
+					editText.setVisibility(View.GONE);
+				}
+				rowConfigItem.getCondition().handle(object, editText);
+			} else {
+				editText.setVisibility(View.VISIBLE);
+			}
+		} catch (Exception _e) {
+			Log.e("ComplexListSimpleAdapter.treatEditText", _e.getMessage());
 		}
 	}
 

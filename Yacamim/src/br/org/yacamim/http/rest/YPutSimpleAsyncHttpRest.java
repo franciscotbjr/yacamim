@@ -39,6 +39,7 @@ import br.org.yacamim.http.YCookieProxy;
 import br.org.yacamim.http.YSimpleHttpResponseAdapter;
 import br.org.yacamim.http.YSimpleHttpResponseAdapterImpl;
 import br.org.yacamim.http.YTokenProxy;
+import br.org.yacamim.util.YUtilString;
 
 /**
  * Hides some complexity on handling an REST HTTP calls throw PUT method.<br/>
@@ -150,7 +151,7 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
             YCookieProxy.getInstance().addCookies(this.ySimpleHttpResponseAdapter.getCookies());
 
 		} catch (Exception e) {
-			Log.e(TAG + ".doRest", e.getMessage());
+			Log.e(TAG + ".doRest", YUtilString.nullToEmptyString(e.getMessage()));
 		}
 		return this.ySimpleHttpResponseAdapter;
 	}
@@ -202,7 +203,9 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	@Override
 	protected void onPostExecute(YSimpleHttpResponseAdapter result) {
 		super.onPostExecute(result);
-		this.asyncHttpResponseHandler.onAsyncHttpResponse(result);
+		if(this.asyncHttpResponseHandler != null) {
+			this.asyncHttpResponseHandler.onAsyncHttpResponse(result);
+		}
 	}
 
 	/**
@@ -215,7 +218,7 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 		try {
 			return new StringBuilder(handler.handleResponse(response));
 		} catch (Exception e) {
-			Log.e(TAG + ".buildResponseBody", e.getMessage());
+			Log.e(TAG + ".buildResponseBody", YUtilString.nullToEmptyString(e.getMessage()));
 			return new StringBuilder();
 		}
 	}
