@@ -20,8 +20,7 @@ package br.org.yacamim.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.commons.codec.binary.Base64;
-
+import android.util.Base64;
 import android.util.Log;
 
 /**
@@ -43,33 +42,13 @@ public strictfp abstract class YUtilCryptographic {
     }
     
     /**
-     * 
-     * @param imageByteArray
-     * @return
-     */
-    public static String encodeImage(byte[] imageByteArray) {
-    	return Base64.encodeBase64URLSafeString(imageByteArray);
-    }
-    
-    /**
-     * 
-     * @param imageDataString
-     * @return
-     */
-	public static byte[] decodeImage(String imageDataString) {		
-		return Base64.decodeBase64(imageDataString);
-	}
-
-    /**
      *
      * @param string
      * @return
      */
     public static String encodeBase64(final String string) {
         try {
-            Base64 base64 = new Base64();
-            String resultado = new String(base64.encode(string.getBytes()));
-            return resultado;
+            return new String(Base64.encode(string.getBytes(), Base64.DEFAULT | Base64.NO_WRAP));
         } catch (Exception e) {
         	Log.e(TAG + ".encodeBase64", e.getMessage());
             return null;
@@ -78,15 +57,46 @@ public strictfp abstract class YUtilCryptographic {
     }
 
     /**
+     * 
+     * @param bytes
+     * @return
+     */
+    public static String encodeBase64(final byte[] bytes) {
+    	try {
+    		return new String(Base64.encode(bytes, Base64.DEFAULT | Base64.NO_WRAP));
+    	} catch (Exception e) {
+    		Log.e(TAG + ".encodeBase64", e.getMessage());
+    		return null;
+    	}
+    	
+    }
+
+    /**
      *
      * @param string
      * @return
      */
     public static String decodeBase64(final String string) {
+    	try {
+    		byte[] bytes = Base64.decode(string.getBytes(), Base64.DEFAULT | Base64.NO_WRAP);
+    		String resultado = new String(bytes);
+    		return resultado;
+    	} catch (Exception e) {
+    		Log.e(TAG + ".decodeBase64", e.getMessage());
+    		return null;
+    	}
+    }
+    
+    /**
+     * 
+     * @param bytes
+     * @return
+     */
+    public static String decodeBase64(final byte[] bytes) {
         try {
-            Base64 base64 = new Base64();
-            byte[] b = base64.decode(string.getBytes());
-            String resultado = new String(b);
+            String resultado = new String(
+            		Base64.decode(bytes, Base64.DEFAULT)
+            		);
             return resultado;
         } catch (Exception e) {
         	Log.e(TAG + ".decodeBase64", e.getMessage());
