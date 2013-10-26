@@ -29,6 +29,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import br.org.yacamim.ui.components.OnDialogDoneListener;
+import br.org.yacamim.ui.components.YAlertDialogFragment;
+import br.org.yacamim.ui.components.YDialogEvent;
 import br.org.yacamim.ui.components.YProgressDialogFragment;
 import br.org.yacamim.util.YConstants;
 
@@ -39,7 +42,7 @@ import br.org.yacamim.util.YConstants;
  * @version 1.0
  * @since 1.0
  */
-public class YBaseListActivity extends ListActivity {
+public class YBaseListActivity extends ListActivity implements OnDialogDoneListener {
 	
 	private static final String TAG = YBaseListActivity.class.getSimpleName();
 	
@@ -225,6 +228,48 @@ public class YBaseListActivity extends ListActivity {
 		} catch (final Exception e) {
 			Log.e(TAG + ".dimissCurrentProgressDialog()", e.getMessage());
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param dialogId
+	 * @param titleResource
+	 * @param mensageResource
+	 * @param positiveButtonresource
+	 */
+	protected void buildSimplePositiveAlertDialog(final int dialogId, final int titleResource, 
+			final int mensageResource, final int positiveButtonresource) {
+		final YAlertDialogFragment yAlertDialogFragment = 
+				YAlertDialogFragment.newInstance(dialogId, 
+						titleResource, 
+						mensageResource, 
+						positiveButtonresource);
+		yAlertDialogFragment.show(this.getFragmentManager(), TAG);
+	}
+
+	/**
+	 * 
+	 * @param dialogId
+	 * @param title
+	 * @param mensage
+	 * @param positiveButtonresource
+	 */
+	protected void buildSimplePositiveAlertDialog(final int dialogId, final String title, 
+			final String mensage, final int positiveButtonresource) {
+		final YAlertDialogFragment yAlertDialogFragment = 
+				YAlertDialogFragment.newInstance(dialogId, 
+						title, 
+						mensage, 
+						positiveButtonresource);
+		yAlertDialogFragment.show(this.getFragmentManager(), TAG);
+	}
+
+	
+	@Override
+	public void onDialogClick(YDialogEvent dialogEvent) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
