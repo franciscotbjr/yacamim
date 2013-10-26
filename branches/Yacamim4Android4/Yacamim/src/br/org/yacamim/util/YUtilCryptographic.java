@@ -41,6 +41,24 @@ public strictfp abstract class YUtilCryptographic {
     private YUtilCryptographic() {
         super();
     }
+    
+    /**
+     * 
+     * @param imageByteArray
+     * @return
+     */
+    public static String encodeImage(byte[] imageByteArray) {
+    	return Base64.encodeBase64URLSafeString(imageByteArray);
+    }
+    
+    /**
+     * 
+     * @param imageDataString
+     * @return
+     */
+	public static byte[] decodeImage(String imageDataString) {		
+		return Base64.decodeBase64(imageDataString);
+	}
 
     /**
      *
