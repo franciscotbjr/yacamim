@@ -38,12 +38,17 @@ public class InteractionConfig implements Serializable {
 	/**
 	 *
 	 */
-	private int resourceIDForInteraction = -1;
+	private int mResourceIDForInteraction = -1;
 
 	/**
 	 *
 	 */
-	private Class<?> resourceTypeForInteraction = null;
+	private Class<?> mResourceTypeForInteraction = null;
+	
+	/**
+	 * 
+	 */
+	private Condition mCondition;
 
 	/**
 	 *
@@ -57,11 +62,25 @@ public class InteractionConfig implements Serializable {
 	 * @param resourceIDForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its identifier must be provided.
 	 * @param resourceTypeForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its type must be provided.
 	 */
-	public InteractionConfig(int resourceIDForInteraction,
-			Class<?> resourceTypeForInteraction) {
+	public InteractionConfig(final int resourceIDForInteraction,
+			final Class<?> resourceTypeForInteraction) {
 		super();
-		this.resourceIDForInteraction = resourceIDForInteraction;
-		this.resourceTypeForInteraction = resourceTypeForInteraction;
+		mResourceIDForInteraction = resourceIDForInteraction;
+		mResourceTypeForInteraction = resourceTypeForInteraction;
+	}
+	
+	/**
+	 *
+	 * @param resourceIDForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its identifier must be provided.
+	 * @param resourceTypeForInteraction If there is a CheckBox, Button or ImageView inside the row and interaction is required, then its type must be provided.
+	 */
+	public InteractionConfig(final int resourceIDForInteraction,
+			final Class<?> resourceTypeForInteraction,
+			final Condition condition) {
+		super();
+		mResourceIDForInteraction = resourceIDForInteraction;
+		mResourceTypeForInteraction = resourceTypeForInteraction;
+		mCondition = condition;
 	}
 
 
@@ -69,28 +88,43 @@ public class InteractionConfig implements Serializable {
 	 * @return the resourceIDForInteraction
 	 */
 	public int getResourceIDForInteraction() {
-		return resourceIDForInteraction;
+		return mResourceIDForInteraction;
 	}
 
 	/**
 	 * @param resourceIDForInteraction the resourceIDForInteraction to set
 	 */
 	public void setResourceIDForInteraction(int resourceIDForInteraction) {
-		this.resourceIDForInteraction = resourceIDForInteraction;
+		mResourceIDForInteraction = resourceIDForInteraction;
 	}
 
 	/**
 	 * @return the resourceTypeForInteraction
 	 */
 	public Class<?> getResourceTypeForInteraction() {
-		return resourceTypeForInteraction;
+		return mResourceTypeForInteraction;
 	}
 
 	/**
 	 * @param resourceTypeForInteraction the resourceTypeForInteraction to set
 	 */
 	public void setResourceTypeForInteraction(Class<?> resourceTypeForInteraction) {
-		this.resourceTypeForInteraction = resourceTypeForInteraction;
+		mResourceTypeForInteraction = resourceTypeForInteraction;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Condition getCondition() {
+		return mCondition;
+	}
+	
+	/**
+	 * 
+	 * @param mCondition
+	 */
+	public void setCondition(Condition mCondition) {
+		this.mCondition = mCondition;
+	}
 }

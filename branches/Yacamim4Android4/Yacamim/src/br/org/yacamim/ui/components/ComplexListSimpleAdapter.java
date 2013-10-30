@@ -217,13 +217,13 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			final CheckBox checkBox = (CheckBox)convertView.findViewById(rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
 			if(rowConfigItem.getCondition() != null) {
 				if(rowConfigItem.getCondition().checkToVisibility(object)) {
-					this.treatVisibleCheckBox(object, checkBox);
+					this.treatVisibleCheckBox(object, checkBox, rowConfigItem);
 				} else {
 					checkBox.setVisibility(View.GONE);
 				}
 				rowConfigItem.getCondition().handle(object, checkBox);
 			} else {
-				this.treatVisibleCheckBox(object, checkBox);
+				this.treatVisibleCheckBox(object, checkBox, rowConfigItem);
 			}
 		} catch (Exception e) {
 			Log.e("ComplexListSimpleAdapter.treatCheckBox", e.getMessage());
@@ -307,7 +307,10 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * @param object
 	 * @param checkBox
 	 */
-	protected void treatVisibleCheckBox(final Object object, final CheckBox checkBox) {
+	protected void treatVisibleCheckBox(
+			final Object object, 
+			final CheckBox checkBox,
+			final RowConfigItem rowConfigItem) {
 		try {
 			checkBox.setVisibility(View.VISIBLE);
 			checkBox.setTag(object);
@@ -320,6 +323,11 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 						ComplexListSimpleAdapter.this.getAdapterConfig().getListModelSelection().add(buttonView.getTag());
 					} else {
 						ComplexListSimpleAdapter.this.getAdapterConfig().getListModelSelection().remove(buttonView.getTag());
+					}
+					if(rowConfigItem.getInteractionConfig() != null
+							&& rowConfigItem.getInteractionConfig().getCondition() != null) {
+						rowConfigItem.getInteractionConfig().getCondition().checkToVisibility(object);
+						rowConfigItem.getInteractionConfig().getCondition().handle(object, checkBox);
 					}
 				}
 			});

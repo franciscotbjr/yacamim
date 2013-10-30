@@ -30,17 +30,17 @@ public interface Condition {
 
 	/**
 	 *
-	 * @param _data
+	 * @param data
 	 * @return
 	 */
-	public boolean checkToVisibility(final Object _data);
+	public boolean checkToVisibility(final Object data);
 
 	/**
 	 *
-	 * @param _data
-	 * @param _view
+	 * @param data
+	 * @param view
 	 * @return
 	 */
-	public void handle(final Object _data, final View _view);
+	public void handle(final Object data, final View view);
 
 }
