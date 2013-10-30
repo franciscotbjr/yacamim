@@ -73,6 +73,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.dismissCurrentProgressDialog();
+		
 	}
 
 	/**

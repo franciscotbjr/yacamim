@@ -225,7 +225,7 @@ public class YAlertDialogFragment  extends DialogFragment implements DialogInter
     		.onDialogClick(
     				new YDialogEventImpl.Builder()
     					.withConfirmed(which == AlertDialog.BUTTON_POSITIVE)
-    					.withCanceled(which == AlertDialog.BUTTON_POSITIVE)
+    					.withCanceled(which == AlertDialog.BUTTON_NEGATIVE)
     					.withNeutral(which == AlertDialog.BUTTON_NEUTRAL)
     					.withDialogInterface(dialogInterface)
     					.withDialogId(this.getDialogId())
