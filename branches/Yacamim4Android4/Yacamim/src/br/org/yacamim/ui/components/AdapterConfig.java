@@ -40,6 +40,11 @@ public class AdapterConfig {
 	 *
 	 */
 	private List<Object> listModelSelection;
+	
+	/**
+	 *
+	 */
+	private boolean clickable;
 
 	/**
 	 *
@@ -60,6 +65,22 @@ public class AdapterConfig {
 		this.rowConfigs = rowConfigs;
 		this.rowCondition = rowCondition;
 		this.listModelSelection = listModelSelection;
+	}
+	
+	/**
+	 *
+	 * @param rowConfigs
+	 * @param rowCondition
+	 * @param listModelSelection A simple list that stores the data of each selected row. Should be <tt>null</tt> if there is no <tt>CheckBox</tt>.
+	 * @param clickable
+	 */
+	public AdapterConfig(RowConfig[] rowConfigs, RowCondition rowCondition,
+			List<Object> listModelSelection, boolean clickable) {
+		super();
+		this.rowConfigs = rowConfigs;
+		this.rowCondition = rowCondition;
+		this.listModelSelection = listModelSelection;
+		this.clickable = clickable;
 	}
 
 
@@ -110,4 +131,18 @@ public class AdapterConfig {
 		this.listModelSelection = listModelSelection;
 	}
 
+	/**
+	 * @return the clickable
+	 */
+	public boolean isClickable() {
+		return clickable;
+	}
+
+	/**
+	 * @param clickable the clickable to set
+	 */
+	public void setClickable(boolean clickable) {
+		this.clickable = clickable;
+	}
+	
 }

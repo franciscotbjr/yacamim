@@ -17,6 +17,8 @@
  */
 package br.org.yacamim.relationship.mapping.defaults.util;
 
+import android.view.View;
+import br.org.yacamim.ui.components.AdapterConfig;
 import br.org.yacamim.ui.components.RowCondition;
 import br.org.yacamim.ui.components.RowConfig;
 
@@ -42,12 +44,23 @@ public final class ConditionFactory {
 	 */
 	public static RowCondition getSimpleRowCondition() {
 		return new RowCondition() {
-
+			
 			@Override
-			public RowConfig selectRowConfig(Object _data, int _position, RowConfig[] _rowConfigs) {
-				return _rowConfigs[0];
+			public RowConfig selectRowConfig(Object data, int position,
+					AdapterConfig adapterConfig) {
+				// TODO Auto-generated method stub
+				return adapterConfig.getRowConfigs()[0];
 			}
 
+			@Override
+			public void handleView(View view, Object data, int position,
+					AdapterConfig adapterConfig) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			
+		
 		};
 	}
 	

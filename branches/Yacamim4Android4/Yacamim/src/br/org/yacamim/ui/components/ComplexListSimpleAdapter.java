@@ -130,11 +130,20 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			final RowConfig rowConfig = super.selectRowConfig(position, object);
 
 			if(convertView != null && rowConfig != null) {
+				// handleView
+				if(getAdapterConfig().getRowCondition() != null) {
+					getAdapterConfig().getRowCondition().handleView(convertView, data, position, getAdapterConfig());
+				}
+				// OnClickListener
+				final View convertViewRef = convertView;
 				convertView.setOnClickListener(new View.OnClickListener() {
 					@Override
-					public void onClick(final View _view) {
+					public void onClick(final View view) {
 						if(rowConfig.getResourcesHint() != null && rowConfig.getResourcesHint().length > 0) {
 							Toast.makeText(ComplexListSimpleAdapter.this.yBaseListActivity, ComplexListSimpleAdapter.this.getTextHint(rowConfig.getResourcesHint()), Toast.LENGTH_SHORT).show();
+						}
+						if(getAdapterConfig().isClickable()) {
+							ComplexListSimpleAdapter.this.yBaseListActivity.onListViewClick(convertViewRef, view.getTag());
 						}
 					}
 				});
