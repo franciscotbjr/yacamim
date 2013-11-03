@@ -82,6 +82,10 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 			final RowConfig rowConfig = this.selectRowConfig(position, object);
 
 			convertView = this.activity.getLayoutInflater().inflate(rowConfig.getResource(), null);
+			if(getAdapterConfig().getRowCondition() != null) {
+				getAdapterConfig().getListModelSelection();
+				getAdapterConfig().getRowCondition();
+			}
 
 			if(object != null && rowConfig.getRowConfigItems() != null) {
 				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
@@ -100,7 +104,10 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 	 * @return
 	 */
 	protected RowConfig selectRowConfig(final int position, final Object object) {
-		return this.adapterConfig.getRowCondition().selectRowConfig(object, position, this.adapterConfig.getRowConfigs());
+		return this.adapterConfig.getRowCondition().selectRowConfig(
+				object, 
+				position, 
+				this.adapterConfig);
 	}
 
 	/**

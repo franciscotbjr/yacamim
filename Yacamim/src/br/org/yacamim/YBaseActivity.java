@@ -51,9 +51,9 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	
 	private static final String TAG = YBaseActivity.class.getSimpleName();
 	
-	private YBaseLocationListener yBaseLocationListener;
+	private YBaseLocationListener mYBaseLocationListener;
 	
-	private StringBuilder message;
+	private StringBuilder mMessage;
 	
 	private static final List<YProgressDialogFragment> mYProgressDialogFragmentStack = new ArrayList<YProgressDialogFragment>();
 	
@@ -81,8 +81,8 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 */
 	protected void initGPS() {
 		try {
-			this.yBaseLocationListener = new YBaseLocationListener(this);
-			this.yBaseLocationListener.getLocationManager().requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, yBaseLocationListener);
+			this.mYBaseLocationListener = new YBaseLocationListener(this);
+			this.mYBaseLocationListener.getLocationManager().requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mYBaseLocationListener);
 		} catch (Exception e) {
 			Log.e(TAG + ".initGPS", e.getMessage());
 		}
@@ -140,7 +140,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 * 
 	 */
 	protected void clearMessage() {
-		this.message = null;
+		this.mMessage = null;
 	}
 
 
@@ -149,10 +149,10 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 * @return
 	 */
 	public StringBuilder getMessage() {
-		if(this.message == null) {
-			this.message = new StringBuilder();
+		if(this.mMessage == null) {
+			this.mMessage = new StringBuilder();
 		}
-		return message;
+		return mMessage;
 	}
 	
 	/**
@@ -499,7 +499,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 * @return
 	 */
 	protected GpsLocationInfo getBestLocation() {
-		return this.yBaseLocationListener.getCurrentGpsLocationInfo();
+		return this.mYBaseLocationListener.getCurrentGpsLocationInfo();
 	}
 	
 	/**

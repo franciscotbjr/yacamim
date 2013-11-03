@@ -72,20 +72,20 @@ public class YBaseListActivity extends ListActivity implements OnDialogDoneListe
 	protected void keepScreenOn() {
 		try {
 			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		} catch (Exception _e) {
-			Log.e(TAG + ".keepScreenOn", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".keepScreenOn", e.getMessage());
 		}
 	}
 
 	/**
-	 * @param _listView
-	 * @param _position
+	 * @param listView
+	 * @param position
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected Object getObjectFromListView(final ListView _listView,
-			final int _position) {
-		return ((HashMap<String, Object>)_listView.getAdapter().getItem(_position)).get(YConstants.OBJECT);
+	protected Object getObjectFromListView(final ListView listView,
+			final int position) {
+		return ((HashMap<String, Object>)listView.getAdapter().getItem(position)).get(YConstants.OBJECT);
 	}
 	
 	/**
@@ -106,54 +106,59 @@ public class YBaseListActivity extends ListActivity implements OnDialogDoneListe
 
 	/**
 	 * 
-	 * @param _view
-	 * @param _objectValue
+	 * @param view
+	 * @param objectValue
 	 */
-	public void onListViewClick(final View _view, final Object _objectValue) {
+	public void onListViewClick(final View view, final Object objectValue) {
 		
 	}
 	
 	/**
 	 * 
-	 * @param _mapList
-	 * @param _sourceList
+	 * @param mapList
+	 * @param sourceList
 	 */
 	@SuppressWarnings("rawtypes")
-	protected void fillMapList(final List<HashMap<String, Object>> _mapList, final List _sourceList) {
+	protected void fillMapList(
+			final List<HashMap<String, Object>> mapList, 
+			final List sourceList) {
 		try {
-			for(final Object item : _sourceList) {
+			for(final Object item : sourceList) {
 				final HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put(YConstants.OBJECT, item);
-				_mapList.add(map);
+				mapList.add(map);
 			}
-		} catch (Exception _e) {
-			Log.e(TAG + ".fillMapList", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".fillMapList", e.getMessage());
 		}
 	}
 
 	/**
 	 * 
-	 * @param _objectValue
-	 * @param _mapList
-	 * @param _sourceList
+	 * @param objectValue
+	 * @param mapList
+	 * @param sourceList
 	 */
 	@SuppressWarnings("rawtypes")
-	protected void removeListViewItem(final Object _objectValue, final List<HashMap<String, Object>> _mapList,  final List _sourceList) {
+	protected void removeListViewItem(
+			final Object objectValue, 
+			final List<HashMap<String, Object>> mapList,  
+			final List sourceList) {
 		try {
 			HashMap<String, Object> mapToRemove = null;
-			for(HashMap<String, Object> map  : _mapList) {
-				if(map.containsValue(_objectValue)) {
+			for(HashMap<String, Object> map  : mapList) {
+				if(map.containsValue(objectValue)) {
 					mapToRemove = map;
 					break;
 				}
 			}
 			if(mapToRemove != null) {
-				_sourceList.remove(_objectValue);
-				_mapList.remove(mapToRemove);
+				sourceList.remove(objectValue);
+				mapList.remove(mapToRemove);
 				((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
 			}
-		} catch (Exception _e) {
-			Log.e(TAG + ".removeListViewItem", _e.getMessage());
+		} catch (Exception e) {
+			Log.e(TAG + ".removeListViewItem", e.getMessage());
 		}
 	}
 	
@@ -162,7 +167,9 @@ public class YBaseListActivity extends ListActivity implements OnDialogDoneListe
 	 * @param titleResourceID
 	 * @param messageResourceID
 	 */
-	public void displayProgressDialog(final int titleResourceID, final int messageResourceID) {
+	public void displayProgressDialog(
+			final int titleResourceID, 
+			final int messageResourceID) {
 		try {
 			progressDialog(titleResourceID, messageResourceID);
 		} catch (Exception e) {
@@ -198,7 +205,8 @@ public class YBaseListActivity extends ListActivity implements OnDialogDoneListe
 	 * @param titleResourceID
 	 * @param messageResourceID
 	 */
-	private void progressDialog(final int titleResourceID,
+	private void progressDialog(
+			final int titleResourceID,
 			final int messageResourceID) {
 		final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		
@@ -238,8 +246,11 @@ public class YBaseListActivity extends ListActivity implements OnDialogDoneListe
 	 * @param mensageResource
 	 * @param positiveButtonresource
 	 */
-	protected void buildSimplePositiveAlertDialog(final int dialogId, final int titleResource, 
-			final int mensageResource, final int positiveButtonresource) {
+	protected void buildSimplePositiveAlertDialog(
+			final int dialogId, 
+			final int titleResource, 
+			final int mensageResource, 
+			final int positiveButtonresource) {
 		final YAlertDialogFragment yAlertDialogFragment = 
 				YAlertDialogFragment.newInstance(dialogId, 
 						titleResource, 
@@ -255,8 +266,11 @@ public class YBaseListActivity extends ListActivity implements OnDialogDoneListe
 	 * @param mensage
 	 * @param positiveButtonresource
 	 */
-	protected void buildSimplePositiveAlertDialog(final int dialogId, final String title, 
-			final String mensage, final int positiveButtonresource) {
+	protected void buildSimplePositiveAlertDialog(
+			final int dialogId, 
+			final String title, 
+			final String mensage, 
+			final int positiveButtonresource) {
 		final YAlertDialogFragment yAlertDialogFragment = 
 				YAlertDialogFragment.newInstance(dialogId, 
 						title, 
@@ -267,7 +281,8 @@ public class YBaseListActivity extends ListActivity implements OnDialogDoneListe
 
 	
 	@Override
-	public void onDialogClick(YDialogEvent dialogEvent) {
+	public void onDialogClick(
+			final YDialogEvent dialogEvent) {
 		// TODO Auto-generated method stub
 		
 	}
