@@ -123,7 +123,9 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
             this.ySimpleHttpResponseAdapter = new YSimpleHttpResponseAdapterImpl()
 	            .setStatus(response.getStatusLine().getStatusCode())
 	            .setBody(buildResponseBody(handler, response))
-	            .addCookies(client.getCookieStore().getCookies());
+	            .addCookies(client.getCookieStore().getCookies())
+	            .setRequestPath(this.ySimpleHttpRestRequestAdpater.getUri())
+	            ;
 
             this.heandleTokens(response, this.ySimpleHttpResponseAdapter);
 
