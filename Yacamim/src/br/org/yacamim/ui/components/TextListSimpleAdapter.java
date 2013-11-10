@@ -63,7 +63,7 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 			final Context context,
 			final List<? extends Map<String, Object>> data,
 			final AdapterConfig adapterConfig) {
-		super(context, data, 0, null, null);
+		super(context, data, 0, new String[] {YConstants.OBJECT}, null);
 		this.activity = activity;
 		this.adapterConfig = adapterConfig;
 	}
