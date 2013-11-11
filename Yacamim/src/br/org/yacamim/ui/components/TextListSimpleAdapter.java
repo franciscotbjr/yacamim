@@ -120,9 +120,13 @@ public class TextListSimpleAdapter extends SimpleAdapter {
 			if(rowConfigItem.getResourceIdTo() != -1 && rowConfigItem.getGraphFrom() != null) {
 				final TextView textView = (TextView) convertView.findViewById(rowConfigItem.getResourceIdTo());
 				Object value = YUtilReflection.getPropertyValue(rowConfigItem.getGraphFrom(), object);
-				String formmatedValue = format(rowConfigItem, value);
-				textView.setText(formmatedValue);
-				textView.setPadding(0, 0, 0, 0);
+				if (rowConfigItem.getCondition() != null) {
+					rowConfigItem.getCondition().handle(object, textView);
+				} else {
+					String formmatedValue = format(rowConfigItem, value);
+					textView.setText(formmatedValue);
+					textView.setPadding(0, 0, 0, 0);
+				}
 			}
 		} catch (Exception e) {
 			Log.e("TextListSimpleAdapter.fillField", e.getMessage());

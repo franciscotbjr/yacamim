@@ -149,7 +149,6 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 				});
 			}
 
-
 			if(object != null && rowConfig.getRowConfigItems() != null) {
 				for(RowConfigItem rowConfigItem : rowConfig.getRowConfigItems()) {
 					if(rowConfigItem.getInteractionConfig() != null && rowConfigItem.getInteractionConfig().getResourceTypeForInteraction() != null) {
