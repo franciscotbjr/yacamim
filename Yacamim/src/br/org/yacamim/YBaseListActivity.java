@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import br.org.yacamim.ui.components.YBaseListInteraction;
 import br.org.yacamim.ui.components.OnDialogDoneListener;
 import br.org.yacamim.ui.components.YAlertDialogFragment;
 import br.org.yacamim.ui.components.YDialogEvent;
@@ -42,7 +43,9 @@ import br.org.yacamim.util.YConstants;
  * @version 1.0
  * @since 1.0
  */
-public class YBaseListActivity extends ListActivity implements OnDialogDoneListener {
+public class YBaseListActivity 
+				extends ListActivity 
+				implements OnDialogDoneListener, YBaseListInteraction {
 	
 	private static final String TAG = YBaseListActivity.class.getSimpleName();
 	
