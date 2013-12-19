@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.util.YConstants;
 
 /**
@@ -52,7 +52,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	/**
 	 *
 	 */
-	private YBaseListActivity yBaseListActivity;
+	private YBaseListInteraction mYBaseListInteraction;
 
 	/**
 	 *
@@ -67,15 +67,16 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * <br/>
 	 *
 	 *
-	 * @param baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
+	 * @param activity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
 	 * @param data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
 	 * @param adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final YBaseListActivity baseListActivity,
-			List<? extends Map<String, Object>> data,
-			AdapterConfig adapterConfig) {
-		super(baseListActivity, baseListActivity.getApplicationContext(), data, adapterConfig);
-		this.yBaseListActivity = baseListActivity;
+	public ComplexListSimpleAdapter(
+			final Activity activity,
+			final List<? extends Map<String, Object>> data,
+			final AdapterConfig adapterConfig) {
+		super(activity, activity.getApplicationContext(), data, adapterConfig);
+		this.mYBaseListInteraction = (YBaseListInteraction)activity;
 		this.configNoListModelSelection();
 	}
 
@@ -87,17 +88,18 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 	 * <br/>
 	 *
 	 *
-	 * @param baseListActivity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
+	 * @param activity The ListActivity instance responsible for handling <tt>ListView</tt> interactions.
 	 * @param context An instance of <tt>android.content.Context</tt>.
 	 * @param data A list of <tt>Map</tt>s from which will be rendered each row of the <tt>ListView</tt>.
 	 * @param adapterConfig
 	 */
-	public ComplexListSimpleAdapter(final YBaseListActivity baseListActivity,
-			Context context,
-			List<? extends Map<String, Object>> data,
-			AdapterConfig adapterConfig) {
-		super(baseListActivity, context, data, adapterConfig);
-		this.yBaseListActivity = baseListActivity;
+	public ComplexListSimpleAdapter(
+			final Activity activity,
+			final Context context,
+			final List<? extends Map<String, Object>> data,
+			final AdapterConfig adapterConfig) {
+		super(activity, context, data, adapterConfig);
+		this.mYBaseListInteraction = (YBaseListInteraction)activity;
 		this.configNoListModelSelection();
 	}
 
@@ -140,10 +142,10 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 					@Override
 					public void onClick(final View view) {
 						if(rowConfig.getResourcesHint() != null && rowConfig.getResourcesHint().length > 0) {
-							Toast.makeText(ComplexListSimpleAdapter.this.yBaseListActivity, ComplexListSimpleAdapter.this.getTextHint(rowConfig.getResourcesHint()), Toast.LENGTH_SHORT).show();
+							Toast.makeText((Activity)ComplexListSimpleAdapter.this.mYBaseListInteraction, ComplexListSimpleAdapter.this.getTextHint(rowConfig.getResourcesHint()), Toast.LENGTH_SHORT).show();
 						}
 						if(getAdapterConfig().isClickable()) {
-							ComplexListSimpleAdapter.this.yBaseListActivity.onListViewClick(convertViewRef, view.getTag());
+							ComplexListSimpleAdapter.this.mYBaseListInteraction.onListViewClick(convertViewRef, view.getTag());
 						}
 					}
 				});
@@ -181,7 +183,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 		final StringBuffer buffer = new StringBuffer();
 		if(resourcesHint != null) {
 			for(int i = 0; i < resourcesHint.length; i++) {
-				buffer.append("- " + this.yBaseListActivity.getText(resourcesHint[i]));
+				buffer.append("- " + ((Activity)this.mYBaseListInteraction).getText(resourcesHint[i]));
 				if((i + 1) < resourcesHint.length) {
 					buffer.append("\n");
 				}
@@ -355,7 +357,7 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View _view) {
-					ComplexListSimpleAdapter.this.yBaseListActivity.onListViewClick(_view, _view.getTag());
+					ComplexListSimpleAdapter.this.mYBaseListInteraction.onListViewClick(_view, _view.getTag());
 				}
 			});
 		} catch (Exception e) {

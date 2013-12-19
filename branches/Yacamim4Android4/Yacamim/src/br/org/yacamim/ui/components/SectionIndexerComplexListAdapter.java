@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.SectionIndexer;
-import br.org.yacamim.YBaseListActivity;
 import br.org.yacamim.util.YConstants;
 import br.org.yacamim.util.YUtilReflection;
 
@@ -43,12 +43,11 @@ public class SectionIndexerComplexListAdapter<T>
 	
 	private HashMap<String, Integer> mAlphaIndexer;  
 	private Object[] mSections;  
-//	private Comparator<T> mComparator;
 	final String mGraphToCompare;
 
 	/**
 	 * 
-	 * @param baseListActivity
+	 * @param activity
 	 * @param context
 	 * @param data
 	 * @param adapterConfig
@@ -56,38 +55,38 @@ public class SectionIndexerComplexListAdapter<T>
 	 * @param graphToCompare
 	 */
 	public SectionIndexerComplexListAdapter(
-			final YBaseListActivity baseListActivity,
+			final Activity activity,
 			final Context context, 
 			final List<? extends Map<String, Object>> data,
 			final AdapterConfig adapterConfig,
-//			final Comparator<T> comparator,
 			final String graphToCompare) {
-		super(baseListActivity, context, data, adapterConfig);
-//		mComparator = comparator;
+		super(activity, context, data, adapterConfig);
 		mGraphToCompare = graphToCompare;
 		buildIndex(data);
 	}
 
 	/**
 	 * 
-	 * @param baseListActivity
+	 * @param activity
 	 * @param data
 	 * @param adapterConfig
 	 * @param comparator
 	 * @param graphToCompare
 	 */
 	public SectionIndexerComplexListAdapter(
-			final YBaseListActivity baseListActivity,
+			final Activity activity,
 			final List<? extends Map<String, Object>> data,
 			final AdapterConfig adapterConfig,
-//			final Comparator<T> comparator,
 			final String graphToCompare) {
-		super(baseListActivity, data, adapterConfig);
-//		mComparator = comparator;
+		super(activity, data, adapterConfig);
 		mGraphToCompare = graphToCompare;
 		buildIndex(data);
 	}
 	
+	/**
+	 * 
+	 * @param data
+	 */
 	private void buildIndex(
 			final List<? extends Map<String, Object>> data) {
 		
@@ -125,23 +124,26 @@ public class SectionIndexerComplexListAdapter<T>
 		
 	}
 
+	/**
+	 * 
+	 * @see android.widget.SectionIndexer#getPositionForSection(int)
+	 */
 	public int getPositionForSection(int section) {  
 	    return mAlphaIndexer.get(mSections[section]);  
 	}  
 	
-	//@Override
-	//public int getPositionForSection(int section) {
-	//    if (section > sections.length - 1) {
-	//        return mItems.size() - 1;
-	//    } else {
-	//        return alphaIndexer.get(sections[section]);
-	//    }
-	//}
-
+	/**
+	 * 
+	 * @see android.widget.SectionIndexer#getSectionForPosition(int)
+	 */
 	public int getSectionForPosition(int position) {  
 	    return 0;  
 	}  
 	
+	/**
+	 * 
+	 * @see android.widget.SectionIndexer#getSections()
+	 */
 	public Object[] getSections() {  
 	    return mSections;  
 	} 
