@@ -120,8 +120,8 @@ public class YDeleteSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRe
 			final DefaultHttpClient client = new DefaultHttpClient();
 			
 			final HttpParams httpParams = client.getParams();
-			HttpConnectionParams.setConnectionTimeout(httpParams, 10 * 1000);
-			HttpConnectionParams.setSoTimeout(httpParams, 10 * 1000);
+			HttpConnectionParams.setConnectionTimeout(httpParams, 30 * 1000);
+			HttpConnectionParams.setSoTimeout(httpParams, 30 * 1000);
 
 			final CookieStore cookieStore;
 			if((cookieStore = buildCookieStore()) != null) {
