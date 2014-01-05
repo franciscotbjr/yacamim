@@ -19,7 +19,10 @@ package br.org.yacamim.util;
 
 import java.io.File;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
@@ -33,6 +36,7 @@ import android.provider.MediaStore;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.util.Patterns;
 import br.org.yacamim.YBaseActivity;
 import br.org.yacamim.YacamimState;
 
@@ -323,6 +327,22 @@ public final class YUtilAndroid {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		activity.startActivity(intent);
 		activity.finish();
+	}
+	
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static String getEmailAccount(final Context context) {
+		final Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+		final Account[] accounts = AccountManager.get(context).getAccounts();
+		for (Account account : accounts) {
+		    if (emailPattern.matcher(account.name).matches()) {
+		        return account.name;
+		    }
+		}
+		return "";
 	}
 
 }
