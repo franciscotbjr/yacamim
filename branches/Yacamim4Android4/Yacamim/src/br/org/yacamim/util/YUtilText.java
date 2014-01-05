@@ -399,4 +399,116 @@ public final class YUtilText {
 			return false;
 		}
 	}
+	
+	public static class YUtilTextConfig {
+		
+		private Activity activity;
+
+		/**
+		 * 
+		 */
+		private YUtilTextConfig() {
+			super();
+		}
+		
+		/**
+		 * 
+		 * @param activity
+		 * @return
+		 */
+		public static YUtilTextConfig init(final Activity activity) {
+			YUtilTextConfig yUtilTextConfig = new YUtilTextConfig();
+			yUtilTextConfig.setActivity(activity);
+			return yUtilTextConfig;
+		}
+		
+		/**
+		 * 
+		 * @param activity
+		 */
+		private void setActivity(Activity activity) {
+			this.activity = activity;
+		}
+
+		/**
+		 * 
+		 * @param viewId
+		 * @param text
+		 * @return
+		 */
+		public YUtilTextConfig setTextToEditText(final int viewId, final String text) {
+			YUtilText.setTextToEditText(this.activity, viewId, text);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param viewId
+		 * @param text
+		 * @return
+		 */
+		public YUtilTextConfig setTextToTextView(final int viewId, final String text) {
+			YUtilText.setTextToTextView(this.activity, viewId, text);
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param viewId
+		 * @param value
+		 * @return
+		 */
+		public YUtilTextConfig setIntegerToEditText(final int viewId, final Integer value) {
+			YUtilText.setIntegerToEditText(this.activity, viewId, value);
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param viewId
+		 * @param value
+		 * @return
+		 */
+		public YUtilTextConfig setLongToEditText(final int viewId, final Long value) {
+			YUtilText.setLongToEditText(this.activity, viewId, value);
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param viewId
+		 * @param value
+		 * @return
+		 */
+		public YUtilTextConfig setDoubleToEditText(final int viewId, final Double value) {
+			YUtilText.setDoubleToEditText(this.activity, viewId, value);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param viewId
+		 * @param text
+		 * @param size
+		 * @return
+		 */
+		public YUtilTextConfig setTextToSpinner(final int viewId, final String text, final int size) {
+			YUtilText.setTextToSpinner(this.activity, viewId, text, size);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param viewIdRadio1
+		 * @param viewIdRadio2
+		 * @param value
+		 * @return
+		 */
+		public YUtilTextConfig setBolStringFromRadioButton(final int viewIdRadio1, final int viewIdRadio2 , final String value) {
+			YUtilText.setBolStringFromRadioButton(this.activity, viewIdRadio1, viewIdRadio2, value);
+			return this;
+		}
+
+	}
+
 }
