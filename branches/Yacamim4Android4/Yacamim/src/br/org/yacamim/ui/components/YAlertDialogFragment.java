@@ -130,6 +130,34 @@ public class YAlertDialogFragment  extends DialogFragment implements DialogInter
 
 	/**
 	 * 
+	 * @param dialogId
+	 * @param titleTextResource
+	 * @param messageResource
+	 * @param positivoButtonLabelResource
+	 * @param negativeButtonLabelResource
+	 * @return
+	 */
+	public static YAlertDialogFragment newInstance(
+			final int dialogId,
+			final String titleTextResource, 
+			final String messageResource, 
+			final int positivoButtonLabelResource, 
+			final int negativeButtonLabelResource 
+			) {
+		final YAlertDialogFragment alertDialogFragment = new YAlertDialogFragment();
+		alertDialogFragment.setDialogId(dialogId);
+		alertDialogFragment.configState(true, false);
+		final Bundle bundle = new Bundle();
+		bundle.putString(TITLE, titleTextResource);
+		bundle.putInt(POSITIVE_BUTTON, positivoButtonLabelResource);
+		bundle.putInt(NEGATIVE_BUTTON, negativeButtonLabelResource);
+		bundle.putString(MESSAGE, messageResource);
+		alertDialogFragment.setArguments(bundle);
+		return alertDialogFragment;
+	}
+
+	/**
+	 * 
 	 * @param titleTextResource
 	 * @param messageResource
 	 * @param positivoButtonLabelResource
