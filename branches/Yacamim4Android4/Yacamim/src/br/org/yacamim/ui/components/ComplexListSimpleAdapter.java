@@ -132,10 +132,6 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			final RowConfig rowConfig = super.selectRowConfig(position, object);
 
 			if(convertView != null && rowConfig != null) {
-				// handleView
-				if(getAdapterConfig().getRowCondition() != null) {
-					getAdapterConfig().getRowCondition().handleView(convertView, data, position, getAdapterConfig());
-				}
 				// OnClickListener
 				final View convertViewRef = convertView;
 				convertView.setOnClickListener(new View.OnClickListener() {
@@ -145,10 +141,14 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 							Toast.makeText((Activity)ComplexListSimpleAdapter.this.mYBaseListInteraction, ComplexListSimpleAdapter.this.getTextHint(rowConfig.getResourcesHint()), Toast.LENGTH_SHORT).show();
 						}
 						if(getAdapterConfig().isClickable()) {
-							ComplexListSimpleAdapter.this.mYBaseListInteraction.onListViewClick(convertViewRef, view.getTag());
+							ComplexListSimpleAdapter.this.mYBaseListInteraction.onListViewClick(convertViewRef, object);
 						}
 					}
 				});
+				// handleView
+				if(getAdapterConfig().getRowCondition() != null) {
+					getAdapterConfig().getRowCondition().handleView(convertView, data, position, getAdapterConfig());
+				}
 			}
 
 			if(object != null && rowConfig.getRowConfigItems() != null) {
