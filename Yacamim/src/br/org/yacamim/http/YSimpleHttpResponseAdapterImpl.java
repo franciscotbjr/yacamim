@@ -17,6 +17,7 @@
  */
 package br.org.yacamim.http;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,9 @@ public class YSimpleHttpResponseAdapterImpl implements YSimpleHttpResponseAdapte
 	private String requestPath;
 	private StringBuilder body;
 	private List<Cookie> cookies;
+	private InputStream inputStream;
 	public int status;
+	
 
 	/**
 	 *
@@ -148,6 +151,17 @@ public class YSimpleHttpResponseAdapterImpl implements YSimpleHttpResponseAdapte
 		if(this.cookies == null) {
 			this.cookies = new ArrayList<Cookie>();
 		}
+	}
+
+	@Override
+	public YSimpleHttpResponseAdapter setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+		return this;
+	}
+
+	@Override
+	public InputStream getInputStream() {
+		return this.inputStream;
 	}
 
 }
