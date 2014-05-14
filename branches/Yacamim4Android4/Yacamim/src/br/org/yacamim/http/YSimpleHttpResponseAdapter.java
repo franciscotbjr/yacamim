@@ -17,6 +17,7 @@
  */
 package br.org.yacamim.http;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.http.cookie.Cookie;
@@ -51,5 +52,9 @@ public interface YSimpleHttpResponseAdapter {
 	public YSimpleHttpResponseAdapter setRequestPath(final String requestPath);
 
 	public String getRequestPath();
+
+	public YSimpleHttpResponseAdapter setInputStream(final InputStream inputStream);
+	
+	public InputStream getInputStream();
 
 }
