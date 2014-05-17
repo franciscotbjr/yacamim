@@ -78,6 +78,8 @@ public class TextWatcherFormatter implements TextWatcher {
 	 *
 	 */
 	private String mask = null;
+	
+	private boolean selfChanged;
 
 	/**
 	 *
@@ -115,7 +117,9 @@ public class TextWatcherFormatter implements TextWatcher {
 	 */
 	@Override
 	public void afterTextChanged(final Editable editable) {
-
+		if(selfChanged) {
+			return;
+		}
 	}
 
 	/**
@@ -134,37 +138,48 @@ public class TextWatcherFormatter implements TextWatcher {
 	 */
 	@Override
 	public void onTextChanged(final CharSequence charSequence, final int start, final int before, final int count) {
+		if(selfChanged) {
+			return;
+		}
+		
+		selfChanged = true;
 		try {
-        	this.editText.removeTextChangedListener(this);
+        	String newText = null;
         	if (filterLongEnough()) {
 
         		if(dynamicMask && !YUtilString.isEmptyString(this.mask) && this.mask.length() > 0) {
-        			this.editText.setText(
+        			newText = 
         					YUtilFormatting.format(
 	        					YUtilString.clearString(
-	        							this.editText.getText().toString()), this.mask, DEAFULT_CHARACTER));
+	        							this.editText.getText().toString()), this.mask, DEAFULT_CHARACTER);
 
         		} else if (formattingType == TIPO_FORMATACAO_CPF) {
-        			this.editText.setText(
+        			newText = 
         					YUtilFormatting.formatCpf(
         							YUtilString.keepOnlyNumbers(
-        									this.editText.getText().toString())));
+        									this.editText.getText().toString()));
         		} else if (formattingType == TIPO_FORMATACAO_TELEFONE) {
-        			this.editText.setText(
+        			newText = 
         					YUtilFormatting.formatTelefone(
         							YUtilString.keepOnlyNumbers(
-        									this.editText.getText().toString())));
+        									this.editText.getText().toString()));
         		}
         	} else if (formattingType == TIPO_FORMATACAO_DATA) {
-        		this.editText.setText(
+        		newText = 
         				YUtilFormatting.formatData(
-        							this.editText.getText().toString()));
+        							this.editText.getText().toString());
     		}
-        	this.editText.addTextChangedListener(this);
+        	
+        	if(newText != null) {
+        		this.editText.getText().replace(0, this.editText.getText().length(), newText, 0, newText.length());
+        	}
+        	
         	this.editText.setSelection(this.editText.getText().length());
 		} catch (Exception _e) {
 			Log.e("TextWatcherFormatter.onTextChanged", _e.getMessage());
 		}
+		
+		selfChanged = false;
 	}
 
 	/**
