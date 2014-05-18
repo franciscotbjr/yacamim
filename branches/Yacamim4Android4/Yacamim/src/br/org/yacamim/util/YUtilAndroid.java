@@ -170,6 +170,19 @@ public final class YUtilAndroid {
 		}
 		return androidID;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getDeviceID() {
+		String androidID = getImei();
+		if(YUtilString.isEmptyString(androidID)
+				|| androidID == "000000000000000") {
+			androidID = getAndroidID();
+		}
+		return androidID;
+	}
 
 	/**
 	 * Requires <br/><br/>
