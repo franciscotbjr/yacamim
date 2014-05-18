@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -158,6 +159,8 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 							this.treatCheckBox(convertView, object, rowConfigItem);
 						} else if (rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(Button.class)) {
 							this.treatButton(convertView, object, rowConfigItem);
+						} else if (rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(ImageButton.class)) {
+							this.treatImageButton(convertView, object, rowConfigItem);
 						} else if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(ImageView.class)) {
 							this.treatImageView(convertView, object, rowConfigItem);
 						} else if(rowConfigItem.getInteractionConfig().getResourceTypeForInteraction().equals(TextView.class)) {
@@ -213,6 +216,30 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			}
 		} catch (Exception e) {
 			Log.e("ComplexListSimpleAdapter.treatButton", e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * @param convertView
+	 * @param object
+	 * @param rowConfigItem
+	 */
+	protected void treatImageButton(final View convertView, final Object object, final RowConfigItem rowConfigItem) {
+		try {
+			final ImageButton imageButton = (ImageButton)convertView.findViewById(rowConfigItem.getInteractionConfig().getResourceIDForInteraction());
+			if(rowConfigItem.getCondition() != null) {
+				if(rowConfigItem.getCondition().checkToVisibility(object)) {
+					this.treatVisibleImageButton(object, imageButton);
+				} else {
+					imageButton.setVisibility(View.GONE);
+				}
+				rowConfigItem.getCondition().handle(object, imageButton);
+			} else {
+				this.treatVisibleImageButton(object, imageButton);
+			}
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.treatImageButton", e.getMessage());
 		}
 	}
 
@@ -362,6 +389,25 @@ public class ComplexListSimpleAdapter extends TextListSimpleAdapter {
 			});
 		} catch (Exception e) {
 			Log.e("ComplexListSimpleAdapter.treatVisible", e.getMessage());
+		}
+	}
+	
+	/**
+	 * @param object
+	 * @param imageButton
+	 */
+	protected void treatVisibleImageButton(final Object object, final ImageButton imageButton) {
+		try {
+			imageButton.setVisibility(View.VISIBLE);
+			imageButton.setTag(object);
+			imageButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(final View view) {
+					ComplexListSimpleAdapter.this.mYBaseListInteraction.onListViewClick(view, view.getTag());
+				}
+			});
+		} catch (Exception e) {
+			Log.e("ComplexListSimpleAdapter.treatVisibleImageButton", e.getMessage());
 		}
 	}
 }
