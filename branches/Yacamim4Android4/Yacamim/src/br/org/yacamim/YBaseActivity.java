@@ -416,7 +416,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 * @param mensageResource
 	 * @param positiveButtonresource
 	 */
-	protected void buildSimplePositiveAlertDialog(final int dialogId, final int titleResource, 
+	public void buildSimplePositiveAlertDialog(final int dialogId, final int titleResource, 
 			final int mensageResource, final int positiveButtonresource) {
 		final YAlertDialogFragment yAlertDialogFragment = 
 				YAlertDialogFragment.newInstance(dialogId, 
@@ -433,7 +433,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 * @param mensage
 	 * @param positiveButtonresource
 	 */
-	protected void buildSimplePositiveAlertDialog(final int dialogId, final String title, 
+	public void buildSimplePositiveAlertDialog(final int dialogId, final String title, 
 			final String mensage, final int positiveButtonresource) {
 		final YAlertDialogFragment yAlertDialogFragment = 
 				YAlertDialogFragment.newInstance(dialogId, 
