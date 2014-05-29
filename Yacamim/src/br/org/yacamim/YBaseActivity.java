@@ -55,7 +55,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	
 	private StringBuilder mMessage;
 	
-	private boolean mActive;
+	private static boolean mActive;
 	
 	private static final List<YProgressDialogFragment> mYProgressDialogFragmentStack = new ArrayList<YProgressDialogFragment>();
 	
@@ -94,7 +94,7 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	 * 
 	 * @return
 	 */
-	public boolean isActive() {
+	public static boolean isActive() {
 		return mActive;
 	}
 
