@@ -55,6 +55,8 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 	
 	private StringBuilder mMessage;
 	
+	private boolean mActive;
+	
 	private static final List<YProgressDialogFragment> mYProgressDialogFragmentStack = new ArrayList<YProgressDialogFragment>();
 	
 	/**
@@ -74,6 +76,26 @@ public abstract class YBaseActivity extends Activity implements Callback, OnDial
 		super.onCreate(savedInstanceState);
 		this.dismissCurrentProgressDialog();
 		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mActive = true;
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mActive = false;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isActive() {
+		return mActive;
 	}
 
 	/**
