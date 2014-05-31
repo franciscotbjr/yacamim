@@ -89,7 +89,7 @@ public class YGetSimpleAsyncHttpRestWithContext extends AsyncTask<YSimpleHttpRes
 	 */
 	@Override
 	protected YSimpleHttpResponseAdapter doInBackground(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
-		if(!YUtilAndroid.checkConnections(mContext)) {
+		if(YUtilAndroid.checkConnections(mContext)) {
 			return doRest(ySimpleHttpRestRequestAdpater);
 		}
 		return null;
