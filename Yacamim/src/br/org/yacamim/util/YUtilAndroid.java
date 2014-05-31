@@ -269,6 +269,33 @@ public final class YUtilAndroid {
 	}
 
 	/**
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static synchronized boolean checkConnections(final Context context) {
+		try {
+			final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			if(connectivityManager != null
+					&& connectivityManager.getActiveNetworkInfo() != null) {
+				
+				final NetworkInfo mWifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+				if (mWifi != null && mWifi.isConnected()) {
+					return true;
+				}
+				if(connectivityManager.getActiveNetworkInfo().isAvailable()
+						&& connectivityManager.getActiveNetworkInfo().isConnected()) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			Log.e(TAG + ".checkonnections", e.getMessage());
+		}
+		return false;
+	}
+
+	/**
 	 * Requires <br/><br/>
 	 *  &lt;uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /&gt; <br/><br/>
 	 * on your project Manifest.<br/>

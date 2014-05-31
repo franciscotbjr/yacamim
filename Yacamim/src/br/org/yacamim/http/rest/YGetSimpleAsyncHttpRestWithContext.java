@@ -1,7 +1,7 @@
 /**
- * DefaultDataServiceHandler.java
+ * YGetSimpleAsyncHttpRestWithContext.java
  *
- * Copyright 2013 yacamim.org.br
+ * Copyright 2014 yacamim.org.br
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import java.util.Set;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -31,14 +31,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
-import br.org.yacamim.YBaseAsyncTask;
 import br.org.yacamim.http.YAsyncHttpResponseHandler;
 import br.org.yacamim.http.YCookieProxy;
 import br.org.yacamim.http.YSimpleHttpResponseAdapter;
 import br.org.yacamim.http.YSimpleHttpResponseAdapterImpl;
 import br.org.yacamim.http.YTokenProxy;
+import br.org.yacamim.util.YUtilAndroid;
 import br.org.yacamim.util.YUtilString;
 
 /**
@@ -56,42 +57,30 @@ import br.org.yacamim.util.YUtilString;
  *
  * @see android.os.AsyncTask
  */
-public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestRequestAdpater, YSimpleHttpResponseAdapter> {
+public class YGetSimpleAsyncHttpRestWithContext extends AsyncTask<YSimpleHttpRestRequestAdpater, Void, YSimpleHttpResponseAdapter> {
 	
 	private static final String UTF_8 = "UTF-8";
 
 	private static final String APPLICATION_JSON = "application/json";
 
-	private static final String TAG = YPutSimpleAsyncHttpRest.class.getSimpleName();
+	private static final String TAG = YGetSimpleAsyncHttpRestWithContext.class.getSimpleName();
 
 	private YSimpleHttpRestRequestAdpater ySimpleHttpRestRequestAdpater;
 	private YSimpleHttpResponseAdapter ySimpleHttpResponseAdapter;
 	private YAsyncHttpResponseHandler asyncHttpResponseHandler;
-	private YBasicHttpRestEntity restHttpEntity;
+	
+	private Context mContext;
 
 	/**
 	 * 
-	 * @param activity
+	 * @param context
 	 * @param asyncHttpResponseHandler
 	 */
-	public YPutSimpleAsyncHttpRest(final Activity activity, 
+	public YGetSimpleAsyncHttpRestWithContext(final Context context, 
 			final YAsyncHttpResponseHandler asyncHttpResponseHandler) {
-		super(activity);
+		super();
 		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
-	}
-
-	/**
-	 * 
-	 * @param activity
-	 * @param asyncHttpResponseHandler
-	 * @param restHttpEntity
-	 */
-	public YPutSimpleAsyncHttpRest(final Activity activity, 
-			final YAsyncHttpResponseHandler asyncHttpResponseHandler,
-			final YBasicHttpRestEntity restHttpEntity) {
-		super(activity);
-		this.asyncHttpResponseHandler = asyncHttpResponseHandler;
-		this.restHttpEntity = restHttpEntity;
+		mContext = context;
 	}
 
 	/**
@@ -100,7 +89,7 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	 */
 	@Override
 	protected YSimpleHttpResponseAdapter doInBackground(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
-		if(!super.isErrorWithoutConnectivity()) {
+		if(!YUtilAndroid.checkConnections(mContext)) {
 			return doRest(ySimpleHttpRestRequestAdpater);
 		}
 		return null;
@@ -113,8 +102,6 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 	 */
 	protected YSimpleHttpResponseAdapter doRest(YSimpleHttpRestRequestAdpater... ySimpleHttpRestRequestAdpater) {
 		try {
-			this.configHttpEntity();
-
 			this.ySimpleHttpRestRequestAdpater = ySimpleHttpRestRequestAdpater[0];
 
 			final DefaultHttpClient client = new DefaultHttpClient();
@@ -128,16 +115,14 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 				client.setCookieStore(cookieStore);
 			}
 
-            final HttpPut put = new HttpPut(this.ySimpleHttpRestRequestAdpater.getUri());
-            put.setHeader("Accept", APPLICATION_JSON);
-            put.setHeader("Content-Type", APPLICATION_JSON + "; charset=" + restHttpEntity.getContentEncoding().getValue());
+            final HttpGet get = new HttpGet(this.ySimpleHttpRestRequestAdpater.getUri());
+            get.setHeader("Accept", APPLICATION_JSON);
+            get.setHeader("Content-Type", APPLICATION_JSON + "; charset=" + getEncoding());
 
             final BasicResponseHandler handler = new BasicResponseHandler();
-			put.setEntity(restHttpEntity);
             
-
             // Http call
-            final HttpResponse response = client.execute(put);
+            final HttpResponse response = client.execute(get);
 
             this.ySimpleHttpResponseAdapter = new YSimpleHttpResponseAdapterImpl()
 	            .setStatus(response.getStatusLine().getStatusCode())
@@ -158,20 +143,13 @@ public class YPutSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 
 	/**
 	 * 
+	 * @return
 	 */
-	private void configHttpEntity() {
-		if(restHttpEntity == null) {
-			this.restHttpEntity = new YBasicHttpRestEntity();
-			restHttpEntity.setContentType(APPLICATION_JSON);
-			restHttpEntity.setContentEncoding(UTF_8);
-		} else {
-			if(restHttpEntity.getContentType() == null) {
-				restHttpEntity.setContentType(APPLICATION_JSON);
-			}
-			if(restHttpEntity.getContentEncoding() == null) {
-				restHttpEntity.setContentEncoding(UTF_8);
-			}
+	private String getEncoding() {
+		if(YUtilString.isEmptyString(this.ySimpleHttpRestRequestAdpater.getEnconding())) {
+			return UTF_8;
 		}
+		return this.ySimpleHttpRestRequestAdpater.getEnconding();
 	}
 
 	/**
