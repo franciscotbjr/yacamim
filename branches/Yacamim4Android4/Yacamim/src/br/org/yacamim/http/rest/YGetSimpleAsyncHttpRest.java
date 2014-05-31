@@ -103,8 +103,8 @@ public class YGetSimpleAsyncHttpRest extends YBaseAsyncTask<YSimpleHttpRestReque
 			final DefaultHttpClient client = new DefaultHttpClient();
 			
 			final HttpParams httpParams = client.getParams();
-			HttpConnectionParams.setConnectionTimeout(httpParams, 30 * 1000);
-			HttpConnectionParams.setSoTimeout(httpParams, 30 * 1000);
+			HttpConnectionParams.setConnectionTimeout(httpParams, 60 * 1000);
+			HttpConnectionParams.setSoTimeout(httpParams, 60 * 1000);
 
 			final CookieStore cookieStore;
 			if((cookieStore = buildCookieStore()) != null) {
