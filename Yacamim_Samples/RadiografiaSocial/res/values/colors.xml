@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <color
+        name="title_color">#f0f0f0</color>
+    <color
+        name="grid_linha">#000000</color>
+    <color
+        name="grid_fundo_par">#ffffff</color>
+    <color
+        name="grid_fundo_impar">#dfdde4</color>
+    <color
+        name="grid_header_color">#807f83</color>
+    <color
+        name="label_color">#000000</color>
+	<color 
+		name="custom_theme_color">#ffffff</color>
+	<color 
+		name="custom_theme_color_red">#990000</color>
+	<color 
+		name="texto_apresentacao">#004E90</color>
+</resources>

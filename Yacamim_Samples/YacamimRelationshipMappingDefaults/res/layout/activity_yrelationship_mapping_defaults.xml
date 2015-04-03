@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".YRelationshipMappingDefaultsActivity" >
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/title_activity_unidirectional_one_to_one"
+        android:onClick="startUnidirectionalSingleValueTest" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:onClick="startBidirectionalOneToOneTest"
+        android:text="@string/title_activity_bidirectional_one_to_one" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_below="@+id/button3"
+        android:onClick="startBidirectionalManyToOneOneToManyTest"
+        android:text="@string/title_activity_bidirectional_many_to_one_one_to_many" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button5"
+        android:layout_below="@+id/button5"
+        android:onClick="startBidirectionalManyToManyTest"
+        android:text="@string/title_activity_bidirectional_many_to_many" />
+
+    <Button
+        android:id="@+id/Button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button6"
+        android:layout_below="@+id/button6"
+        android:onClick="startUnidirectionalMultiValuedActivityTest"
+        android:text="@string/title_activity_unidirectional_multi_valued" />
+
+</RelativeLayout>
